@@ -1015,9 +1015,15 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if skillBoundary == nil || skillBoundary["recommendedProof"] != "human-auditable" || skillBoundary["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected skill ownership boundary to require human-auditable alignment, got %#v", skillBoundary)
 	}
+	// R6 (2026-06-21): an ownership/placement assignment ("host-specific behavior
+	// belongs in adapters") is a static repo-owned check, so it routes deterministic
+	// — the seam-boundary discriminator ratified on claim-extraction-template.md:18.
+	// The behavioral counterpart (does the harness actually stay portable) is a
+	// separate claim. Only the explicit "belongs in/to" assignment clause flips;
+	// the broad ownership-prose clause (e.g. "skill owns ...") stays human-auditable.
 	portableBoundary := bySummary["Keep the harness portable: host-specific behavior belongs in adapters, presets, and integration manifests."]
-	if portableBoundary == nil || portableBoundary["recommendedProof"] != "human-auditable" || portableBoundary["verificationReadiness"] != "needs-alignment" {
-		t.Fatalf("expected portability ownership boundary to require human-auditable alignment, got %#v", portableBoundary)
+	if portableBoundary == nil || portableBoundary["recommendedProof"] != "deterministic" || portableBoundary["verificationReadiness"] != "ready-for-proof" {
+		t.Fatalf("expected portability ownership assignment to route deterministic under R6, got %#v", portableBoundary)
 	}
 	executableRecovery := bySummary["If a fallback or recovery path matters to user-visible behavior, add an executable test that proves the path is reachable."]
 	if executableRecovery == nil || executableRecovery["recommendedProof"] != "deterministic" || executableRecovery["verificationReadiness"] != "ready-for-proof" {
@@ -1139,9 +1145,14 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if ownershipDirective == nil || ownershipDirective["recommendedProof"] != "human-auditable" || ownershipDirective["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected explicit needs-alignment directive to outrank deterministic tokens, got %#v", ownershipDirective)
 	}
+	// R6 (2026-06-21): "reusable deterministic behavior belongs in code, adapters,
+	// packets, tests" is a placement/ownership assignment — a static repo-owned
+	// check — so it routes deterministic. The explicit needs-alignment DIRECTIVE
+	// above (ownershipDirective) still outranks via the explicit human-auditable
+	// case; this plain assignment without a reconcile token flips to deterministic.
 	reusableBehaviorOwnership := bySummary["The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests."]
-	if reusableBehaviorOwnership == nil || reusableBehaviorOwnership["recommendedProof"] != "human-auditable" || reusableBehaviorOwnership["verificationReadiness"] != "needs-alignment" {
-		t.Fatalf("expected reusable behavior ownership claim to require alignment, got %#v", reusableBehaviorOwnership)
+	if reusableBehaviorOwnership == nil || reusableBehaviorOwnership["recommendedProof"] != "deterministic" || reusableBehaviorOwnership["verificationReadiness"] != "ready-for-proof" {
+		t.Fatalf("expected reusable behavior ownership assignment to route deterministic under R6, got %#v", reusableBehaviorOwnership)
 	}
 	whetherClaim := bySummary["Whether Cautilus emits durable packet state is recorded as a deterministic command contract."]
 	if whetherClaim == nil || whetherClaim["recommendedProof"] != "deterministic" || whetherClaim["verificationReadiness"] != "ready-for-proof" {
@@ -1171,13 +1182,17 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if refreshPlanBoundary == nil || refreshPlanBoundary["recommendedProof"] != "human-auditable" || refreshPlanBoundary["verificationReadiness"] != "needs-alignment" {
 		t.Fatalf("expected mixed skill/refresh-plan packet obligation to need alignment, got %#v", refreshPlanBoundary)
 	}
+	// R6 (2026-06-21): "X should own Y" and "the binary must not own Z" are explicit
+	// ownership/boundary assignments — static repo-owned checks of which surface owns
+	// the behavior — so they route deterministic. Whether the owner actually does it
+	// well is a separate claim that routes to Cautilus eval.
 	bundledSkillOwnership := bySummary["The Cautilus Agent should own orchestration that depends on an agent."]
-	if bundledSkillOwnership == nil || bundledSkillOwnership["recommendedProof"] != "human-auditable" || bundledSkillOwnership["verificationReadiness"] != "needs-alignment" {
-		t.Fatalf("expected Cautilus Agent ownership claim to need alignment, got %#v", bundledSkillOwnership)
+	if bundledSkillOwnership == nil || bundledSkillOwnership["recommendedProof"] != "deterministic" || bundledSkillOwnership["verificationReadiness"] != "ready-for-proof" {
+		t.Fatalf("expected Cautilus Agent ownership assignment to route deterministic under R6, got %#v", bundledSkillOwnership)
 	}
 	binaryProviderOwnership := bySummary["The binary must not own LLM provider selection, subagent scheduling, model prompts, review policy, or human conversation."]
-	if binaryProviderOwnership == nil || binaryProviderOwnership["recommendedProof"] != "human-auditable" || binaryProviderOwnership["verificationReadiness"] != "needs-alignment" {
-		t.Fatalf("expected binary negative-ownership claim to need alignment, got %#v", binaryProviderOwnership)
+	if binaryProviderOwnership == nil || binaryProviderOwnership["recommendedProof"] != "deterministic" || binaryProviderOwnership["verificationReadiness"] != "ready-for-proof" {
+		t.Fatalf("expected binary negative-ownership assignment to route deterministic under R6, got %#v", binaryProviderOwnership)
 	}
 	proofRoutingPolicy := bySummary["Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior."]
 	if proofRoutingPolicy == nil || proofRoutingPolicy["recommendedProof"] != "human-auditable" || proofRoutingPolicy["verificationReadiness"] != "needs-alignment" {
@@ -3979,5 +3994,126 @@ func TestClaimClassificationPortableDefaultsAreFrozen(t *testing.T) {
 	}
 	if !reflect.DeepEqual(defaultClaimLexiconTerms, expectedLexicon) {
 		t.Fatalf("built-in claim lexicon changed; update docs/contracts/claim-discovery-workflow.md and this golden together, got %#v", defaultClaimLexiconTerms)
+	}
+}
+
+func TestClaimClassificationR6R12RoutingBoundaryIsFrozen(t *testing.T) {
+	// Frozen golden for the 2026-06-21 R6/R12 baseline-routing boundary. Any future
+	// broadening of ownershipAssignmentClaim / capabilityExistenceClaim (or the
+	// reconcile/scope guards) must surface here as a diff and force gold-set review.
+	// Contract: charness-artifacts/eval-trust/2026-06-21-r6r12-baseline-routing.spec.md
+	cases := []struct {
+		name          string
+		line          string
+		wantProof     string
+		wantReadiness string
+	}{
+		// R6 — ownership/boundary ASSIGNMENT is a static repo-owned check -> deterministic.
+		{"r6-should-own", "The Cautilus Agent should own orchestration that depends on an agent.", "deterministic", "ready-for-proof"},
+		{"r6-must-not-own", "The binary must not own LLM provider selection or review policy.", "deterministic", "ready-for-proof"},
+		{"r6-belongs-to-skill", "Routing and sequencing belongs to the skill, not the binary.", "deterministic", "ready-for-proof"},
+		{"r6-belongs-in-adapters", "Host-specific behavior belongs in adapters, presets, and integration manifests.", "deterministic", "ready-for-proof"},
+		{"r6-reusable-belongs-in-code", "Reusable deterministic behavior belongs in code, adapters, packets, and tests.", "deterministic", "ready-for-proof"},
+		// Scope guard — broad ownership PROSE (no explicit assignment) stays human-auditable.
+		{"scope-broad-prose", "That keeps persona prompt shaping product-owned while backend selection stays adapter-owned.", "human-auditable", "needs-alignment"},
+		// Shadowing guard — ownership assignment that also needs reconciliation stays human.
+		{"shadow-reconcile", "The Cautilus Agent should own orchestration, but reconcile it against the adapter contract first.", "human-auditable", "needs-alignment"},
+		// R12 — capability EXISTENCE -> deterministic; a does-X-improve claim stays eval.
+		{"r12-ships-seam", "Cautilus also ships a GEPA-style bounded prompt search seam: multi-generation reflective mutation and bounded merge synthesis.", "deterministic", "ready-for-proof"},
+		{"r12-negative-improves", "The improver makes the agent prompt produce better evaluated behavior over multiple generations.", "cautilus-eval", ""},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := classifyClaimLine(tc.line)
+			if !ok {
+				t.Fatalf("expected a classification for %q, got none", tc.line)
+			}
+			if got.recommendedProof != tc.wantProof {
+				t.Fatalf("recommendedProof: want %q, got %q (%q)", tc.wantProof, got.recommendedProof, tc.line)
+			}
+			if tc.wantReadiness != "" && got.verificationReadiness != tc.wantReadiness {
+				t.Fatalf("verificationReadiness: want %q, got %q (%q)", tc.wantReadiness, got.verificationReadiness, tc.line)
+			}
+		})
+	}
+}
+
+func TestDiscoverClaimProofPlanAdapterProofRouteHintRoutesUnclassifiedLine(t *testing.T) {
+	doc := strings.Join([]string{
+		"# Demo",
+		"",
+		"The frobnicator uses a gizmo for every run.",
+		"",
+	}, "\n")
+
+	// Control: no adapter. The line passes the English lexicon (" uses ") but the
+	// portable classifier returns no route, so it is dropped — proving the route
+	// hint, not new hardcoding, is what routes it.
+	withoutHint := t.TempDir()
+	mustWriteFile(t, filepath.Join(withoutHint, "README.md"), doc)
+	control, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: withoutHint})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	if count := len(arrayOrEmpty(control["claimCandidates"])); count != 0 {
+		t.Fatalf("control without the route hint should drop the unclassified line, got %d candidates", count)
+	}
+
+	adapterWithHint := strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  classification_hints:",
+		"    proof_route_hints:",
+		"      - pattern: frobnicator",
+		"        route: deterministic",
+		"",
+	}, "\n")
+	withHint := t.TempDir()
+	mustWriteFile(t, filepath.Join(withHint, "README.md"), doc)
+	mustWriteFile(t, filepath.Join(withHint, ".agents", "cautilus-adapter.yaml"), adapterWithHint)
+	plan, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: withHint})
+	if err != nil {
+		t.Fatalf("DiscoverClaimProofPlan returned error: %v", err)
+	}
+	candidates := arrayOrEmpty(plan["claimCandidates"])
+	if len(candidates) != 1 {
+		t.Fatalf("expected the adapter route hint to route the unclassified line, got %d candidates", len(candidates))
+	}
+	candidate := asMap(candidates[0])
+	if candidate["recommendedProof"] != "deterministic" || candidate["verificationReadiness"] != "ready-for-proof" {
+		t.Fatalf("expected the adapter-declared deterministic route, got %#v", candidate)
+	}
+	scope := asMap(plan["effectiveScanScope"])
+	hints, ok := scope["proofRouteHints"].([]any)
+	if !ok || len(hints) != 1 {
+		t.Fatalf("expected the route hint recorded in effectiveScanScope, got %#v", scope["proofRouteHints"])
+	}
+	first := asMap(hints[0])
+	if first["pattern"] != "frobnicator" || first["route"] != "deterministic" {
+		t.Fatalf("expected the route hint pattern/route recorded, got %#v", first)
+	}
+}
+
+func TestResolveClaimProofRouteHintsRejectsUnsupportedRoute(t *testing.T) {
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: demo",
+		"claim_discovery:",
+		"  classification_hints:",
+		"    proof_route_hints:",
+		"      - pattern: frobnicator",
+		"        route: not-a-route",
+		"",
+	}, "\n")
+	repoRoot := t.TempDir()
+	mustWriteFile(t, filepath.Join(repoRoot, "README.md"), "# Demo\n\nThe frobnicator uses a gizmo.\n")
+	mustWriteFile(t, filepath.Join(repoRoot, ".agents", "cautilus-adapter.yaml"), adapter)
+	_, err := DiscoverClaimProofPlan(ClaimDiscoveryOptions{RepoRoot: repoRoot})
+	if err == nil {
+		t.Fatalf("expected an unsupported route to be rejected, got nil error")
+	}
+	if !strings.Contains(err.Error(), "proof_route_hints") {
+		t.Fatalf("expected the error to name proof_route_hints, got %v", err)
 	}
 }

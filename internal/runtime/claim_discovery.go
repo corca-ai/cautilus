@@ -124,6 +124,7 @@ type claimDiscoveryConfig struct {
 	audienceHints           map[string][]string
 	nonClaimSectionHeadings []string
 	claimLexiconTerms       []string
+	proofRouteHints         []claimProofRouteHint
 	semanticGroups          []claimSemanticGroupRule
 	epicCatalog             []claimEpic
 	relatedStatePaths       []claimRelatedStatePath
@@ -138,6 +139,16 @@ type claimDiscoveryConfig struct {
 type claimRelatedStatePath struct {
 	role string
 	path string
+}
+
+// claimProofRouteHint is one adapter-owned routing rule: a case-insensitive
+// substring pattern and the recommendedProof route to apply when the portable
+// classifier leaves a candidate line unrouted. It extends, never replaces, the
+// portable routing defaults — per-claim corrections of an existing portable
+// route go through the maintainer override surface, not this family.
+type claimProofRouteHint struct {
+	pattern string
+	route   string
 }
 
 type claimSemanticGroupRule struct {
@@ -315,7 +326,7 @@ func claimDiscoveryHeuristics() []any {
 		map[string]any{
 			"id":                     "next-work-classifier",
 			"implementationFunction": "classifyClaimLine",
-			"summary":                "Label the candidate with the kind of follow-up work Cautilus recommends next.",
+			"summary":                "Label the candidate with the kind of follow-up work Cautilus recommends next. Portable defaults apply the ratified R6/R12 discriminators (ownership/boundary/sequencing assignment and capability-existence route deterministic); adapter-declared classification_hints.proof_route_hints route repo-specific shapes the portable classifier leaves unrouted.",
 		},
 		map[string]any{
 			"id":                     "duplicate-summary-merge",
@@ -628,6 +639,11 @@ func resolveClaimDiscoveryConfig(repoRoot string, explicit []string, adapterPath
 			if terms := normalizeClaimLexiconTerms(stringArrayOrEmpty(hints["claim_lexicon_terms"])); len(terms) > 0 {
 				config.claimLexiconTerms = terms
 			}
+			routeHints, err := resolveClaimProofRouteHints(hints["proof_route_hints"])
+			if err != nil {
+				return config, err
+			}
+			config.proofRouteHints = routeHints
 		}
 		if semanticGroups := resolveClaimSemanticGroups(claimConfig["semantic_groups"]); len(semanticGroups) > 0 {
 			config.semanticGroups = semanticGroups
@@ -682,6 +698,53 @@ func resolveClaimRelatedStatePaths(value any) ([]claimRelatedStatePath, error) {
 		})
 	}
 	return result, nil
+}
+
+func resolveClaimProofRouteHints(value any) ([]claimProofRouteHint, error) {
+	result := []claimProofRouteHint{}
+	for index, raw := range arrayOrEmpty(value) {
+		record := asMap(raw)
+		pattern := strings.ToLower(strings.TrimSpace(stringFromAny(record["pattern"])))
+		route := strings.TrimSpace(stringFromAny(record["route"]))
+		if pattern == "" || route == "" {
+			return nil, fmt.Errorf("claim_discovery.classification_hints.proof_route_hints[%d] must include non-empty pattern and route", index)
+		}
+		if !validRecommendedProof(route) {
+			return nil, fmt.Errorf("claim_discovery.classification_hints.proof_route_hints[%d].route %q is unsupported", index, route)
+		}
+		result = append(result, claimProofRouteHint{pattern: pattern, route: route})
+	}
+	return result, nil
+}
+
+// matchProofRouteHint routes a candidate line that the portable classifier left
+// unrouted, using the first adapter-owned proof_route_hint whose pattern is a
+// case-insensitive substring of the line. Readiness is derived conservatively
+// from the route so the hint sets routing without overclaiming proof state.
+func matchProofRouteHint(line string, hints []claimProofRouteHint) (claimClassification, bool) {
+	if len(hints) == 0 {
+		return claimClassification{}, false
+	}
+	lower := strings.ToLower(line)
+	for _, hint := range hints {
+		if !strings.Contains(lower, hint.pattern) {
+			continue
+		}
+		readiness := "blocked"
+		switch hint.route {
+		case "deterministic":
+			readiness = "ready-for-proof"
+		case "cautilus-eval":
+			readiness = "needs-scenario"
+		}
+		return claimClassification{
+			recommendedProof:      hint.route,
+			verificationReadiness: readiness,
+			why:                   "The line matched an adapter-owned classification_hints.proof_route_hints pattern; the repo declared this route for a shape the portable classifier does not recognize.",
+			next:                  "Use the adapter-declared route, then attach the matching deterministic, Cautilus eval, or human-auditable proof.",
+		}, true
+	}
+	return claimClassification{}, false
 }
 
 // defaultNonClaimSectionHeadings are portable defaults: section conventions
@@ -1193,10 +1256,13 @@ func extractClaimCandidates(source claimSource, seenIDs map[string]int, config c
 		}
 		classification, ok := classifyClaimLine(block.text)
 		if !ok {
-			if !adapterLexiconMatched {
+			if hint, hinted := matchProofRouteHint(block.text, config.proofRouteHints); hinted {
+				classification = hint
+			} else if adapterLexiconMatched {
+				classification = adapterLexiconFallbackClassification()
+			} else {
 				continue
 			}
-			classification = adapterLexiconFallbackClassification()
 		}
 		summary := normalizeClaimSummary(block.text)
 		if summary == "" {
@@ -1442,6 +1508,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target.",
 			next:                  "Keep this as human-auditable context or promote a concrete regression scenario if the caveat should block releases.",
 		}, true
+	case ownershipAssignmentClaim(lower) && !claimNeedsReconciliation(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-for-proof",
+			why:                   "The claim assigns ownership or a seam boundary (which surface owns the behavior); that assignment is a static repo-owned check across docs, code, and adapter contracts. The behavioral counterpart is a separate claim that routes to Cautilus eval.",
+			next:                  "Keep or add a deterministic check that the named adapter, CLI, docs, or test surface holds the assigned ownership boundary.",
+		}, true
 	case ownershipBoundaryClaim(lower):
 		return claimClassification{
 			recommendedProof:      "human-auditable",
@@ -1565,7 +1638,7 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			why:                   "The claim is an operator-policy rule; a single eval fixture cannot prove every future agent will follow it.",
 			next:                  "Keep this as an operating rule or narrow it into an audited process claim with concrete incident evidence.",
 		}, true
-	case containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"}):
+	case claimNeedsReconciliation(lower):
 		return claimClassification{
 			recommendedProof:      "human-auditable",
 			verificationReadiness: "needs-alignment",
@@ -1628,6 +1701,13 @@ func classifyClaimLine(line string) (claimClassification, bool) {
 			verificationReadiness: "ready-for-proof",
 			why:                   "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks.",
 			next:                  "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+		}, true
+	case capabilityExistenceClaim(lower):
+		return claimClassification{
+			recommendedProof:      "deterministic",
+			verificationReadiness: "ready-for-proof",
+			why:                   "The claim states the product ships a named seam, mechanism, command, or capability; that the named capability exists is a static repo-owned check. Whether it improves behavior is a separate eval facet.",
+			next:                  "Keep or add a deterministic check that the named seam, mechanism, command, or capability exists; route any improves-behavior subclaim to Cautilus eval separately.",
 		}, true
 	case claimNeedsScenario(lower):
 		surface := ""
@@ -1755,6 +1835,40 @@ func skillOrAgentBehaviorClaim(lower string) bool {
 	return containsAny(lower, []string{" skill ", " parent skill ", " cautilus agent ", " agent ", " agents ", " subagent ", " subagents "}) &&
 		containsAny(lower, []string{" should ", " may ", " must ", " can "}) &&
 		containsAny(lower, []string{" show ", " say ", " ask ", " confirm ", " launch ", " merge ", " select ", " read ", " cite ", " choose ", " proceed ", " sequence ", " come after "})
+}
+
+// ownershipAssignmentClaim matches the explicit seam/placement assignment
+// clauses of an ownership claim ("X should own Y", "belongs to the skill",
+// "belongs in adapters/code"). Under R6 an ownership/boundary assignment is a
+// static repo-owned check (which named surface owns the behavior), so it routes
+// deterministic. It is deliberately narrower than ownershipBoundaryClaim: the
+// broad ownership-prose clause stays human-auditable until the gold set confirms
+// it. The caller also excludes reconciliation-shaped lines so genuine
+// "X owns Y; reconcile against Z" claims keep their needs-alignment route.
+func ownershipAssignmentClaim(lower string) bool {
+	if containsAny(lower, []string{" should own ", " must own ", " must not own ", " should not own ", " does not own ", " do not own ", " belongs to the skill", " belongs to the binary", " belong to the skill", " belong to the binary"}) &&
+		containsAny(lower, []string{" skill", " binary", " cautilus", " host", " adapter", " runner", " runtime"}) {
+		return true
+	}
+	return containsAny(lower, []string{" belongs in adapters", " belongs in adapter", " belongs in code, adapters", " reusable deterministic behavior belongs", " belongs in installed skill metadata", " belongs in skill metadata", " host-specific behavior belongs"})
+}
+
+// claimNeedsReconciliation is the shared reconciliation-token set: a claim that
+// names alignment/drift/reconcile is not honestly provable until the mismatched
+// surfaces agree. It guards the deterministic ownership-assignment route and
+// drives the human-auditable align case.
+func claimNeedsReconciliation(lower string) bool {
+	return containsAny(lower, []string{" align", " aligned", " alignment", " drift", " reconcile", " mismatch", " consistent with", " consistency"})
+}
+
+// capabilityExistenceClaim recognizes "<product> ships a named seam / mechanism
+// / command / capability" shapes. Under R12 the existence of the named
+// capability is a static repo-owned check, so it routes deterministic; whether
+// the capability improves behavior is a separate eval facet that the broad
+// behavior cases route to cautilus-eval.
+func capabilityExistenceClaim(lower string) bool {
+	return strings.Contains(lower, " ships ") &&
+		containsAny(lower, []string{" seam", " seams", " mechanism", " mechanisms", " command", " commands", " subcommand", " subcommands", " capability", " capabilities"})
 }
 
 func ownershipBoundaryClaim(lower string) bool {
@@ -2273,6 +2387,7 @@ func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 		"audienceHints":           renderClaimAudienceHints(config.audienceHints),
 		"nonClaimSectionHeadings": nonNilStringSlice(config.nonClaimSectionHeadings),
 		"claimLexiconTerms":       nonNilStringSlice(config.claimLexiconTerms),
+		"proofRouteHints":         renderClaimProofRouteHints(config.proofRouteHints),
 		"semanticGroups":          renderClaimSemanticGroups(config.semanticGroups),
 		"linkedDocDepth":          config.linkedDocDepth,
 		"explicitSources":         config.explicitSources,
@@ -2281,6 +2396,17 @@ func renderClaimScanScope(config claimDiscoveryConfig) map[string]any {
 		"traversal":               "entry-markdown-links",
 		"gitignorePolicy":         "respect-repo-gitignore",
 	}
+}
+
+func renderClaimProofRouteHints(hints []claimProofRouteHint) []any {
+	rendered := []any{}
+	for _, hint := range hints {
+		rendered = append(rendered, map[string]any{
+			"pattern": hint.pattern,
+			"route":   hint.route,
+		})
+	}
+	return rendered
 }
 
 func renderClaimAudienceHints(hints map[string][]string) map[string]any {

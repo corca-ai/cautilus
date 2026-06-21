@@ -86,6 +86,9 @@ claim_discovery:
     non_claim_section_headings:
       - Rejected Alternatives
       - Non-goals
+    proof_route_hints:
+      - pattern: yt-digest
+        route: deterministic
   semantic_groups:
     - label: Product promises
       terms:
@@ -239,7 +242,10 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   Adapter headings merge with the portable default list (currently `Deferred Decisions`); defaults are unioned, not replaced.
   `classification_hints.claim_lexicon_terms` optionally lists repo-owned claim vocabulary, matched as case-insensitive substrings, that extends (never replaces) the built-in English claim-verb lexicon.
   This is the portability seam for repos documented in languages whose predicates carry no space boundaries (for example Korean sentence-final endings such as `니다` or `한다`); hint-matched lines that no portable routing case recognizes stay visible through a `human-auditable` fallback route.
-  Classification hints are adapter-owned because non-claim conventions and claim vocabulary differ per repo; the binary executes the hints deterministically and records them in the packet's `effectiveScanScope`, while the Cautilus Agent proposes them from an initial scan for maintainer ratification instead of the product hardcoding repo-specific rules.
+  `classification_hints.proof_route_hints` optionally lists `{ pattern, route }` entries (pattern matched as a case-insensitive substring; `route` validated against `deterministic | cautilus-eval | human-auditable`) that route repo-specific candidate shapes the portable classifier leaves unrouted.
+  It extends, never replaces, the portable routing defaults: it applies only when the portable classifier returns no route, so per-claim corrections of an existing portable route go through the maintainer override surface (`docs/specs/audit/claim-proof-route-overrides.json`), not this family.
+  The generic ownership/boundary/sequencing-assignment and capability-existence discriminators (R6/R12) are portable engine defaults, not adapter hints, because they are repo-agnostic; `proof_route_hints` carries only the repo-specific residue.
+  Classification hints are adapter-owned because non-claim conventions and claim vocabulary differ per repo; the binary executes the hints deterministically and records them in the packet's `effectiveScanScope` (including `proofRouteHints`), while the Cautilus Agent proposes them from an initial scan for maintainer ratification instead of the product hardcoding repo-specific rules.
 - `instance_discovery`: optional local-first instance routing contract for live app eval flows.
   Use `kind: explicit` when the adapter can check in a small stable instance list directly.
   Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.

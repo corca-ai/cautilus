@@ -672,6 +672,40 @@ func normalizeClaimDiscoveryClassificationHints(value any) (map[string]any, []st
 			normalized["claim_lexicon_terms"] = stringSliceNoValidate(items)
 		}
 	}
+	if raw, exists := record["proof_route_hints"]; exists && raw != nil {
+		items, err := assertArray(raw, "claim_discovery.classification_hints.proof_route_hints")
+		if err != nil {
+			errors = append(errors, "claim_discovery.classification_hints.proof_route_hints must be a list of mappings")
+		} else {
+			hints := []any{}
+			valid := true
+			for index, item := range items {
+				field := fmt.Sprintf("claim_discovery.classification_hints.proof_route_hints[%d]", index)
+				entry, ok := item.(map[string]any)
+				if !ok {
+					errors = append(errors, field+" must be a mapping")
+					valid = false
+					continue
+				}
+				pattern, patternErr := normalizeNonEmptyString(entry["pattern"], field+".pattern")
+				route, routeErr := normalizeNonEmptyString(entry["route"], field+".route")
+				if patternErr != nil || routeErr != nil {
+					errors = append(errors, field+" must include string pattern and route")
+					valid = false
+					continue
+				}
+				// Surface an unsupported route at doctor/init time (Valid=false), but keep
+				// the entry so the engine path stays the enforcing backstop during discover.
+				if !validRecommendedProof(route) {
+					errors = append(errors, fmt.Sprintf("%s.route %q is unsupported", field, route))
+				}
+				hints = append(hints, map[string]any{"pattern": pattern, "route": route})
+			}
+			if valid {
+				normalized["proof_route_hints"] = hints
+			}
+		}
+	}
 	return normalized, errors
 }
 

@@ -43,6 +43,28 @@ This reframes the next-slice decision recorded in the Fork analysis:
 - **Fork A (correct the engine baseline routing toward R6/R12) is NOT low-value** — that earlier read assumed the baseline was vestigial. It is not: it is the deterministic, CI-reproducible path, and it is the one that disagrees with ground truth. Bringing R6/R12 into `classifyClaimLine` (portable defaults) plus an adapter-owned routing-hint extension family is the highest measured-value next slice, and it stays deterministic (no LLM in the standing path).
 - **Fork B (true per-facet decomposition for the population)** remains the deeper end-state but is gated behind the cheaper, higher-accuracy-gap baseline correction.
 
+## After: R6/R12 baseline correction landed (2026-06-21)
+
+The R6/R12 engine-baseline correction + adapter routing-hint extension family landed (build contract: [2026-06-21-r6r12-baseline-routing.spec.md](./2026-06-21-r6r12-baseline-routing.spec.md)).
+Re-measured against the same 49-fingerprint overlap and answer key after `npm run claims:refresh:all`:
+
+| metric | before | engine change only | final committed (+ same-slice doc realign) |
+| --- | --- | --- | --- |
+| overlap agreement | 22/49 (45%) | 26/49 (53%) | **26/48 (54%)** |
+| over-correction signature (live `deterministic`, key `human-auditable`) | 0 | 0 | **0** |
+| live `deterministic` | 140 | 148 | 148 |
+| live `human-auditable` | 113 | 105 | 104 |
+| live `cautilus-eval` | 144 | 144 | 145 |
+
+Both binding gates met: overlap agreement rose from 45% to 54% (the agreeing count went 22 → 26) and there are **zero new** `human-auditable → deterministic` over-corrections.
+The overlap shrank 49 → 48 in the final column because this slice also realigned a stale ownership sentence in `claim-discovery-workflow.md` (the line that previously said ownership boundaries "should stay human-auditable"), which changed that one claim's fingerprint so it no longer matches the frozen answer key — an expected consequence of the same-slice doc realignment, not a routing regression (the agreeing count is unchanged at 26).
+
+Honest scope of the gain:
+
+- **The entire live improvement is R6** (ownership/boundary *assignment* → deterministic): 8 claims moved `human-auditable → deterministic`, 4 of them inside the overlap and matching the ratified `deterministic` key. The flip was scoped to the explicit-assignment clauses (`should own`, `belongs to/in …`); the broad ownership-prose clause and reconciliation-shaped ownership lines deliberately stayed `human-auditable` (critique 2026-06-21).
+- **R12 (capability-existence) fired on zero live claims and is correct-but-dormant here.** Its archetypal gold claim `claim-readme-md-139` (the GEPA-style seam, README.md:140) is **278 runes**, over the 260-rune `claimLineLooksUseful` extraction bound, so it is never extracted into the live population. The live ` ships ` candidates that do route `deterministic` are caught earlier by the install / deterministic-token cases, not by the new R12 predicate. R12 is unit-frozen for when such a claim becomes extractable; it is not what moved the live number.
+- **`cautilus-eval` over-assignment is only partially addressed.** R6 fixes the `human-auditable → deterministic` subset, not the `cautilus-eval → deterministic` disagreements the per-claim section flagged as dominant. Those remaining eval→det disagreements are not ownership/capability-existence shapes the portable defaults safely catch; reducing them is follow-up work (true per-facet decomposition, Fork B), not this slice.
+
 ## Reproduction
 
 ```
