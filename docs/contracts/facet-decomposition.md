@@ -52,6 +52,13 @@ The conversation-goal claim is the worked example of a decomposed claim; the two
 
 ## Next step: adapter-owned classification hints, then per-facet routing
 
+Status update (2026-06-21, Fork C consolidation): this section's 2026-06-10 plan was partially overtaken by later work.
+Routing knowledge reached two surfaces — the agent-primary extraction *template* (`b922fd5d`, which carries the R6/R12 ownership/boundary/sequencing → deterministic discipline, MEASUREMENT.proof-route.md) and the maintainer *override surface* (`docs/specs/audit/claim-proof-route-overrides.json`, `cautilus.claim_proof_route_override.v1`) — but it did **not** reach the deterministic engine baseline `classifyClaimLine` (`internal/runtime/claim_discovery.go`), which still routes ownership/boundary claims to `human-auditable` (the opposite of R6/R12).
+Because `claims:refresh:all` runs the heuristic baseline deterministically, the checked-in / CI-visible claim population is produced by that un-corrected baseline: measured 2026-06-21, it is ~45% route-accurate against ratified ground truth on the fingerprint overlap and over-routes to `cautilus-eval` by ~3.4x (36.3% vs the ratified ~11%).
+Full measurement: [charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md](../../charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md).
+So the concrete, highest-measured-value form of this "Next step" is now: bring R6/R12 into the engine baseline (portable defaults plus an adapter-owned routing-hint extension family, mirroring the `non_claim_section_headings` default+extension pattern), kept deterministic; true per-facet decomposition for the whole population stays the deeper end-state gated behind it.
+The remainder of this section records the still-valid 2026-06-10 direction it builds on.
+
 Maintainer decision 2026-06-10 (after the D3 facet gold set and a portability challenge) redefined the wiring direction.
 Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.
 The first hint family is live: `non_claim_section_headings` filters rejected-alternatives and non-goal sections deterministically, proven on this repo by the gold set's ratified non-claim (`claim-docs-contracts-active-run-md-186`) disappearing from a live discovery run.

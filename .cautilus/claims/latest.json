@@ -3,7 +3,7 @@
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 396,
+    "matchedClaimCount": 397,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3085,7 +3085,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-189",
+      "claimId": "claim-docs-master-plan-md-191",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3103,7 +3103,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 189,
+          "line": 191,
           "path": "docs/master-plan.md"
         }
       ],
@@ -6142,6 +6142,183 @@
       "summary": "With both AGENTS.md and the skill surface closed, the `declared` exit is now available on both surfaces; the apex flip remains a separate maintainer decision.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:17b9f0d2f66fafb7e1868f9a787207c5c7a5818fa0ef051b288e8a589c4cdc51",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-30",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
+          "line": 30,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:8e2bea3c54a3c8b4711676604de638cf55d80dac8ccbbd7f0ca8ba0399cf66af",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-36",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
+          "line": 36,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:cee2d8a7d92dac1bc2be120967e9c121eb000ae57a220b249a7f467f4cbf1c76",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-46",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
+          "line": 46,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:8bd445348d1615b5dc6ec0b8cd6e7a282c5657dbce6ee0c15100cc8990b20ca4",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-50",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/chat",
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/chat fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "app/chat",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
+          "line": 50,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-63",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
+          "line": 63,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
+      "claimId": "claim-docs-contracts-facet-decomposition-md-65",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
+          "line": 65,
+          "path": "docs/contracts/facet-decomposition.md"
+        }
+      ],
+      "summary": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
     {
       "claimAudience": "developer",
@@ -10693,183 +10870,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:17b9f0d2f66fafb7e1868f9a787207c5c7a5818fa0ef051b288e8a589c4cdc51",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-30",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/contracts/eval-judge-collaboration.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
-          "line": 30,
-          "path": "docs/contracts/facet-decomposition.md"
-        }
-      ],
-      "summary": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:8e2bea3c54a3c8b4711676604de638cf55d80dac8ccbbd7f0ca8ba0399cf66af",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-36",
-      "claimSemanticGroup": "Agent and skill workflow",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/contracts/eval-judge-collaboration.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
-          "line": 36,
-          "path": "docs/contracts/facet-decomposition.md"
-        }
-      ],
-      "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:cee2d8a7d92dac1bc2be120967e9c121eb000ae57a220b249a7f467f4cbf1c76",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-46",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "human-auditable",
-        "linked-from:docs/contracts/eval-judge-collaboration.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
-          "line": 46,
-          "path": "docs/contracts/facet-decomposition.md"
-        }
-      ],
-      "summary": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:8bd445348d1615b5dc6ec0b8cd6e7a282c5657dbce6ee0c15100cc8990b20ca4",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-50",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "app/chat",
-        "audience:developer",
-        "cautilus-eval",
-        "contract",
-        "linked-from:docs/contracts/eval-judge-collaboration.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned app/chat fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "app/chat",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
-          "line": 50,
-          "path": "docs/contracts/facet-decomposition.md"
-        }
-      ],
-      "summary": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-56",
-      "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "human-auditable",
-        "linked-from:docs/contracts/eval-judge-collaboration.md",
-        "needs-alignment"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
-          "line": 56,
-          "path": "docs/contracts/facet-decomposition.md"
-        }
-      ],
-      "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
-      "verificationReadiness": "needs-alignment",
-      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
-      "claimId": "claim-docs-contracts-facet-decomposition-md-58",
-      "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "deterministic",
-        "linked-from:docs/contracts/eval-judge-collaboration.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
-          "line": 58,
-          "path": "docs/contracts/facet-decomposition.md"
-        }
-      ],
-      "summary": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4bf05eb3e53c6a353bfe38c7164dc1470ffcf48c26a7e9e214a868eb8d863781",
       "claimId": "claim-docs-contracts-improvement-md-27",
       "claimSemanticGroup": "Packets and reporting",
@@ -13039,7 +13039,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "7f8d49462eaaba1b35aed069614349063ceb37f9",
+  "gitCommit": "98b3724e0747b118783cd2152f0d2ae4c4ad4cb7",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -13594,6 +13594,12 @@
       "depth": 2,
       "from": "docs/master-plan.md",
       "kind": "markdown-link",
+      "to": "docs/contracts/facet-decomposition.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/master-plan.md",
+      "kind": "markdown-link",
       "to": "docs/contracts/live-run-invocation-batch.md"
     },
     {
@@ -14021,6 +14027,12 @@
       "from": "docs/contracts/eval-judge-collaboration.md",
       "kind": "markdown-link",
       "to": "docs/contracts/skill-surface-judge-convergence.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/facet-decomposition.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/eval-judge-collaboration.md"
     },
     {
       "depth": 3,
@@ -14823,7 +14835,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:765dfb8c276f07d4b7a6e844cffa60d18973f8e8f1063a1afd47020234270c88",
+      "contentHash": "sha256:d461eec37b1195fcb4e9f58e6742c4e38b5d812a0d60e18b640b27824f26a812",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -14908,6 +14920,16 @@
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
       "path": "docs/contracts/eval-judge-collaboration.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:e6732e76006b74e834e18ea7c961ac40d48b67e92049acc253b958f1776698c3",
+      "depth": 2,
+      "discoveredFrom": "docs/master-plan.md",
+      "kind": "contract",
+      "path": "docs/contracts/facet-decomposition.md",
       "status": "read"
     },
     {
@@ -15258,16 +15280,6 @@
       "discoveredFrom": "docs/contracts/claim-discovery-workflow.md",
       "kind": "contract",
       "path": "docs/contracts/claim-extraction-template.md",
-      "status": "read"
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:ca747c1bfb5b184a3a3dbed313820cdef51ae40aae879fb957622e7c8153f3dd",
-      "depth": 3,
-      "discoveredFrom": "docs/contracts/eval-judge-collaboration.md",
-      "kind": "contract",
-      "path": "docs/contracts/facet-decomposition.md",
       "status": "read"
     },
     {

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:0f306a6fabbb065798a40d8e43fa7044b5cf1d5841fd87ad570533c258d58c49"
+      "contentHash": "sha256:99c04d795a6e06fe01da343e17fb1d5371b0acc996934c3921e983fa1c0af83e"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "7f8d49462eaaba1b35aed069614349063ceb37f9",
+  "claimsPacketGitCommit": "98b3724e0747b118783cd2152f0d2ae4c4ad4cb7",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 397,
   "catalogs": {
@@ -429,7 +429,7 @@
       "claim-docs-master-plan-md-57",
       "claim-docs-master-plan-md-78",
       "claim-docs-master-plan-md-91",
-      "claim-docs-master-plan-md-189",
+      "claim-docs-master-plan-md-191",
       "claim-docs-specs-index-spec-md-16",
       "claim-docs-specs-index-spec-md-17",
       "claim-docs-specs-index-spec-md-33",
@@ -519,6 +519,12 @@
       "claim-docs-contracts-eval-judge-collaboration-md-171",
       "claim-docs-contracts-eval-judge-collaboration-md-206",
       "claim-docs-contracts-eval-judge-collaboration-md-230",
+      "claim-docs-contracts-facet-decomposition-md-30",
+      "claim-docs-contracts-facet-decomposition-md-36",
+      "claim-docs-contracts-facet-decomposition-md-46",
+      "claim-docs-contracts-facet-decomposition-md-50",
+      "claim-docs-contracts-facet-decomposition-md-63",
+      "claim-docs-contracts-facet-decomposition-md-65",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -630,12 +636,6 @@
       "claim-docs-contracts-claim-extraction-template-md-257",
       "claim-docs-contracts-claim-extraction-template-md-306",
       "claim-docs-contracts-claim-extraction-template-md-357",
-      "claim-docs-contracts-facet-decomposition-md-30",
-      "claim-docs-contracts-facet-decomposition-md-36",
-      "claim-docs-contracts-facet-decomposition-md-46",
-      "claim-docs-contracts-facet-decomposition-md-50",
-      "claim-docs-contracts-facet-decomposition-md-56",
-      "claim-docs-contracts-facet-decomposition-md-58",
       "claim-docs-contracts-improvement-md-27",
       "claim-docs-contracts-improvement-md-34",
       "claim-docs-contracts-improvement-md-37",
@@ -965,6 +965,8 @@
         "claim-docs-contracts-eval-judge-collaboration-md-84",
         "claim-docs-contracts-eval-judge-collaboration-md-206",
         "claim-docs-contracts-eval-judge-collaboration-md-230",
+        "claim-docs-contracts-facet-decomposition-md-30",
+        "claim-docs-contracts-facet-decomposition-md-36",
         "claim-docs-contracts-live-run-invocation-batch-md-77",
         "claim-docs-contracts-reporting-md-48",
         "claim-docs-contracts-runner-readiness-md-29",
@@ -983,8 +985,6 @@
         "claim-docs-contracts-claim-extraction-template-md-77",
         "claim-docs-contracts-claim-extraction-template-md-299",
         "claim-docs-contracts-claim-extraction-template-md-357",
-        "claim-docs-contracts-facet-decomposition-md-30",
-        "claim-docs-contracts-facet-decomposition-md-36",
         "claim-docs-contracts-realsurface-judge-convergence-md-32",
         "claim-docs-contracts-realsurface-judge-convergence-md-43",
         "claim-docs-contracts-realsurface-judge-convergence-md-98",
@@ -1234,6 +1234,18 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-30",
+          "claimFingerprint": "sha256:17b9f0d2f66fafb7e1868f9a787207c5c7a5818fa0ef051b288e8a589c4cdc51",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-36",
+          "claimFingerprint": "sha256:8e2bea3c54a3c8b4711676604de638cf55d80dac8ccbbd7f0ca8ba0399cf66af",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
           "claimFingerprint": "sha256:57c666ca6aca677b5b250c22b235e4a0d037aaaa07bb1c66151ad9947217cabf",
           "mappingConfidence": "medium",
@@ -1338,18 +1350,6 @@
         {
           "claimId": "claim-docs-contracts-claim-extraction-template-md-357",
           "claimFingerprint": "sha256:fa4488f8fbcecb2111ae4027b6c9225a1ff0f0d784b69a96ee9cd4d7ffd296dc",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-30",
-          "claimFingerprint": "sha256:17b9f0d2f66fafb7e1868f9a787207c5c7a5818fa0ef051b288e8a589c4cdc51",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-36",
-          "claimFingerprint": "sha256:8e2bea3c54a3c8b4711676604de638cf55d80dac8ccbbd7f0ca8ba0399cf66af",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1477,6 +1477,8 @@
         "claim-docs-contracts-claim-discovery-workflow-md-682",
         "claim-docs-contracts-claim-discovery-workflow-md-749",
         "claim-docs-contracts-eval-judge-collaboration-md-171",
+        "claim-docs-contracts-facet-decomposition-md-50",
+        "claim-docs-contracts-facet-decomposition-md-63",
         "claim-docs-contracts-live-run-invocation-md-24",
         "claim-docs-contracts-live-run-invocation-md-59",
         "claim-docs-contracts-reporting-md-131",
@@ -1503,8 +1505,6 @@
         "claim-docs-specs-contracts-adapter-host-ownership-spec-md-30",
         "claim-docs-specs-rules-host-owned-execution-spec-md-8",
         "claim-docs-specs-rules-host-owned-execution-spec-md-20",
-        "claim-docs-contracts-facet-decomposition-md-50",
-        "claim-docs-contracts-facet-decomposition-md-56",
         "claim-docs-contracts-improvement-md-37",
         "claim-docs-contracts-improvement-md-38",
         "claim-docs-contracts-improvement-md-132",
@@ -1678,6 +1678,18 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-50",
+          "claimFingerprint": "sha256:8bd445348d1615b5dc6ec0b8cd6e7a282c5657dbce6ee0c15100cc8990b20ca4",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-63",
+          "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
+          "mappingConfidence": "low",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-md-24",
           "claimFingerprint": "sha256:47034d0a3d9bd406d1f4ba72ec4165eaa08af324e5bd9c65bb7460a32e496aef",
           "mappingConfidence": "medium",
@@ -1831,18 +1843,6 @@
           "claimId": "claim-docs-specs-rules-host-owned-execution-spec-md-20",
           "claimFingerprint": "sha256:f35959b1cb6fa834e064c5e99ee0a94d8e2eebcf66990163bc859600ec056c36",
           "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-50",
-          "claimFingerprint": "sha256:8bd445348d1615b5dc6ec0b8cd6e7a282c5657dbce6ee0c15100cc8990b20ca4",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-56",
-          "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
-          "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
@@ -2650,7 +2650,7 @@
         "claim-docs-contracts-adapter-contract-md-498",
         "claim-docs-contracts-review-packet-md-3",
         "claim-docs-master-plan-md-30",
-        "claim-docs-master-plan-md-189",
+        "claim-docs-master-plan-md-191",
         "claim-docs-specs-index-spec-md-160",
         "claim-docs-specs-index-spec-md-167",
         "claim-docs-contracts-claim-discovery-workflow-md-95",
@@ -2659,6 +2659,8 @@
         "claim-docs-contracts-claim-discovery-workflow-md-363",
         "claim-docs-contracts-claim-discovery-workflow-md-517",
         "claim-docs-contracts-eval-judge-collaboration-md-45",
+        "claim-docs-contracts-facet-decomposition-md-46",
+        "claim-docs-contracts-facet-decomposition-md-65",
         "claim-docs-contracts-reporting-md-123",
         "claim-docs-contracts-reporting-md-125",
         "claim-docs-contracts-reporting-md-140",
@@ -2671,8 +2673,6 @@
         "claim-docs-specs-evidence-index-spec-md-8",
         "claim-docs-contracts-claim-extraction-template-md-178",
         "claim-docs-contracts-claim-extraction-template-md-257",
-        "claim-docs-contracts-facet-decomposition-md-46",
-        "claim-docs-contracts-facet-decomposition-md-58",
         "claim-docs-contracts-improvement-md-27",
         "claim-docs-contracts-improvement-md-151",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
@@ -2719,7 +2719,7 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-master-plan-md-189",
+          "claimId": "claim-docs-master-plan-md-191",
           "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2769,6 +2769,18 @@
         {
           "claimId": "claim-docs-contracts-eval-judge-collaboration-md-45",
           "claimFingerprint": "sha256:919de03a9604ff4bc0ef38b8a1a9de26686d57a987834deae444d6d55b434819",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-46",
+          "claimFingerprint": "sha256:cee2d8a7d92dac1bc2be120967e9c121eb000ae57a220b249a7f467f4cbf1c76",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-facet-decomposition-md-65",
+          "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2841,18 +2853,6 @@
         {
           "claimId": "claim-docs-contracts-claim-extraction-template-md-257",
           "claimFingerprint": "sha256:87799711d3d4c0ea9cfe36c3d3cdbe2932ba7b467fffb9ffaa532f5b126dcae1",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-46",
-          "claimFingerprint": "sha256:cee2d8a7d92dac1bc2be120967e9c121eb000ae57a220b249a7f467f4cbf1c76",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-facet-decomposition-md-58",
-          "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -5892,12 +5892,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-master-plan-md-189",
+      "claimId": "claim-docs-master-plan-md-191",
       "summary": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
       "sourceRefs": [
         {
           "path": "docs/master-plan.md",
-          "line": 189,
+          "line": 191,
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first."
         }
       ],
@@ -9624,6 +9624,232 @@
         "skill",
         "surface",
         "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-30",
+      "summary": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 30,
+          "excerpt": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:17b9f0d2f66fafb7e1868f9a787207c5c7a5818fa0ef051b288e8a589c4cdc51",
+      "canonicalClaimId": "M3",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 8,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "check",
+        "code",
+        "contract",
+        "deterministic",
+        "keep",
+        "lint",
+        "only",
+        "schema",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-36",
+      "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 36,
+          "excerpt": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:8e2bea3c54a3c8b4711676604de638cf55d80dac8ccbbd7f0ca8ba0399cf66af",
+      "canonicalClaimId": "M3",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 7,
+      "scoreMargin": 3,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "check",
+        "code",
+        "deterministic",
+        "keep",
+        "lint",
+        "schema",
+        "skill",
+        "thi",
+        "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-46",
+      "summary": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 46,
+          "excerpt": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:cee2d8a7d92dac1bc2be120967e9c121eb000ae57a220b249a7f467f4cbf1c76",
+      "canonicalClaimId": "M11",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M10",
+      "runnerUpScore": 5,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "contract",
+        "decide",
+        "evidence",
+        "human",
+        "judgment",
+        "route",
+        "write"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-50",
+      "summary": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 50,
+          "excerpt": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:8bd445348d1615b5dc6ec0b8cd6e7a282c5657dbce6ee0c15100cc8990b20ca4",
+      "canonicalClaimId": "M4",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M10",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cautilu",
+        "code",
+        "contract",
+        "fixture",
+        "host-owned",
+        "maintainer",
+        "run",
+        "two"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-63",
+      "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 63,
+          "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
+      "canonicalClaimId": "M4",
+      "score": 6,
+      "runnerUpCanonicalClaimId": "M8",
+      "runnerUpScore": 6,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "adapter",
+        "cautilu",
+        "maintainer",
+        "repo-specific",
+        "test",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-facet-decomposition-md-65",
+      "summary": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/facet-decomposition.md",
+          "line": 65,
+          "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
+      "canonicalClaimId": "M11",
+      "score": 13,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 11,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "build",
+        "check",
+        "contract",
+        "deterministic",
+        "field",
+        "keep",
+        "only",
+        "rather",
+        "routing",
+        "same",
+        "schema"
       ]
     },
     {
@@ -14737,232 +14963,6 @@
         "run",
         "skill",
         "surface"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-30",
-      "summary": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/facet-decomposition.md",
-          "line": 30,
-          "excerpt": "A claim tagged `cautilus-eval` almost always still has deterministic facets that code should own, and a claim tagged `deterministic` may hide a semantic facet that only a judge can see."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:17b9f0d2f66fafb7e1868f9a787207c5c7a5818fa0ef051b288e8a589c4cdc51",
-      "canonicalClaimId": "M3",
-      "score": 9,
-      "runnerUpCanonicalClaimId": "M4",
-      "runnerUpScore": 8,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "check",
-        "code",
-        "contract",
-        "deterministic",
-        "keep",
-        "lint",
-        "only",
-        "schema",
-        "thi"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-36",
-      "summary": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/facet-decomposition.md",
-          "line": 36,
-          "excerpt": "`scripts/agent-runtime/reasoning-soundness-judge.mjs` owns the deterministic comparator, the `FORMAT_FACET_CHECKERS` registry (the CODE facets), and `computeCodeFacets`."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:8e2bea3c54a3c8b4711676604de638cf55d80dac8ccbbd7f0ca8ba0399cf66af",
-      "canonicalClaimId": "M3",
-      "score": 10,
-      "runnerUpCanonicalClaimId": "M4",
-      "runnerUpScore": 7,
-      "scoreMargin": 3,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "agent",
-        "check",
-        "code",
-        "deterministic",
-        "keep",
-        "lint",
-        "schema",
-        "skill",
-        "thi",
-        "workflow"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-46",
-      "summary": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/facet-decomposition.md",
-          "line": 46,
-          "excerpt": "For each facet, decide its route honestly: code if it is mechanical and you can write a reproducible checker; judge if it is genuinely semantic; human if it is neither."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:cee2d8a7d92dac1bc2be120967e9c121eb000ae57a220b249a7f467f4cbf1c76",
-      "canonicalClaimId": "M11",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M10",
-      "runnerUpScore": 5,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "contract",
-        "decide",
-        "evidence",
-        "human",
-        "judgment",
-        "route",
-        "write"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-50",
-      "summary": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/facet-decomposition.md",
-          "line": 50,
-          "excerpt": "If a facet is ambiguous (the judge and a human could read it two ways), get the maintainer to disambiguate the interpretation before code owns it — that is what turned the conversation-goal structure facet from a judge inconsistency into a code rule."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:8bd445348d1615b5dc6ec0b8cd6e7a282c5657dbce6ee0c15100cc8990b20ca4",
-      "canonicalClaimId": "M4",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M10",
-      "runnerUpScore": 8,
-      "scoreMargin": 0,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "cautilu",
-        "code",
-        "contract",
-        "fixture",
-        "host-owned",
-        "maintainer",
-        "run",
-        "two"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-56",
-      "summary": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/facet-decomposition.md",
-          "line": 56,
-          "excerpt": "Repo-specific classification knowledge must not accumulate as hardcoded engine rules; it belongs in adapter-owned `claim_discovery.classification_hints`, proposed by the Cautilus Agent from an initial scan and ratified by the maintainer."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:7166d75ee0368913c55fb797f6b134072ac9ea048fe4a390d0dee1304e3ccf31",
-      "canonicalClaimId": "M4",
-      "score": 6,
-      "runnerUpCanonicalClaimId": "M8",
-      "runnerUpScore": 6,
-      "scoreMargin": 0,
-      "mappingConfidence": "low",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "adapter",
-        "cautilu",
-        "maintainer",
-        "repo-specific",
-        "test",
-        "thi"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-facet-decomposition-md-58",
-      "summary": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only).",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/facet-decomposition.md",
-          "line": 58,
-          "excerpt": "Per-facet `recommendedProof` remains the direction for routing, absorbed into the same hint vocabulary rather than shipped as a per-claim schema change; no per-claim `dominant` field ships (dominance was a gold-set scoring device only)."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:c23dc2383cf29a1759195bbb62b1e1a23b8f64e8907236e82770300c942d3789",
-      "canonicalClaimId": "M11",
-      "score": 13,
-      "runnerUpCanonicalClaimId": "M4",
-      "runnerUpScore": 11,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "add",
-        "build",
-        "check",
-        "contract",
-        "deterministic",
-        "field",
-        "keep",
-        "only",
-        "rather",
-        "routing",
-        "same",
-        "schema"
       ]
     },
     {

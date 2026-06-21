@@ -174,11 +174,13 @@ Still open:
 
 ## Immediate Next Moves
 
-Lead priority (2026-06-09 decision): close the eval determinism skew.
-The whole eval is currently all-deterministic; the `cautilus-eval` (evaluator/intelligence) tier collapsed into code, so behavior-vs-intent is never actually judged.
-The agreed direction is intelligence as an independent log-observer plus code as the deterministic comparator, with the judge disciplined by a calibration set; see [docs/contracts/eval-judge-collaboration.md](contracts/eval-judge-collaboration.md).
-First prototype: a reasoning-soundness judge on the dev/repo anchor.
-This shapes the discover-driven eval design and gates honest `proven` badges.
+Eval determinism skew — substantially closed (2026-06-09 → 2026-06-19), superseding the original "the whole eval is all-deterministic" framing.
+The intelligence-as-independent-observer / code-as-deterministic-comparator design landed: a reasoning-soundness judge disciplined by calibration sets, decomposed into code∧judge facets, wired into `cautilus evaluate` (replay-based, prove-then-project), with regression detection proven across three pinned routing behaviors; see [docs/contracts/eval-judge-collaboration.md](contracts/eval-judge-collaboration.md) and [docs/contracts/facet-decomposition.md](contracts/facet-decomposition.md).
+The apex `Behavior Evaluation` badge is `proven`, scoped to the dev coding-agent surfaces (`dev/repo` routing and `dev/skill` orientation, both proven live on demand); the whole apex now reads 7/7 proven.
+What remains is below-apex hardening, in measured priority order:
+1. Per-facet routing has reached the agent-primary extraction template (R6/R12) and the maintainer override surface, but NOT the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population — which is therefore ~45% route-accurate against ratified ground truth and over-routes to `cautilus-eval` by ~3.4x (measured 2026-06-21, [charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md](../charness-artifacts/eval-trust/2026-06-21-heuristic-baseline-routing-vs-ratified.md)).
+   The highest measured-value next slice is bringing R6/R12 into the engine baseline (portable defaults plus an adapter-owned routing-hint extension family), kept deterministic; true per-facet decomposition for the whole population is the deeper end-state gated behind it.
+2. App-ship surface Proof Debt: `app/chat` liveness (its agent run is replayed from a production log, not re-run live) and `app/prompt` product-runner proof (`productProofReady=false`).
 
 1. Pick the next bounded improvement seam for the improvement layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
 2. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
