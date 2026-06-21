@@ -1,6 +1,6 @@
 # Spec: Specdown Corpus → Proof-Spine + Typed Traceability
 
-Status: bounded critique integrated; pending user greenlight on Slice 1.
+Status: Slice 1 landed (`010f8e2a`), verify green; next is Slice 2. See "Slice 1 Delivered" below.
 Decided axis (user, this session): full transition to proof-spine + typed traceability.
 
 ## Problem
