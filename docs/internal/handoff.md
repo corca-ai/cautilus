@@ -2,55 +2,44 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — Fork B slice 1+2 + gate-router coherence guard landed/committed(미push, origin 대비 9 ahead). 다음은 (a)와 (b)를 둘 다 진행한다(분기 아님, 순차 실행). 먼저 charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md "After: CLI-flag-semantics"+"Remaining" 와 charness-artifacts/debug/2026-06-21-gate-router-verb-coverage-deaths.md 를 읽고, 아래 "Next Session"의 (a)·(b) 계획을 사용자에게 제시한 뒤 진행하라. (a) Fork B 다음 슬라이스(권장 shape #10 schema-field-persistence → 그다음 #9 command-absence). (b) gate-router per-verb dead-case 저blast 실수정.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — Fork B slice 3+4(#10,#9) + gate-router 저blast deadcase 수정 landed/committed(미push, origin 대비 14 ahead). (a)·(b) 둘 다 완료. 남은 eval→det overlap=4(전부 over-flip 위험 큰 deferred shape). 먼저 charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md "After: command-absence"를 읽고, 아래 "Next Session"의 세 방향(C1 Fork B harder shapes / C2 R6/R12 family / C3 push 후 pivot)을 사용자에게 제시한 뒤 선택대로 진행하라.`
 
-mention-only 픽업이어도 재독에 그치지 말고 (a)·(b) 둘 다 진행하라. 각 Fork B shape는 spec→critique→impl→measure→review 풀 사이클이고 over-flip 위험이 named-packet/CLI-flag보다 크니, 슬라이스 시작 시 선택 shape와 frozen golden/negative control 계획을 사용자에게 제시하고(이번 세션 패턴) 진행한다. 사용자가 순서·shape를 바꾸면 그에 따른다.
+이번 세션의 명시적 (a)+(b) 위임은 끝났다. 남은 일은 over-flip 위험이 더 큰 영역이라 방향 선택이 필요하니, mention-only 픽업이면 "Next Session"의 세 방향을 제시하고 사용자 선택을 받아 진행한다(자동으로 한 방향 착수하지 말 것). 새 Fork B 슬라이스는 spec→critique(위임)→impl→measure→review(위임) 풀 사이클 + frozen golden/negative control 필수(이번 세션 패턴).
 
 ## Current State
 
-- **gate↔router coherence guard landed — commit `28ddb5cb`.** `TestGateRouterCoherence`: 라우터가 라우팅할 수 있는 shape는 반드시 게이트(`claimLineLooksUseful`)를 통과해야 한다는 invariant를 강제. reachable 10 case + 알려진 5 latent death(allowlist, 고치면 reachable로 옮기도록 강제). ships-class 구조적 사망을 빌드에서 잡는 가드. test-only.
-- **gate-router verb-coverage 감사(debug) landed — commit `df978ac6`.** `charness-artifacts/debug/2026-06-21-gate-router-verb-coverage-deaths.md`: ships 디버그의 `follow-up: gate-router-coverage` 해소. 5개 구조적 사망 + ~12 부분 사망 발견, **현재 코퍼스 영향 0(latent)**, 실측 확인. ships 디버그의 "다른 case는 co-occurrence-safe" 가정 반증.
-- **Fork B slice 2 (CLI-flag-semantics → deterministic) landed — commit `8f8a01f9`.** `cliFlagSemanticsClaim`: long `--flag` + flag-effect verb `{keeps,copies,extracts}`, judgment-verb guard가 bare `" judge "`는 허용. slice 1(named-packet) `881ee566`, rune-bound+R12 `acfc03fc`.
-- 모든 슬라이스 spec→critique→impl→measure→review 풀 사이클(bounded fresh-eye 위임). `npm run verify` green, `hooks:check` ready.
-- **미push** (origin/main 대비 8 ahead). claim-source 편집 후 `claims:refresh:all` 이미 반영, claim packet gitCommit도 HEAD로 sync됨 → push 가능.
+- **Fork B slice 3 (#10 schema-field-persistence → deterministic) landed — `ae369fa7`.** `schemaFieldPersistenceClaim`: persistence verb {persist,persists,persisted} AND ≥2 distinct backtick camelCase field tokens, read from ORIGINAL-case line(라우터가 lowercase하므로 camelCase 신호 보존 위해). judgment guard 공유.
+- **Fork B slice 4 (#9 command-absence → deterministic) landed — `30b79b55` (+ review followup `12ce8128`).** `commandAbsenceClaim`: R12 capability-existence의 역. command-addition absence phrasing {avoid a/the/adding, should not add, should not introduce, does not add} AND backtick token AND command/subcommand. bare should not/does not/without는 제외(danger axis: 진짜 eval claim과 공존).
+- **gate-router 저blast deadcase 수정 landed — `dddfef0f`.** lexicon에 특정 phrase 추가(` not gated `/` not blocked `/` sessions showed `/` runs showed `/` enforces `) + deterministicCLIGatingClaim에 "runs/run without … credential" branch(double-miss 해소). 4 death를 `TestGateRouterCoherence` allowlist→reachable로 이동.
+- 모든 슬라이스 spec→critique(위임)→impl→measure→review(위임) 풀 사이클, 모든 delegated review **clean**. `npm run verify` green, `hooks:check` ready.
+- **미push** (origin/main 대비 14 ahead). claim-source 편집 후 `claims:refresh:all` 반영 완료, 패킷 HEAD와 sync. push 가능 상태.
 
 ## 측정 핵심 (누적, SOT는 References)
 
-- overlap agreeing **34→36**, `eval→det` **8→6**(#3 codex flags, #7 output-text-key 해소), over-correction(det→eval-key=5, det→human-key=0) 신규 0.
-- live `cautilus-eval` 168→165(−3 = overlap flip #3/#7 + off-overlap collateral `5eb5`). 모집단 488→489(+1 prose self-extraction).
-- **잔여 overlap `eval→det` = 6**(Fork B 타깃). `human→det` ×9는 R6/R12 scope.
+- overlap eval→det **6→5→4**(#10, #9 해소). agreeing **36→37→38**. over-correction(det→eval-key=5, det→human-key=0) 신규 0 유지. live `cautilus-eval` 165→164.
+- deadcase 수정: gold-overlap 불변(38/4/5/0, live eval 164), ` enforces `가 dropped됐던 deterministic lint-gate claim 2건 정상 recall 회복(net +2 deterministic). 나머지 4 phrase는 +0.
+- **잔여 overlap eval→det = 4**: deferred shape #1 packet-emission prose, #2 static-taxonomy, #4 status-routing, #8 R6-ish boundary. `human→det` ×9는 R6/R12 scope.
 
-## Next Session — (a)와 (b) 둘 다 진행
+## Next Session — 방향 선택 (자동 착수 금지, 사용자 제시 후 진행)
 
-**(a) Fork B 다음 슬라이스 [먼저].** 잔여 eval→det 6개 중 권장 순서 **#10 → #9**:
-   - **#10 schema-field-persistence**("Claim-graph facets persist … the agent emits them: `primaryEpic`, `supportingEpics`, `multiEpic`, `edgeRationale`") — backtick 필드 리스트 구조 신호, named-packet spec이 명시적으로 deferred한 그것. 答키 `88ae4b…` deterministic.
-   - **#9 command-absence**("The workflow should avoid a `claim group` command") — R12 capability-existence의 역, "avoid/no/should not add a \`cmd\` command" 구조 신호. 答키 `cf9b99…` deterministic. (주: `" should "` 이미 lexicon → 게이트 통과함.)
-   - 각 슬라이스: spec→critique(위임)→impl→measure(over-flip surface 전수)→review(위임) 풀 사이클, frozen golden + negative control 필수. 나머지(#1 packet-prose, #2 static-taxonomy, #4 status-routing, #8 R6-ish)는 over-flip 위험 더 커서 그 뒤로.
-   - **새 라우터 case 추가 규칙:** 트리거 verb가 `defaultClaimLexiconTerms` 게이트를 통과하는지 확인하고 `TestGateRouterCoherence`에 reachable 행 추가(안 하면 ships-class 사망 재발). 게이트에 없으면 게이트도 같이 손봐야 함.
+**C1. Fork B 남은 shape (#1/#2/#4).** 잔여 eval→det 4 중 #8을 제외한 셋. 모두 named-packet/CLI-flag/#10/#9보다 **over-flip 위험 큼**(handoff 기존 평가). 착수 시 각 shape의 over-flip surface 전수 측정 후 tight gold-seed discriminator + frozen golden/negative control, 풀 사이클. #1 packet-prose가 가장 모호(broad positioning과 경계).
+**C2. R6/R12 family 결정.** `human-auditable → deterministic` ×9 + #8 R6-ish boundary는 Fork B discriminator가 아니라 R6/R12 ownership-family 정책 결정. 별도 spec 필요(어디까지 deterministic로 볼지 경계).
+**C3. push 후 pivot.** 14 commit push하고 master-plan의 다른 우선순위로 전환. (push는 outward-facing이니 사용자 확인.)
 
-**(b) gate-router per-verb dead-case 저blast 실수정 [그다음].** `follow-up: gate-router-deadcase-fixes`. 5개 latent death(debug 아티팩트) 중 **저blast부터**:
-   - `historicalObservationClaim`(`" showed "`), `deterministicCLIGatingClaim`(특정 phrase "not gated"/"works without credential" admit + 라우터 double-miss 동시 수정), lint `" enforces "` — 저blast verb는 lexicon 추가 또는 case별 phrase admit.
-   - **`" needs "`(claimNeedsScenario), failover verb는 lexicon 추가 금지**(ubiquitous/너무 generic) → case가 lexicon-companion을 동반 요구하도록 restructure, 또는 latent로 유지.
-   - 각 수정 = 해당 death를 `TestGateRouterCoherence` allowlist에서 reachable로 이동 + 코퍼스 재측정. 현재 영향 0이라 정확도엔 비긴급이지만 (a) 직후 묶어 처리.
-
-**(c) #8 R6-ish boundary**는 Fork B가 아니라 R6/R12 family(human→det ×9와 동형) 결정으로 별도.
-
-**선재 latent 버그(범위 밖):** `truncateReviewSourceRefs`(claim_discovery.go) byte-slice excerpt 멀티바이트 rune 분할 가능.
-
-**push 전:** claim-source 추가 편집 시 `npm run claims:refresh:all` 후 push.
+**deferred gate-router deaths (저blast 아님, 별건):** ` needs `(claimNeedsScenario)는 ubiquitous → case가 lexicon-companion 동반 요구하도록 restructure 필요(bare 추가 금지). provider-failover, provider-caveat도 deferred(`TestGateRouterCoherence` allowlist에 DEATH-로 잔존). 현재 코퍼스 영향 0.
 
 ## Discuss
 
-- (a)·(b)는 둘 다 진행으로 확정(사용자 지시). 남은 미세 선택만: (a) 슬라이스 시작 시 shape(#10 권장) 확정, (b) 어느 death부터(저blast 권장). 슬라이스 계획 제시 후 진행, 사용자가 바꾸면 따른다.
-- accepted residual(기록됨): agent-behavior + flag-effect verb 조합 라인은 flip됨. 현재 live 0건, 측정 시 재검증. 나타나면 actor-guard.
+- 다음 방향은 C1/C2/C3 중 사용자 선택. 권장: 남은 Fork B(C1)는 한계효용 체감+위험 증가 구간이라, C2(R6/R12 family로 human→det ×9까지 한번에)나 C3(push 후 pivot)가 ROI 더 높을 수 있음. 사용자 판단 필요.
+- accepted residual(기록 유지): agent-behavior + flag-effect verb 조합 라인은 flip됨(slice 2). 현재 live 0건. 나타나면 actor-guard.
+- 선재 latent 버그(범위 밖): `truncateReviewSourceRefs`(claim_discovery.go) byte-slice excerpt 멀티바이트 rune 분할 가능.
 
 ## References
 
-- Fork B 측정+게이트(SOT): `charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md`
-- gate-router 감사 debug: `charness-artifacts/debug/2026-06-21-gate-router-verb-coverage-deaths.md`(sibling: `…r12-ships-lexicon-gate-dead.md`)
-- CLI-flag build contract: `charness-artifacts/eval-trust/2026-06-21-fork-b-cli-flag-semantics.spec.md`
-- named-packet build contract: `charness-artifacts/eval-trust/2026-06-21-fork-b-named-packet-routing.spec.md`
-- 계약: `docs/contracts/facet-decomposition.md`(Fork B slice 1+2)
-- 엔진: `internal/runtime/claim_discovery.go`(`cliFlagSemanticsClaim`, `namedPacketEmissionClaim`, `classifyClaimLine`, `claimLineLooksUseful`, `defaultClaimLexiconTerms`, `classifyClaimLine` switch)
-- 테스트: `internal/runtime/claim_discovery_test.go`(`TestGateRouterCoherence`, `TestClaimClassificationForkBCLIFlagSemanticsRoutingIsFrozen`, `TestCliFlagSemanticsClaimGuard`)
-- ground truth: `charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.json`(answer key)
+- Fork B 측정(SOT): `charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md`("After: schema-field-persistence", "After: command-absence")
+- 슬라이스 build contract: `charness-artifacts/eval-trust/2026-06-22-fork-b-schema-field-persistence.spec.md`, `2026-06-22-fork-b-command-absence.spec.md`
+- gate-router deadcase: `charness-artifacts/debug/2026-06-21-gate-router-verb-coverage-deaths.md`(LANDED 노트에 저blast batch + deferred 기록)
+- 계약: `docs/contracts/facet-decomposition.md`(Fork B slice 1–4), `docs/contracts/claim-discovery-workflow.md`(lexicon)
+- 엔진: `internal/runtime/claim_discovery.go`(`schemaFieldPersistenceClaim`, `commandAbsenceClaim`, `deterministicCLIGatingClaim`, `defaultClaimLexiconTerms`, `classifyClaimLine` switch)
+- 테스트: `internal/runtime/claim_discovery_test.go`(`TestClaimClassificationForkB*RoutingIsFrozen`, `Test*ClaimGuard`, `TestGateRouterCoherence`, `TestClaimClassificationPortableDefaultsAreFrozen`)
+- ground truth: `charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.json`(answer key, overlap 56)
