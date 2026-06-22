@@ -93,6 +93,21 @@ func readJSONObjectPayload(t *testing.T, payload []byte) map[string]any {
 	return value
 }
 
+func setImproveSearchMutationBackends(t *testing.T, path string, backends []map[string]any) {
+	t.Helper()
+	payload := readJSONObjectFile(t, path)
+	mutationConfig, ok := payload["mutationConfig"].(map[string]any)
+	if !ok {
+		t.Fatalf("search input missing mutationConfig: %#v", payload)
+	}
+	backendItems := make([]any, 0, len(backends))
+	for _, backend := range backends {
+		backendItems = append(backendItems, backend)
+	}
+	mutationConfig["backends"] = backendItems
+	writeJSONFile(t, path, payload)
+}
+
 func readJSONArrayFile(t *testing.T, path string) []any {
 	t.Helper()
 	payload, err := os.ReadFile(path)
@@ -3227,6 +3242,11 @@ func TestCLIImproveSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 	if len(searchInput["scenarioSets"].(map[string]any)["heldOutScenarioSet"].([]any)) != 1 {
 		t.Fatalf("unexpected held-out scenario set: %#v", searchInput["scenarioSets"])
 	}
+	defaultBackends := searchInput["mutationConfig"].(map[string]any)["backends"].([]any)
+	if len(defaultBackends) != 2 {
+		t.Fatalf("unexpected default mutation backends: %#v", defaultBackends)
+	}
+	setImproveSearchMutationBackends(t, searchInputPath, []map[string]any{{"id": "fixture-mutate", "backend": "fixture"}})
 
 	stdout, stderr, exitCode := runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
@@ -3255,7 +3275,7 @@ func TestCLIImproveSearchPrepareRunAndProposeFromSearch(t *testing.T) {
 		t.Fatalf("unexpected search budget in experiment context: %#v", experimentContext)
 	}
 	mutationBackends := experimentContext["mutationBackends"].([]any)
-	if len(mutationBackends) != 2 {
+	if len(mutationBackends) != 1 || mutationBackends[0].(map[string]any)["backend"] != "fixture" {
 		t.Fatalf("unexpected mutation backends: %#v", mutationBackends)
 	}
 	telemetryCompleteness := searchResult["telemetryCompleteness"].(map[string]any)
@@ -3345,14 +3365,6 @@ func TestCLIImproveSearchRunReportsWhyNoCandidatesWereGenerated(t *testing.T) {
 		},
 	})
 
-	runGit(t, root, "init")
-	runGit(t, root, "config", "user.email", "test@example.com")
-	runGit(t, root, "config", "user.name", "Cautilus Test")
-	runGit(t, root, "add", ".")
-	runGit(t, root, "commit", "-m", "initial")
-	writeExecutableFile(t, root, "codex", "#!/bin/sh\nexit 23\n")
-	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
-
 	_, stderr, exitCode := runCLI(t, root, "improve", "prepare-input", "--repo-root", root, "--report-file", reportPath, "--target", "prompt", "--target-file", targetPath, "--output", improveInputPath)
 	if exitCode != 0 {
 		t.Fatalf("improve prepare-input failed: %s", stderr)
@@ -3361,6 +3373,7 @@ func TestCLIImproveSearchRunReportsWhyNoCandidatesWereGenerated(t *testing.T) {
 	if exitCode != 0 {
 		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
+	setImproveSearchMutationBackends(t, searchInputPath, []map[string]any{{"id": "fixture-fail", "backend": "fixture_fail"}})
 	_, stderr, exitCode = runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
 		t.Fatalf("improve search run failed: %s", stderr)
@@ -3450,6 +3463,7 @@ func TestCLIImproveSearchUsesHeldOutCompareArtifactReasonsAsFeedback(t *testing.
 	if _, stderr, exitCode := runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--target-file", targetPath, "--output", searchInputPath); exitCode != 0 {
 		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
+	setImproveSearchMutationBackends(t, searchInputPath, []map[string]any{{"id": "fixture-mutate", "backend": "fixture"}})
 	stdout, stderr, exitCode := runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--json")
 	if exitCode != 0 {
 		t.Fatalf("improve search run unexpectedly blocked: stdout=%s stderr=%s", stdout, stderr)
@@ -3555,23 +3569,6 @@ func TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	if err := os.WriteFile(targetPath, []byte("Keep recovery instructions explicit.\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
-	writeExecutableFile(t, root, "codex", strings.Join([]string{
-		"#!/bin/sh",
-		"out=\"\"",
-		"while [ \"$#\" -gt 0 ]; do",
-		"  if [ \"$1\" = \"-o\" ]; then",
-		"    out=\"$2\"",
-		"    shift 2",
-		"    continue",
-		"  fi",
-		"  shift",
-		"done",
-		"cat >/dev/null",
-		"cat >\"$out\" <<'EOF'",
-		"{\"promptMarkdown\":\"Keep recovery instructions explicit with a detailed recovery checklist.\\n\",\"rationaleSummary\":\"Add a concrete recovery checklist.\",\"expectedImprovements\":[\"operator-recovery\"],\"preservedStrengths\":[\"keeps the original recovery framing\"],\"riskNotes\":[\"ensure the extra detail stays concise\"]}",
-		"EOF",
-		"",
-	}, "\n"))
 	writeExecutableFile(t, root, "run-eval.sh", strings.Join([]string{
 		"#!/bin/sh",
 		"cases_file=\"$1\"",
@@ -3709,12 +3706,12 @@ func TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	runGit(t, root, "config", "user.name", "Cautilus Test")
 	runGit(t, root, "add", ".")
 	runGit(t, root, "commit", "-m", "initial")
-	t.Setenv("PATH", root+string(os.PathListSeparator)+os.Getenv("PATH"))
 
 	_, stderr, exitCode := runCLI(t, root, "improve", "search", "prepare-input", "--improve-input", improveInputPath, "--held-out-results-file", heldOutResultsPath, "--budget", "light", "--output", searchInputPath)
 	if exitCode != 0 {
 		t.Fatalf("improve search prepare-input failed: %s", stderr)
 	}
+	setImproveSearchMutationBackends(t, searchInputPath, []map[string]any{{"id": "fixture-mutate", "backend": "fixture"}})
 	stdout, stderr, exitCode := runCLI(t, root, "improve", "search", "run", "--input", searchInputPath, "--output", searchResultPath)
 	if exitCode != 0 {
 		resultPayload, _ := os.ReadFile(searchResultPath)

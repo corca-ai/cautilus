@@ -3,7 +3,8 @@ Date: 2026-06-22
 
 ## Scope
 
-Advanced `cautilus` toward release `0.17.1` (tag `v0.17.1`) through the repo-owned release helper.
+Advanced `cautilus` toward release `0.17.1` (tag `v0.17.1`) through release prep and local publish staging.
+Remote publication is still pending after an operator-interrupted publish attempt.
 
 ## Current Version
 
@@ -14,21 +15,23 @@ Advanced `cautilus` toward release `0.17.1` (tag `v0.17.1`) through the repo-own
 
 ## Verification
 
-- `npm run verify` passed before publish.
+- `npm run verify` passed during the interrupted publish attempt, but it unexpectedly invoked the live `codex_exec` review backend before the interruption.
+- Focused improve-search standing tests now pass with a failing `codex` sentinel first on `PATH`, proving those tests no longer invoke the live `codex` CLI.
 - `current_release.py` reported no version drift across packaging and generated install surfaces.
-- initial release push carried the release branch update and tag from the release helper.
+- `python3 scripts/check_cli_skill_surface.py --repo-root . --adapter-path .agents/release-adapter.yaml --run-probes --changed-path scripts/check_cli_skill_surface.py --json` passed.
 
 ## Release State
 
 - local release mutation: complete
-- branch/tag push: complete
-- GitHub release record: target URL `https://github.com/corca-ai/cautilus/releases/tag/v0.17.1`; creation runs after the branch/tag push
-- public release surface verification: not checked by this helper
-- audit narrative: durable record written to `charness-artifacts/release/latest.md` and committed with this slice
+- branch/tag push: pending after interrupted publish attempts
+- GitHub release record: target URL `https://github.com/corca-ai/cautilus/releases/tag/v0.17.1`; creation pending branch/tag push
+- public release surface verification: pending publish
+- audit narrative: durable record written to `charness-artifacts/release/latest.md`; final publish helper run will refresh it
 
 ## Public Release Verification
 
-- GitHub release publication: expected after branch/tag push; not verified yet.
+- GitHub release publication: pending.
+- Public source tag `v0.17.1`: local only; remote tag not present yet.
 
 ## Release Adapter Preflight
 
@@ -63,6 +66,7 @@ Advanced `cautilus` toward release `0.17.1` (tag `v0.17.1`) through the repo-own
   - `charness-artifacts/critique/2026-06-22-v0.17.1-release-critique.md`
   - `charness-artifacts/debug/2026-06-22-claude-subagent-threshold-lint-complexity.md`
   - `charness-artifacts/debug/2026-06-22-release-helper-cli-surface-wrapper.md`
+  - `charness-artifacts/debug/2026-06-22-verify-live-codex-exec.md`
   - `charness-artifacts/debug/latest.md`
   - `charness-artifacts/find-skills/latest.json`
   - `charness-artifacts/find-skills/latest.md`
@@ -82,6 +86,8 @@ Advanced `cautilus` toward release `0.17.1` (tag `v0.17.1`) through the repo-own
 ## Review Proof
 
 - Review proof: `charness-artifacts/critique/2026-06-22-v0.17.1-release-critique.md`.
+- Debug proof: `charness-artifacts/debug/2026-06-22-release-helper-cli-surface-wrapper.md`.
+- Debug proof: `charness-artifacts/debug/2026-06-22-verify-live-codex-exec.md`.
 
 ## Install Refresh
 
@@ -89,7 +95,7 @@ Advanced `cautilus` toward release `0.17.1` (tag `v0.17.1`) through the repo-own
 
 ## Fresh Checkout Probes
 
-- Fresh-checkout probe status: passed.
+- Fresh-checkout probe status: passed during the interrupted publish attempt.
 - `git fetch --unshallow --quiet || true`
 - `npm run claims:evidence-state:check`
 - `npm run claims:status-report:check`
