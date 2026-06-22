@@ -3,46 +3,81 @@ Date: 2026-06-22
 
 ## Summary
 
-Released Cautilus `v0.17.0`.
+Released Cautilus `v0.17.1`.
 
 ## Release Scope
 
-Minor release. The bump level is minor because this release adds maintained operator surface on the bundled Cautilus Agent — the `runner-readiness` capability (`skills/cautilus-agent/references/runner-readiness.md`, with the matching `SKILL.md` section) that proves "you can check how testable your agent is", flipping the apex `A Testable Agent` badge to proven (apex now 7/7). It is not a patch (more than a behavior repair) and not a major (no breaking command or invocation change: the CLI still exposes the same 61 commands and the install/launch contract is unchanged).
+Patch release.
+The bump level is patch because this release repairs and tightens the maintained `dev/skill` evaluation surface without changing the install contract, command names, or public release artifact shape.
 
-This release keeps the public product shape stable: installable Cautilus CLI, bundled Cautilus Agent, checked-in claim/spec reports, and the GitHub binary release artifacts as the public release boundary.
+This release covers the patch range after `v0.17.0`:
 
-The main shipped changes since `v0.16.2`:
+- `9289cf65`: makes standard Claude dev/skill execution evidence observe delegated subagent work.
+- `1846279f`: adds cache-read-excluded token budget views for dev/skill evaluation summaries.
 
-- **A Testable Agent (additive capability, drives the minor bump):** the Cautilus Agent gained `runner-readiness` guidance and proof so an operator can check how testable their agent is and build a testable runner; the apex `A Testable Agent` badge is now proven (7/7 apex proven).
-- **specdown corpus restructure:** the spec corpus was rebuilt onto a proof-spine with typed traceability — every promise traces to its governing rules and contracts through typed edges, the promise-ledger map is generated from the trace graph so it cannot drift, generator-owned pages are isolated under `docs/specs/generated/`, and the 7 promise leaves live under `docs/specs/promises/`.
-- **engine-baseline routing accuracy (per-facet routing, Fork B):** the deterministic claim-discovery baseline stopped over-routing deterministic-checkable claims into `cautilus-eval`. R6/R12 ownership/capability routing plus four Fork B per-facet discriminators (named-packet, CLI-flag-semantics, schema-field-persistence, command-absence) cut the gold-overlap `cautilus-eval → deterministic` disagreement from 10 to 4 and raised the agreeing count from 30 to 38, with zero new over-corrections.
-- **recall + structural-coherence repairs:** the rune-bound-recall fix recovered 76 length-dropped routable claims; a gate↔router coherence guard now fails the build if a routable claim shape is not admitted by the upstream gate; and the low-blast gate-router dead-case fixes recovered two previously dropped deterministic lint-gate claims.
+The public product shape remains stable: installable Cautilus CLI, bundled Cautilus Agent, checked-in plugin metadata, and GitHub binary release artifacts.
 
-This release does not claim a breaking command change, npm publication, or public Claude/Codex marketplace publication. The GitHub binary/install surface remains the public release boundary.
+## Shipped Changes
 
-## Commits
+- **Delegated Claude work observation:** standard Claude dev/skill runs now read the parent stream-json transcript plus same-session `subagents/*.jsonl` transcripts when a session id is available.
+  This keeps required command-fragment evidence from undercounting work performed by delegated Claude subagents.
+- **Safer command evidence capture:** command text extraction now includes scalar tool inputs such as `file_path`, scopes same-session transcript lookup to the workspace-derived Claude project when workspace context is available, and preserves subagent transcript artifact refs on failure.
+- **Uncached token budget views:** dev/skill evaluation packets can now preserve and threshold `uncached_tokens`, `median_run_uncached_tokens`, and `peak_run_uncached_tokens`.
+  `uncached_tokens` is the collapsed median-view value, while the other two fields preserve per-run median and peak budget pressure.
+- **JS/Go parity:** JavaScript and Go evaluation paths now accept the same uncached metric and threshold fields, preserve explicit backend-provided uncached metrics, treat missing cache-read telemetry as zero, and keep baseline metric normalization aligned.
+- **Contract and agent reference sync:** skill evaluation/testing contracts and Cautilus Agent references document the new budget views, including source, packaged plugin, and `.agents` copies.
 
-This release includes the commits after `v0.16.2` up to the release commit. Representative commits:
+## Explicit Non-Scope
 
-- Prove you can check how testable your agent is (runner-readiness); apex now 7/7 proven
-- Restructure the specdown corpus to a proof-spine with typed traceability
-- Generate the promise ledger map from the trace graph so it cannot drift
-- Route ownership/boundary assignments and capability claims deterministically (R6/R12)
-- Recover length-dropped promises and make R12 reachable (rune-bound recall)
-- Route named-packet, CLI-flag-semantics, schema-field-persistence, and command-absence claims deterministically (Fork B slices 1–4)
-- Guard gate↔router coherence so structural deaths fail the build
-- Fix low-blast gate-router dead cases so dropped routes go live
+Episode-runner transcript discovery is not included in `v0.17.1`.
+It is tracked separately as GitHub issue #50.
+
+This release does not claim npm publication, public Claude/Codex marketplace publication, a breaking CLI command change, or an install/update contract change.
 
 ## Review
 
-- Critique: full — a bounded fresh-eye subagent reviewed this release before publish (bump justification, narrative honesty against the v0.16.2..HEAD diff, surface parity, and the publish boundary). Verdict and incorporated edits recorded in the closeout.
-- Each engine slice in this release (R6/R12, the four Fork B slices, the gate-router fixes) landed through its own delegated spec critique and delegated landed-review, all verdicts clean; the per-slice build contracts and measurements live under `charness-artifacts/eval-trust/`.
+- Code critique: full — bounded fresh-eye reviewers found and the implementation fixed missing-cache-read false passes, explicit uncached metric overwrites, Go baseline normalization drift, and stale agent-facing references.
+- Counterweight critique: full — no remaining Act Before Ship concerns; mixed explicit uncached metrics versus conflicting telemetry is valid but deferred.
+- Release critique: full — bounded release reviewers required `0.17.1` version prep, full `v0.17.0..HEAD` narrative coverage, committed critique evidence, and post-prep release gates before tagging.
+- Critique artifacts:
+  - `charness-artifacts/critique/2026-06-22-uncached-token-threshold-critique.md`
+  - `charness-artifacts/critique/2026-06-22-v0.17.1-release-critique.md`
 
 ## Verification
 
-Local release-close gates (green):
+Pre-release gates run before release prep:
 
-- `node scripts/release/prepare-release.mjs 0.17.0`: green (skills sync is a no-op — the packaged Cautilus Agent is in sync with source, and `runner-readiness.md` is present in both trees; the packaged tree differs only by the sync helper's upward-link depth rewrites, by design — all five version surfaces aligned at 0.17.0, claim freshness fresh).
-- CLI/skill surface probes (the Cautilus Agent skill surface moved since `v0.16.2`): `./bin/cautilus --version` → `0.17.0`; `doctor binary --json` → healthy; `doctor commands --json` → 61 commands; `discover scenarios --json` → valid catalog; `--help` → ok.
-- `npm run generated:drift:check`: clean.
-- `npm run verify`: all phases passed.
+- `node --test scripts/agent-runtime/evaluate-skill.test.mjs scripts/agent-runtime/run-local-skill-test.test.mjs`: passed.
+- `go test ./internal/runtime -run 'TestBuildSkillEvaluationSummaryUsesCacheExcludedTokenThreshold|TestBuildSkillEvaluationSummaryDoesNotReuseCandidateTelemetryForBaseline|TestBuildSkillEvaluationSummaryPreservesExplicitBaselineUncachedMetrics|TestNormalizeSkillTestCaseSuiteAcceptsCacheExcludedTokenThreshold'`: passed.
+- `npm run lint:eslint -- scripts/agent-runtime/skill-test-observed.mjs scripts/agent-runtime/skill-evaluation-runs.mjs scripts/agent-runtime/skill-evaluation-normalizers.mjs scripts/agent-runtime/skill-test-telemetry.mjs scripts/agent-runtime/skill-test-case-suite.mjs scripts/agent-runtime/run-local-skill-test.test.mjs scripts/agent-runtime/evaluate-skill.test.mjs`: passed.
+- `npm run test`: passed.
+- `npm run verify`: passed.
+- `npm run hooks:check`: passed.
+- `npm run lint:skill-disclosure`: passed.
+- `./bin/cautilus doctor commands --json`: passed.
+- `./bin/cautilus discover scenarios --json`: passed.
+- `./bin/cautilus doctor --repo-root . --scope agent-surface`: passed.
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.53.0/scripts/check_cli_skill_surface.py --repo-root . --adapter-path .agents/release-adapter.yaml --json`: passed.
+- Fresh-checkout probes from `.agents/release-adapter.yaml`: passed.
+
+Release prep:
+
+- `npm run release:prepare -- 0.17.1`: passed.
+  This aligned `package.json`, `package-lock.json`, `.claude-plugin/marketplace.json`, `plugins/cautilus/.claude-plugin/plugin.json`, and `plugins/cautilus/.codex-plugin/plugin.json`, synced the packaged Cautilus Agent, and confirmed release claim freshness.
+
+Post-prep release gates run before tag publish:
+
+- `npm run hooks:check`: passed.
+- `npm run verify`: passed.
+- `npm run test:on-demand`: passed.
+- fresh-checkout probes from `.agents/release-adapter.yaml`: passed.
+- `npm run critique:surface-packet:check`: passed.
+
+## Operator Update Path
+
+Existing binary users update through the existing tagged release path:
+
+- `cautilus update`
+- or re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`
+
+Repo-local Cautilus Agent/plugin consumers refresh through the host repo update flow, `charness update`, or by re-running `cautilus init` where appropriate.
