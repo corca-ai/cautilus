@@ -64,18 +64,20 @@ export function normalizeOptionalMetrics(value, field) {
 	if (!value || typeof value !== "object" || Array.isArray(value)) {
 		throw new Error(`${field} must be an object`);
 	}
+	const metricKeys = [
+		"total_tokens",
+		"uncached_tokens",
+		"median_run_uncached_tokens",
+		"peak_run_uncached_tokens",
+		"duration_ms",
+		"cost_usd",
+	];
 	const metrics = {};
-	const totalTokens = normalizeNonNegativeNumber(value.total_tokens, `${field}.total_tokens`);
-	const durationMs = normalizeNonNegativeNumber(value.duration_ms, `${field}.duration_ms`);
-	const costUsd = normalizeNonNegativeNumber(value.cost_usd, `${field}.cost_usd`);
-	if (totalTokens !== null) {
-		metrics.total_tokens = totalTokens;
-	}
-	if (durationMs !== null) {
-		metrics.duration_ms = durationMs;
-	}
-	if (costUsd !== null) {
-		metrics.cost_usd = costUsd;
+	for (const key of metricKeys) {
+		const normalized = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
+		if (normalized !== null) {
+			metrics[key] = normalized;
+		}
 	}
 	return Object.keys(metrics).length > 0 ? metrics : null;
 }
@@ -125,22 +127,20 @@ export function normalizeOptionalThresholds(value, field) {
 	if (!value || typeof value !== "object" || Array.isArray(value)) {
 		throw new Error(`${field} must be an object`);
 	}
+	const thresholdKeys = [
+		"max_total_tokens",
+		"max_uncached_tokens",
+		"max_median_run_uncached_tokens",
+		"max_peak_run_uncached_tokens",
+		"max_duration_ms",
+		"max_cost_usd",
+	];
 	const thresholds = {};
-	const maxTokens = normalizeNonNegativeNumber(value.max_total_tokens, `${field}.max_total_tokens`);
-	const maxUncachedTokens = normalizeNonNegativeNumber(value.max_uncached_tokens, `${field}.max_uncached_tokens`);
-	const maxDuration = normalizeNonNegativeNumber(value.max_duration_ms, `${field}.max_duration_ms`);
-	const maxCost = normalizeNonNegativeNumber(value.max_cost_usd, `${field}.max_cost_usd`);
-	if (maxTokens !== null) {
-		thresholds.max_total_tokens = maxTokens;
-	}
-	if (maxUncachedTokens !== null) {
-		thresholds.max_uncached_tokens = maxUncachedTokens;
-	}
-	if (maxDuration !== null) {
-		thresholds.max_duration_ms = maxDuration;
-	}
-	if (maxCost !== null) {
-		thresholds.max_cost_usd = maxCost;
+	for (const key of thresholdKeys) {
+		const normalized = normalizeNonNegativeNumber(value[key], `${field}.${key}`);
+		if (normalized !== null) {
+			thresholds[key] = normalized;
+		}
 	}
 	return Object.keys(thresholds).length > 0 ? thresholds : null;
 }

@@ -31,6 +31,12 @@ fixture with:
   - `prompt`, or `turns` for a multi-turn episode
   - trigger-only `expectedTrigger`
   - optional execution `thresholds`
+    - `max_total_tokens`
+    - `max_uncached_tokens`
+    - `max_median_run_uncached_tokens`
+    - `max_peak_run_uncached_tokens`
+    - `max_duration_ms`
+    - `max_cost_usd`
   - optional execution `auditKind` when the runner derives the result from a product-owned audit packet
     - `subagent_execution_proof` when the skill must prove a subagent or fanout worker completed and returned a result
   - optional `repeatCount`
@@ -48,6 +54,9 @@ It rejects prose-only claims, spawn attempts without a completed child result, a
 Repeated cases should be run multiple times by the checked-in runner and
 collapsed into one observed evaluation result. `minConsensusCount` is the
 number of matching runs needed before that collapsed result counts as a pass.
+For repeated cache-heavy cases, `max_uncached_tokens` limits the collapsed median-view uncached value, not the sum across repeated runs.
+`max_median_run_uncached_tokens` limits the median per-run uncached value.
+`max_peak_run_uncached_tokens` limits the largest per-run uncached value.
 
 ## Adapter Hooks
 

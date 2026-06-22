@@ -98,6 +98,8 @@ test("buildSkillEvaluationSummary supports cache-excluded token thresholds", () 
 					summary: "The skill completed the task.",
 					metrics: {
 						total_tokens: 9000,
+						median_run_uncached_tokens: 300,
+						peak_run_uncached_tokens: 1200,
 						duration_ms: 1200,
 					},
 					telemetry: {
@@ -105,6 +107,8 @@ test("buildSkillEvaluationSummary supports cache-excluded token thresholds", () 
 					},
 					thresholds: {
 						max_uncached_tokens: 400,
+						max_median_run_uncached_tokens: 200,
+						max_peak_run_uncached_tokens: 1000,
 					},
 				},
 			],
@@ -113,11 +117,23 @@ test("buildSkillEvaluationSummary supports cache-excluded token thresholds", () 
 	);
 	assert.equal(summary.recommendation, "defer");
 	assert.equal(summary.evaluationCounts.degraded, 1);
-	assert.deepEqual(summary.evaluations[0].thresholdFindings, [{
-		metric: "uncached_tokens",
-		actual: 500,
-		limit: 400,
-	}]);
+	assert.deepEqual(summary.evaluations[0].thresholdFindings, [
+		{
+			metric: "uncached_tokens",
+			actual: 500,
+			limit: 400,
+		},
+		{
+			metric: "median_run_uncached_tokens",
+			actual: 300,
+			limit: 200,
+		},
+		{
+			metric: "peak_run_uncached_tokens",
+			actual: 1200,
+			limit: 1000,
+		},
+	]);
 });
 
 test("buildSkillEvaluationSummary does not reuse candidate telemetry for baseline thresholds", () => {
@@ -161,6 +177,59 @@ test("buildSkillEvaluationSummary does not reuse candidate telemetry for baselin
 	assert.equal(summary.evaluations[0].status, "passed");
 	assert.equal(summary.evaluations[0].baselineComparison.baselineStatus, "degraded");
 	assert.equal(summary.evaluations[0].baselineComparison.relativeStatus, "better");
+});
+
+test("buildSkillEvaluationSummary preserves explicit baseline uncached metrics", () => {
+	const summary = buildSkillEvaluationSummary(
+		{
+			schemaVersion: "cautilus.skill_evaluation_inputs.v1",
+			skillId: "impl",
+			evaluations: [
+				{
+					evaluationId: "exec-baseline-explicit-uncached",
+					targetKind: "public_skill",
+					targetId: "impl",
+					displayName: "impl",
+					evaluationKind: "execution",
+					prompt: "Apply one bounded implementation slice and verify it.",
+					startedAt: "2026-06-22T00:00:00.000Z",
+					invoked: true,
+					outcome: "passed",
+					summary: "The skill completed the task.",
+					metrics: {
+						total_tokens: 1000,
+						uncached_tokens: 100,
+						median_run_uncached_tokens: 100,
+						peak_run_uncached_tokens: 100,
+					},
+					thresholds: {
+						max_uncached_tokens: 950,
+						max_median_run_uncached_tokens: 950,
+						max_peak_run_uncached_tokens: 950,
+					},
+					baseline: {
+						invoked: true,
+						outcome: "passed",
+						metrics: {
+							total_tokens: 1000,
+							uncached_tokens: 900,
+							median_run_uncached_tokens: 900,
+							peak_run_uncached_tokens: 900,
+						},
+					},
+				},
+			],
+		},
+		"2026-06-22T00:30:00.000Z",
+	);
+	assert.equal(summary.evaluations[0].status, "passed");
+	assert.equal(summary.evaluations[0].baselineComparison.baselineStatus, "passed");
+	assert.deepEqual(summary.evaluations[0].baselineComparison.metricDeltas, {
+		total_tokens: 0,
+		uncached_tokens: -800,
+		median_run_uncached_tokens: -800,
+		peak_run_uncached_tokens: -800,
+	});
 });
 
 test("buildSkillEvaluationSummary surfaces sampling stability and baseline comparisons", () => {

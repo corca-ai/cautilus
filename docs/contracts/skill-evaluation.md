@@ -44,6 +44,16 @@ The first slice consumes one normalized packet with:
     - `degraded`
     - `blocked`
   - optional `metrics`
+    - optional `total_tokens`
+    - optional `duration_ms`
+    - optional `cost_usd`
+    - optional `uncached_tokens`
+      - collapsed median-view uncached work: `median(metrics.total_tokens) - median(telemetry.cache_read_input_tokens)`, with missing cache-read telemetry treated as `0` for each repeated sample
+      - for a single normalized run, evaluated as `metrics.total_tokens - telemetry.cache_read_input_tokens` when the metric is not already supplied
+    - optional `median_run_uncached_tokens`
+      - median of per-run `total_tokens - cache_read_input_tokens` when a repeated runner preserves run-level samples
+    - optional `peak_run_uncached_tokens`
+      - maximum per-run `total_tokens - cache_read_input_tokens` when a repeated runner preserves run-level samples
   - optional `telemetry`
     - optional `provider`
     - optional `model`
@@ -85,7 +95,11 @@ The first slice consumes one normalized packet with:
   - optional `thresholds`
     - optional `max_total_tokens`
     - optional `max_uncached_tokens`
-      - evaluated as `metrics.total_tokens - telemetry.cache_read_input_tokens`, with missing cache-read telemetry treated as `0`
+      - evaluated as `metrics.uncached_tokens` when present; otherwise as `metrics.total_tokens - telemetry.cache_read_input_tokens`, with missing cache-read telemetry treated as `0`
+    - optional `max_median_run_uncached_tokens`
+      - evaluated against `metrics.median_run_uncached_tokens`
+    - optional `max_peak_run_uncached_tokens`
+      - evaluated against `metrics.peak_run_uncached_tokens`
     - optional `max_duration_ms`
     - optional `max_cost_usd`
   - optional `artifactRefs`
@@ -133,6 +147,7 @@ The first summary packet should include:
   - `execution_quality`
 - preserved per-evaluation runtime telemetry when the host runner exposes it explicitly
 - preserved cache-token breakdown when a runtime exposes cache creation, cache read, cached input, or uncached input token counts explicitly
+- preserved derived uncached token metrics when a repeated runner can compute aggregate-view, median-run, and peak-run uncached work distinctly
 - `cache_creation_input_tokens` and `cache_read_input_tokens` preserve split cache-write and cache-read telemetry, while `cached_input_tokens` preserves provider-specific aggregate cached-input telemetry
 - preserved budget-attribution fields such as request kind, source flow, cache policy, static context id, retry count, and tool-call count when a host wrapper emits them explicitly
 - preserved cost-truth provenance when cost is derived from a versioned
@@ -146,7 +161,7 @@ The point is to give the product one stable boundary that can:
 - evaluate skill trigger accuracy
 - evaluate skill execution quality
 - degrade passing runs when declared runtime or token budgets are exceeded
-- let hosts choose `max_uncached_tokens` when cache-read token churn would make `max_total_tokens` too noisy for runtime budget respect
+- let hosts choose aggregate-view, median-run, or peak-run uncached token thresholds when cache-read token churn would make `max_total_tokens` too noisy for runtime budget respect
 - chain directly into reusable scenario proposal coverage
 
 ## Current Recommendation Rules

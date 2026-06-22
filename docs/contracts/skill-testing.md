@@ -48,6 +48,8 @@ Minimum shape:
   - optional execution `thresholds`
     - `max_total_tokens`
     - `max_uncached_tokens`
+    - `max_median_run_uncached_tokens`
+    - `max_peak_run_uncached_tokens`
     - `max_duration_ms`
     - `max_cost_usd`
   - optional `requiredSummaryFragments`
@@ -94,7 +96,11 @@ The adapter-owned runner still owns:
 By default, skill tests should exercise the runtime that the local CLI would actually use.
 They should not pin a model unless the adapter command template or a pinned-runtime policy explicitly does so.
 When runtime telemetry is available, downstream summaries should preserve enough runtime identity to report model-runtime changes without making ordinary default-runtime changes fail the test.
-For cache-heavy runtimes, fixtures may use `max_uncached_tokens` instead of `max_total_tokens` so budget respect measures work performed rather than cache-read churn.
+For cache-heavy runtimes, fixtures may use uncached token thresholds instead of `max_total_tokens` so budget respect measures work performed rather than cache-read churn.
+`max_uncached_tokens` limits the collapsed median-view uncached value, not the sum across repeated runs.
+That value is `median(total_tokens) - median(cache_read_input_tokens)`, with missing cache-read telemetry treated as `0` for each repeated sample.
+`max_median_run_uncached_tokens` limits the median per-run uncached value for repeated cases.
+`max_peak_run_uncached_tokens` limits the largest per-run uncached value for repeated cases.
 A pinned-runtime mismatch blocks the workflow because the run did not test the declared runtime.
 See [runtime-fingerprint-improvement.md](./runtime-fingerprint-improvement.md).
 

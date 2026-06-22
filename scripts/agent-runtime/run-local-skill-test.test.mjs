@@ -11,6 +11,7 @@ import {
 	normalizeObservedResult,
 	normalizeSkillTestCaseSuite,
 } from "./run-local-skill-test.mjs";
+import { buildSkillEvaluationSummary } from "./evaluate-skill.mjs";
 import { extractCodexTelemetry } from "./skill-test-telemetry.mjs";
 
 test("buildObservedSkillEvaluationInput materializes a normalized packet from fixture-backed skill test results", () => {
@@ -113,11 +114,15 @@ test("skill case suites accept cache-excluded token thresholds", () => {
 				prompt: "Use $demo.",
 				thresholds: {
 					max_uncached_tokens: 1000,
+					max_median_run_uncached_tokens: 800,
+					max_peak_run_uncached_tokens: 1200,
 				},
 			},
 		],
 	});
 	assert.equal(suite.cases[0].thresholds.max_uncached_tokens, 1000);
+	assert.equal(suite.cases[0].thresholds.max_median_run_uncached_tokens, 800);
+	assert.equal(suite.cases[0].thresholds.max_peak_run_uncached_tokens, 1200);
 });
 
 test("skill case suites accept packet-first audit episodes", () => {
@@ -383,8 +388,166 @@ test("fixture-backed repeated trigger cases aggregate telemetry medians", () => 
 	assert.deepEqual(packet.evaluations[0].metrics, {
 		duration_ms: 2000,
 		total_tokens: 200,
+		uncached_tokens: 160,
+		median_run_uncached_tokens: 160,
+		peak_run_uncached_tokens: 240,
 		cost_usd: 0.02,
 	});
+});
+
+test("fixture-backed repeated cases preserve collapsed median and per-run uncached token aggregates", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-uncached-"));
+	const casesFile = join(root, "cases.json");
+	const fixtureResultsFile = join(root, "fixture-results.json");
+	writeFileSync(casesFile, `${JSON.stringify({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "demo",
+		cases: [
+			{
+				caseId: "execution-demo",
+				evaluationKind: "execution",
+				prompt: "Use $demo.",
+				repeatCount: 3,
+				minConsensusCount: 2,
+				thresholds: {
+					max_uncached_tokens: 200,
+					max_median_run_uncached_tokens: 100,
+					max_peak_run_uncached_tokens: 700,
+				},
+			},
+		],
+	}, null, 2)}\n`);
+	writeFileSync(fixtureResultsFile, `${JSON.stringify({
+		"execution-demo": [
+			{
+				invoked: true,
+				outcome: "passed",
+				summary: "Run one passed.",
+				duration_ms: 1000,
+				metrics: { total_tokens: 1000 },
+				telemetry: { cache_read_input_tokens: 950, total_tokens: 1000 },
+			},
+			{
+				invoked: true,
+				outcome: "passed",
+				summary: "Run two passed.",
+				duration_ms: 1200,
+				metrics: { total_tokens: 900 },
+				telemetry: { cache_read_input_tokens: 100, total_tokens: 900 },
+			},
+			{
+				invoked: true,
+				outcome: "passed",
+				summary: "Run three passed.",
+				duration_ms: 1100,
+				metrics: { total_tokens: 800 },
+				telemetry: { cache_read_input_tokens: 750, total_tokens: 800 },
+			},
+		],
+	}, null, 2)}\n`);
+	const packet = buildObservedSkillEvaluationInput({
+		repoRoot: process.cwd(),
+		workspace: process.cwd(),
+		casesFile,
+		artifactDir: join(root, "artifacts"),
+		backend: "fixture",
+		fixtureResultsFile,
+	});
+	assert.deepEqual(packet.evaluations[0].metrics, {
+		duration_ms: 1100,
+		total_tokens: 900,
+		uncached_tokens: 150,
+		median_run_uncached_tokens: 50,
+		peak_run_uncached_tokens: 800,
+	});
+	assert.equal(packet.evaluations[0].thresholds.max_median_run_uncached_tokens, 100);
+	assert.equal(packet.evaluations[0].thresholds.max_peak_run_uncached_tokens, 700);
+});
+
+test("fixture-backed repeated thresholds treat missing cache-read telemetry as zero", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-skill-test-missing-cache-read-"));
+	const casesFile = join(root, "cases.json");
+	const fixtureResultsFile = join(root, "fixture-results.json");
+	writeFileSync(casesFile, `${JSON.stringify({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "demo",
+		cases: [
+			{
+				caseId: "execution-demo",
+				evaluationKind: "execution",
+				prompt: "Use $demo.",
+				repeatCount: 3,
+				minConsensusCount: 2,
+				thresholds: {
+					max_uncached_tokens: 500,
+					max_median_run_uncached_tokens: 500,
+					max_peak_run_uncached_tokens: 500,
+				},
+			},
+		],
+	}, null, 2)}\n`);
+	writeFileSync(fixtureResultsFile, `${JSON.stringify({
+		"execution-demo": [
+			{
+				invoked: true,
+				outcome: "passed",
+				summary: "Run one passed.",
+				duration_ms: 1000,
+				metrics: { total_tokens: 1000 },
+				telemetry: { cache_read_input_tokens: 900, total_tokens: 1000 },
+			},
+			{
+				invoked: true,
+				outcome: "passed",
+				summary: "Run two passed.",
+				duration_ms: 1000,
+				metrics: { total_tokens: 1000 },
+				telemetry: { total_tokens: 1000 },
+			},
+			{
+				invoked: true,
+				outcome: "passed",
+				summary: "Run three passed.",
+				duration_ms: 1000,
+				metrics: { total_tokens: 1000 },
+				telemetry: { total_tokens: 1000 },
+			},
+		],
+	}, null, 2)}\n`);
+	const packet = buildObservedSkillEvaluationInput({
+		repoRoot: process.cwd(),
+		workspace: process.cwd(),
+		casesFile,
+		artifactDir: join(root, "artifacts"),
+		backend: "fixture",
+		fixtureResultsFile,
+	});
+	assert.deepEqual(packet.evaluations[0].metrics, {
+		duration_ms: 1000,
+		total_tokens: 1000,
+		uncached_tokens: 1000,
+		median_run_uncached_tokens: 1000,
+		peak_run_uncached_tokens: 1000,
+	});
+	const summary = buildSkillEvaluationSummary(packet, "2026-06-22T12:00:00.000Z");
+	assert.equal(summary.evaluationCounts.degraded, 1);
+	assert.deepEqual(summary.evaluations[0].thresholdFindings, [
+		{
+			metric: "uncached_tokens",
+			actual: 1000,
+			limit: 500,
+		},
+		{
+			metric: "median_run_uncached_tokens",
+			actual: 1000,
+			limit: 500,
+		},
+		{
+			metric: "peak_run_uncached_tokens",
+			actual: 1000,
+			limit: 500,
+		},
+	]);
 });
 
 test("codexArgs applies runtime-specific model, effort, and config overrides", () => {
@@ -549,6 +712,9 @@ test("normalizeObservedResult preserves backend telemetry and numeric metrics", 
 			outcome: "passed",
 			metrics: {
 				total_tokens: 1234,
+				uncached_tokens: 900,
+				median_run_uncached_tokens: 850,
+				peak_run_uncached_tokens: 1000,
 				cost_usd: 0.01234,
 			},
 			telemetry: {
@@ -571,6 +737,9 @@ test("normalizeObservedResult preserves backend telemetry and numeric metrics", 
 	assert.deepEqual(observed.metrics, {
 		duration_ms: 2500,
 		total_tokens: 1234,
+		uncached_tokens: 900,
+		median_run_uncached_tokens: 850,
+		peak_run_uncached_tokens: 1000,
 		cost_usd: 0.01234,
 	});
 	assert.deepEqual(observed.telemetry, {
@@ -621,6 +790,9 @@ test("normalizeObservedResult falls back to telemetry totals when observed metri
 	assert.deepEqual(observed.metrics, {
 		duration_ms: 2500,
 		total_tokens: 1750,
+		uncached_tokens: 1750,
+		median_run_uncached_tokens: 1750,
+		peak_run_uncached_tokens: 1750,
 		cost_usd: 0.002625,
 	});
 	assert.deepEqual(observed.telemetry, {

@@ -39,6 +39,9 @@ function statusRank(status) {
 }
 
 function uncachedTokenMetric(metrics, telemetry) {
+	if (typeof metrics?.uncached_tokens === "number") {
+		return metrics.uncached_tokens;
+	}
 	if (typeof metrics?.total_tokens !== "number") {
 		return null;
 	}
@@ -46,6 +49,19 @@ function uncachedTokenMetric(metrics, telemetry) {
 		? telemetry.cache_read_input_tokens
 		: 0;
 	return Math.max(0, metrics.total_tokens - cacheRead);
+}
+
+function addMetricThresholdFinding(findings, metrics, metricKey, thresholds, thresholdKey) {
+	if (metrics[metricKey] === undefined || thresholds[thresholdKey] === undefined) {
+		return;
+	}
+	if (metrics[metricKey] > thresholds[thresholdKey]) {
+		findings.push({
+			metric: metricKey,
+			actual: metrics[metricKey],
+			limit: thresholds[thresholdKey],
+		});
+	}
 }
 
 function thresholdFindings(metrics, thresholds, telemetry = null) {
@@ -58,16 +74,7 @@ function thresholdFindings(metrics, thresholds, telemetry = null) {
 		["duration_ms", "max_duration_ms"],
 		["cost_usd", "max_cost_usd"],
 	]) {
-		if (metrics[metricKey] === undefined || thresholds[thresholdKey] === undefined) {
-			continue;
-		}
-		if (metrics[metricKey] > thresholds[thresholdKey]) {
-			findings.push({
-				metric: metricKey,
-				actual: metrics[metricKey],
-				limit: thresholds[thresholdKey],
-			});
-		}
+		addMetricThresholdFinding(findings, metrics, metricKey, thresholds, thresholdKey);
 	}
 	const uncachedTokens = uncachedTokenMetric(metrics, telemetry);
 	if (uncachedTokens !== null && thresholds.max_uncached_tokens !== undefined && uncachedTokens > thresholds.max_uncached_tokens) {
@@ -77,6 +84,8 @@ function thresholdFindings(metrics, thresholds, telemetry = null) {
 			limit: thresholds.max_uncached_tokens,
 		});
 	}
+	addMetricThresholdFinding(findings, metrics, "median_run_uncached_tokens", thresholds, "max_median_run_uncached_tokens");
+	addMetricThresholdFinding(findings, metrics, "peak_run_uncached_tokens", thresholds, "max_peak_run_uncached_tokens");
 	return findings;
 }
 
@@ -235,7 +244,7 @@ function buildBaselineComparison(run, evaluatedStatus) {
 		relativeStatus = "worse";
 	}
 	const metricDeltas = {};
-	for (const metric of ["duration_ms", "total_tokens", "cost_usd"]) {
+	for (const metric of ["duration_ms", "total_tokens", "uncached_tokens", "median_run_uncached_tokens", "peak_run_uncached_tokens", "cost_usd"]) {
 		if (typeof run.metrics?.[metric] !== "number" || typeof run.baseline.metrics?.[metric] !== "number") {
 			continue;
 		}

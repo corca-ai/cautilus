@@ -298,7 +298,13 @@ function normalizeNumericFields(source, keys) {
 }
 
 export function normalizeSkillMetrics(value) {
-	return normalizeNumericFields(value, ["total_tokens", "cost_usd"]);
+	return normalizeNumericFields(value, [
+		"total_tokens",
+		"uncached_tokens",
+		"median_run_uncached_tokens",
+		"peak_run_uncached_tokens",
+		"cost_usd",
+	]);
 }
 
 export function normalizeSkillTelemetry(value) {

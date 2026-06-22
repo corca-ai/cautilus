@@ -276,9 +276,12 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 		input["metrics"],
 		fmt.Sprintf("evaluations[%d].metrics", index),
 		map[string]bool{
-			"total_tokens": true,
-			"duration_ms":  true,
-			"cost_usd":     false,
+			"total_tokens":               true,
+			"uncached_tokens":            true,
+			"median_run_uncached_tokens": true,
+			"peak_run_uncached_tokens":   true,
+			"duration_ms":                true,
+			"cost_usd":                   false,
 		},
 	)
 	if err != nil {
@@ -300,10 +303,12 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 		input["thresholds"],
 		fmt.Sprintf("evaluations[%d].thresholds", index),
 		map[string]bool{
-			"max_total_tokens":    true,
-			"max_uncached_tokens": true,
-			"max_duration_ms":     true,
-			"max_cost_usd":        false,
+			"max_total_tokens":               true,
+			"max_uncached_tokens":            true,
+			"max_median_run_uncached_tokens": true,
+			"max_peak_run_uncached_tokens":   true,
+			"max_duration_ms":                true,
+			"max_cost_usd":                   false,
 		},
 	)
 	if err != nil {
@@ -488,9 +493,12 @@ func normalizeSkillBaseline(value any, field string) (map[string]any, error) {
 		record["metrics"],
 		field+".metrics",
 		map[string]bool{
-			"total_tokens": true,
-			"duration_ms":  true,
-			"cost_usd":     false,
+			"total_tokens":               true,
+			"uncached_tokens":            true,
+			"median_run_uncached_tokens": true,
+			"peak_run_uncached_tokens":   true,
+			"duration_ms":                true,
+			"cost_usd":                   false,
 		},
 	)
 	if err != nil {
@@ -652,7 +660,7 @@ func buildSkillBaselineComparison(evaluation *skillEvaluationCase, status string
 		result["baselineOutcome"] = outcome
 	}
 	metricDeltas := map[string]any{}
-	for _, key := range []string{"duration_ms", "total_tokens", "cost_usd"} {
+	for _, key := range []string{"duration_ms", "total_tokens", "uncached_tokens", "median_run_uncached_tokens", "peak_run_uncached_tokens", "cost_usd"} {
 		actual, actualOK := toFloat(evaluation.metrics[key])
 		baselineValue, baselineOK := toFloat(asMap(evaluation.baseline["metrics"])[key])
 		if !actualOK || !baselineOK {
@@ -833,10 +841,33 @@ func thresholdFindings(metrics map[string]any, thresholds map[string]any, teleme
 			})
 		}
 	}
+	for _, pair := range []struct {
+		metric    string
+		threshold string
+	}{
+		{metric: "median_run_uncached_tokens", threshold: "max_median_run_uncached_tokens"},
+		{metric: "peak_run_uncached_tokens", threshold: "max_peak_run_uncached_tokens"},
+	} {
+		actual, actualOK := toFloat(metrics[pair.metric])
+		limit, limitOK := toFloat(thresholds[pair.threshold])
+		if !actualOK || !limitOK {
+			continue
+		}
+		if actual > limit {
+			findings = append(findings, map[string]any{
+				"metric": pair.metric,
+				"actual": metrics[pair.metric],
+				"limit":  thresholds[pair.threshold],
+			})
+		}
+	}
 	return findings
 }
 
 func uncachedTokenMetric(metrics map[string]any, telemetry map[string]any) (float64, bool) {
+	if value, ok := toFloat(metrics["uncached_tokens"]); ok {
+		return value, true
+	}
 	total, ok := toFloat(metrics["total_tokens"])
 	if !ok {
 		return 0, false

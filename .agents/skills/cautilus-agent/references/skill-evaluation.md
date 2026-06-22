@@ -52,6 +52,15 @@ The first slice consumes one normalized packet with:
     - `degraded`
     - `blocked`
   - optional `metrics`
+    - optional `total_tokens`
+    - optional `duration_ms`
+    - optional `cost_usd`
+    - optional `uncached_tokens`
+      - collapsed median-view uncached work, not the sum across repeated runs
+    - optional `median_run_uncached_tokens`
+      - median of per-run uncached work when repeated samples are preserved
+    - optional `peak_run_uncached_tokens`
+      - largest per-run uncached work when repeated samples are preserved
   - optional `sampling`
     - `sampleCount`
     - optional `consensusCount`
@@ -65,6 +74,13 @@ The first slice consumes one normalized packet with:
     - optional `outcome`
     - optional `metrics`
   - optional `thresholds`
+    - optional `max_total_tokens`
+    - optional `max_uncached_tokens`
+      - compares against `metrics.uncached_tokens`, or `metrics.total_tokens - telemetry.cache_read_input_tokens` when the metric is absent
+    - optional `max_median_run_uncached_tokens`
+    - optional `max_peak_run_uncached_tokens`
+    - optional `max_duration_ms`
+    - optional `max_cost_usd`
   - optional `artifactRefs`
   - optional `intentProfile`
 

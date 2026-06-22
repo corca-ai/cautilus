@@ -61,7 +61,9 @@ func TestNormalizeSkillTestCaseSuiteAcceptsCacheExcludedTokenThreshold(t *testin
 				"evaluationKind": "execution",
 				"prompt":         "Use $demo.",
 				"thresholds": map[string]any{
-					"max_uncached_tokens": float64(1000),
+					"max_uncached_tokens":            float64(1000),
+					"max_median_run_uncached_tokens": float64(800),
+					"max_peak_run_uncached_tokens":   float64(1200),
 				},
 			},
 		},
@@ -71,5 +73,11 @@ func TestNormalizeSkillTestCaseSuiteAcceptsCacheExcludedTokenThreshold(t *testin
 	}
 	if got := suite.Cases[0].Thresholds["max_uncached_tokens"]; got != 1000 {
 		t.Fatalf("unexpected max_uncached_tokens threshold: %#v", got)
+	}
+	if got := suite.Cases[0].Thresholds["max_median_run_uncached_tokens"]; got != 800 {
+		t.Fatalf("unexpected max_median_run_uncached_tokens threshold: %#v", got)
+	}
+	if got := suite.Cases[0].Thresholds["max_peak_run_uncached_tokens"]; got != 1200 {
+		t.Fatalf("unexpected max_peak_run_uncached_tokens threshold: %#v", got)
 	}
 }
