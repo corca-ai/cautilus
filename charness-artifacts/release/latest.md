@@ -1,47 +1,26 @@
-# Release Record
+# Release Surface Check
 Date: 2026-06-22
 
-## Summary
+## Scope
 
-Released Cautilus `v0.17.1`.
+Prepared `cautilus` release `0.17.1` (tag `v0.17.1`) through release prep and pre-publish verification.
+This is a patch release for the maintained `dev/skill` evaluation surface.
 
-## Release Scope
-
-Patch release.
-The bump level is patch because this release repairs and tightens the maintained `dev/skill` evaluation surface without changing the install contract, command names, or public release artifact shape.
-
-This release covers the patch range after `v0.17.0`:
+The release covers the patch range after `v0.17.0`:
 
 - `9289cf65`: makes standard Claude dev/skill execution evidence observe delegated subagent work.
 - `1846279f`: adds cache-read-excluded token budget views for dev/skill evaluation summaries.
+- `b6ba4d1c`: prepares the checked-in version, package lock, marketplace metadata, and packaged plugin surfaces for `v0.17.1`.
 
 The public product shape remains stable: installable Cautilus CLI, bundled Cautilus Agent, checked-in plugin metadata, and GitHub binary release artifacts.
+Episode-runner transcript discovery is not included in `v0.17.1`; it is tracked separately as GitHub issue #50.
 
-## Shipped Changes
+## Current Version
 
-- **Delegated Claude work observation:** standard Claude dev/skill runs now read the parent stream-json transcript plus same-session `subagents/*.jsonl` transcripts when a session id is available.
-  This keeps required command-fragment evidence from undercounting work performed by delegated Claude subagents.
-- **Safer command evidence capture:** command text extraction now includes scalar tool inputs such as `file_path`, scopes same-session transcript lookup to the workspace-derived Claude project when workspace context is available, and preserves subagent transcript artifact refs on failure.
-- **Uncached token budget views:** dev/skill evaluation packets can now preserve and threshold `uncached_tokens`, `median_run_uncached_tokens`, and `peak_run_uncached_tokens`.
-  `uncached_tokens` is the collapsed median-view value, while the other two fields preserve per-run median and peak budget pressure.
-- **JS/Go parity:** JavaScript and Go evaluation paths now accept the same uncached metric and threshold fields, preserve explicit backend-provided uncached metrics, treat missing cache-read telemetry as zero, and keep baseline metric normalization aligned.
-- **Contract and agent reference sync:** skill evaluation/testing contracts and Cautilus Agent references document the new budget views, including source, packaged plugin, and `.agents` copies.
-
-## Explicit Non-Scope
-
-Episode-runner transcript discovery is not included in `v0.17.1`.
-It is tracked separately as GitHub issue #50.
-
-This release does not claim npm publication, public Claude/Codex marketplace publication, a breaking CLI command change, or an install/update contract change.
-
-## Review
-
-- Code critique: full — bounded fresh-eye reviewers found and the implementation fixed missing-cache-read false passes, explicit uncached metric overwrites, Go baseline normalization drift, and stale agent-facing references.
-- Counterweight critique: full — no remaining Act Before Ship concerns; mixed explicit uncached metrics versus conflicting telemetry is valid but deferred.
-- Release critique: full — bounded release reviewers required `0.17.1` version prep, full `v0.17.0..HEAD` narrative coverage, committed critique evidence, and post-prep release gates before tagging.
-- Critique artifacts:
-  - `charness-artifacts/critique/2026-06-22-uncached-token-threshold-critique.md`
-  - `charness-artifacts/critique/2026-06-22-v0.17.1-release-critique.md`
+- previous version: `0.17.0`
+- target version: `0.17.1`
+- git branch: `main`
+- git remote: `origin`
 
 ## Verification
 
@@ -72,12 +51,42 @@ Post-prep release gates run before tag publish:
 - `npm run test:on-demand`: passed.
 - fresh-checkout probes from `.agents/release-adapter.yaml`: passed.
 - `npm run critique:surface-packet:check`: passed.
+- `python3 scripts/check_cli_skill_surface.py --repo-root . --adapter-path .agents/release-adapter.yaml --run-probes --changed-path scripts/check_cli_skill_surface.py --json`: passed.
 
-## Operator Update Path
+The first `publish_release.py --execute` attempt stopped before remote push or tag creation because `scripts/check_cli_skill_surface.py` was missing.
+The wrapper has been added and verified; branch/tag publish and GitHub release creation are pending the next clean-tree publish helper run.
 
-Existing binary users update through the existing tagged release path:
+## Release State
 
-- `cautilus update`
-- or re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`
+- local release mutation: complete
+- branch/tag push: pending after interrupted publish attempt
+- GitHub release record: target URL `https://github.com/corca-ai/cautilus/releases/tag/v0.17.1`; creation pending branch/tag push
+- public release surface verification: pending publish
+- audit narrative: durable record written to `charness-artifacts/release/latest.md`
 
-Repo-local Cautilus Agent/plugin consumers refresh through the host repo update flow, `charness update`, or by re-running `cautilus init` where appropriate.
+## Public Release Verification
+
+- GitHub release publication: pending.
+- Public binary assets: pending GitHub release creation.
+- Public source tag `v0.17.1`: pending.
+
+## Release Adapter Preflight
+
+- Release adapter focused preflight status: `not_required`.
+- Reason: release adapter did not change in the release delta.
+
+## Review Proof
+
+- Code critique: `charness-artifacts/critique/2026-06-22-uncached-token-threshold-critique.md`.
+- Release critique: `charness-artifacts/critique/2026-06-22-v0.17.1-release-critique.md`.
+- Debug review: `charness-artifacts/debug/2026-06-22-release-helper-cli-surface-wrapper.md`.
+
+## Issue Closeout
+
+- Issue #49: closed before release prep.
+- Issue #50: filed for deferred episode-runner transcript discovery.
+
+## User Update Steps
+
+- Operators with an existing install refresh the binary via the install-sh channel after publication: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
+- Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo.
