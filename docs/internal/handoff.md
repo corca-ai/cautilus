@@ -2,44 +2,39 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — Fork B slice 3+4(#10,#9) + gate-router 저blast deadcase 수정 landed/committed(미push, origin 대비 14 ahead). (a)·(b) 둘 다 완료. 남은 eval→det overlap=4(전부 over-flip 위험 큰 deferred shape). 먼저 charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md "After: command-absence"를 읽고, 아래 "Next Session"의 세 방향(C1 Fork B harder shapes / C2 R6/R12 family / C3 push 후 pivot)을 사용자에게 제시한 뒤 선택대로 진행하라.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — v0.17.0 릴리시 완료(공개 검증됨). 다음은 HITL 스펙다운 리뷰(전체 spec 트리). 사용자가 먼저 직접 읽고 코멘트한 뒤 시작하기로 함 — 사용자가 "시작" 신호를 주기 전에는 quality 권고/HITL 루프를 자동 착수하지 말 것. 시작 신호가 오면: 먼저 charness:quality로 specdown 검증 권고를 받고(repo 계약: validation-shaped는 quality 먼저), 그다음 charness:hitl로 docs/specs 전체 트리(contracts/promises/evidence/rules/ledger/audit + index.spec.md)를 chunked/resumable 루프로 리뷰한다.`
 
-이번 세션의 명시적 (a)+(b) 위임은 끝났다. 남은 일은 over-flip 위험이 더 큰 영역이라 방향 선택이 필요하니, mention-only 픽업이면 "Next Session"의 세 방향을 제시하고 사용자 선택을 받아 진행한다(자동으로 한 방향 착수하지 말 것). 새 Fork B 슬라이스는 spec→critique(위임)→impl→measure→review(위임) 풀 사이클 + frozen golden/negative control 필수(이번 세션 패턴).
+이 트리거는 픽업 시 자동 착수가 아니라 **사용자 코멘트 대기**가 기본이다. mention-only 픽업이면 현재 상태만 확인하고, HITL 스펙다운을 사용자가 어떻게 좁히고 싶은지(전체 vs 특정 영역, 무엇을 사람이 판정할지) 물은 뒤 진행한다.
 
 ## Current State
 
-- **Fork B slice 3 (#10 schema-field-persistence → deterministic) landed — `ae369fa7`.** `schemaFieldPersistenceClaim`: persistence verb {persist,persists,persisted} AND ≥2 distinct backtick camelCase field tokens, read from ORIGINAL-case line(라우터가 lowercase하므로 camelCase 신호 보존 위해). judgment guard 공유.
-- **Fork B slice 4 (#9 command-absence → deterministic) landed — `30b79b55` (+ review followup `12ce8128`).** `commandAbsenceClaim`: R12 capability-existence의 역. command-addition absence phrasing {avoid a/the/adding, should not add, should not introduce, does not add} AND backtick token AND command/subcommand. bare should not/does not/without는 제외(danger axis: 진짜 eval claim과 공존).
-- **gate-router 저blast deadcase 수정 landed — `dddfef0f`.** lexicon에 특정 phrase 추가(` not gated `/` not blocked `/` sessions showed `/` runs showed `/` enforces `) + deterministicCLIGatingClaim에 "runs/run without … credential" branch(double-miss 해소). 4 death를 `TestGateRouterCoherence` allowlist→reachable로 이동.
-- 모든 슬라이스 spec→critique(위임)→impl→measure→review(위임) 풀 사이클, 모든 delegated review **clean**. `npm run verify` green, `hooks:check` ready.
-- **미push** (origin/main 대비 14 ahead). claim-source 편집 후 `claims:refresh:all` 반영 완료, 패킷 HEAD와 sync. push 가능 상태.
+- **v0.17.0 릴리시 완료 + 공개 검증됨.** tag `v0.17.0`@`0fa8a4cf` push, `release-artifacts` 워크플로 success(5m14s), 공개 GitHub 릴리시 published(non-draft) + 자산 7개(darwin/linux × arm64/x64 + checksums + sha256 + notes). install.sh smoke green(`--version`→0.17.0, `update`→already current, `ok:true`). minor 범프(additive runner-readiness + specdown 재구조), delegated release critique = ready-to-publish.
+- **origin/main = `0fa8a4cf`** (릴리시 commit). 이 핸드오프 commit만 그 뒤에 있음.
+- Fork B + gate-router 작업(이전 트랙)은 모두 land+push+release. 측정 SOT는 References.
 
-## 측정 핵심 (누적, SOT는 References)
+## Next Session — HITL 스펙다운 (사용자 신호 대기)
 
-- overlap eval→det **6→5→4**(#10, #9 해소). agreeing **36→37→38**. over-correction(det→eval-key=5, det→human-key=0) 신규 0 유지. live `cautilus-eval` 165→164.
-- deadcase 수정: gold-overlap 불변(38/4/5/0, live eval 164), ` enforces `가 dropped됐던 deterministic lint-gate claim 2건 정상 recall 회복(net +2 deterministic). 나머지 4 phrase는 +0.
-- **잔여 overlap eval→det = 4**: deferred shape #1 packet-emission prose, #2 static-taxonomy, #4 status-routing, #8 R6-ish boundary. `human→det` ×9는 R6/R12 scope.
+- **타깃:** `docs/specs` 전체 트리 광범위 리뷰(사용자 선택). proof-spine + typed traceability로 최근 재구조됨. apex `index.spec.md`는 7/7 proven 주장.
+- **경로:** charness:quality(검증 권고) → charness:hitl(chunked/resumable, 청크별 사람 판정). repo 계약상 validation-shaped/operator-reading은 quality를 먼저 거친다.
+- **무엇을 판정?(사용자와 좁힐 것):** (a) promise/claim spec과 proof badge(proven/declared/promised)가 엔진 변경 후에도 정직한가, (b) executable specdown 체크 drift/실패, (c) 전체 트리 청크 리뷰. 사용자가 직접 읽고 코멘트한 결과로 스코프가 정해질 것.
 
-## Next Session — 방향 선택 (자동 착수 금지, 사용자 제시 후 진행)
+## Carry-forward (릴리시로 응결됨, 재개 시 참고)
 
-**C1. Fork B 남은 shape (#1/#2/#4).** 잔여 eval→det 4 중 #8을 제외한 셋. 모두 named-packet/CLI-flag/#10/#9보다 **over-flip 위험 큼**(handoff 기존 평가). 착수 시 각 shape의 over-flip surface 전수 측정 후 tight gold-seed discriminator + frozen golden/negative control, 풀 사이클. #1 packet-prose가 가장 모호(broad positioning과 경계).
-**C2. R6/R12 family 결정.** `human-auditable → deterministic` ×9 + #8 R6-ish boundary는 Fork B discriminator가 아니라 R6/R12 ownership-family 정책 결정. 별도 spec 필요(어디까지 deterministic로 볼지 경계).
-**C3. push 후 pivot.** 14 commit push하고 master-plan의 다른 우선순위로 전환. (push는 outward-facing이니 사용자 확인.)
-
-**deferred gate-router deaths (저blast 아님, 별건):** ` needs `(claimNeedsScenario)는 ubiquitous → case가 lexicon-companion 동반 요구하도록 restructure 필요(bare 추가 금지). provider-failover, provider-caveat도 deferred(`TestGateRouterCoherence` allowlist에 DEATH-로 잔존). 현재 코퍼스 영향 0.
+- **Fork B 잔여 eval→det = 4** (deferred, over-flip 위험 큼): #1 packet-emission prose, #2 static-taxonomy, #4 status-routing, #8 R6-ish boundary. #8은 R6/R12 ownership-family 결정(human→det ×9와 동형), Fork B discriminator 아님.
+- **deferred gate-router deaths**(저blast 아님): ` needs `(claimNeedsScenario, restructure 필요), provider-failover, provider-caveat — `TestGateRouterCoherence` allowlist에 DEATH-로 잔존, 코퍼스 영향 0.
+- 선재 latent 버그(범위 밖): `truncateReviewSourceRefs`(claim_discovery.go) byte-slice excerpt 멀티바이트 rune 분할 가능.
 
 ## Discuss
 
-- 다음 방향은 C1/C2/C3 중 사용자 선택. 권장: 남은 Fork B(C1)는 한계효용 체감+위험 증가 구간이라, C2(R6/R12 family로 human→det ×9까지 한번에)나 C3(push 후 pivot)가 ROI 더 높을 수 있음. 사용자 판단 필요.
-- accepted residual(기록 유지): agent-behavior + flag-effect verb 조합 라인은 flip됨(slice 2). 현재 live 0건. 나타나면 actor-guard.
-- 선재 latent 버그(범위 밖): `truncateReviewSourceRefs`(claim_discovery.go) byte-slice excerpt 멀티바이트 rune 분할 가능.
+- HITL 스펙다운 스코프는 사용자 코멘트로 확정. 자동 착수 금지.
+- Fork B 재개(C1)는 한계효용 체감+위험 증가 구간 — 재개한다면 R6/R12 family(C2)나 남은 #1/#2/#4 중 over-flip surface 측정 후 선택.
 
 ## References
 
-- Fork B 측정(SOT): `charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md`("After: schema-field-persistence", "After: command-absence")
-- 슬라이스 build contract: `charness-artifacts/eval-trust/2026-06-22-fork-b-schema-field-persistence.spec.md`, `2026-06-22-fork-b-command-absence.spec.md`
-- gate-router deadcase: `charness-artifacts/debug/2026-06-21-gate-router-verb-coverage-deaths.md`(LANDED 노트에 저blast batch + deferred 기록)
-- 계약: `docs/contracts/facet-decomposition.md`(Fork B slice 1–4), `docs/contracts/claim-discovery-workflow.md`(lexicon)
-- 엔진: `internal/runtime/claim_discovery.go`(`schemaFieldPersistenceClaim`, `commandAbsenceClaim`, `deterministicCLIGatingClaim`, `defaultClaimLexiconTerms`, `classifyClaimLine` switch)
-- 테스트: `internal/runtime/claim_discovery_test.go`(`TestClaimClassificationForkB*RoutingIsFrozen`, `Test*ClaimGuard`, `TestGateRouterCoherence`, `TestClaimClassificationPortableDefaultsAreFrozen`)
-- ground truth: `charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.json`(answer key, overlap 56)
+- 릴리시 기록: `charness-artifacts/release/latest.md`(v0.17.0, Release Scope/Verification)
+- Fork B 측정 SOT: `charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md`(After: schema-field-persistence / command-absence)
+- 슬라이스 contract: `charness-artifacts/eval-trust/2026-06-22-fork-b-schema-field-persistence.spec.md`, `2026-06-22-fork-b-command-absence.spec.md`
+- gate-router: `charness-artifacts/debug/2026-06-21-gate-router-verb-coverage-deaths.md`(LANDED: 저blast batch + deferred)
+- 계약: `docs/contracts/facet-decomposition.md`(Fork B 1–4), `docs/contracts/claim-discovery-workflow.md`(lexicon)
+- 엔진: `internal/runtime/claim_discovery.go` / 테스트: `internal/runtime/claim_discovery_test.go`
+- specdown 아펙스: `docs/specs/index.spec.md`; ground truth: `charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.json`(overlap 56)
