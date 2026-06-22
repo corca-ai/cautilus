@@ -127,10 +127,14 @@ export function normalizeOptionalThresholds(value, field) {
 	}
 	const thresholds = {};
 	const maxTokens = normalizeNonNegativeNumber(value.max_total_tokens, `${field}.max_total_tokens`);
+	const maxUncachedTokens = normalizeNonNegativeNumber(value.max_uncached_tokens, `${field}.max_uncached_tokens`);
 	const maxDuration = normalizeNonNegativeNumber(value.max_duration_ms, `${field}.max_duration_ms`);
 	const maxCost = normalizeNonNegativeNumber(value.max_cost_usd, `${field}.max_cost_usd`);
 	if (maxTokens !== null) {
 		thresholds.max_total_tokens = maxTokens;
+	}
+	if (maxUncachedTokens !== null) {
+		thresholds.max_uncached_tokens = maxUncachedTokens;
 	}
 	if (maxDuration !== null) {
 		thresholds.max_duration_ms = maxDuration;
@@ -212,6 +216,7 @@ export function normalizeOptionalBaseline(value, field) {
 		summary: normalizeOptionalString(value.summary, `${field}.summary`),
 		outcome: normalizeOptionalString(value.outcome, `${field}.outcome`),
 		metrics: normalizeOptionalMetrics(value.metrics, `${field}.metrics`),
+		telemetry: normalizeOptionalTelemetry(value.telemetry, `${field}.telemetry`),
 	};
 }
 

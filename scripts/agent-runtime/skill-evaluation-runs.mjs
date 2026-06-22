@@ -38,7 +38,17 @@ function statusRank(status) {
 	return STATUS_ORDER.get(status) ?? -1;
 }
 
-function thresholdFindings(metrics, thresholds) {
+function uncachedTokenMetric(metrics, telemetry) {
+	if (typeof metrics?.total_tokens !== "number") {
+		return null;
+	}
+	const cacheRead = typeof telemetry?.cache_read_input_tokens === "number"
+		? telemetry.cache_read_input_tokens
+		: 0;
+	return Math.max(0, metrics.total_tokens - cacheRead);
+}
+
+function thresholdFindings(metrics, thresholds, telemetry = null) {
 	if (!metrics || !thresholds) {
 		return [];
 	}
@@ -58,6 +68,14 @@ function thresholdFindings(metrics, thresholds) {
 				limit: thresholds[thresholdKey],
 			});
 		}
+	}
+	const uncachedTokens = uncachedTokenMetric(metrics, telemetry);
+	if (uncachedTokens !== null && thresholds.max_uncached_tokens !== undefined && uncachedTokens > thresholds.max_uncached_tokens) {
+		findings.push({
+			metric: "uncached_tokens",
+			actual: uncachedTokens,
+			limit: thresholds.max_uncached_tokens,
+		});
 	}
 	return findings;
 }
@@ -168,7 +186,7 @@ function evaluateExecutionRun(run) {
 			intentProfile: buildExecutionIntentProfile(run),
 		};
 	}
-	const findings = thresholdFindings(run.metrics, run.thresholds);
+	const findings = thresholdFindings(run.metrics, run.thresholds, run.telemetry);
 	const degradedByThreshold = outcome === "passed" && findings.length > 0;
 	const summary =
 		degradedByThreshold
@@ -195,6 +213,7 @@ function evaluateBaseline(run) {
 		invoked: run.baseline.invoked,
 		summary: run.baseline.summary || "Baseline comparison run.",
 		metrics: run.baseline.metrics,
+		telemetry: run.baseline.telemetry,
 		outcome: run.baseline.outcome,
 	};
 	return run.evaluationKind === "trigger"

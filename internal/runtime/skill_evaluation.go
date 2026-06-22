@@ -300,9 +300,10 @@ func normalizeSkillEvaluationCase(input map[string]any, index int, now time.Time
 		input["thresholds"],
 		fmt.Sprintf("evaluations[%d].thresholds", index),
 		map[string]bool{
-			"max_total_tokens": true,
-			"max_duration_ms":  true,
-			"max_cost_usd":     false,
+			"max_total_tokens":    true,
+			"max_uncached_tokens": true,
+			"max_duration_ms":     true,
+			"max_cost_usd":        false,
 		},
 	)
 	if err != nil {
@@ -495,6 +496,10 @@ func normalizeSkillBaseline(value any, field string) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+	telemetry, err := normalizeScenarioTelemetry(record["telemetry"], field+".telemetry")
+	if err != nil {
+		return nil, err
+	}
 	result := map[string]any{"invoked": invoked}
 	if summary != nil {
 		result["summary"] = *summary
@@ -504,6 +509,9 @@ func normalizeSkillBaseline(value any, field string) (map[string]any, error) {
 	}
 	if metrics != nil {
 		result["metrics"] = metrics
+	}
+	if telemetry != nil {
+		result["telemetry"] = telemetry
 	}
 	return result, nil
 }
@@ -609,6 +617,7 @@ func evaluateSkillBaseline(evaluation *skillEvaluationCase) (map[string]any, err
 	baseline.invoked = truthy(evaluation.baseline["invoked"])
 	baseline.summary = summary
 	baseline.metrics = asMap(evaluation.baseline["metrics"])
+	baseline.telemetry = asMap(evaluation.baseline["telemetry"])
 	baseline.baseline = nil
 	baseline.sampling = nil
 	if outcome := stringOrEmpty(evaluation.baseline["outcome"]); outcome != "" {
@@ -771,7 +780,7 @@ func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any
 
 	status := *evaluation.outcome
 	summary := evaluation.summary
-	findings := thresholdFindings(evaluation.metrics, evaluation.thresholds)
+	findings := thresholdFindings(evaluation.metrics, evaluation.thresholds, evaluation.telemetry)
 	if status == "passed" && len(findings) > 0 {
 		status = "degraded"
 		parts := make([]string, 0, len(findings))
@@ -789,7 +798,7 @@ func evaluateSkillExecutionCase(evaluation *skillEvaluationCase) (map[string]any
 	return buildEvaluatedSkillResult(evaluation, "execution_quality", status, summary, findings, sampling, baselineComparison, intentProfile), nil
 }
 
-func thresholdFindings(metrics map[string]any, thresholds map[string]any) []any {
+func thresholdFindings(metrics map[string]any, thresholds map[string]any, telemetry map[string]any) []any {
 	if metrics == nil || thresholds == nil {
 		return nil
 	}
@@ -815,7 +824,32 @@ func thresholdFindings(metrics map[string]any, thresholds map[string]any) []any 
 			})
 		}
 	}
+	if actual, actualOK := uncachedTokenMetric(metrics, telemetry); actualOK {
+		if limit, limitOK := toFloat(thresholds["max_uncached_tokens"]); limitOK && actual > limit {
+			findings = append(findings, map[string]any{
+				"metric": "uncached_tokens",
+				"actual": actual,
+				"limit":  thresholds["max_uncached_tokens"],
+			})
+		}
+	}
 	return findings
+}
+
+func uncachedTokenMetric(metrics map[string]any, telemetry map[string]any) (float64, bool) {
+	total, ok := toFloat(metrics["total_tokens"])
+	if !ok {
+		return 0, false
+	}
+	cacheRead := 0.0
+	if value, valueOK := toFloat(telemetry["cache_read_input_tokens"]); valueOK {
+		cacheRead = value
+	}
+	actual := total - cacheRead
+	if actual < 0 {
+		actual = 0
+	}
+	return actual, true
 }
 
 func buildEvaluatedSkillResult(

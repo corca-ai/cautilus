@@ -79,6 +79,90 @@ test("buildSkillEvaluationSummary degrades execution runs that exceed declared r
 	);
 });
 
+test("buildSkillEvaluationSummary supports cache-excluded token thresholds", () => {
+	const summary = buildSkillEvaluationSummary(
+		{
+			schemaVersion: "cautilus.skill_evaluation_inputs.v1",
+			skillId: "impl",
+			evaluations: [
+				{
+					evaluationId: "exec-cache-heavy",
+					targetKind: "public_skill",
+					targetId: "impl",
+					displayName: "impl",
+					evaluationKind: "execution",
+					prompt: "Apply one bounded implementation slice and verify it.",
+					startedAt: "2026-06-22T00:00:00.000Z",
+					invoked: true,
+					outcome: "passed",
+					summary: "The skill completed the task.",
+					metrics: {
+						total_tokens: 9000,
+						duration_ms: 1200,
+					},
+					telemetry: {
+						cache_read_input_tokens: 8500,
+					},
+					thresholds: {
+						max_uncached_tokens: 400,
+					},
+				},
+			],
+		},
+		"2026-06-22T00:30:00.000Z",
+	);
+	assert.equal(summary.recommendation, "defer");
+	assert.equal(summary.evaluationCounts.degraded, 1);
+	assert.deepEqual(summary.evaluations[0].thresholdFindings, [{
+		metric: "uncached_tokens",
+		actual: 500,
+		limit: 400,
+	}]);
+});
+
+test("buildSkillEvaluationSummary does not reuse candidate telemetry for baseline thresholds", () => {
+	const summary = buildSkillEvaluationSummary(
+		{
+			schemaVersion: "cautilus.skill_evaluation_inputs.v1",
+			skillId: "impl",
+			evaluations: [
+				{
+					evaluationId: "exec-baseline-cache-heavy",
+					targetKind: "public_skill",
+					targetId: "impl",
+					displayName: "impl",
+					evaluationKind: "execution",
+					prompt: "Apply one bounded implementation slice and verify it.",
+					startedAt: "2026-06-22T00:00:00.000Z",
+					invoked: true,
+					outcome: "passed",
+					summary: "The skill completed the task.",
+					metrics: {
+						total_tokens: 9000,
+					},
+					telemetry: {
+						cache_read_input_tokens: 8600,
+					},
+					thresholds: {
+						max_uncached_tokens: 500,
+					},
+					baseline: {
+						invoked: true,
+						outcome: "passed",
+						metrics: {
+							total_tokens: 9000,
+						},
+					},
+				},
+			],
+		},
+		"2026-06-22T00:30:00.000Z",
+	);
+	assert.equal(summary.evaluations[0].status, "passed");
+	assert.equal(summary.evaluations[0].baselineComparison.baselineStatus, "degraded");
+	assert.equal(summary.evaluations[0].baselineComparison.relativeStatus, "better");
+});
+
 test("buildSkillEvaluationSummary surfaces sampling stability and baseline comparisons", () => {
 	const summary = buildSkillEvaluationSummary(
 		{

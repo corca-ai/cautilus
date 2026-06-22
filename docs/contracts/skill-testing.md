@@ -46,6 +46,10 @@ Minimum shape:
     - `must_invoke`
     - `must_not_invoke`
   - optional execution `thresholds`
+    - `max_total_tokens`
+    - `max_uncached_tokens`
+    - `max_duration_ms`
+    - `max_cost_usd`
   - optional `requiredSummaryFragments`
   - optional `forbiddenSummaryFragments`
   - optional `requiredCommandFragments`
@@ -63,6 +67,8 @@ The checked-in fixture owns the prompts and expectations.
 Fragment expectations are intentionally runner-level guardrails, not product-owned host log parsing.
 They let a skill fixture say which final summary fragments must or must not appear, and which structured command-log fragments must or must not appear when the selected runner can observe commands.
 If a backend cannot observe commands, command expectations should be treated as unavailable evidence rather than inferred from prose.
+Claude Code command observation includes the parent stream-json transcript and, when a session id is available, that session's on-disk `subagents/*.jsonl` transcripts.
+That keeps `requiredCommandFragments` from undercounting commands performed by delegated subagents while preserving host ownership of raw runtime storage.
 
 Episode audits may inspect structured runner logs when the selected `auditKind` is explicitly declared.
 `subagent_execution_proof` accepts backend-owned evidence that a child actually finished:
@@ -88,6 +94,7 @@ The adapter-owned runner still owns:
 By default, skill tests should exercise the runtime that the local CLI would actually use.
 They should not pin a model unless the adapter command template or a pinned-runtime policy explicitly does so.
 When runtime telemetry is available, downstream summaries should preserve enough runtime identity to report model-runtime changes without making ordinary default-runtime changes fail the test.
+For cache-heavy runtimes, fixtures may use `max_uncached_tokens` instead of `max_total_tokens` so budget respect measures work performed rather than cache-read churn.
 A pinned-runtime mismatch blocks the workflow because the run did not test the declared runtime.
 See [runtime-fingerprint-improvement.md](./runtime-fingerprint-improvement.md).
 

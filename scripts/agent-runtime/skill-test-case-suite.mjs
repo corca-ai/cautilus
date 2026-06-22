@@ -56,7 +56,7 @@ function nonNegativeMetricObject(value, field) {
 	}
 	const record = assertObject(value, field);
 	const normalized = {};
-	for (const key of ["max_total_tokens", "max_duration_ms", "max_cost_usd"]) {
+	for (const key of ["max_total_tokens", "max_uncached_tokens", "max_duration_ms", "max_cost_usd"]) {
 		if (!(key in record)) {
 			continue;
 		}

@@ -50,3 +50,26 @@ func TestNormalizeSkillTestCaseSuiteRejectsConsensusAboveRepeatCount(t *testing.
 		t.Fatal("expected validation error, got nil")
 	}
 }
+
+func TestNormalizeSkillTestCaseSuiteAcceptsCacheExcludedTokenThreshold(t *testing.T) {
+	suite, err := NormalizeSkillTestCaseSuite(map[string]any{
+		"schemaVersion": "cautilus.skill_test_cases.v1",
+		"skillId":       "demo",
+		"cases": []any{
+			map[string]any{
+				"caseId":         "execution-demo",
+				"evaluationKind": "execution",
+				"prompt":         "Use $demo.",
+				"thresholds": map[string]any{
+					"max_uncached_tokens": float64(1000),
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("NormalizeSkillTestCaseSuite returned error: %v", err)
+	}
+	if got := suite.Cases[0].Thresholds["max_uncached_tokens"]; got != 1000 {
+		t.Fatalf("unexpected max_uncached_tokens threshold: %#v", got)
+	}
+}

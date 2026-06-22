@@ -149,9 +149,10 @@ func NormalizeSkillTestCaseSuite(input map[string]any) (*SkillTestCaseSuite, err
 			record["thresholds"],
 			fmt.Sprintf("cases[%d].thresholds", index),
 			map[string]bool{
-				"max_total_tokens": true,
-				"max_duration_ms":  true,
-				"max_cost_usd":     false,
+				"max_total_tokens":    true,
+				"max_uncached_tokens": true,
+				"max_duration_ms":     true,
+				"max_cost_usd":        false,
 			},
 		)
 		if err != nil {

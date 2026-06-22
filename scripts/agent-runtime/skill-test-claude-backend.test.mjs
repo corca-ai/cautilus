@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
 
 import {
 	CLAUDE_CLI_ENV,
 	claudeArgs,
 	extractClaudeCommandText,
+	findClaudeSubagentTranscriptFiles,
 	extractClaudeTelemetry,
 	parseClaudeOutput,
 } from "./skill-test-claude-backend.mjs";
@@ -155,6 +159,60 @@ test("extractClaudeCommandText collects Bash commands from a stream-json transcr
 	const commandText = extractClaudeCommandText(raw);
 	assert.match(commandText, /doctor status/);
 	assert.match(commandText, /git status/);
+});
+
+test("extractClaudeCommandText includes subagent transcript tool calls from the Claude session tree", () => {
+	const projectsRoot = mkdtempSync(join(tmpdir(), "cautilus-claude-projects-"));
+	try {
+		const workspace = "/tmp/cautilus-host";
+		const sessionId = "session-123";
+		const subagentsDir = join(projectsRoot, "-tmp-cautilus-host", sessionId, "subagents");
+		mkdirSync(subagentsDir, { recursive: true });
+		writeFileSync(
+			join(subagentsDir, "agent-a.jsonl"),
+			`${JSON.stringify({
+				type: "assistant",
+				message: { content: [{ type: "tool_use", name: "Read", input: { file_path: "quality-lenses.md" } }] },
+			})}\n`,
+		);
+		const raw = [
+			JSON.stringify({ type: "system", session_id: sessionId }),
+			JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", name: "Bash", input: { command: "git status" } }] } }),
+			JSON.stringify({ type: "result", result: "{}" }),
+		].join("\n");
+		const commandText = extractClaudeCommandText(raw, { workspace, projectsRoot });
+		assert.match(commandText, /git status/);
+		assert.match(commandText, /quality-lenses\.md/);
+	assert.equal(findClaudeSubagentTranscriptFiles(raw, { workspace, projectsRoot }).length, 1);
+	} finally {
+		rmSync(projectsRoot, { recursive: true, force: true });
+	}
+});
+
+test("findClaudeSubagentTranscriptFiles stays scoped to the workspace project when workspace is supplied", () => {
+	const projectsRoot = mkdtempSync(join(tmpdir(), "cautilus-claude-projects-"));
+	try {
+		const sessionId = "session-duplicate";
+		const otherSubagentsDir = join(projectsRoot, "-tmp-other-host", sessionId, "subagents");
+		mkdirSync(otherSubagentsDir, { recursive: true });
+		writeFileSync(join(otherSubagentsDir, "agent-other.jsonl"), "{}\n");
+		const raw = JSON.stringify({ type: "system", session_id: sessionId });
+		assert.deepEqual(findClaudeSubagentTranscriptFiles(raw, {
+			workspace: "/tmp/cautilus-host",
+			projectsRoot,
+		}), []);
+		assert.equal(findClaudeSubagentTranscriptFiles(raw, { projectsRoot }).length, 1);
+	} finally {
+		rmSync(projectsRoot, { recursive: true, force: true });
+	}
+});
+
+test("extractClaudeCommandText returns an empty log for observed stream-json without tool commands", () => {
+	const raw = [
+		JSON.stringify({ type: "system", session_id: "session-no-tools" }),
+		JSON.stringify({ type: "result", result: "{}" }),
+	].join("\n");
+	assert.equal(extractClaudeCommandText(raw), "");
 });
 
 test("extractClaudeCommandText returns null when there is no transcript", () => {

@@ -81,7 +81,13 @@ The first slice consumes one normalized packet with:
     - optional `summary`
     - optional `outcome`
     - optional `metrics`
+    - optional `telemetry`
   - optional `thresholds`
+    - optional `max_total_tokens`
+    - optional `max_uncached_tokens`
+      - evaluated as `metrics.total_tokens - telemetry.cache_read_input_tokens`, with missing cache-read telemetry treated as `0`
+    - optional `max_duration_ms`
+    - optional `max_cost_usd`
   - optional `artifactRefs`
   - optional `intentProfile`
 
@@ -140,6 +146,7 @@ The point is to give the product one stable boundary that can:
 - evaluate skill trigger accuracy
 - evaluate skill execution quality
 - degrade passing runs when declared runtime or token budgets are exceeded
+- let hosts choose `max_uncached_tokens` when cache-read token churn would make `max_total_tokens` too noisy for runtime budget respect
 - chain directly into reusable scenario proposal coverage
 
 ## Current Recommendation Rules

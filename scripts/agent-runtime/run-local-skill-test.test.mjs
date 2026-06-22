@@ -102,6 +102,24 @@ test("skill case suites preserve audit-backed episode turns", () => {
 	assert.equal(suite.cases[0].auditKind, "cautilus_refresh_flow");
 });
 
+test("skill case suites accept cache-excluded token thresholds", () => {
+	const suite = normalizeSkillTestCaseSuite({
+		schemaVersion: "cautilus.skill_test_cases.v1",
+		skillId: "demo",
+		cases: [
+			{
+				caseId: "execution-demo",
+				evaluationKind: "execution",
+				prompt: "Use $demo.",
+				thresholds: {
+					max_uncached_tokens: 1000,
+				},
+			},
+		],
+	});
+	assert.equal(suite.cases[0].thresholds.max_uncached_tokens, 1000);
+});
+
 test("skill case suites accept packet-first audit episodes", () => {
 	const suite = normalizeSkillTestCaseSuite({
 		schemaVersion: "cautilus.skill_test_cases.v1",
