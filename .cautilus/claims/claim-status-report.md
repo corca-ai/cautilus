@@ -7,9 +7,9 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 - Claims packet: .cautilus/claims/evidenced-typed-runners.json
 - Status packet: .cautilus/claims/status-summary.json
-- Candidate count: 548
+- Candidate count: 549
 - Source count: 72
-- Packet source commit: 1fd015db0ec13a56f77a7af9363356dec95396d4
+- Packet source commit: 5578031ae58d22382105e1d1f061cf54aa1c7276
 - Snapshot notice: gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.
 - Git state snapshot: fresh; stale=no
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
@@ -19,25 +19,25 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 
 | Dimension | Counts |
 | --- | --- |
-| Evidence | satisfied: 142, unknown: 406 |
-| Review | agent-reviewed: 192, heuristic: 355, human-reviewed: 1 |
-| Recommended proof | cautilus-eval: 153, deterministic: 248, human-auditable: 147 |
-| Verification readiness | blocked: 33, needs-alignment: 55, needs-scenario: 1, ready-for-proof: 459 |
-| Audience | developer: 419, user: 129 |
+| Evidence | satisfied: 142, unknown: 407 |
+| Review | agent-reviewed: 192, heuristic: 356, human-reviewed: 1 |
+| Recommended proof | cautilus-eval: 153, deterministic: 248, human-auditable: 148 |
+| Verification readiness | blocked: 33, needs-alignment: 55, needs-scenario: 1, ready-for-proof: 460 |
+| Audience | developer: 419, user: 130 |
 
-Review readiness: heuristicClaimsReadyForReview: 315, needsAlignment: 55, needsScenario: 1.
+Review readiness: heuristicClaimsReadyForReview: 316, needsAlignment: 55, needsScenario: 1.
 
 ## Canonical Claim Map
 
 - Map packet: .cautilus/claims/canonical-claim-map.json
 - Input status: current
-- User raw claims: 129
+- User raw claims: 130
 - User claims mapped to canonical user claims: 0
-- User claims not mapped to canonical user claims: 129
-- User mappings recommended for semantic sampling: 129
+- User claims not mapped to canonical user claims: 130
+- User mappings recommended for semantic sampling: 130
 - Maintainer claims mapped to M1-M12: M1: 7, M10: 23, M11: 58, M12: 12, M2: 26, M3: 100, M4: 91, M5: 37, M6: 13, M7: 17, M8: 25, M9: 10
-- All raw claims by disposition: mapped-to-maintainer-canonical: 419, user-review-needed: 129
-- Mapping confidence: high: 78, low: 158, medium: 312
+- All raw claims by disposition: mapped-to-maintainer-canonical: 419, user-review-needed: 130
+- Mapping confidence: high: 78, low: 159, medium: 312
 
 | Maintainer claim | Title | Raw claims | Proof | Evidence | Review |
 | --- | --- | --- | --- | --- | --- |
@@ -71,13 +71,13 @@ Maintainer semantic sampling queue:
 | M11 | Reporting And Review Variants | claim-docs-contracts-adapter-contract-md-234 (medium), claim-docs-master-plan-md-186 (medium), claim-docs-master-plan-md-189 (medium), claim-docs-master-plan-md-199 (medium) |
 | M12 | Scenario History And Proposal Normalization | claim-agents-md-68 (medium), claim-docs-contracts-claim-discovery-workflow-md-689 (medium), claim-docs-contracts-scenario-history-md-3 (medium), claim-docs-contracts-improvement-search-md-45 (medium) |
 
-Catalog review needed for 129 raw claim(s): claim-readme-md-6, claim-readme-md-8, claim-readme-md-9, claim-readme-md-12, claim-readme-md-16, claim-readme-md-18, claim-readme-md-48, claim-readme-md-60, ...
+Catalog review needed for 130 raw claim(s): claim-readme-md-6, claim-readme-md-8, claim-readme-md-9, claim-readme-md-12, claim-readme-md-16, claim-readme-md-18, claim-readme-md-48, claim-readme-md-60, ...
 
-Semantic sampling recommended for 470 raw claim(s): claim-agents-md-12, claim-agents-md-29, claim-agents-md-32, claim-agents-md-68, claim-agents-md-95, claim-agents-md-96, claim-agents-md-101, claim-agents-md-142, ...
+Semantic sampling recommended for 471 raw claim(s): claim-agents-md-12, claim-agents-md-29, claim-agents-md-32, claim-agents-md-68, claim-agents-md-95, claim-agents-md-96, claim-agents-md-101, claim-agents-md-142, ...
 
 ## Next Work
 
-- Human review is still meaningful for human-align-surfaces=55, human-confirm-or-decompose=61, split-or-defer=33.
+- Human review is still meaningful for human-align-surfaces=55, human-confirm-or-decompose=62, split-or-defer=33.
 - Agent next proof work: connect deterministic gates for 108 claim(s), starting with agent-reviewed items before heuristic items.
 - Agent eval work: plan Cautilus eval scenarios for 148 claim(s), after reviewing heuristic labels where needed.
 - Scenario design work remains for 1 claim(s).
@@ -91,10 +91,10 @@ Semantic sampling recommended for 470 raw claim(s): claim-agents-md-12, claim-ag
 | agent-plan-cautilus-eval | agent | 148 | agent-reviewed: 6, heuristic: 142 | unknown: 148 | Draft or select Cautilus eval scenarios for ready eval claims. |
 | agent-design-scenario | agent | 1 | agent-reviewed: 1 | unknown: 1 | Decompose the behavior into a concrete scenario before protected eval planning. |
 | human-align-surfaces | human | 55 | agent-reviewed: 15, heuristic: 40 | unknown: 55 | Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest. |
-| human-confirm-or-decompose | human | 61 | heuristic: 61 | unknown: 61 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
+| human-confirm-or-decompose | human | 62 | heuristic: 62 | unknown: 62 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 33 | agent-reviewed: 26, heuristic: 7 | unknown: 33 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (355) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (356) - Review heuristic labels before spending proof or eval budget.
 
 ### agent-add-deterministic-proof
 
@@ -201,10 +201,10 @@ Confirm, decompose, or accept a human-auditable claim before treating it as prov
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
 | claim-readme-md-60 | README.md:60 | human-auditable | ready-for-proof | heuristic | unknown | Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review. |
+| claim-docs-guides-cli-md-567 | docs/guides/cli.md:567 | human-auditable | ready-for-proof | heuristic | unknown | `doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface. |
 | claim-docs-master-plan-md-154 | docs/master-plan.md:154 | human-auditable | ready-for-proof | heuristic | unknown | the risk-tier policy on top of the acceptance read (acceptance-risk-tier.md (./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories |
 | claim-docs-specs-index-spec-md-101 | docs/specs/index.spec.md:101 | human-auditable | ready-for-proof | heuristic | unknown | Surface Honesty Audit (generated/audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree. |
 | claim-docs-specs-index-spec-md-102 | docs/specs/index.spec.md:102 | human-auditable | ready-for-proof | heuristic | unknown | The binding is semantic, not just structural: for every badge that declares evidence, each evidence file must actually be read by a `cautilus-json-file` check in its leaf spec, so a route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on. |
-| claim-docs-specs-index-spec-md-168 | docs/specs/index.spec.md:168 | human-auditable | ready-for-proof | heuristic | unknown | A `gap` means missing or weak evidence that stays visible. |
 
 ### split-or-defer
 

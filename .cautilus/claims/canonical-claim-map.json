@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:81b7320290d5993e890aaf584bf80c9378d328c834039ae68b746734dd757ea1"
+      "contentHash": "sha256:08b4ac7140049e4b1a878c2bcbad15f6745e445904b55ef15bb5042166eb6188"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
+  "claimsPacketGitCommit": "5578031ae58d22382105e1d1f061cf54aa1c7276",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 548,
+  "claimsPacketCandidateCount": 549,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,23 +200,23 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 548,
-    "userRawClaimCount": 129,
+    "totalRawClaimCount": 549,
+    "userRawClaimCount": 130,
     "userMappedToCanonicalCount": 0,
-    "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 470,
-    "userSemanticReviewRecommendedCount": 129,
+    "userUnmappedCount": 130,
+    "semanticReviewRecommendedCount": 471,
+    "userSemanticReviewRecommendedCount": 130,
     "byDisposition": {
       "mapped-to-maintainer-canonical": 419,
-      "user-review-needed": 129
+      "user-review-needed": 130
     },
     "byAudience": {
       "developer": 419,
-      "user": 129
+      "user": 130
     },
     "byMappingConfidence": {
       "high": 78,
-      "low": 158,
+      "low": 159,
       "medium": 312
     },
     "byUserCanonicalClaimId": {},
@@ -277,8 +277,9 @@
       "claim-docs-guides-cli-md-476",
       "claim-docs-guides-cli-md-484",
       "claim-docs-guides-cli-md-507",
-      "claim-docs-guides-cli-md-543",
-      "claim-docs-guides-cli-md-561",
+      "claim-docs-guides-cli-md-567",
+      "claim-docs-guides-cli-md-584",
+      "claim-docs-guides-cli-md-602",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
       "claim-docs-guides-consumer-adoption-md-29",
@@ -428,8 +429,9 @@
       "claim-docs-guides-cli-md-476",
       "claim-docs-guides-cli-md-484",
       "claim-docs-guides-cli-md-507",
-      "claim-docs-guides-cli-md-543",
-      "claim-docs-guides-cli-md-561",
+      "claim-docs-guides-cli-md-567",
+      "claim-docs-guides-cli-md-584",
+      "claim-docs-guides-cli-md-602",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
       "claim-docs-guides-consumer-adoption-md-29",
@@ -6278,12 +6280,40 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-543",
+      "claimId": "claim-docs-guides-cli-md-567",
+      "summary": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface.",
+      "sourceRefs": [
+        {
+          "path": "docs/guides/cli.md",
+          "line": 567,
+          "excerpt": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface."
+        }
+      ],
+      "disposition": "user-review-needed",
+      "mappingStatus": "needs-catalog-review",
+      "claimAudience": "user",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:13e144bf1954d17283e86f7bfc48312749134b69ff6d4ec5e553cc026201ed94",
+      "canonicalClaimId": null,
+      "score": 0,
+      "runnerUpCanonicalClaimId": null,
+      "runnerUpScore": 0,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": []
+    },
+    {
+      "claimId": "claim-docs-guides-cli-md-584",
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 543,
+          "line": 584,
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\""
         }
       ],
@@ -6306,12 +6336,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-561",
+      "claimId": "claim-docs-guides-cli-md-602",
       "summary": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 561,
+          "line": 602,
           "excerpt": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths."
         }
       ],

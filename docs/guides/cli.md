@@ -528,6 +528,47 @@ cautilus improve propose \
 
 For the GEPA-style bounded prompt search seam layered above that improver — multi-generation reflective mutation, held-out reevaluation, frontier selection — see [improve.md](./improve.md).
 
+## Acceptance
+
+After `improve search` selects a finalist, `cautilus evaluate acceptance` reads that finalist on an optimizer-untouchable final acceptance set to estimate the generalization gap before a human accepts the change ([final-acceptance-set.md](../contracts/final-acceptance-set.md)).
+It excludes and flags any acceptance scenario id that also appears in the search held-out set, reports a reliability flag (a small read is `low_confidence`), and refuses only when no clean scenario remains.
+The read is advisory: it never auto-applies or auto-rejects a candidate.
+
+```bash
+# read a finalist on the acceptance set
+cautilus evaluate acceptance \
+  --search-result /tmp/cautilus-search/result.json \
+  --acceptance-results /tmp/cautilus-acceptance/results.json \
+  --repo-root . \
+  --target prompts/router.md \
+  --history-file /tmp/cautilus-acceptance/history.json \
+  --output /tmp/cautilus-acceptance/report.json
+```
+
+When the adapter declares an `acceptance_risk` policy ([acceptance-risk-tier.md](../contracts/acceptance-risk-tier.md)), each target carries an adapter-named risk tier whose product-owned effect is `required`, `optional`, or `skippable`.
+A `required` target whose read is not a clean, reliable, `accept`-recommending result and that carries no `--waiver <reason>` is blocked (exit 1); `--waiver` records the override in scenario history and proceeds.
+An undeclared target defaults to `optional` and never blocks; the per-tier `reliability_floor` overrides the product default.
+
+The skip-time half of that policy lives on the read-only `doctor` surface: it catches a `required` target that was never read at all.
+
+```bash
+# skip-time readiness gate: block a required target with no recorded read or waiver
+cautilus doctor --repo-root . --history-file /tmp/cautilus-acceptance/history.json
+
+# record an explicit waiver-on-skip for a target whose read is skipped entirely
+cautilus evaluate acceptance waive-skip \
+  --target prompts/router.md \
+  --reason "operator sign-off; acceptance set not yet authored" \
+  --history-file /tmp/cautilus-acceptance/history.json \
+  --repo-root .
+```
+
+When the adapter declares `acceptance_risk`, repo-scope `doctor` adds an `acceptanceReadiness` block and an `acceptance_read_readiness` check: a `required` target with no recorded acceptance read or waiver in `--history-file` is `blocked` and flips `ready` to false (fail-closed when no history is provided); `optional`/default targets read `skip_pending_waiver`, and `skippable` targets are `exempt`.
+`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface.
+
+This command answers:
+"did the finalist generalize to scenarios the search never touched, and has every required acceptance target actually been read or explicitly waived before a human accepts?"
+
 ## Self-dogfood rendering
 
 ```bash

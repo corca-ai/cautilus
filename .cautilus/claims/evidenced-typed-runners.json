@@ -1,8 +1,8 @@
 {
-  "candidateCount": 548,
+  "candidateCount": 549,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
+    "evidenceSupportIdRewriteCount": 1,
     "matchedClaimCount": 548,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
@@ -2450,8 +2450,37 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:13e144bf1954d17283e86f7bfc48312749134b69ff6d4ec5e553cc026201ed94",
+      "claimId": "claim-docs-guides-cli-md-567",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:user",
+        "docs",
+        "human-auditable",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface.",
+          "line": 567,
+          "path": "docs/guides/cli.md"
+        }
+      ],
+      "summary": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "user",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
-      "claimId": "claim-docs-guides-cli-md-543",
+      "claimId": "claim-docs-guides-cli-md-584",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -2462,7 +2491,7 @@
           "supportsClaimIds": [
             "claim-docs-guides-cli-md-474",
             "claim-docs-guides-cli-md-510",
-            "claim-docs-guides-cli-md-543"
+            "claim-docs-guides-cli-md-584"
           ]
         }
       ],
@@ -2481,7 +2510,7 @@
       "sourceRefs": [
         {
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-          "line": 543,
+          "line": 584,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2494,7 +2523,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7c2d49633a39b3338744e1406b13dabbce1d42e37fbaf1c8984e8cfd06317f12",
-      "claimId": "claim-docs-guides-cli-md-561",
+      "claimId": "claim-docs-guides-cli-md-602",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -2503,7 +2532,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-guides-cli-md-561"
+            "claim-docs-guides-cli-md-602"
           ]
         }
       ],
@@ -2522,7 +2551,7 @@
       "sourceRefs": [
         {
           "excerpt": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-          "line": 561,
+          "line": 602,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -5214,7 +5243,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5243,7 +5272,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5272,7 +5301,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5301,7 +5330,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md",
+        "linked-from:docs/guides/cli.md",
         "needs-alignment"
       ],
       "lifecycle": "new",
@@ -5331,7 +5360,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5360,7 +5389,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md",
+        "linked-from:docs/guides/cli.md",
         "needs-alignment"
       ],
       "lifecycle": "new",
@@ -5390,7 +5419,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5419,7 +5448,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md",
+        "linked-from:docs/guides/cli.md",
         "needs-alignment"
       ],
       "lifecycle": "new",
@@ -5449,7 +5478,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5478,7 +5507,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5507,7 +5536,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5536,7 +5565,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5565,7 +5594,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
@@ -5594,7 +5623,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5623,7 +5652,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5652,7 +5681,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5681,7 +5710,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -5710,7 +5739,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
@@ -9138,7 +9167,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md",
+        "linked-from:docs/guides/cli.md",
         "needs-alignment"
       ],
       "lifecycle": "new",
@@ -9168,7 +9197,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -9197,7 +9226,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a deterministic check that the named seam, mechanism, command, or capability exists; route any improves-behavior subclaim to Cautilus eval separately.",
@@ -9226,7 +9255,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -9255,7 +9284,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
@@ -9285,7 +9314,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -9315,7 +9344,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -9344,7 +9373,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md",
+        "linked-from:docs/guides/cli.md",
         "needs-alignment"
       ],
       "lifecycle": "new",
@@ -9374,7 +9403,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -9403,7 +9432,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a deterministic check that the named seam, mechanism, command, or capability exists; route any improves-behavior subclaim to Cautilus eval separately.",
@@ -9432,7 +9461,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -9461,7 +9490,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -9490,7 +9519,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -9519,7 +9548,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/master-plan.md"
+        "linked-from:docs/guides/cli.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a deterministic check that the named seam, mechanism, command, or capability exists; route any improves-behavior subclaim to Cautilus eval separately.",
@@ -18513,7 +18542,7 @@
   "claimSummary": {
     "byClaimAudience": {
       "developer": 419,
-      "user": 129
+      "user": 130
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 80,
@@ -18524,31 +18553,31 @@
       "General product behavior": 1,
       "Improvement and improvement": 56,
       "Packets and reporting": 60,
-      "Quality gates": 36,
+      "Quality gates": 37,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 406
+      "unknown": 407
     },
     "byLifecycle": {
-      "new": 548
+      "new": 549
     },
     "byRecommendedProof": {
       "cautilus-eval": 153,
       "deterministic": 248,
-      "human-auditable": 147
+      "human-auditable": 148
     },
     "byReviewStatus": {
       "agent-reviewed": 192,
-      "heuristic": 355,
+      "heuristic": 356,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 33,
       "needs-alignment": 55,
       "needs-scenario": 1,
-      "ready-for-proof": 459
+      "ready-for-proof": 460
     }
   },
   "discoveryEngine": {
@@ -18747,7 +18776,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
+  "gitCommit": "5578031ae58d22382105e1d1f061cf54aa1c7276",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19409,6 +19438,18 @@
       "depth": 2,
       "from": "docs/guides/cli.md",
       "kind": "markdown-link",
+      "to": "docs/contracts/acceptance-risk-tier.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/guides/cli.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/final-acceptance-set.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/guides/cli.md",
+      "kind": "markdown-link",
       "to": "docs/guides/improve.md"
     },
     {
@@ -19845,12 +19886,6 @@
     },
     {
       "depth": 3,
-      "from": "docs/contracts/reporting.md",
-      "kind": "markdown-link",
-      "to": "docs/contracts/runtime-fingerprint-improvement.md"
-    },
-    {
-      "depth": 3,
       "from": "docs/contracts/acceptance-risk-tier.md",
       "kind": "markdown-link",
       "to": "docs/contracts/final-acceptance-set.md"
@@ -19860,6 +19895,36 @@
       "from": "docs/contracts/acceptance-risk-tier.md",
       "kind": "markdown-link",
       "to": "docs/contracts/improvement-search.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/final-acceptance-set.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/acceptance-risk-tier.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/final-acceptance-set.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/improvement-search.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/final-acceptance-set.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/scenario-history.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/final-acceptance-set.md",
+      "kind": "markdown-link",
+      "to": "docs/specs/promises/improvement.spec.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/reporting.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/runtime-fingerprint-improvement.md"
     },
     {
       "depth": 3,
@@ -19914,30 +19979,6 @@
       "from": "docs/contracts/facet-decomposition.md",
       "kind": "markdown-link",
       "to": "docs/contracts/eval-judge-collaboration.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/contracts/final-acceptance-set.md",
-      "kind": "markdown-link",
-      "to": "docs/contracts/acceptance-risk-tier.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/contracts/final-acceptance-set.md",
-      "kind": "markdown-link",
-      "to": "docs/contracts/improvement-search.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/contracts/final-acceptance-set.md",
-      "kind": "markdown-link",
-      "to": "docs/contracts/scenario-history.md"
-    },
-    {
-      "depth": 3,
-      "from": "docs/contracts/final-acceptance-set.md",
-      "kind": "markdown-link",
-      "to": "docs/specs/promises/improvement.spec.md"
     },
     {
       "depth": 3,
@@ -20696,7 +20737,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:6f3dc37c816ed7f3ff49be6487d99fa9f757055d3cf02b32726c61eff0499ece",
+      "contentHash": "sha256:4f792979141ec52eb5eb1014906b5c4b60e94071539c5d19c5d32978fb4abe7d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20808,7 +20849,7 @@
       "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:c69c8e54e8d3cb6c5f2fc5633492b391aecbdb89a8a227e89e4cd2379b0d2e93",
       "depth": 2,
-      "discoveredFrom": "docs/master-plan.md",
+      "discoveredFrom": "docs/guides/cli.md",
       "kind": "contract",
       "path": "docs/contracts/acceptance-risk-tier.md",
       "status": "read"
@@ -20858,7 +20899,7 @@
       "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:7c3a0257b5559a8db41bcce8057c548205b20702c496ea6965c5ce84a84cba29",
       "depth": 2,
-      "discoveredFrom": "docs/master-plan.md",
+      "discoveredFrom": "docs/guides/cli.md",
       "kind": "contract",
       "path": "docs/contracts/final-acceptance-set.md",
       "status": "read"
