@@ -76,6 +76,9 @@ function parseArgs(argv) {
 		options[field] = readRequiredValue(argv, index + 1, arg);
 		index += 1;
 	}
+	// `acceptance` is intentionally excluded: final-acceptance-set reads must never
+	// feed evidence input or improve, or the acceptance set becomes a selection
+	// channel (see docs/contracts/final-acceptance-set.md Non-Goals).
 	if (
 		options.scenarioMode &&
 		!["iterate", "held_out", "comparison", "full_gate"].includes(options.scenarioMode)

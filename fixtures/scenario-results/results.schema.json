@@ -23,7 +23,8 @@
         "iterate",
         "held_out",
         "comparison",
-        "full_gate"
+        "full_gate",
+        "acceptance"
       ]
     },
     "results": {

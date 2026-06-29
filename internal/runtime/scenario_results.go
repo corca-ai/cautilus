@@ -9,7 +9,10 @@ import (
 )
 
 var (
-	modeValues         = map[string]struct{}{"iterate": {}, "held_out": {}, "comparison": {}, "full_gate": {}}
+	// `acceptance` records a final-acceptance-set read distinctly from `held_out`
+	// so a re-read is visible in history; it is deliberately absent from the
+	// build-evidence-input scenario modes so acceptance results never feed improve.
+	modeValues         = map[string]struct{}{"iterate": {}, "held_out": {}, "comparison": {}, "full_gate": {}, "acceptance": {}}
 	resultStatusValues = map[string]struct{}{
 		"passed": {}, "failed": {}, "improved": {}, "regressed": {}, "unchanged": {}, "noisy": {}, "missing": {},
 	}
