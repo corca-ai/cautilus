@@ -112,9 +112,9 @@ The one implementation-discovery probe is also resolved.
 
 ## Deferred Decisions
 
-- The risk-tier axis that makes acceptance required for high-risk surfaces and skippable for low-risk ones.
+- The risk-tier axis that makes acceptance required for high-risk surfaces and skippable for low-risk ones is now specified in [acceptance-risk-tier.md](./acceptance-risk-tier.md) (Status: Specified, implementation deferred).
   Product owns only the axis/label shape and the contract that a risk tier can mark acceptance `required`, `optional`, or `skippable`; the adapter owns which surfaces are which tier and the numeric thresholds, mirroring the budget-tier ownership split in [improvement-search.md](./improvement-search.md) lines 65-66.
-- Adapter-configurability of the reliability floor, once more than one evaluation backend or a real consumer need for a different floor exists; the floor is a fixed product constant until then.
+- Adapter-configurability of the reliability floor: the trigger condition (a real consumer need for a different floor) is met by the risk-tier slice, so [acceptance-risk-tier.md](./acceptance-risk-tier.md) decides to make the floor an adapter-owned per-tier threshold; the floor stays a fixed product constant until that implementation slice lands.
 - Any reusable-holdout or differential-privacy "thresholdout" mechanism that would let held-out be reused more times before degrading instead of adding a separate set.
 - Multi-finalist acceptance comparison; v1 reads one selected finalist.
 - A defense-in-depth readiness rejection if profile-driven held-out selection is ever added to the search loop; it is unnecessary while search selects held-out from report buckets and results files only.

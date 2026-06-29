@@ -156,7 +156,7 @@ Still open:
 
 - decide whether richer merge heuristics are actually needed — dogfood evidence should justify the next seam rather than adding heuristics speculatively
 - keep every improver surface bounded by held-out, comparison, and structured review gates
-- the risk-tier policy that would make the acceptance read required for high-risk surfaces and skippable for low-risk ones is deferred (mechanism shipped, policy not)
+- the risk-tier policy that would make the acceptance read required for high-risk surfaces and skippable for low-risk ones is now specified in [acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md) (axis, `required`/`optional`/`skippable` effect vocabulary, and product/adapter ownership decided); enforcement implementation is the next slice
 
 Still intentionally excluded:
 
