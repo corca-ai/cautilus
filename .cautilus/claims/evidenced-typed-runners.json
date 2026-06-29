@@ -1,9 +1,9 @@
 {
-  "candidateCount": 529,
+  "candidateCount": 547,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 509,
+    "matchedClaimCount": 529,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -5172,6 +5172,532 @@
       "summary": "Use this page to answer four questions: is my repo ready, what promises did Cautilus find, can I evaluate behavior, and can I improve it safely?",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a5b8772477c2460938ca3c7fd5f2d5c56180d10977425a3bc0476828f4be96ca",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-6",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status.",
+          "line": 6,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a2677ec66589e60f418a64dd44dbe81034decb4113b30e5e222b4ddef3ddd8b6",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-8",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` should let a host declare which acceptance targets must read the optimizer-untouchable acceptance surface before a finalist is accepted, without the product ever defining what counts as high or low risk.",
+          "line": 8,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "`Cautilus` should let a host declare which acceptance targets must read the optimizer-untouchable acceptance surface before a finalist is accepted, without the product ever defining what counts as high or low risk.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:e74e3e4109d34836e956ea2e22b51210f82592caa329191097b757481f4f6b01",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-15",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Today every acceptance target is effectively the same: an operator can accept a finalist having never authored or read an acceptance set, and the only standing signal is the held-out exposure count.",
+          "line": 15,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Today every acceptance target is effectively the same: an operator can accept a finalist having never authored or read an acceptance set, and the only standing signal is the held-out exposure count.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:3bdc5af0298fdb3c04fa66a44b399c8dc2f14dc7a6d864996b529d46ce9d520f",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-16",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The mechanism contract already declares that a skipped acceptance read \"must be recorded as an explicit waiver\" ([final-acceptance-set.md](./final-acceptance-set.md) lines 101-102), but there is no policy axis that distinguishes a target where skipping is a routine, no-cost choice from a target where skipping is a risk that must be surfaced and waived.",
+          "line": 16,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "The mechanism contract already declares that a skipped acceptance read \"must be recorded as an explicit waiver\" ([final-acceptance-set.md](./final-acceptance-set.md) lines 101-102), but there is no policy axis that distinguishes a target where skipping is a routine, no-cost choice from a target where skipping is a risk that must be surfaced and waived.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:b44db70bf92cda97529acc873edfa92a1d74adc9504049fa80f02d375344e431",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-19",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It reuses the *ownership-split discipline* of the search-budget tier — a closed product-owned vocabulary the adapter cannot rename, plus adapter-owned numeric limits — but inverts which vocabulary the product owns: here the product owns the effect labels (not the tier names), while the adapter owns the tier names, which targets map to which tier, and the numeric thresholds ([improvement-search.md](./improvement-search.md) lines 65-66).",
+          "line": 19,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "It reuses the *ownership-split discipline* of the search-budget tier — a closed product-owned vocabulary the adapter cannot rename, plus adapter-owned numeric limits — but inverts which vocabulary the product owns: here the product owns the effect labels (not the tier names), while the adapter owns the tier names, which targets map to which tier, and the numeric thresholds ([improvement-search.md](./improvement-search.md) lines 65-66).",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:6fc75ce4a9969147c002098b0cb0363ebb139c4c2d1f07592362653e52f52ed4",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-23",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A host can declare, per acceptance target, a risk tier whose acceptance effect is `required`, `optional`, or `skippable`, so that accepting a finalist on a `required` target without a clean, reliable acceptance read is blocked unless an explicit waiver is recorded, while a `skippable` target accepts with no acceptance read and no waiver.",
+          "line": 23,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "A host can declare, per acceptance target, a risk tier whose acceptance effect is `required`, `optional`, or `skippable`, so that accepting a finalist on a `required` target without a clean, reliable acceptance read is blocked unless an explicit waiver is recorded, while a `skippable` target accepts with no acceptance read and no waiver.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ff85b1913e05150d67333821980e59b377766005b234d08bd381821aa747d593",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-37",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "that the reliability floor becomes an adapter-owned, optionally per-tier threshold (the deferred trigger condition is now met), while the gap tolerance stays a fixed product constant",
+          "line": 37,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "that the reliability floor becomes an adapter-owned, optionally per-tier threshold (the deferred trigger condition is now met), while the gap tolerance stays a fixed product constant",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:95d3cc72f52698f143325dfc969a3c79a5b0a9d669607879e85bae3e14d5ef40",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-60",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`required` blocks a *silent* accept; a human can still record a waiver and proceed, because rejection and override stay human acts ([final-acceptance-set.md](./final-acceptance-set.md) lines 92-94).",
+          "line": 60,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "`required` blocks a *silent* accept; a human can still record a waiver and proceed, because rejection and override stay human acts ([final-acceptance-set.md](./final-acceptance-set.md) lines 92-94).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:b98a341d143d15b82e737d9dbe64df02e1443daa3f034db27c96954169f89d94",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-66",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This split keeps risk categorization host-owned (the product never ships \"critical\" or \"low-risk\" names) while keeping the accept-step behavior of each effect a product guarantee.",
+          "line": 66,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "This split keeps risk categorization host-owned (the product never ships \"critical\" or \"low-risk\" names) while keeping the accept-step behavior of each effect a product guarantee.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a5715c28a05d9b18dde035cf712b0b37cd6237f5867c3cc9cafdbd16b8e33d59",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-70",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The strictly zero-churn alternative is to default to `skippable` (a skip stays free and silent); this contract deliberately chooses intent-fidelity over zero-churn, because the encoded mechanism intent is that a skip is a visible waiver event, not a free no-op, and `optional` still never blocks the accept step.",
+          "line": 70,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "The strictly zero-churn alternative is to default to `skippable` (a skip stays free and silent); this contract deliberately chooses intent-fidelity over zero-churn, because the encoded mechanism intent is that a skip is a visible waiver event, not a free no-op, and `optional` still never blocks the accept step.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:6efed4a7755dc495b8377e1751c28bc6fd32b812dd0caf1cdf902e6c97e59f92",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-76",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Risk tiers decide *whether* the acceptance read is required, not how large a generalization gap is tolerable; the accept/review boundary should stay uniform so a high-risk tier cannot paradoxically be configured to accept a larger gap, and the mechanism contract deferred only the reliability floor, not the gap tolerance ([final-acceptance-set.md](./final-acceptance-set.md) line 117 and the carried handoff caveat).",
+          "line": 76,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Risk tiers decide *whether* the acceptance read is required, not how large a generalization gap is tolerable; the accept/review boundary should stay uniform so a high-risk tier cannot paradoxically be configured to accept a larger gap, and the mechanism contract deferred only the reliability floor, not the gap tolerance ([final-acceptance-set.md](./final-acceptance-set.md) line 117 and the carried handoff caveat).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:985095aa8132955ed50c1edcd080e3f66b54a2ec2b502c0ead5ac840cf20f6b0",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-88",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status).",
+          "line": 88,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:94b6343b431ae4800c5d30437254dd9a6e8efbc4d9e33c54e25678b717a39fe7",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-102",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Auto-rejecting or auto-applying a candidate on any tier; the read stays advisory.",
+          "line": 102,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Auto-rejecting or auto-applying a candidate on any tier; the read stays advisory.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:2c47b3dffcd2b46a8eca2130175e110b11270b1129666e6881ec03466927dd0b",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-118",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Keep the adapter schema repo-agnostic: the product validates the effect enum and the block shape, never the tier names or target ids beyond shape (AGENTS.md working rules).",
+          "line": 118,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Keep the adapter schema repo-agnostic: the product validates the effect enum and the block shape, never the tier names or target ids beyond shape (AGENTS.md working rules).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:3954975ea0b30e7bbfa643096f4c003a28bfef031171ff9e5c1ec7f4724f1f9e",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-127",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`).",
+          "line": 127,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:d38351e767df15ce8b61cfb72ff90f7c0a9add517ce90abf73621d2f084694d9",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-139",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Policy test: an `optional` (and a default, undeclared) target with no read proceeds and emits a recorded waiver; a `skippable` target with no read proceeds and emits no waiver.",
+          "line": 139,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Policy test: an `optional` (and a default, undeclared) target with no read proceeds and emits a recorded waiver; a `skippable` target with no read proceeds and emits no waiver.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:757f51eddb3ca3087b3a37ae9f31aad587e99018ad38d43907e7b6a077588493",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-175",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`cautilus evaluate acceptance` ([app.go](../../internal/app/app.go) `handleEvalAcceptance`) takes `--target`, `--waiver`, and `--repo-root`/`--adapter[-name]`, surfaces a `riskTier` block and an `acceptanceDecision`, blocks a `required` target whose read is not a clean reliable `accept` and has no waiver (exit 1), and records a `--waiver` override in scenario history (`RecordAcceptanceWaiver`). An invalid adapter fails closed whenever an acceptance-risk policy was intended — a `--target` is named or an `acceptance_risk` block was declared (even one that failed validation) — so an invalid adapter can never silently downgrade a `required` policy, including a `default_effect: required`.",
+          "line": 175,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "`cautilus evaluate acceptance` ([app.go](../../internal/app/app.go) `handleEvalAcceptance`) takes `--target`, `--waiver`, and `--repo-root`/`--adapter[-name]`, surfaces a `riskTier` block and an `acceptanceDecision`, blocks a `required` target whose read is not a clean reliable `accept` and has no waiver (exit 1), and records a `--waiver` override in scenario history (`RecordAcceptanceWaiver`). An invalid adapter fails closed whenever an acceptance-risk policy was intended — a `--target` is named or an `acceptance_risk` block was declared (even one that failed validation) — so an invalid adapter can never silently downgrade a `required` policy, including a `default_effect: required`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:f8ba347ac4a03e4d8f1e5a99ba5d8b62f30ef4dcbf7cbfc2b397db5726317ac4",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-180",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "linked-from:docs/master-plan.md",
+        "needs-scenario"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt.",
+          "line": 180,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt.",
+      "verificationReadiness": "needs-scenario",
+      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
     },
     {
       "claimAudience": "developer",
@@ -14735,7 +15261,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -14766,7 +15292,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -14797,7 +15323,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -14828,7 +15354,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -14858,7 +15384,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
@@ -14887,7 +15413,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
@@ -14916,7 +15442,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
@@ -14945,7 +15471,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/contracts/final-acceptance-set.md",
+        "linked-from:docs/contracts/acceptance-risk-tier.md",
         "needs-alignment"
       ],
       "lifecycle": "new",
@@ -14976,7 +15502,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -15007,7 +15533,7 @@
         "cautilus-eval",
         "contract",
         "dev/repo",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
@@ -15038,7 +15564,7 @@
         "cautilus-eval",
         "contract",
         "dev/repo",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
@@ -15069,7 +15595,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -15100,7 +15626,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -15131,7 +15657,7 @@
         "cautilus-eval",
         "contract",
         "dev/repo",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
@@ -15161,7 +15687,7 @@
         "audience:developer",
         "contract",
         "human-auditable",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
@@ -15191,7 +15717,7 @@
         "audience:developer",
         "cautilus-eval",
         "contract",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
@@ -15221,7 +15747,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
@@ -15250,7 +15776,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
@@ -15279,7 +15805,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add deterministic packet schema, command-output, or golden-file proof for this claim.",
@@ -15308,7 +15834,7 @@
         "audience:developer",
         "contract",
         "deterministic",
-        "linked-from:docs/contracts/final-acceptance-set.md"
+        "linked-from:docs/contracts/acceptance-risk-tier.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep or add a repo-owned unit, lint, build, schema, or CI check for this claim.",
@@ -17958,43 +18484,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 400,
+      "developer": 418,
       "user": 129
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 76,
+      "Adapter and portability": 80,
       "Agent and skill workflow": 117,
-      "Claim discovery and review": 76,
-      "Documentation and contracts": 107,
+      "Claim discovery and review": 79,
+      "Documentation and contracts": 116,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 55,
+      "Improvement and improvement": 56,
       "Packets and reporting": 60,
-      "Quality gates": 34,
+      "Quality gates": 35,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 387
+      "unknown": 405
     },
     "byLifecycle": {
-      "new": 529
+      "new": 547
     },
     "byRecommendedProof": {
-      "cautilus-eval": 153,
-      "deterministic": 246,
-      "human-auditable": 130
+      "cautilus-eval": 154,
+      "deterministic": 247,
+      "human-auditable": 146
     },
     "byReviewStatus": {
       "agent-reviewed": 192,
-      "heuristic": 336,
+      "heuristic": 354,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 33,
-      "needs-alignment": 52,
-      "needs-scenario": 1,
-      "ready-for-proof": 443
+      "needs-alignment": 55,
+      "needs-scenario": 2,
+      "ready-for-proof": 457
     }
   },
   "discoveryEngine": {
@@ -18193,7 +18719,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "db3bd667b0dd354b195f963f228db787cd89a79d",
+  "gitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -18723,7 +19249,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 71,
+  "sourceCount": 72,
   "sourceGraph": [
     {
       "depth": 1,
@@ -18874,6 +19400,12 @@
       "from": "docs/guides/evaluation-process.md",
       "kind": "markdown-link",
       "to": "docs/contracts/reporting.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/master-plan.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/acceptance-risk-tier.md"
     },
     {
       "depth": 2,
@@ -19291,6 +19823,18 @@
     },
     {
       "depth": 3,
+      "from": "docs/contracts/acceptance-risk-tier.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/final-acceptance-set.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/acceptance-risk-tier.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/improvement-search.md"
+    },
+    {
+      "depth": 3,
       "from": "docs/contracts/active-run.md",
       "kind": "markdown-link",
       "to": "docs/contracts/improvement.md"
@@ -19342,6 +19886,12 @@
       "from": "docs/contracts/facet-decomposition.md",
       "kind": "markdown-link",
       "to": "docs/contracts/eval-judge-collaboration.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/final-acceptance-set.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/acceptance-risk-tier.md"
     },
     {
       "depth": 3,
@@ -20168,7 +20718,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:ee7789569e5d1079ae34af732abe35135bd727f0beef009f8d98701f8802b639",
+      "contentHash": "sha256:0555c68ccac071e8e330eb7328df0e4311ada1474668075c6a072b63decaf41b",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20228,6 +20778,16 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:841a1e949412f28895db5bc2b38a47fd98239b0b8253ed23f69a51deea2000e7",
+      "depth": 2,
+      "discoveredFrom": "docs/master-plan.md",
+      "kind": "contract",
+      "path": "docs/contracts/acceptance-risk-tier.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:3543de3e8678f4aa9a92fd905d6dff282eab683ed7a3dd97cee1a6cde6a9d38d",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
@@ -20268,7 +20828,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:02b38536767ea8681435d84eb3ae35f8a0f522ad6d93f8c683e2581895fce494",
+      "contentHash": "sha256:7c3a0257b5559a8db41bcce8057c548205b20702c496ea6965c5ce84a84cba29",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -20630,7 +21190,7 @@
       "claimAudienceSource": "adapter-hint",
       "contentHash": "sha256:b17ed7eb4af77cc05fd03ce0f5f4834d6cb54870767ac6cac6c61c23df980512",
       "depth": 3,
-      "discoveredFrom": "docs/contracts/final-acceptance-set.md",
+      "discoveredFrom": "docs/contracts/acceptance-risk-tier.md",
       "kind": "contract",
       "path": "docs/contracts/improvement-search.md",
       "status": "read"
