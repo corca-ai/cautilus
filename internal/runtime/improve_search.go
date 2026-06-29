@@ -483,6 +483,7 @@ func RunImproveSearch(packet map[string]any, inputFile string, now time.Time) ma
 			"candidateRegistry":       []any{},
 			"generationSummaries":     []any{},
 			"heldOutEvaluationMatrix": []any{},
+			"heldOutScenarioIds":      []any{},
 			"pareto": map[string]any{
 				"frontierCandidateIds":        []any{},
 				"perScenarioBestCandidateIds": []any{},
@@ -496,6 +497,7 @@ func RunImproveSearch(packet map[string]any, inputFile string, now time.Time) ma
 				"generationCount":         0,
 				"mutationInvocationCount": 0,
 				"heldOutEvaluationCount":  0,
+				"heldOutExposureCount":    0,
 				"reviewCheckpointCount":   0,
 				"stopReason":              "blocked",
 			},
@@ -714,6 +716,10 @@ func RunImproveSearch(packet map[string]any, inputFile string, now time.Time) ma
 		"candidateRegistry":       improveSearchCandidateRegistry(candidates),
 		"generationSummaries":     generationSummaries,
 		"heldOutEvaluationMatrix": matrix,
+		// The deduplicated held-out scenario set the search evaluated against,
+		// exposed so a result-only reader (e.g. the acceptance read) can run the
+		// contamination check without recomputing from the matrix.
+		"heldOutScenarioIds": stringSliceToAny(improveSearchScenarioIDs(packet, matrix)),
 		"pareto": map[string]any{
 			"frontierCandidateIds":        stringSliceToAny(frontierIDs),
 			"perScenarioBestCandidateIds": perScenarioBest,
@@ -726,6 +732,9 @@ func RunImproveSearch(packet map[string]any, inputFile string, now time.Time) ma
 			"mutationInvocationCount": mutationInvocations,
 			"mergeInvocationCount":    mergeInvocations,
 			"heldOutEvaluationCount":  len(candidates),
+			// Candidate-scenario held-out evaluations performed: the overfitting-risk
+			// proxy. Distinct from heldOutEvaluationCount, which counts candidates only.
+			"heldOutExposureCount":    len(matrix),
 			"reviewCheckpointCount":   reviewCheckpointCount,
 			"fullGateCheckpointCount": fullGateCheckpointCount,
 			"candidateAttemptCount":   len(candidateGenerationAttempts),

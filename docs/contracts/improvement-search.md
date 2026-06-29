@@ -434,6 +434,8 @@ The packet should include:
   - frontier membership after each generation
 - held-out evaluation matrix
   - per-candidate per-scenario scores
+- held-out scenario ids
+  - the deduplicated held-out scenario set the search evaluated against, exposed so a result-only reader such as the acceptance read can run its contamination check (see [final-acceptance-set.md](./final-acceptance-set.md))
 - Pareto metadata
   - frontier candidate ids
   - per-scenario best candidate ids
@@ -454,6 +456,8 @@ The packet should include:
   - generation count
   - mutation invocation count
   - held-out evaluation count
+  - held-out exposure count
+    - candidate-scenario held-out evaluations performed, the overfitting-risk proxy; distinct from held-out evaluation count, which counts candidates only
   - review checkpoint count
   - stop reason
 - proposal bridge

@@ -3764,6 +3764,15 @@ func TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	if searchTelemetry["fullGateCheckpointCount"] != float64(1) {
 		t.Fatalf("expected one full-gate eval checkpoint, got %#v", searchTelemetry)
 	}
+	// heldOutExposureCount is the candidate-scenario evaluation count, equal to
+	// the held-out matrix length, and the overfitting-risk proxy.
+	if exposure := searchTelemetry["heldOutExposureCount"]; exposure != float64(len(matrix)) {
+		t.Fatalf("heldOutExposureCount should equal matrix length %d, got %#v", len(matrix), exposure)
+	}
+	heldOutScenarioIds, ok := searchResult["heldOutScenarioIds"].([]any)
+	if !ok || len(heldOutScenarioIds) == 0 {
+		t.Fatalf("expected non-empty heldOutScenarioIds, got %#v", searchResult["heldOutScenarioIds"])
+	}
 	checkpointOutcomes := searchResult["checkpointOutcomes"].(map[string]any)
 	fullGate, ok := checkpointOutcomes["fullGate"].([]any)
 	if !ok || len(fullGate) != 1 || fullGate[0].(map[string]any)["status"] != "passed" {

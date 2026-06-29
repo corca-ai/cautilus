@@ -102,11 +102,10 @@ Whether acceptance is required, optional, or skippable for a given behavior surf
 
 ## Probe Questions
 
-The three decide-first probes (reliability floor, command surface, contamination handling) are now resolved in Fixed Decisions.
-One implementation-discovery probe remains.
+The three decide-first probes (reliability floor, command surface, contamination handling) are resolved in Fixed Decisions.
+The one implementation-discovery probe is also resolved.
 
-- Does `cautilus.improve_search_result.v1` already expose the finalist's held-out scenario ids in a directly consumable shape, or must the result add a convenience field?
-  The held-out evaluation matrix already records per-candidate per-scenario scores ([improvement-search.md](./improvement-search.md) lines 435-436), so the ids are derivable; the first slice confirms whether deriving them is ergonomic or a small convenience field is warranted.
+- Resolved: `cautilus.improve_search_result.v1` now exposes a `heldOutScenarioIds` convenience field (the deduplicated held-out scenario set the search evaluated against), so a result-only reader runs the contamination check without recomputing from the held-out matrix.
 
 ## Deferred Decisions
 
