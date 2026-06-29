@@ -142,6 +142,52 @@ func TestBuildAcceptanceReportFullyContaminatedIsBlocked(t *testing.T) {
 	}
 }
 
+func TestBuildAcceptanceReportFallsBackToMatrixForContamination(t *testing.T) {
+	// Older search result without the heldOutScenarioIds convenience field: the
+	// guard must still catch contamination via the recorded matrix scenario ids.
+	searchResult := acceptanceTestSearchResult()
+	delete(searchResult, "heldOutScenarioIds")
+	results := acceptanceResults("acceptance",
+		map[string]any{"scenarioId": "ho-1", "overallScore": float64(100)}, // in matrix -> contaminated
+		map[string]any{"scenarioId": "acc-1", "overallScore": float64(90)},
+	)
+	report, err := BuildAcceptanceReport(searchResult, results, 1, AcceptanceGapTolerance, acceptanceFixedTime())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !acceptanceListContains(asMap(report["contamination"])["contaminatedScenarioIds"], "ho-1") {
+		t.Fatalf("expected matrix fallback to flag ho-1 contaminated, got %#v", report["contamination"])
+	}
+	if acceptanceListContains(report["reasonCodes"], "held_out_set_unverifiable") {
+		t.Fatalf("matrix fallback should be verifiable, got %#v", report["reasonCodes"])
+	}
+}
+
+func TestBuildAcceptanceReportUnverifiableHeldOutForcesReview(t *testing.T) {
+	// No heldOutScenarioIds and no matrix rows: the guard cannot be enforced, so
+	// the read must not recommend accept even with strong-looking acceptance scores.
+	searchResult := map[string]any{
+		"schemaVersion":           contracts.ImproveSearchResultSchema,
+		"selectedCandidateId":     "cand-1",
+		"heldOutEvaluationMatrix": []any{},
+		"searchTelemetry":         map[string]any{"heldOutExposureCount": float64(0)},
+	}
+	results := acceptanceResults("acceptance",
+		map[string]any{"scenarioId": "acc-1", "overallScore": float64(100)},
+		map[string]any{"scenarioId": "acc-2", "overallScore": float64(100)},
+	)
+	report, err := BuildAcceptanceReport(searchResult, results, 1, AcceptanceGapTolerance, acceptanceFixedTime())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if report["recommendation"] == "accept" {
+		t.Fatalf("unverifiable held-out set must not recommend accept, got %#v", report["recommendation"])
+	}
+	if !acceptanceListContains(report["reasonCodes"], "held_out_set_unverifiable") {
+		t.Fatalf("expected held_out_set_unverifiable reason, got %#v", report["reasonCodes"])
+	}
+}
+
 func TestBuildAcceptanceReportRejectsNonAcceptanceMode(t *testing.T) {
 	results := acceptanceResults("held_out",
 		map[string]any{"scenarioId": "acc-1", "overallScore": float64(90)},

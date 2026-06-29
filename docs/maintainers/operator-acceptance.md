@@ -139,6 +139,10 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 | 3.17 | `cautilus improve propose --input ./fixtures/improve/example-input.json` | JSON 출력, exit 0 | 기계적 |
 | 3.18 | `cautilus improve build-artifact --proposal-file ./fixtures/improve/example-proposal.json --input-file ./fixtures/improve/example-input.json` | JSON 출력, exit 0 | 기계적 |
 
+improve search로 finalist를 고른 뒤 변경을 실제로 수용할지 판단할 때는 `cautilus evaluate acceptance`(search 결과 + optimizer-untouchable acceptance set)가 산출하는 `cautilus.acceptance_report.v1`을 advisory 증거로 읽는다.
+일반화 갭, `reliability`(작은 read는 `low_confidence`), 오염 시나리오 목록, held-out 노출 카운트를 보고 사람이 accept/reject를 정한다.
+이 read는 절대 자동 적용하거나 자동 거부하지 않는다 — 계약은 [docs/contracts/final-acceptance-set.md](../contracts/final-acceptance-set.md).
+
 ### 3f. Eval 비교
 
 | # | 명령 | 통과 조건 | 실행자 |

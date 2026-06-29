@@ -44,6 +44,15 @@ func BuildAcceptanceReport(searchResult map[string]any, acceptanceResults map[st
 	}
 
 	heldOutSet := stringSliceOrEmptyRuntime(searchResult["heldOutScenarioIds"])
+	if len(heldOutSet) == 0 {
+		// Fall back to the scenario ids recorded in the held-out matrix so an older
+		// search result without the convenience field is still guarded.
+		heldOutSet = uniqueStrings(matrixScenarioIDs(searchResult["heldOutEvaluationMatrix"]))
+	}
+	// When the held-out set is empty even after the matrix fallback, the
+	// contamination guard cannot be enforced, so the read must not claim a clean
+	// pass. This keeps the guarantee a code fact, not a silent no-op.
+	heldOutSetVerifiable := len(heldOutSet) > 0
 	heldOutSetMembership := make(map[string]struct{}, len(heldOutSet))
 	for _, id := range heldOutSet {
 		heldOutSetMembership[id] = struct{}{}
@@ -130,18 +139,25 @@ func BuildAcceptanceReport(searchResult map[string]any, acceptanceResults map[st
 	if len(contaminatedIDs) > 0 {
 		reasonCodes = append(reasonCodes, "partial_contamination_excluded")
 	}
+	if !heldOutSetVerifiable {
+		reasonCodes = append(reasonCodes, "held_out_set_unverifiable")
+	}
 	if heldOutScoreCount == 0 {
 		reasonCodes = append(reasonCodes, "no_held_out_baseline")
 	}
-
-	recommendation := "accept"
-	switch {
-	case reliability == "low_confidence":
-		recommendation = "review"
+	if reliability == "low_confidence" {
 		reasonCodes = append(reasonCodes, "low_confidence")
-	case gap > gapTolerance:
-		recommendation = "review"
+	}
+	if gap > gapTolerance {
 		reasonCodes = append(reasonCodes, "generalization_gap_exceeds_tolerance")
+	}
+
+	// Accept only when the read is reliable, the contamination guard was
+	// verifiable, a real held-out baseline exists, and the gap is within
+	// tolerance. Anything else needs human review; rejection stays a human act.
+	recommendation := "accept"
+	if reliability == "low_confidence" || !heldOutSetVerifiable || heldOutScoreCount == 0 || gap > gapTolerance {
+		recommendation = "review"
 	}
 
 	report["status"] = "completed"
@@ -163,6 +179,16 @@ func BuildAcceptanceReport(searchResult map[string]any, acceptanceResults map[st
 	report["recommendation"] = recommendation
 	report["reasonCodes"] = reasonCodes
 	return report, nil
+}
+
+func matrixScenarioIDs(matrix any) []string {
+	ids := []string{}
+	for _, raw := range arrayOrEmpty(matrix) {
+		if id := stringOrEmpty(asMap(raw)["scenarioId"]); id != "" {
+			ids = append(ids, id)
+		}
+	}
+	return ids
 }
 
 func acceptanceScenarioIDsFrom(perScenario []any) []any {

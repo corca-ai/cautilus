@@ -1,8 +1,8 @@
 # Final Acceptance Set
 
-Status: Draft spec slice for [issue #51](https://github.com/spilist/cautilus/issues/51).
-This contract is proposed, not yet implemented.
-It was revised after a bounded fresh-eye critique re-grounded the structural guarantee against the actual runtime; see the Critique section.
+Status: Implemented for [issue #51](https://github.com/spilist/cautilus/issues/51).
+The first slice landed: the `acceptance` split and `all` redefinition, the `acceptance` scenario-results mode, `heldOutExposureCount` and `heldOutScenarioIds` on the search result, and the `cautilus evaluate acceptance` command with the contamination guard, generalization-gap report, and `acceptanceReads` history record.
+It was revised after a bounded fresh-eye critique re-grounded the structural guarantee against the actual runtime, then hardened after an implementation review closed an empty-held-out-set bypass; see the Critique section.
 
 `Cautilus` should expose one optional, optimizer-untouchable evaluation surface that detects held-out overfitting in `improve search` before a finalist is accepted.
 
@@ -58,7 +58,7 @@ Whether acceptance is required, optional, or skippable for a given behavior surf
 
 - `final acceptance set`: a set of scenarios, authored after a search finishes, in a separate profile file, that the search loop never queried.
 - `acceptance read`: one human-driven evaluation of the selected finalist on the final acceptance set.
-- `generalization gap`: finalist held-out (valset) score minus finalist acceptance score, reported per-scenario and as an aggregate.
+- `generalization gap`: finalist held-out (valset) aggregate score minus finalist acceptance aggregate score, reported as an aggregate delta; per-scenario scores are listed for both the held-out and acceptance sides, but because the two sets are disjoint there is no paired per-scenario gap.
 - `held-out exposure count`: the number of candidate-scenario held-out evaluations the search performed to produce the finalist, used as an overfitting-risk proxy.
 - `reliability flag`: an honesty marker (`reliable` or `low_confidence`) derived from the clean (non-contaminated) acceptance-set size, since a small single read is unbiased but high-variance.
 - `contamination`: any acceptance scenario id that also appears in the finalist's recorded held-out scenario set, which would void the "never queried" property.
@@ -87,7 +87,8 @@ Whether acceptance is required, optional, or skippable for a given behavior surf
 - `split: all` resolves to the union of `train` and `test` only, and never includes `acceptance`.
   This is a change to live `SelectProfileScenarioIDs` behavior ([scenario_history.go](../../internal/runtime/scenario_history.go) line 88) and its existing test, made deliberately, and it settles the open `split: all` probe question in [scenario-history.md](./scenario-history.md) line 234 for the acceptance case.
 - Acceptance is a first-class selectable split for the read command, but it is structurally excluded from the search input-assembly path; the two flow through the same `split` vocabulary but different code paths.
-- The generalization gap is reported per-scenario and as an aggregate, consistent with the product's existing per-scenario Pareto anti-Goodhart stance.
+- The generalization gap is reported as an aggregate delta, with per-scenario scores listed for both the held-out and acceptance sides.
+  Because the held-out and acceptance sets are disjoint, there is no paired per-scenario gap; the per-scenario score lists preserve the product's per-scenario anti-Goodhart stance without inventing a meaningless cross-set diff.
 - The acceptance read is advisory.
   It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate.
   `accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`.
@@ -151,7 +152,7 @@ The one implementation-discovery probe is also resolved.
 ## Success Criteria
 
 - An acceptance scenario id that also appears in the finalist's recorded held-out set is excluded from the gap and listed as contaminated, and a fully-contaminated read is refused, proven by an executable test that injects the overlap into the real held-out inputs.
-- A maintainer can produce a durable acceptance report for a selected finalist that states the per-scenario and aggregate generalization gap, the reliability flag, and the held-out exposure count.
+- A maintainer can produce a durable acceptance report for a selected finalist that states the aggregate generalization gap, per-scenario scores for both sides, the reliability flag, and the held-out exposure count.
 - A small acceptance set yields a report explicitly marked `low_confidence` rather than a falsely confident pass.
 - The held-out exposure count is visible from the search result even when no acceptance set is read, and it counts candidate-scenario evaluations rather than candidates.
 - A second acceptance read is distinguishable in scenario history because it is recorded under the `acceptance` mode.
@@ -160,7 +161,7 @@ The one implementation-discovery probe is also resolved.
 
 - Runtime test: an acceptance read with partial overlap excludes the contaminated ids, lists them in the report, and computes the gap on the clean remainder; an acceptance read with full overlap (no clean scenario) is refused with a blocked result. The overlap is injected via the report buckets or held-out results the search actually consumed, so the test is non-vacuous.
 - Runtime test: `split: all` selection returns the union of `train` and `test` and excludes every `acceptance` scenario, updating the existing `SelectProfileScenarioIDs` test deliberately.
-- CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap` (per-scenario and aggregate), `reliability`, and `heldOutExposureCount`.
+- CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap.aggregate`, per-scenario score lists, `reliability`, and `heldOutExposureCount`.
 - Negative test: an acceptance set below the provisional reliability floor produces `reliability: low_confidence`.
 - History test: running the acceptance read appends a distinct `acceptanceReads` entry, so a re-read is distinguishable and never blends into a held-out run.
 - Result test: `heldOutExposureCount` on the search result equals the summed held-out evaluation matrix and differs from `heldOutEvaluationCount` when more than one held-out scenario exists.
@@ -183,6 +184,9 @@ Resolved in this revision:
 
 A subsequent decide-first pass resolved the three carried probes: the reliability floor is a single fixed product constant (provisional value in code, adapter-configurability deferred), the read ships as a new `cautilus evaluate acceptance` subcommand, and contamination degrades gracefully (exclude and flag the overlap, refuse only when no clean scenario remains).
 The one residual probe is whether the search result already exposes the finalist's held-out scenario ids ergonomically or needs a small convenience field.
+
+A bounded fresh-eye review of the implementation then found and closed an empty-held-out-set bypass: when `heldOutScenarioIds` was absent or empty the contamination guard silently passed and the read returned a confident `accept`.
+The read now falls back to the held-out matrix scenario ids, marks the read `held_out_set_unverifiable` and blocks `accept` when the set is still empty, and also blocks `accept` when no held-out baseline exists so a missing baseline cannot masquerade as a clean negative gap.
 
 ## Canonical Artifact
 
