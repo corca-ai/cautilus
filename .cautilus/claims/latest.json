@@ -1,9 +1,9 @@
 {
-  "candidateCount": 495,
+  "candidateCount": 509,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 1,
-    "matchedClaimCount": 492,
+    "evidenceSupportIdRewriteCount": 0,
+    "matchedClaimCount": 508,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -10066,7 +10066,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:011098fa8f0fb74f38fea92d734fd20899794fa138b4bd51484b07c3dd9a2f5b",
-      "claimId": "claim-docs-contracts-scenario-history-md-188",
+      "claimId": "claim-docs-contracts-scenario-history-md-191",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10085,7 +10085,7 @@
       "sourceRefs": [
         {
           "excerpt": "Compare runs often need a frozen baseline side so only the candidate reruns.",
-          "line": 188,
+          "line": 191,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -10097,7 +10097,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1bba6b63fa066b1a5223f3bde4c980d05fd1f8fe05764301bba69539d6d04835",
-      "claimId": "claim-docs-contracts-scenario-history-md-251",
+      "claimId": "claim-docs-contracts-scenario-history-md-255",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10114,7 +10114,7 @@
       "sourceRefs": [
         {
           "excerpt": "**Part 2 — broader compare ownership.** Extend history / compare hooks beyond the single profile-backed eval path so `evaluate review variants`, profile-less evaluate fixture runs, and skill evaluation can also update history and materialize compare artifacts.",
-          "line": 251,
+          "line": 255,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -10126,7 +10126,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:63d794591f8ee5d28ebce31b35a637ebca6fd303171b5aee0f600270408202da",
-      "claimId": "claim-docs-contracts-scenario-history-md-295",
+      "claimId": "claim-docs-contracts-scenario-history-md-299",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10143,7 +10143,7 @@
       "sourceRefs": [
         {
           "excerpt": "Add a standing lint (`lint:history-compare-ownership` or folded into an existing check) that verifies `docs/contracts/scenario-history.md` and `docs/contracts/active-run.md` agree on cache-key structure, and that each entry point participating in history has a matching row in `current-product.spec.md`.",
-          "line": 295,
+          "line": 299,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -10155,7 +10155,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:343a5d623c6429fb07ad8c6010324ec777d2c214046990a27723be95b35285e3",
-      "claimId": "claim-docs-contracts-scenario-history-md-302",
+      "claimId": "claim-docs-contracts-scenario-history-md-306",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -10174,7 +10174,7 @@
       "sourceRefs": [
         {
           "excerpt": "Scenario-history is archetype-neutral and stays that way unless a skill-specific graduation policy is introduced.",
-          "line": 302,
+          "line": 306,
           "path": "docs/contracts/scenario-history.md"
         }
       ],
@@ -13282,6 +13282,416 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ea6079091988cb153c2f7a8a9243cc9fd6fbb0a072e5ca5747805434e2350f63",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-18",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Repeatedly querying the same valset through the selection channel turns it into a de facto training signal over many generations, so the selected finalist's held-out score can drift away from true generalization.",
+          "line": 18,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "Repeatedly querying the same valset through the selection channel turns it into a de facto training signal over many generations, so the selected finalist's held-out score can drift away from true generalization.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a715e5b60aacc4b785d768c11b7c95a867f22eb3567a767aa9632dd2800aea34",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-39",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A maintainer can read one optimizer-untouchable acceptance surface exactly once, at the human accept/reject step, to report the point-delta generalization gap between the selected finalist's valset score and its acceptance score, with an honest reliability flag, and to see how heavily held-out was queried to produce that finalist.",
+          "line": 39,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "A maintainer can read one optimizer-untouchable acceptance surface exactly once, at the human accept/reject step, to report the point-delta generalization gap between the selected finalist's valset score and its acceptance score, with an honest reliability flag, and to see how heavily held-out was queried to produce that finalist.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:65fd53ff7fbdde38a627b611415a4e6176a6dcfd1b6ee966a25ff48a70219256",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-46",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a deterministic check that the named seam, mechanism, command, or capability exists; route any improves-behavior subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "This slice ships the acceptance mechanism, not the risk-tier policy that decides when it is mandatory.",
+          "line": 46,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "This slice ships the acceptance mechanism, not the risk-tier policy that decides when it is mandatory.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim states the product ships a named seam, mechanism, command, or capability; that the named capability exists is a static repo-owned check. Whether it improves behavior is a separate eval facet."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:11f103c2ada3fa8a601b1a73311cdc64b810ee86421a965413ede3ca90195023",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-50",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "one human-driven read command that evaluates the selected finalist on the acceptance set",
+          "line": 50,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "one human-driven read command that evaluates the selected finalist on the acceptance set",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:3f0d762c6f453c91b1ef642cc80a8f414f979b1ab79b52ff7f33c839a8bfe101",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-68",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A search run completes and emits a finalist plus a `cautilus.improve_search_result.v1` record that now also surfaces the held-out exposure count and the finalist's held-out scenario ids.",
+          "line": 68,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "A search run completes and emits a finalist plus a `cautilus.improve_search_result.v1` record that now also surfaces the held-out exposure count and the finalist's held-out scenario ids.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:42dd4a3e4393e02052e323622a4e9a0b21ca92b10dcba91daaf20cfdfbda4bc9",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-70",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/prompt",
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The maintainer runs the acceptance read once, passing the `cautilus.improve_search_result.v1` record so the command can recover the selected finalist's prompt snapshot and its recorded held-out scenario ids.",
+          "line": 70,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "The maintainer runs the acceptance read once, passing the `cautilus.improve_search_result.v1` record so the command can recover the selected finalist's prompt snapshot and its recorded held-out scenario ids.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:b47da52a7f65747316aefc416c5134b52afdf4ec5f90abc337c1a831a482870e",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-72",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read as a distinct `acceptanceReads` entry in scenario history.",
+          "line": 72,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "`Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read as a distinct `acceptanceReads` entry in scenario history.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:bc34c1b3b2d2815bdaa379b2b9c10d042b420b33216233519f9e86cedb01b87a",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-78",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Splitting a scarce, expensive-to-author held-out set three ways thins each split and trades known selection power for a noisy detector; authoring fresh boundary cases after search keeps the \"never queried\" guarantee and leaves held-out selection power intact.",
+          "line": 78,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "Splitting a scarce, expensive-to-author held-out set three ways thins each split and trades known selection power for a noisy detector; authoring fresh boundary cases after search keeps the \"never queried\" guarantee and leaves held-out selection power intact.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:18aae8682da8873957cf5b36c2ff3b2ad956f81b2e5e576d840c52378e969dae",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-82",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The acceptance read must intersect its acceptance scenario ids with the finalist's recorded held-out scenario ids (from `cautilus.improve_search_result.v1`), exclude any contaminated ids from the gap, list them explicitly in the report, and refuse with a blocked result only when no clean acceptance scenario remains.",
+          "line": 82,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "The acceptance read must intersect its acceptance scenario ids with the finalist's recorded held-out scenario ids (from `cautilus.improve_search_result.v1`), exclude any contaminated ids from the gap, list them explicitly in the report, and refuse with a blocked result only when no clean acceptance scenario remains.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:35ccd9e0d84d054c895b9cd3a5f34d9a9b8fa70a8c922871c9dca095c382cab2",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-85",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a deterministic check that the named seam, mechanism, command, or capability exists; route any improves-behavior subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The acceptance read ships as a new `cautilus evaluate acceptance` subcommand in the existing `evaluate` command family, matching the registered `evaluate fixture` and `evaluate review variants` subcommands ([app.go](../../internal/app/app.go) lines 196 and 240).",
+          "line": 85,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "The acceptance read ships as a new `cautilus evaluate acceptance` subcommand in the existing `evaluate` command family, matching the registered `evaluate fixture` and `evaluate review variants` subcommands ([app.go](../../internal/app/app.go) lines 196 and 240).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim states the product ships a named seam, mechanism, command, or capability; that the named capability exists is a static repo-owned check. Whether it improves behavior is a separate eval facet."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:972496947f1465755f133532529c28fa29a29a60e9d92f4f294cc4e0d30939de",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-93",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate.",
+          "line": 93,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:5c0e5f1a104425fcc592e06c546ce00ecf51e09655cd18016303c26d58a4169f",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-94",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`.",
+          "line": 94,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "`accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:4c93fec8e7723c69c58e06f3dcdc1d1f17c779ee113eb99ac99c9886c4694c95",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-164",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap.aggregate`, per-scenario score lists, `reliability`, and `heldOutExposureCount`.",
+          "line": 164,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap.aggregate`, per-scenario score lists, `reliability`, and `heldOutExposureCount`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a77f4b7fe0431dd7aa83c3211f4f37a7f3f26687bc1cbe97b9550f50ace89f5f",
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-185",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/scenario-history.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add a deterministic check that the named seam, mechanism, command, or capability exists; route any improves-behavior subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A subsequent decide-first pass resolved the three carried probes: the reliability floor is a single fixed product constant (provisional value in code, adapter-configurability deferred), the read ships as a new `cautilus evaluate acceptance` subcommand, and contamination degrades gracefully (exclude and flag the overlap, refuse only when no clean scenario remains).",
+          "line": 185,
+          "path": "docs/contracts/final-acceptance-set.md"
+        }
+      ],
+      "summary": "A subsequent decide-first pass resolved the three carried probes: the reliability floor is a single fixed product constant (provisional value in code, adapter-configurability deferred), the read ships as a new `cautilus evaluate acceptance` subcommand, and contamination degrades gracefully (exclude and flag the overlap, refuse only when no clean scenario remains).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim states the product ships a named seam, mechanism, command, or capability; that the named capability exists is a static repo-owned check. Whether it improves behavior is a separate eval facet."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4bf05eb3e53c6a353bfe38c7164dc1470ffcf48c26a7e9e214a868eb8d863781",
       "claimId": "claim-docs-contracts-improvement-md-27",
       "claimSemanticGroup": "Packets and reporting",
@@ -15693,43 +16103,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 366,
+      "developer": 380,
       "user": 129
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 75,
+      "Adapter and portability": 76,
       "Agent and skill workflow": 115,
       "Claim discovery and review": 74,
-      "Documentation and contracts": 97,
+      "Documentation and contracts": 104,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 39,
-      "Packets and reporting": 57,
+      "Improvement and improvement": 44,
+      "Packets and reporting": 58,
       "Quality gates": 34,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 52,
       "stale": 15,
-      "unknown": 428
+      "unknown": 442
     },
     "byLifecycle": {
-      "new": 495
+      "new": 509
     },
     "byRecommendedProof": {
-      "cautilus-eval": 164,
-      "deterministic": 208,
-      "human-auditable": 123
+      "cautilus-eval": 165,
+      "deterministic": 212,
+      "human-auditable": 132
     },
     "byReviewStatus": {
       "agent-reviewed": 111,
-      "heuristic": 384
+      "heuristic": 398
     },
     "byVerificationReadiness": {
       "blocked": 15,
-      "needs-alignment": 59,
+      "needs-alignment": 61,
       "needs-scenario": 10,
-      "ready-for-proof": 411
+      "ready-for-proof": 423
     }
   },
   "discoveryEngine": {
@@ -15928,7 +16338,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "12ce812839f464ae7636b739f1b64fe130ccfb79",
+  "gitCommit": "37fc1570c4d984f98e537cfaf4a911093ed9e0f5",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -16309,7 +16719,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 69,
+  "sourceCount": 70,
   "sourceGraph": [
     {
       "depth": 1,
@@ -16928,6 +17338,12 @@
       "from": "docs/contracts/runner-readiness.md",
       "kind": "markdown-link",
       "to": "docs/contracts/runner-verification.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/scenario-history.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/final-acceptance-set.md"
     },
     {
       "depth": 3,
@@ -17874,7 +18290,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:046ed0104d0751df18d5811b23912d4473f674417d3b06ab69713de91eb526ae",
+      "contentHash": "sha256:538faad1874b0032d17a88f99ceeb5d34878814e0424bccf9d9e0575fbeba815",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -18169,6 +18585,16 @@
       "discoveredFrom": "docs/contracts/claim-discovery-workflow.md",
       "kind": "contract",
       "path": "docs/contracts/claim-extraction-template.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:02b38536767ea8681435d84eb3ae35f8a0f522ad6d93f8c683e2581895fce494",
+      "depth": 3,
+      "discoveredFrom": "docs/contracts/scenario-history.md",
+      "kind": "contract",
+      "path": "docs/contracts/final-acceptance-set.md",
       "status": "read"
     },
     {
