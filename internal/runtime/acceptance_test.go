@@ -199,14 +199,17 @@ func TestBuildAcceptanceReportRejectsNonAcceptanceMode(t *testing.T) {
 
 func TestRecordAcceptanceReadMakesRereadVisible(t *testing.T) {
 	history := map[string]any{"schemaVersion": contracts.ScenarioHistorySchema, "profileId": "default"}
-	history = RecordAcceptanceRead(history, "cand-1", []string{"acc-1", "acc-2"}, "2026-06-29T00:00:00Z")
-	history = RecordAcceptanceRead(history, "cand-1", []string{"acc-1", "acc-2"}, "2026-06-29T01:00:00Z")
+	history = RecordAcceptanceRead(history, "cand-1", "prompts/router.md", []string{"acc-1", "acc-2"}, "2026-06-29T00:00:00Z")
+	history = RecordAcceptanceRead(history, "cand-1", "prompts/router.md", []string{"acc-1", "acc-2"}, "2026-06-29T01:00:00Z")
 	reads := arrayOrEmpty(history["acceptanceReads"])
 	if len(reads) != 2 {
 		t.Fatalf("expected two visible acceptance reads, got %d: %#v", len(reads), reads)
 	}
 	if asMap(reads[0])["timestamp"] == asMap(reads[1])["timestamp"] {
 		t.Fatalf("expected distinct read timestamps")
+	}
+	if asMap(reads[0])["targetId"] != "prompts/router.md" {
+		t.Fatalf("expected read to carry its target id, got %#v", asMap(reads[0])["targetId"])
 	}
 }
 

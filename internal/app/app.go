@@ -199,6 +199,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleEvalEvaluate
 	case "evaluate acceptance":
 		return handleEvalAcceptance
+	case "evaluate acceptance waive-skip":
+		return handleEvalAcceptanceWaiveSkip
 	case "evaluate skill-experiment":
 		return handleEvalSkillExperimentCompare
 	case "discover live-targets":
@@ -429,6 +431,7 @@ type doctorArgs struct {
 	repoRoot    *string
 	adapter     *string
 	adapterName *string
+	historyFile *string
 	scope       string
 	nextAction  bool
 }
@@ -795,9 +798,14 @@ func handleDoctor(repoRoot string, cwd string, args []string, stdout io.Writer, 
 	resolvedRepoRoot := resolveRepoRoot(cwd, options.repoRoot)
 	var result map[string]any
 	var exitCode int
+	var resolvedHistory *string
+	if options.historyFile != nil && strings.TrimSpace(*options.historyFile) != "" {
+		path := resolvePath(cwd, *options.historyFile)
+		resolvedHistory = &path
+	}
 	switch options.scope {
 	case "repo":
-		result, exitCode, err = runtime.DoctorRepo(resolvedRepoRoot, options.adapter, options.adapterName)
+		result, exitCode, err = runtime.DoctorRepo(resolvedRepoRoot, options.adapter, options.adapterName, resolvedHistory)
 	case "agent-surface":
 		result, exitCode, err = runtime.DoctorAgentSurface(resolvedRepoRoot)
 	default:
@@ -1397,6 +1405,12 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 		acceptanceRisk, _ = adapterPayload.Data["acceptance_risk"].(map[string]any)
 	}
 	resolved := runtime.ResolveAcceptanceRiskTier(acceptanceRisk, target)
+	if strings.TrimSpace(waiverReason) != "" && resolved.Effect != runtime.AcceptanceEffectRequired {
+		// Only a `required` target ever blocks here, so a --waiver on any other
+		// effect would be silently dropped. Surface it rather than swallow it; a
+		// skipped optional read is recorded with `evaluate acceptance waive-skip`.
+		fmt.Fprintf(stderr, "warning: --waiver has no effect for a %q target (only `required` targets block); to record a skipped optional read use cautilus evaluate acceptance waive-skip\n", resolved.Effect)
+	}
 
 	report, err := runtime.BuildAcceptanceReport(searchResult, acceptanceResults, resolved.ReliabilityFloor, runtime.AcceptanceGapTolerance, time.Now())
 	if err != nil {
@@ -1439,7 +1453,10 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 		}
 	}
 
-	if historyPath != nil {
+	// Only persist the read when the accept step proceeds. A blocked required
+	// target leaves no trace in history, so the skip-time readiness gate reads a
+	// recorded read as a genuine proceed rather than an attempt that was rejected.
+	if historyPath != nil && !blocked {
 		resolvedHistory := resolvePath(cwd, *historyPath)
 		history, err := readJSONObject(resolvedHistory)
 		if err != nil {
@@ -1447,7 +1464,7 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 			return 1
 		}
 		candidateID, _ := report["selectedCandidateId"].(string)
-		history = runtime.RecordAcceptanceRead(history, candidateID, acceptanceReportCleanScenarioIDs(report), time.Now().UTC().Format(time.RFC3339Nano))
+		history = runtime.RecordAcceptanceRead(history, candidateID, target, acceptanceReportCleanScenarioIDs(report), time.Now().UTC().Format(time.RFC3339Nano))
 		if waived {
 			history = runtime.RecordAcceptanceWaiver(history, candidateID, target, resolved.Tier, resolved.Effect, waiverReason, time.Now().UTC().Format(time.RFC3339Nano))
 		}
@@ -1462,6 +1479,163 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 	}
 	if blocked {
 		fmt.Fprintf(stderr, "acceptance blocked: target %q (tier %q, effect required) was not backed by a clean, reliable, accept-recommending read and no --waiver was given\n", target, resolved.Tier)
+		return 1
+	}
+	return 0
+}
+
+// handleEvalAcceptanceWaiveSkip records an explicit waiver-on-skip for an
+// acceptance target whose read is skipped entirely, so the skip is auditable in
+// scenario history and the `cautilus doctor` skip-gate clears for that target. It
+// never runs an acceptance read and never accepts or rejects a candidate.
+//
+//nolint:errcheck // CLI stderr/stdout reporting is best-effort.
+func handleEvalAcceptanceWaiveSkip(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	var historyPath, outputPath *string
+	var repoRootFlag, adapterFlag, adapterNameFlag *string
+	var target, reason, candidateID string
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--target":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			target = value
+		case "--reason":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			reason = value
+		case "--history-file":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			historyPath = &value
+		case "--candidate":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			candidateID = value
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			outputPath = &value
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			repoRootFlag = &value
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			adapterFlag = &value
+		case "--adapter-name":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			adapterNameFlag = &value
+		default:
+			fmt.Fprintf(stderr, "unknown argument: %s\n", arg)
+			return 1
+		}
+	}
+	if strings.TrimSpace(target) == "" {
+		fmt.Fprintf(stderr, "--target is required\n")
+		return 1
+	}
+	if strings.TrimSpace(reason) == "" {
+		fmt.Fprintf(stderr, "--reason is required\n")
+		return 1
+	}
+	if historyPath == nil || strings.TrimSpace(*historyPath) == "" {
+		fmt.Fprintf(stderr, "--history-file is required\n")
+		return 1
+	}
+	if adapterFlag != nil && adapterNameFlag != nil {
+		fmt.Fprintf(stderr, "use either --adapter or --adapter-name, not both\n")
+		return 1
+	}
+
+	// A waive-skip always names a target, so an acceptance-risk policy is always
+	// intended: an invalid adapter must fail closed rather than silently resolve
+	// the target to the optional default and under-record the waiver's tier.
+	adapterPayload, err := runtime.LoadAdapter(resolveRepoRoot(cwd, repoRootFlag), adapterFlag, adapterNameFlag)
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to load adapter: %s\n", err)
+		return 1
+	}
+	if adapterPayload.Found && !adapterPayload.Valid {
+		fmt.Fprintf(stderr, "adapter is invalid; fix it before recording an acceptance waiver:\n")
+		for _, message := range adapterPayload.Errors {
+			fmt.Fprintf(stderr, "  - %s\n", message)
+		}
+		return 1
+	}
+	var acceptanceRisk map[string]any
+	if adapterPayload.Data != nil {
+		acceptanceRisk, _ = adapterPayload.Data["acceptance_risk"].(map[string]any)
+	}
+	resolved := runtime.ResolveAcceptanceRiskTier(acceptanceRisk, target)
+
+	resolvedHistory := resolvePath(cwd, *historyPath)
+	history, err := readJSONObject(resolvedHistory)
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read history from %s: %s\n", *historyPath, err)
+		return 1
+	}
+	timestamp := time.Now().UTC().Format(time.RFC3339Nano)
+	history = runtime.RecordAcceptanceWaiver(history, candidateID, target, resolved.Tier, resolved.Effect, reason, timestamp)
+	if err := writeOutputResolved(io.Discard, &resolvedHistory, history); err != nil {
+		fmt.Fprintf(stderr, "Failed to write history to %s: %s\n", *historyPath, err)
+		return 1
+	}
+
+	confirmation := map[string]any{
+		"target": target,
+		"tier":   resolved.Tier,
+		"effect": resolved.Effect,
+		"waiver": map[string]any{
+			"targetId":    target,
+			"candidateId": candidateID,
+			"tier":        resolved.Tier,
+			"effect":      resolved.Effect,
+			"reason":      reason,
+			"timestamp":   timestamp,
+		},
+	}
+	if resolved.Effect == runtime.AcceptanceEffectSkippable {
+		confirmation["note"] = "target is skippable; a skipped read needs no waiver, but the acknowledgement was recorded"
+	}
+	if err := writeOutput(stdout, cwd, outputPath, confirmation); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	return 0
@@ -2348,6 +2522,13 @@ func parseDoctorArgs(args []string) (*doctorArgs, error) {
 			}
 			index = next
 			options.adapterName = &value
+		case "--history-file":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return nil, err
+			}
+			index = next
+			options.historyFile = &value
 		case "--scope":
 			value, next, err := requiredValue(args, index, arg)
 			if err != nil {

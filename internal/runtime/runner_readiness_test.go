@@ -14,7 +14,7 @@ import (
 func TestDoctorRunnerReadinessKeepsAdapterReadyWithMissingAssessment(t *testing.T) {
 	repoRoot := setupRunnerReadinessRepo(t)
 
-	payload, exitCode, err := DoctorRepo(repoRoot, nil, nil)
+	payload, exitCode, err := DoctorRepo(repoRoot, nil, nil, nil)
 	if err != nil {
 		t.Fatalf("DoctorRepo returned error: %v", err)
 	}
@@ -139,7 +139,7 @@ func TestDoctorNextActionFallsBackAfterRunnerAssessmentReady(t *testing.T) {
 	}
 	writeRunnerAssessment(t, repoRoot, adapter, "ready-for-selected-surface", "in-process-product-runner")
 
-	payload, exitCode, err := DoctorRepo(repoRoot, nil, nil)
+	payload, exitCode, err := DoctorRepo(repoRoot, nil, nil, nil)
 	if err != nil {
 		t.Fatalf("DoctorRepo returned error: %v", err)
 	}
@@ -195,7 +195,7 @@ func TestDoctorAndAgentStatusShareRunnerReadinessFacts(t *testing.T) {
 	}
 	writeRunnerAssessment(t, repoRoot, adapter, "ready-for-selected-surface", "in-process-product-runner")
 
-	doctor, doctorExit, err := DoctorRepo(repoRoot, nil, nil)
+	doctor, doctorExit, err := DoctorRepo(repoRoot, nil, nil, nil)
 	if err != nil {
 		t.Fatalf("DoctorRepo returned error: %v", err)
 	}

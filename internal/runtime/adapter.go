@@ -1407,7 +1407,7 @@ func checkGitPrecondition(repoRoot string) (map[string]any, int) {
 	return nil, 0
 }
 
-func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[string]any, int, error) {
+func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string, historyPath *string) (map[string]any, int, error) {
 	if gitResult, gitExit := checkGitPrecondition(repoRoot); gitResult != nil {
 		return AttachDoctorGuidance(gitResult, repoRoot, "repo", adapterName), gitExit, nil
 	}
@@ -1418,8 +1418,9 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	checks := []any{}
 	suggestions := []any{}
 	warnings := append([]string{}, payload.Warnings...)
+	var acceptanceReadiness map[string]any
 	baseResult := func() map[string]any {
-		return map[string]any{
+		base := map[string]any{
 			"repo_root":       repoRoot,
 			"adapter_path":    payload.Path,
 			"searched_paths":  payload.SearchedPaths,
@@ -1429,6 +1430,10 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 			"errors":          payload.Errors,
 			"runnerReadiness": BuildRunnerReadiness(repoRoot, payload),
 		}
+		if acceptanceReadiness != nil {
+			base["acceptanceReadiness"] = acceptanceReadiness
+		}
+		return base
 	}
 	if !payload.Found {
 		namedAdapters := []any{}
@@ -1501,6 +1506,33 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 		suggestions = append(suggestions, "Inventory LLM-behavior surfaces first (system prompts, agent/chat loops, LLM-backed analysis, operator copy reviewed by a judge) before hand-editing adapter YAML.")
 		suggestions = append(suggestions, "Run cautilus discover scenarios propose against those LLM-behavior surfaces before adding more deterministic command wrappers.")
 	}
+	// Skip-time acceptance readiness gate. When the adapter declares an
+	// acceptance_risk policy, catch any `required` target that was never read (and
+	// never waived) so a finalist cannot be accepted on it silently — the case the
+	// read-time enforcement in `cautilus evaluate acceptance` cannot observe. The
+	// gate is read-only; it never records a waiver, and it stays inert (adds no
+	// check) when no acceptance_risk policy is declared.
+	if acceptanceRisk, ok := data["acceptance_risk"].(map[string]any); ok && acceptanceRisk != nil {
+		history := map[string]any{}
+		if historyPath != nil && strings.TrimSpace(*historyPath) != "" {
+			if loaded, loadErr := readJSONFile(*historyPath); loadErr == nil {
+				history = loaded
+			}
+		}
+		acceptanceReadiness = BuildAcceptanceReadiness(acceptanceRisk, history)
+		gateReady, _ := acceptanceReadiness["ready"].(bool)
+		blockedTargets := arrayOrEmpty(acceptanceReadiness["blockedTargets"])
+		detail := "Every required acceptance target has a recorded acceptance read or waiver."
+		if !gateReady {
+			detail = fmt.Sprintf("Required acceptance targets with no acceptance read or waiver: %v. Provide --history-file if reads were recorded elsewhere.", blockedTargets)
+		}
+		checks = append(checks, doctorCheck("acceptance_read_readiness", gateReady, detail))
+		if !gateReady {
+			suggestions = append(suggestions,
+				"Run cautilus evaluate acceptance --target <id> ... --history-file <path> to read the acceptance set for each blocked target,",
+				"or cautilus evaluate acceptance waive-skip --target <id> --reason <why> --history-file <path> to record an explicit waiver-on-skip.")
+		}
+	}
 	ready := allChecksReady(checks)
 	result := baseResult()
 	if ready {
@@ -1516,7 +1548,31 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string) (map[
 	result["status"] = "incomplete_adapter"
 	result["ready"] = false
 	result["summary"] = "Adapter exists but is not ready yet."
+	// When the adapter itself is complete and the only failing check is the
+	// skip-time acceptance gate, name the real gap instead of implying the adapter
+	// is malformed. The status stays machine-stable; the summary stays honest.
+	if acceptanceReadiness != nil && onlyAcceptanceReadinessFailing(checks) {
+		result["summary"] = fmt.Sprintf("Adapter is valid; a required acceptance read is pending for %v. Read the acceptance set or record a waiver with cautilus evaluate acceptance waive-skip, then rerun doctor.", arrayOrEmpty(acceptanceReadiness["blockedTargets"]))
+	}
 	return AttachDoctorGuidance(result, repoRoot, "repo", adapterName), 1, nil
+}
+
+// onlyAcceptanceReadinessFailing reports whether the acceptance readiness check is
+// the sole failing doctor check, so the not-ready summary can name the pending
+// acceptance read rather than implying the adapter shape is incomplete.
+func onlyAcceptanceReadinessFailing(checks []any) bool {
+	sawAcceptanceFailure := false
+	for _, raw := range checks {
+		check := asMap(raw)
+		if truthy(check["ok"]) {
+			continue
+		}
+		if stringOrEmpty(check["id"]) != "acceptance_read_readiness" {
+			return false
+		}
+		sawAcceptanceFailure = true
+	}
+	return sawAcceptanceFailure
 }
 
 func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {
@@ -1618,6 +1674,8 @@ func doctorCheckMeaning(id string) string {
 		return "Eval and improve work have explicit comparison targets."
 	case "execution_surface":
 		return "Cautilus can point the user to an executable first run."
+	case "acceptance_read_readiness":
+		return "Every required acceptance target was read or explicitly waived before a finalist is accepted."
 	case "skill_installed":
 		return "The Cautilus Agent is available to local agents."
 	case "claude_skills_link":

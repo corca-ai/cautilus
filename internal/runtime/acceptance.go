@@ -202,9 +202,12 @@ func acceptanceScenarioIDsFrom(perScenario []any) []any {
 }
 
 // RecordAcceptanceRead appends one acceptance-read entry to scenario history so a
-// second read after seeing the result is visible rather than silent. It does not
-// touch train graduation or trainRunCount; acceptance is optimizer-untouchable.
-func RecordAcceptanceRead(history map[string]any, candidateID string, scenarioIDs []string, timestamp string) map[string]any {
+// second read after seeing the result is visible rather than silent. It records
+// the acceptance target id so the skip-time readiness gate can match a read to a
+// declared risk-tier target (an empty targetID means the read named no target).
+// It does not touch train graduation or trainRunCount; acceptance is
+// optimizer-untouchable.
+func RecordAcceptanceRead(history map[string]any, candidateID, targetID string, scenarioIDs []string, timestamp string) map[string]any {
 	if history == nil {
 		history = map[string]any{}
 	}
@@ -212,6 +215,7 @@ func RecordAcceptanceRead(history map[string]any, candidateID string, scenarioID
 	reads = append(reads, map[string]any{
 		"timestamp":   timestamp,
 		"candidateId": candidateID,
+		"targetId":    targetID,
 		"scenarioIds": stringSliceToAny(scenarioIDs),
 	})
 	history["acceptanceReads"] = reads

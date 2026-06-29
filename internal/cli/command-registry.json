@@ -232,7 +232,23 @@
         "Excludes and flags any acceptance scenario id that also appears in the search held-out set, and refuses only when no clean scenario remains.",
         "Advisory only: emits `cautilus.acceptance_report.v1` with the gap, a reliability flag, and the held-out exposure count; it never auto-applies or auto-rejects a candidate.",
         "Acceptance results must be produced with `mode: acceptance`; they must never feed evidence input or improve.",
-        "Applies the adapter `acceptance_risk` policy for `--target` (see docs/contracts/acceptance-risk-tier.md): a `required` target without a clean, reliable, accept-recommending read and without `--waiver <reason>` is blocked (exit 1) and the report records `acceptanceDecision: blocked`; `--waiver` records the override in history and proceeds; the per-tier reliability floor overrides the product default. An undeclared target defaults to `optional` and never blocks."
+        "Applies the adapter `acceptance_risk` policy for `--target` (see docs/contracts/acceptance-risk-tier.md): a `required` target without a clean, reliable, accept-recommending read and without `--waiver <reason>` is blocked (exit 1) and the report records `acceptanceDecision: blocked`; `--waiver` records the override in history and proceeds; the per-tier reliability floor overrides the product default. An undeclared target defaults to `optional` and never blocks.",
+        "Records the read against `--target` in scenario history only when the accept step proceeds, so the `cautilus doctor` skip-time readiness gate can tell a real read from a blocked attempt; to catch a `required` target that was never read at all, run `cautilus doctor --history-file <scenario-history.json>`."
+      ]
+    },
+    {
+      "path": [
+        "evaluate",
+        "acceptance",
+        "waive-skip"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate acceptance waive-skip --target <acceptance-target-id> --reason <why> --history-file <scenario-history.json> [--repo-root <dir>] [--adapter <path> | --adapter-name <name>] [--candidate <finalist-id>] [--output <waiver-record.json>]",
+      "example": "cautilus evaluate acceptance waive-skip --target prompts/router.md --reason \"operator sign-off; acceptance set not yet authored\" --history-file /tmp/cautilus-acceptance/history.json --repo-root .",
+      "notes": [
+        "Records an explicit waiver-on-skip for an acceptance target whose acceptance read is skipped entirely, so the skip is auditable rather than silent (see docs/contracts/acceptance-risk-tier.md).",
+        "Resolves the target's adapter risk tier and effect, appends a `cautilus.acceptance_report.v1`-adjacent waiver to scenario-history `acceptanceWaivers`, and clears the `cautilus doctor` skip-gate for that target.",
+        "Use it to acknowledge a skipped `optional`/default read, or to override a `required` target without running the read; a `skippable` target needs no waiver. It never runs an acceptance read and never accepts or rejects a candidate."
       ]
     },
     {
@@ -420,12 +436,13 @@
       ],
       "group": "lifecycle",
       "usage": "cautilus doctor [args]",
-      "example": "cautilus doctor --repo-root .",
+      "example": "cautilus doctor --repo-root . --history-file /tmp/cautilus-acceptance/history.json",
       "notes": [
         "Default `doctor` validates the unnamed checked-in adapter path.",
         "Use `cautilus doctor --repo-root . --next-action` when you want one current onboarding step plus the exact follow-up loop.",
         "If your repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --repo-root . --adapter-name <name>` for repo-scope validation.",
-        "A ready repo payload includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop."
+        "A ready repo payload includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop.",
+        "When the adapter declares an `acceptance_risk` policy, the report adds an `acceptanceReadiness` block and an `acceptance_read_readiness` check: a `required` target with no recorded acceptance read or waiver in `--history-file` is blocked and flips `ready` to false (fail-closed when no history is provided); `optional`/default targets read `skip_pending_waiver`, and `skippable` targets are `exempt`. The gate is read-only — record a skip waiver with `cautilus evaluate acceptance waive-skip`."
       ]
     },
     {

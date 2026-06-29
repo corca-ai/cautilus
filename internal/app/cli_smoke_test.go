@@ -4037,6 +4037,221 @@ func TestCLIEvaluateAcceptanceInvalidAdapterWithPolicyFailsClosed(t *testing.T) 
 	}
 }
 
+// writeReadyAcceptanceRiskAdapter writes a doctor-ready default adapter that also
+// declares an acceptance_risk policy, so the skip-time readiness gate is the only
+// variable in the doctor result.
+func writeReadyAcceptanceRiskAdapter(t *testing.T, root string, acceptanceRiskBody string) {
+	t.Helper()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"eval_test_command_templates:",
+		"  - npm run check",
+		acceptanceRiskBody,
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+}
+
+func findDoctorCheck(t *testing.T, payload map[string]any, id string) map[string]any {
+	t.Helper()
+	checks, _ := payload["checks"].([]any)
+	for _, raw := range checks {
+		check, _ := raw.(map[string]any)
+		if check["id"] == id {
+			return check
+		}
+	}
+	return nil
+}
+
+func acceptanceReadinessTarget(t *testing.T, payload map[string]any, targetID string) map[string]any {
+	t.Helper()
+	readiness, ok := payload["acceptanceReadiness"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected acceptanceReadiness block in doctor payload, got %#v", payload["acceptanceReadiness"])
+	}
+	targets, _ := readiness["targets"].([]any)
+	for _, raw := range targets {
+		entry, _ := raw.(map[string]any)
+		if entry["target"] == targetID {
+			return entry
+		}
+	}
+	t.Fatalf("target %q not in acceptanceReadiness targets %#v", targetID, readiness["targets"])
+	return nil
+}
+
+func TestCLIDoctorAcceptanceSkipGateBlocksRequiredTargetNeverReadThenClearsOnRead(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	writeReadyAcceptanceRiskAdapter(t, root, strings.Join([]string{
+		"acceptance_risk:",
+		"  tiers:",
+		"    critical:",
+		"      effect: required",
+		"      reliability_floor: 2",
+		"  targets:",
+		"    prompts/router.md: critical",
+	}, "\n"))
+
+	// No history at all: the required target was never read, so the skip-gate
+	// blocks the otherwise-ready adapter (fail-closed without a history file).
+	stdout, stderr, code := runCLI(t, root, "doctor", "--repo-root", root)
+	if code != 1 {
+		t.Fatalf("a required target never read must block doctor (exit 1), got %d stderr=%s", code, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["ready"] != false {
+		t.Fatalf("expected ready=false while a required acceptance read is pending, got %#v", payload["ready"])
+	}
+	if check := findDoctorCheck(t, payload, "acceptance_read_readiness"); check == nil || check["ok"] != false {
+		t.Fatalf("expected a failing acceptance_read_readiness check, got %#v", check)
+	}
+	if status := acceptanceReadinessTarget(t, payload, "prompts/router.md")["status"]; status != "blocked" {
+		t.Fatalf("expected the required target blocked, got %#v", status)
+	}
+	// The summary must name the pending acceptance read rather than imply the
+	// otherwise-valid adapter is malformed.
+	if summary, _ := payload["summary"].(string); !strings.Contains(summary, "acceptance read is pending") || !strings.Contains(summary, "prompts/router.md") {
+		t.Fatalf("expected a summary naming the pending acceptance read, got %#v", payload["summary"])
+	}
+
+	// Run a clean, reliable, accept-recommending read on the target. The per-tier
+	// floor of 2 lets a two-scenario read count as reliable.
+	searchResultPath, acceptanceResultsPath := writeAcceptanceFixtures(t, root,
+		[]int{90, 90},
+		[]map[string]any{
+			{"scenarioId": "acc-1", "overallScore": 88},
+			{"scenarioId": "acc-2", "overallScore": 88},
+		},
+	)
+	historyPath := filepath.Join(root, "history.json")
+	writeJSONFile(t, historyPath, map[string]any{"schemaVersion": contracts.ScenarioHistorySchema, "profileId": "default"})
+	if _, readStderr, readCode := runCLI(t, root, "evaluate", "acceptance",
+		"--search-result", searchResultPath,
+		"--acceptance-results", acceptanceResultsPath,
+		"--repo-root", root,
+		"--target", "prompts/router.md",
+		"--history-file", historyPath,
+		"--output", filepath.Join(root, "report.json"),
+	); readCode != 0 {
+		t.Fatalf("a clean reliable accept read must proceed, got %d stderr=%s", readCode, readStderr)
+	}
+
+	// With the read recorded against the target, the skip-gate clears and the
+	// otherwise-ready adapter reports ready.
+	stdout, stderr, code = runCLI(t, root, "doctor", "--repo-root", root, "--history-file", historyPath)
+	if code != 0 {
+		t.Fatalf("doctor must be ready once the required target has a recorded read, got %d stderr=%s", code, stderr)
+	}
+	payload = parseJSONObject(t, stdout)
+	if payload["ready"] != true || payload["status"] != "ready" {
+		t.Fatalf("expected ready doctor payload after the read, got %#v", payload)
+	}
+	if status := acceptanceReadinessTarget(t, payload, "prompts/router.md")["status"]; status != "satisfied" {
+		t.Fatalf("expected the required target satisfied after a read, got %#v", status)
+	}
+}
+
+func TestCLIDoctorAcceptanceSkipGateClearsWithWaiveSkipAndExemptsSkippable(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	writeReadyAcceptanceRiskAdapter(t, root, strings.Join([]string{
+		"acceptance_risk:",
+		"  tiers:",
+		"    critical:",
+		"      effect: required",
+		"    routine:",
+		"      effect: optional",
+		"    experimental:",
+		"      effect: skippable",
+		"  targets:",
+		"    prompts/router.md: critical",
+		"    prompts/help.md: routine",
+		"    prompts/scratch.md: experimental",
+	}, "\n"))
+	historyPath := filepath.Join(root, "history.json")
+	writeJSONFile(t, historyPath, map[string]any{"schemaVersion": contracts.ScenarioHistorySchema, "profileId": "default"})
+
+	// Before any waiver: required blocks, optional pends a skip waiver, skippable
+	// is exempt with no read at all.
+	stdout, _, code := runCLI(t, root, "doctor", "--repo-root", root, "--history-file", historyPath)
+	if code != 1 {
+		t.Fatalf("the required target with no read must block, got exit %d", code)
+	}
+	payload := parseJSONObject(t, stdout)
+	if status := acceptanceReadinessTarget(t, payload, "prompts/help.md")["status"]; status != "skip_pending_waiver" {
+		t.Fatalf("expected optional target skip_pending_waiver, got %#v", status)
+	}
+	if status := acceptanceReadinessTarget(t, payload, "prompts/scratch.md")["status"]; status != "exempt" {
+		t.Fatalf("expected skippable target exempt, got %#v", status)
+	}
+
+	// Record a waiver-on-skip for the optional target (SC2) and an override for the
+	// required target, both without running any acceptance read.
+	waiveSkip := func(target, reason string) {
+		t.Helper()
+		if _, stderr, waiveCode := runCLI(t, root, "evaluate", "acceptance", "waive-skip",
+			"--target", target,
+			"--reason", reason,
+			"--history-file", historyPath,
+			"--repo-root", root,
+		); waiveCode != 0 {
+			t.Fatalf("waive-skip for %q failed: exit %d stderr=%s", target, waiveCode, stderr)
+		}
+	}
+	waiveSkip("prompts/help.md", "optional read deferred this cycle")
+	waiveSkip("prompts/router.md", "operator sign-off; acceptance set not yet authored")
+
+	history := readJSONObjectFile(t, historyPath)
+	waivers, ok := history["acceptanceWaivers"].([]any)
+	if !ok || len(waivers) != 2 {
+		t.Fatalf("expected two recorded waivers-on-skip, got %#v", history["acceptanceWaivers"])
+	}
+	// SC2: the optional skip is recorded as a waiver carrying its optional effect.
+	var optionalWaiver map[string]any
+	for _, raw := range waivers {
+		entry, _ := raw.(map[string]any)
+		if entry["targetId"] == "prompts/help.md" {
+			optionalWaiver = entry
+		}
+	}
+	if optionalWaiver == nil || optionalWaiver["effect"] != "optional" {
+		t.Fatalf("expected an optional waiver-on-skip for prompts/help.md, got %#v", optionalWaiver)
+	}
+
+	// After the waivers, the gate clears; the skippable target is still exempt
+	// having never been read or waived.
+	stdout, stderr, code := runCLI(t, root, "doctor", "--repo-root", root, "--history-file", historyPath)
+	if code != 0 {
+		t.Fatalf("doctor must be ready after the waivers, got %d stderr=%s", code, stderr)
+	}
+	payload = parseJSONObject(t, stdout)
+	if payload["ready"] != true {
+		t.Fatalf("expected ready=true after waivers, got %#v", payload["ready"])
+	}
+	if status := acceptanceReadinessTarget(t, payload, "prompts/router.md")["status"]; status != "satisfied" {
+		t.Fatalf("expected required target satisfied after waiver, got %#v", status)
+	}
+	if status := acceptanceReadinessTarget(t, payload, "prompts/help.md")["status"]; status != "satisfied" {
+		t.Fatalf("expected optional target satisfied after waiver-on-skip, got %#v", status)
+	}
+	if status := acceptanceReadinessTarget(t, payload, "prompts/scratch.md")["status"]; status != "exempt" {
+		t.Fatalf("expected skippable target exempt, got %#v", status)
+	}
+}
+
 func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose(t *testing.T) {
 	root := t.TempDir()
 	chatbotInputPath := filepath.Join(root, "chatbot-input.json")
