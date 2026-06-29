@@ -2,10 +2,10 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — #51 risk-tier 정책 read-time + skip-time 게이트 모두 구현 완료(커밋 8eadc252·acb1c1cc 포함 origin/main 대비 10개 미push). 먼저 사용자에게 push 여부를 확인하고(승인되면 push), 그 다음 트랙(아래 Discuss)을 사용자와 좁힌다.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — #51 risk-tier 정책 read-time + skip-time 게이트 모두 구현·push 완료(origin/main `67cd2604`). 다음 트랙(아래 Discuss)을 사용자와 좁힌 뒤 착수한다.`
 
-mention-only 픽업이면 현재 상태(아래)만 확인하고, push·다음 트랙 착수 여부를 사용자와 좁힌 뒤 진행한다.
-자동 push 금지.
+mention-only 픽업이면 현재 상태(아래)만 확인하고, 다음 트랙 착수 여부를 사용자와 좁힌 뒤 진행한다.
+자동 트랙 착수 금지.
 
 ## Continuation Capability
 
@@ -16,8 +16,7 @@ skip을 명시적으로 기록하려면 `cautilus evaluate acceptance waive-skip
 
 ## Current State
 
-- 이번 세션 2커밋: `8eadc252`(skip-gate 코드+테스트) → `acb1c1cc`(계약·operator-acceptance·master-plan sync + claim 패킷 refresh). 트리 clean.
-- **origin/main(`06f421e9`) 대비 10개 미push** = 이전 risk-tier 계약/read-time 커밋 8개 + 이번 2개. push 후 이 줄 갱신/삭제.
+- 이번 세션 3커밋: `8eadc252`(skip-gate 코드+테스트) → `acb1c1cc`(계약·operator-acceptance·master-plan sync + claim 패킷 refresh) → `67cd2604`(handoff). **origin/main에 push 완료**(pre-push verify+drift 통과). 트리 clean, 미push 없음.
 - 계약 `docs/contracts/acceptance-risk-tier.md` Status: **Implemented**. Implementation Status 항목 5–9가 landed 명세, 전 SC proven(테스트명 명시).
 - 구현 critique 1회(fresh-eye 서브에이전트, verdict `ready`, 0 blockers). should-fix 2건 반영: (1) non-`required` target에 `--waiver` 주면 무시 대신 stderr warning, (2) acceptance 게이트만 실패할 때 doctor summary가 "adapter 불완전" 대신 "pending acceptance read"를 명시. nit(history-file이 `--scope agent-surface`에선 무시됨; status가 `incomplete_adapter` 공유)은 deferred로 계약에 기록.
 - 설계 결정(사용자 확정): enforcement 표면 = read-only `cautilus doctor`(Cautilus엔 기계적 accept 명령 없음), operator-acceptance.md 인간 단계가 이 게이트를 가리킴; waiver-on-skip 기록은 별도 `waive-skip` 명령.
@@ -26,8 +25,8 @@ skip을 명시적으로 기록하려면 `cautilus evaluate acceptance waive-skip
 
 ## Next Session
 
-1. 사용자에게 push 여부 확인(자동 금지). 승인 시 push — pre-push 훅이 verify+drift 검사. staleness 실패하면 `npm run claims:refresh:all`.
-2. 그 다음 트랙은 Discuss에서 사용자와 좁힌다. risk-tier 정책 트랙엔 남은 슬라이스 없음(Deferred Decisions만 — 실제 consumer 필요 시 별도 계약).
+1. 다음 트랙을 Discuss에서 사용자와 좁힌다. risk-tier 정책 트랙엔 남은 슬라이스 없음(Deferred Decisions만 — 실제 consumer 필요 시 별도 계약).
+2. 후보 트랙: (a) dormant HITL 스펙다운 리뷰 재개(사용자 신호 시), (b) master-plan Phase 5 "Still open" 항목, (c) risk-tier Deferred Decisions 중 consumer 수요가 생긴 것. 자동 착수 금지.
 
 ## Discuss
 
