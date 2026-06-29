@@ -1,3 +1,4 @@
+export const ACCEPTANCE_REPORT_SCHEMA = "cautilus.acceptance_report.v1";
 export const BEHAVIOR_INTENT_SCHEMA = "cautilus.behavior_intent.v1";
 export const COMPARE_ARTIFACT_SCHEMA = "cautilus.compare_artifact.v1";
 export const DEPLOYMENT_EVIDENCE_INPUTS_SCHEMA = "cautilus.deployment_evidence_inputs.v1";

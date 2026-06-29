@@ -197,6 +197,8 @@ func nativeHandler(path []string) handlerFunc {
 		return handleEvalTest
 	case "evaluate observation":
 		return handleEvalEvaluate
+	case "evaluate acceptance":
+		return handleEvalAcceptance
 	case "evaluate skill-experiment":
 		return handleEvalSkillExperimentCompare
 	case "discover live-targets":
@@ -1246,6 +1248,110 @@ func handleEvalEvaluate(repoRoot string, cwd string, args []string, stdout io.Wr
 		return 1
 	}
 	return 0
+}
+
+//nolint:errcheck // CLI stderr reporting is best-effort.
+func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
+	_ = repoRoot
+	var searchResultPath, acceptanceResultsPath string
+	var outputPath, historyPath *string
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "--search-result":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			searchResultPath = value
+		case "--acceptance-results":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			acceptanceResultsPath = value
+		case "--output":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			outputPath = &value
+		case "--history-file":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			historyPath = &value
+		default:
+			fmt.Fprintf(stderr, "unknown argument: %s\n", arg)
+			return 1
+		}
+	}
+	if strings.TrimSpace(searchResultPath) == "" {
+		fmt.Fprintf(stderr, "--search-result is required\n")
+		return 1
+	}
+	if strings.TrimSpace(acceptanceResultsPath) == "" {
+		fmt.Fprintf(stderr, "--acceptance-results is required\n")
+		return 1
+	}
+	searchResult, err := readJSONObject(resolvePath(cwd, searchResultPath))
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", searchResultPath, err)
+		return 1
+	}
+	acceptanceResults, err := readJSONObject(resolvePath(cwd, acceptanceResultsPath))
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", acceptanceResultsPath, err)
+		return 1
+	}
+	report, err := runtime.BuildAcceptanceReport(searchResult, acceptanceResults, runtime.AcceptanceReliabilityFloor, runtime.AcceptanceGapTolerance, time.Now())
+	if err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if historyPath != nil {
+		resolvedHistory := resolvePath(cwd, *historyPath)
+		history, err := readJSONObject(resolvedHistory)
+		if err != nil {
+			fmt.Fprintf(stderr, "Failed to read history from %s: %s\n", *historyPath, err)
+			return 1
+		}
+		candidateID, _ := report["selectedCandidateId"].(string)
+		history = runtime.RecordAcceptanceRead(history, candidateID, acceptanceReportCleanScenarioIDs(report), time.Now().UTC().Format(time.RFC3339Nano))
+		if err := writeOutputResolved(io.Discard, &resolvedHistory, history); err != nil {
+			fmt.Fprintf(stderr, "Failed to write history to %s: %s\n", *historyPath, err)
+			return 1
+		}
+	}
+	if err := writeOutput(stdout, cwd, outputPath, report); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	return 0
+}
+
+func acceptanceReportCleanScenarioIDs(report map[string]any) []string {
+	contamination, _ := report["contamination"].(map[string]any)
+	if contamination == nil {
+		return nil
+	}
+	raw, _ := contamination["cleanAcceptanceScenarioIds"].([]any)
+	ids := make([]string, 0, len(raw))
+	for _, item := range raw {
+		if id, ok := item.(string); ok {
+			ids = append(ids, id)
+		}
+	}
+	return ids
 }
 
 func buildEvalEvaluateSummary(input map[string]any) (map[string]any, error) {

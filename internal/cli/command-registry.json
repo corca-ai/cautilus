@@ -222,6 +222,21 @@
     {
       "path": [
         "evaluate",
+        "acceptance"
+      ],
+      "group": "workflow",
+      "usage": "cautilus evaluate acceptance --search-result <improve-search-result.json> --acceptance-results <acceptance-scenario-results.json> [--history-file <scenario-history.json>] [--output <acceptance-report.json>]",
+      "example": "cautilus evaluate acceptance --search-result /tmp/cautilus-search/result.json --acceptance-results /tmp/cautilus-acceptance/results.json --output /tmp/cautilus-acceptance/report.json",
+      "notes": [
+        "Reads a selected finalist on an optimizer-untouchable final acceptance set to estimate the generalization gap (see docs/contracts/final-acceptance-set.md).",
+        "Excludes and flags any acceptance scenario id that also appears in the search held-out set, and refuses only when no clean scenario remains.",
+        "Advisory only: emits `cautilus.acceptance_report.v1` with the gap, a reliability flag, and the held-out exposure count; it never auto-applies or auto-rejects a candidate.",
+        "Acceptance results must be produced with `mode: acceptance`; they must never feed evidence input or improve."
+      ]
+    },
+    {
+      "path": [
+        "evaluate",
         "skill-experiment"
       ],
       "group": "workflow",

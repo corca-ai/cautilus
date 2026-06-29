@@ -50,7 +50,7 @@ This slice ships the acceptance mechanism, not the risk-tier policy that decides
 - one human-driven read command that evaluates the selected finalist on the acceptance set
 - a durable `cautilus.acceptance_report.v1` packet carrying the generalization gap, a reliability flag, and the held-out exposure count
 - held-out exposure-count reporting wired into the search result so the overfitting-risk proxy is available even when the acceptance set is skipped
-- the acceptance read recorded in scenario history under a distinct `acceptance` mode so a re-read is visible rather than silent
+- the acceptance read recorded in scenario history as a distinct `acceptanceReads` entry, with the finalist's acceptance results carrying scenario-results mode `acceptance`, so a re-read is visible rather than silent
 
 Whether acceptance is required, optional, or skippable for a given behavior surface is a risk-tier policy decision deferred to a follow-up slice (see Deferred Decisions).
 
@@ -69,7 +69,7 @@ Whether acceptance is required, optional, or skippable for a given behavior surf
 2. A maintainer authors a final acceptance set as boundary cases the search never saw, in a separate acceptance profile file with `split: acceptance`.
 3. The maintainer runs the acceptance read once, passing the `cautilus.improve_search_result.v1` record so the command can recover the selected finalist's prompt snapshot and its recorded held-out scenario ids.
 4. `Cautilus` checks for contamination by intersecting acceptance scenario ids with the finalist's recorded held-out scenario ids, excludes any contaminated ids from the gap, lists them explicitly in the report, and refuses with a blocked result only when no clean acceptance scenario remains.
-5. `Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read in scenario history under the `acceptance` mode.
+5. `Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read as a distinct `acceptanceReads` entry in scenario history.
 6. The `cautilus.acceptance_report.v1` packet feeds the human accept/reject step in [operator-acceptance.md](../maintainers/operator-acceptance.md) as advisory evidence, not as an auto-decision.
 
 ## Fixed Decisions
@@ -89,12 +89,14 @@ Whether acceptance is required, optional, or skippable for a given behavior surf
 - Acceptance is a first-class selectable split for the read command, but it is structurally excluded from the search input-assembly path; the two flow through the same `split` vocabulary but different code paths.
 - The generalization gap is reported per-scenario and as an aggregate, consistent with the product's existing per-scenario Pareto anti-Goodhart stance.
 - The acceptance read is advisory.
-  It produces a generalization-gap point delta and an accept/reject recommendation; it never auto-rejects or auto-applies a candidate.
+  It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate.
+  `accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`.
 - A small acceptance set is reported honestly rather than treated as decisive.
   When the clean acceptance-set size is below the product reliability floor, the report marks the gap `low_confidence` instead of presenting a confident verdict.
 - The reliability floor is a single fixed product constant in this slice, not adapter-configurable, matching the fixed-threshold precedent in [scenario-history.md](./scenario-history.md) line 233.
   The flag is `low_confidence` when the clean acceptance scenario count is below the floor and `reliable` otherwise; the provisional floor value is set in code (conservatively around ten scenarios) so tuning does not churn this contract, and adapter-configurability is deferred.
-- The acceptance read is recorded in scenario history under a distinct `acceptance` mode, separate from `held_out`, so a second read after seeing the result is visible, because re-reading and then re-tuning would reintroduce the same adaptive-overfitting risk the surface exists to detect.
+- The acceptance read is recorded in scenario history as a distinct `acceptanceReads` entry (candidate id, clean scenario ids, timestamp), separate from train graduation and from `held_out` runs, so a second read after seeing the result is visible, because re-reading and then re-tuning would reintroduce the same adaptive-overfitting risk the surface exists to detect.
+  The finalist's acceptance evaluation results separately carry scenario-results mode `acceptance`, which is deliberately excluded from the evidence-input scenario modes so acceptance results can never feed improve.
 - Held-out exposure-count reporting is always on, independent of whether an acceptance set exists.
   When acceptance is skipped, the exposure count is the standing detection-lite signal and the skip must be recorded as an explicit waiver.
 - The held-out exposure count is a new, distinctly named field (`heldOutExposureCount`) defined as the count of candidate-scenario held-out evaluations, derived by summing the recorded held-out evaluation matrix.
@@ -160,7 +162,7 @@ The one implementation-discovery probe is also resolved.
 - Runtime test: `split: all` selection returns the union of `train` and `test` and excludes every `acceptance` scenario, updating the existing `SelectProfileScenarioIDs` test deliberately.
 - CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap` (per-scenario and aggregate), `reliability`, and `heldOutExposureCount`.
 - Negative test: an acceptance set below the provisional reliability floor produces `reliability: low_confidence`.
-- History test: running the acceptance read appends a record under the `acceptance` mode, so a re-read is distinguishable from a held-out run.
+- History test: running the acceptance read appends a distinct `acceptanceReads` entry, so a re-read is distinguishable and never blends into a held-out run.
 - Result test: `heldOutExposureCount` on the search result equals the summed held-out evaluation matrix and differs from `heldOutEvaluationCount` when more than one held-out scenario exists.
 
 ## Critique

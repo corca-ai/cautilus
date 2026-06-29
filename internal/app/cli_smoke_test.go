@@ -3780,6 +3780,76 @@ func TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate(t *testing.T) {
 	}
 }
 
+func TestCLIEvaluateAcceptanceReportsGapExcludesContaminationAndRecordsRead(t *testing.T) {
+	root := t.TempDir()
+	searchResultPath := filepath.Join(root, "search-result.json")
+	acceptanceResultsPath := filepath.Join(root, "acceptance-results.json")
+	historyPath := filepath.Join(root, "history.json")
+	outputPath := filepath.Join(root, "acceptance-report.json")
+
+	writeJSONFile(t, searchResultPath, map[string]any{
+		"schemaVersion":       contracts.ImproveSearchResultSchema,
+		"selectedCandidateId": "cand-1",
+		"heldOutScenarioIds":  []any{"ho-1", "ho-2"},
+		"heldOutEvaluationMatrix": []any{
+			map[string]any{"candidateId": "cand-1", "scenarioId": "ho-1", "score": 90},
+			map[string]any{"candidateId": "cand-1", "scenarioId": "ho-2", "score": 100},
+		},
+		"searchTelemetry": map[string]any{"heldOutExposureCount": 2},
+	})
+	writeJSONFile(t, acceptanceResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "acceptance",
+		"results": []any{
+			map[string]any{"scenarioId": "ho-1", "overallScore": 100}, // contaminated: also in held-out set
+			map[string]any{"scenarioId": "acc-1", "overallScore": 80}, // clean
+		},
+	})
+	writeJSONFile(t, historyPath, map[string]any{
+		"schemaVersion": contracts.ScenarioHistorySchema,
+		"profileId":     "default",
+	})
+
+	stdout, stderr, code := runCLI(t, root, "evaluate", "acceptance",
+		"--search-result", searchResultPath,
+		"--acceptance-results", acceptanceResultsPath,
+		"--history-file", historyPath,
+		"--output", outputPath,
+	)
+	if code != 0 {
+		t.Fatalf("evaluate acceptance failed: stdout=%s stderr=%s", stdout, stderr)
+	}
+
+	report := readJSONObjectFile(t, outputPath)
+	if report["schemaVersion"] != contracts.AcceptanceReportSchema {
+		t.Fatalf("unexpected report schema: %#v", report["schemaVersion"])
+	}
+	if report["status"] != "completed" {
+		t.Fatalf("expected completed status, got %#v", report["status"])
+	}
+	contamination := report["contamination"].(map[string]any)
+	contaminated := contamination["contaminatedScenarioIds"].([]any)
+	if len(contaminated) != 1 || contaminated[0] != "ho-1" {
+		t.Fatalf("expected ho-1 excluded as contaminated, got %#v", contaminated)
+	}
+	// held-out aggregate 95, clean acceptance aggregate 80, gap 15 > tolerance -> review.
+	if gap := report["generalizationGap"].(map[string]any)["aggregate"]; gap != float64(15) {
+		t.Fatalf("expected gap 15 over clean remainder, got %#v", gap)
+	}
+	if report["recommendation"] != "review" {
+		t.Fatalf("expected review recommendation, got %#v", report["recommendation"])
+	}
+	if report["heldOutExposureCount"] != float64(2) {
+		t.Fatalf("expected exposure count 2 carried through, got %#v", report["heldOutExposureCount"])
+	}
+
+	history := readJSONObjectFile(t, historyPath)
+	reads, ok := history["acceptanceReads"].([]any)
+	if !ok || len(reads) != 1 {
+		t.Fatalf("expected one recorded acceptance read, got %#v", history["acceptanceReads"])
+	}
+}
+
 func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose(t *testing.T) {
 	root := t.TempDir()
 	chatbotInputPath := filepath.Join(root, "chatbot-input.json")
