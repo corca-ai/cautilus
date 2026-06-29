@@ -74,3 +74,24 @@ func ResolveAcceptanceRiskTier(acceptanceRisk map[string]any, targetID string) R
 	}
 	return resolved
 }
+
+// RecordAcceptanceWaiver appends one waiver entry to scenario history so a
+// required-tier accept that proceeded without a satisfying acceptance read is
+// auditable beside acceptanceReads, rather than a silent override. It does not
+// touch train graduation; acceptance and its waivers are optimizer-untouchable.
+func RecordAcceptanceWaiver(history map[string]any, candidateID, targetID, tier, effect, reason, timestamp string) map[string]any {
+	if history == nil {
+		history = map[string]any{}
+	}
+	waivers := arrayOrEmpty(history["acceptanceWaivers"])
+	waivers = append(waivers, map[string]any{
+		"timestamp":   timestamp,
+		"candidateId": candidateID,
+		"targetId":    targetID,
+		"tier":        tier,
+		"effect":      effect,
+		"reason":      reason,
+	})
+	history["acceptanceWaivers"] = waivers
+	return history
+}

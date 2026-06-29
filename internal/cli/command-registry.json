@@ -225,13 +225,14 @@
         "acceptance"
       ],
       "group": "workflow",
-      "usage": "cautilus evaluate acceptance --search-result <improve-search-result.json> --acceptance-results <acceptance-scenario-results.json> [--history-file <scenario-history.json>] [--output <acceptance-report.json>]",
-      "example": "cautilus evaluate acceptance --search-result /tmp/cautilus-search/result.json --acceptance-results /tmp/cautilus-acceptance/results.json --output /tmp/cautilus-acceptance/report.json",
+      "usage": "cautilus evaluate acceptance --search-result <improve-search-result.json> --acceptance-results <acceptance-scenario-results.json> [--repo-root <dir>] [--adapter <path> | --adapter-name <name>] [--target <acceptance-target-id>] [--waiver <reason>] [--history-file <scenario-history.json>] [--output <acceptance-report.json>]",
+      "example": "cautilus evaluate acceptance --search-result /tmp/cautilus-search/result.json --acceptance-results /tmp/cautilus-acceptance/results.json --repo-root . --target prompts/router.md --output /tmp/cautilus-acceptance/report.json",
       "notes": [
         "Reads a selected finalist on an optimizer-untouchable final acceptance set to estimate the generalization gap (see docs/contracts/final-acceptance-set.md).",
         "Excludes and flags any acceptance scenario id that also appears in the search held-out set, and refuses only when no clean scenario remains.",
         "Advisory only: emits `cautilus.acceptance_report.v1` with the gap, a reliability flag, and the held-out exposure count; it never auto-applies or auto-rejects a candidate.",
-        "Acceptance results must be produced with `mode: acceptance`; they must never feed evidence input or improve."
+        "Acceptance results must be produced with `mode: acceptance`; they must never feed evidence input or improve.",
+        "Applies the adapter `acceptance_risk` policy for `--target` (see docs/contracts/acceptance-risk-tier.md): a `required` target without a clean, reliable, accept-recommending read and without `--waiver <reason>` is blocked (exit 1) and the report records `acceptanceDecision: blocked`; `--waiver` records the override in history and proceeds; the per-tier reliability floor overrides the product default. An undeclared target defaults to `optional` and never blocks."
       ]
     },
     {

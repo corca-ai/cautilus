@@ -1255,6 +1255,8 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 	_ = repoRoot
 	var searchResultPath, acceptanceResultsPath string
 	var outputPath, historyPath *string
+	var repoRootFlag, adapterFlag, adapterNameFlag *string
+	var target, waiverReason string
 	for index := 0; index < len(args); index++ {
 		arg := args[index]
 		switch arg {
@@ -1290,6 +1292,46 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 			}
 			index = next
 			historyPath = &value
+		case "--repo-root":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			repoRootFlag = &value
+		case "--adapter":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			adapterFlag = &value
+		case "--adapter-name":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			adapterNameFlag = &value
+		case "--target":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			target = value
+		case "--waiver":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				fmt.Fprintf(stderr, "%s\n", err)
+				return 1
+			}
+			index = next
+			waiverReason = value
 		default:
 			fmt.Fprintf(stderr, "unknown argument: %s\n", arg)
 			return 1
@@ -1303,6 +1345,10 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 		fmt.Fprintf(stderr, "--acceptance-results is required\n")
 		return 1
 	}
+	if adapterFlag != nil && adapterNameFlag != nil {
+		fmt.Fprintf(stderr, "use either --adapter or --adapter-name, not both\n")
+		return 1
+	}
 	searchResult, err := readJSONObject(resolvePath(cwd, searchResultPath))
 	if err != nil {
 		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", searchResultPath, err)
@@ -1313,11 +1359,73 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 		fmt.Fprintf(stderr, "Failed to read JSON from %s: %s\n", acceptanceResultsPath, err)
 		return 1
 	}
-	report, err := runtime.BuildAcceptanceReport(searchResult, acceptanceResults, runtime.AcceptanceReliabilityFloor, runtime.AcceptanceGapTolerance, time.Now())
+
+	// Resolve the acceptance risk tier for the target from the adapter policy.
+	// An undeclared target or an absent acceptance_risk block falls back to the
+	// product default effect (optional) and the product reliability floor.
+	adapterPayload, err := runtime.LoadAdapter(resolveRepoRoot(cwd, repoRootFlag), adapterFlag, adapterNameFlag)
+	if err != nil {
+		fmt.Fprintf(stderr, "Failed to load adapter: %s\n", err)
+		return 1
+	}
+	var acceptanceRisk map[string]any
+	if adapterPayload.Found && !adapterPayload.Valid {
+		// Fail closed when policy is explicitly requested (a target is named):
+		// an invalid adapter must not silently downgrade a required target.
+		if strings.TrimSpace(target) != "" {
+			fmt.Fprintf(stderr, "adapter is invalid; fix it before applying acceptance risk-tier policy for --target %s:\n", target)
+			for _, message := range adapterPayload.Errors {
+				fmt.Fprintf(stderr, "  - %s\n", message)
+			}
+			return 1
+		}
+		fmt.Fprintf(stderr, "warning: adapter is invalid; ignoring acceptance_risk policy and using the default effect\n")
+	} else if adapterPayload.Data != nil {
+		acceptanceRisk, _ = adapterPayload.Data["acceptance_risk"].(map[string]any)
+	}
+	resolved := runtime.ResolveAcceptanceRiskTier(acceptanceRisk, target)
+
+	report, err := runtime.BuildAcceptanceReport(searchResult, acceptanceResults, resolved.ReliabilityFloor, runtime.AcceptanceGapTolerance, time.Now())
 	if err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
+
+	// Apply the resolved tier effect at the accept step. `required` blocks a
+	// silent accept that lacks a clean, reliable, accept-recommending read and a
+	// waiver; `optional` and `skippable` never block here.
+	recommendation, _ := report["recommendation"].(string)
+	decision := "not_required"
+	blocked := false
+	waived := false
+	if resolved.Effect == runtime.AcceptanceEffectRequired {
+		switch {
+		case recommendation == "accept":
+			decision = "accept"
+		case strings.TrimSpace(waiverReason) != "":
+			decision = "waived"
+			waived = true
+		default:
+			decision = "blocked"
+			blocked = true
+		}
+	}
+	report["riskTier"] = map[string]any{
+		"target":           target,
+		"tier":             resolved.Tier,
+		"effect":           resolved.Effect,
+		"reliabilityFloor": resolved.ReliabilityFloor,
+	}
+	report["acceptanceDecision"] = decision
+	if waived {
+		report["waiver"] = map[string]any{
+			"targetId": target,
+			"tier":     resolved.Tier,
+			"effect":   resolved.Effect,
+			"reason":   waiverReason,
+		}
+	}
+
 	if historyPath != nil {
 		resolvedHistory := resolvePath(cwd, *historyPath)
 		history, err := readJSONObject(resolvedHistory)
@@ -1327,6 +1435,9 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 		}
 		candidateID, _ := report["selectedCandidateId"].(string)
 		history = runtime.RecordAcceptanceRead(history, candidateID, acceptanceReportCleanScenarioIDs(report), time.Now().UTC().Format(time.RFC3339Nano))
+		if waived {
+			history = runtime.RecordAcceptanceWaiver(history, candidateID, target, resolved.Tier, resolved.Effect, waiverReason, time.Now().UTC().Format(time.RFC3339Nano))
+		}
 		if err := writeOutputResolved(io.Discard, &resolvedHistory, history); err != nil {
 			fmt.Fprintf(stderr, "Failed to write history to %s: %s\n", *historyPath, err)
 			return 1
@@ -1334,6 +1445,10 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 	}
 	if err := writeOutput(stdout, cwd, outputPath, report); err != nil {
 		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
+	}
+	if blocked {
+		fmt.Fprintf(stderr, "acceptance blocked: target %q (tier %q, effect required) was not backed by a clean, reliable, accept-recommending read and no --waiver was given\n", target, resolved.Tier)
 		return 1
 	}
 	return 0

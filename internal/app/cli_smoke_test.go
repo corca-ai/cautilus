@@ -3850,6 +3850,169 @@ func TestCLIEvaluateAcceptanceReportsGapExcludesContaminationAndRecordsRead(t *t
 	}
 }
 
+// writeAcceptanceRiskAdapter writes a minimal default adapter carrying an
+// acceptance_risk policy block under the repo's .agents directory.
+func writeAcceptanceRiskAdapter(t *testing.T, root string, body string) {
+	t.Helper()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(body), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+}
+
+func writeAcceptanceFixtures(t *testing.T, root string, heldOutScores []int, acceptanceResults []map[string]any) (string, string) {
+	t.Helper()
+	searchResultPath := filepath.Join(root, "search-result.json")
+	acceptanceResultsPath := filepath.Join(root, "acceptance-results.json")
+	matrix := []any{}
+	heldOutIDs := []any{}
+	for index, score := range heldOutScores {
+		id := fmt.Sprintf("ho-%d", index+1)
+		heldOutIDs = append(heldOutIDs, id)
+		matrix = append(matrix, map[string]any{"candidateId": "cand-1", "scenarioId": id, "score": score})
+	}
+	writeJSONFile(t, searchResultPath, map[string]any{
+		"schemaVersion":           contracts.ImproveSearchResultSchema,
+		"selectedCandidateId":     "cand-1",
+		"heldOutScenarioIds":      heldOutIDs,
+		"heldOutEvaluationMatrix": matrix,
+		"searchTelemetry":         map[string]any{"heldOutExposureCount": len(heldOutScores)},
+	})
+	results := make([]any, 0, len(acceptanceResults))
+	for _, entry := range acceptanceResults {
+		results = append(results, entry)
+	}
+	writeJSONFile(t, acceptanceResultsPath, map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"mode":          "acceptance",
+		"results":       results,
+	})
+	return searchResultPath, acceptanceResultsPath
+}
+
+func TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver(t *testing.T) {
+	root := t.TempDir()
+	writeAcceptanceRiskAdapter(t, root, "acceptance_risk:\n  tiers:\n    critical:\n      effect: required\n  targets:\n    prompts/router.md: critical\n")
+	// One clean acceptance scenario keeps the read below the default floor, so it
+	// recommends review rather than accept.
+	searchResultPath, acceptanceResultsPath := writeAcceptanceFixtures(t, root,
+		[]int{90, 90},
+		[]map[string]any{{"scenarioId": "acc-1", "overallScore": 80}},
+	)
+	outputPath := filepath.Join(root, "report.json")
+	historyPath := filepath.Join(root, "history.json")
+	writeJSONFile(t, historyPath, map[string]any{"schemaVersion": contracts.ScenarioHistorySchema, "profileId": "default"})
+
+	_, stderr, code := runCLI(t, root, "evaluate", "acceptance",
+		"--search-result", searchResultPath,
+		"--acceptance-results", acceptanceResultsPath,
+		"--repo-root", root,
+		"--target", "prompts/router.md",
+		"--output", outputPath,
+	)
+	if code != 1 {
+		t.Fatalf("required target without a satisfying read must block (exit 1), got %d stderr=%s", code, stderr)
+	}
+	report := readJSONObjectFile(t, outputPath)
+	if report["acceptanceDecision"] != "blocked" {
+		t.Fatalf("expected acceptanceDecision blocked, got %#v", report["acceptanceDecision"])
+	}
+	if tier := report["riskTier"].(map[string]any); tier["effect"] != "required" || tier["tier"] != "critical" {
+		t.Fatalf("expected riskTier critical/required, got %#v", tier)
+	}
+
+	_, stderr, code = runCLI(t, root, "evaluate", "acceptance",
+		"--search-result", searchResultPath,
+		"--acceptance-results", acceptanceResultsPath,
+		"--repo-root", root,
+		"--target", "prompts/router.md",
+		"--waiver", "operator sign-off after manual review",
+		"--history-file", historyPath,
+		"--output", outputPath,
+	)
+	if code != 0 {
+		t.Fatalf("required target with a waiver must proceed (exit 0), got %d stderr=%s", code, stderr)
+	}
+	report = readJSONObjectFile(t, outputPath)
+	if report["acceptanceDecision"] != "waived" {
+		t.Fatalf("expected acceptanceDecision waived, got %#v", report["acceptanceDecision"])
+	}
+	history := readJSONObjectFile(t, historyPath)
+	waivers, ok := history["acceptanceWaivers"].([]any)
+	if !ok || len(waivers) != 1 {
+		t.Fatalf("expected one recorded acceptance waiver, got %#v", history["acceptanceWaivers"])
+	}
+}
+
+func TestCLIEvaluateAcceptanceRequiredTierAcceptsWithPerTierFloor(t *testing.T) {
+	root := t.TempDir()
+	// Per-tier floor of 2 lets a two-scenario read count as reliable where the
+	// product default floor (10) would force review and block the required tier.
+	writeAcceptanceRiskAdapter(t, root, "acceptance_risk:\n  tiers:\n    critical:\n      effect: required\n      reliability_floor: 2\n  targets:\n    prompts/router.md: critical\n")
+	searchResultPath, acceptanceResultsPath := writeAcceptanceFixtures(t, root,
+		[]int{90, 90},
+		[]map[string]any{
+			{"scenarioId": "acc-1", "overallScore": 88},
+			{"scenarioId": "acc-2", "overallScore": 88},
+		},
+	)
+	outputPath := filepath.Join(root, "report.json")
+	_, stderr, code := runCLI(t, root, "evaluate", "acceptance",
+		"--search-result", searchResultPath,
+		"--acceptance-results", acceptanceResultsPath,
+		"--repo-root", root,
+		"--target", "prompts/router.md",
+		"--output", outputPath,
+	)
+	if code != 0 {
+		t.Fatalf("a clean reliable accept read on a required target must proceed, got %d stderr=%s", code, stderr)
+	}
+	report := readJSONObjectFile(t, outputPath)
+	if report["reliability"] != "reliable" {
+		t.Fatalf("per-tier floor 2 must make a two-scenario read reliable, got %#v", report["reliability"])
+	}
+	if report["recommendation"] != "accept" {
+		t.Fatalf("expected accept recommendation, got %#v", report["recommendation"])
+	}
+	if report["acceptanceDecision"] != "accept" {
+		t.Fatalf("expected acceptanceDecision accept, got %#v", report["acceptanceDecision"])
+	}
+	if tier := report["riskTier"].(map[string]any); tier["reliabilityFloor"] != float64(2) {
+		t.Fatalf("expected per-tier reliabilityFloor 2 surfaced, got %#v", tier["reliabilityFloor"])
+	}
+}
+
+func TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock(t *testing.T) {
+	root := t.TempDir()
+	writeAcceptanceRiskAdapter(t, root, "acceptance_risk:\n  tiers:\n    experimental:\n      effect: skippable\n  targets:\n    prompts/scratch.md: experimental\n")
+	// A single clean scenario recommends review, which would block a required
+	// tier; skippable and undeclared (default optional) targets must not block.
+	searchResultPath, acceptanceResultsPath := writeAcceptanceFixtures(t, root,
+		[]int{90, 90},
+		[]map[string]any{{"scenarioId": "acc-1", "overallScore": 80}},
+	)
+	outputPath := filepath.Join(root, "report.json")
+	for _, target := range []string{"prompts/scratch.md", "prompts/undeclared.md"} {
+		_, stderr, code := runCLI(t, root, "evaluate", "acceptance",
+			"--search-result", searchResultPath,
+			"--acceptance-results", acceptanceResultsPath,
+			"--repo-root", root,
+			"--target", target,
+			"--output", outputPath,
+		)
+		if code != 0 {
+			t.Fatalf("target %q must not block, got exit %d stderr=%s", target, code, stderr)
+		}
+		report := readJSONObjectFile(t, outputPath)
+		if report["acceptanceDecision"] != "not_required" {
+			t.Fatalf("target %q must yield not_required, got %#v", target, report["acceptanceDecision"])
+		}
+	}
+}
+
 func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose(t *testing.T) {
 	root := t.TempDir()
 	chatbotInputPath := filepath.Join(root, "chatbot-input.json")
