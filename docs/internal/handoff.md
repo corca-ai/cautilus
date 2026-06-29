@@ -2,7 +2,7 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — #51 risk-tier 정책 read-time + skip-time 게이트 모두 구현·push 완료(origin/main `67cd2604`). 다음 트랙(아래 Discuss)을 사용자와 좁힌 뒤 착수한다.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — #51 risk-tier 정책 read-time + skip-time 게이트 구현 완료 + v0.18.0 릴리즈 완료(공개 검증됨). 다음 트랙(아래 Discuss)을 사용자와 좁힌 뒤 착수한다.`
 
 mention-only 픽업이면 현재 상태(아래)만 확인하고, 다음 트랙 착수 여부를 사용자와 좁힌 뒤 진행한다.
 자동 트랙 착수 금지.
@@ -16,7 +16,8 @@ skip을 명시적으로 기록하려면 `cautilus evaluate acceptance waive-skip
 
 ## Current State
 
-- 이번 세션 3커밋: `8eadc252`(skip-gate 코드+테스트) → `acb1c1cc`(계약·operator-acceptance·master-plan sync + claim 패킷 refresh) → `67cd2604`(handoff). **origin/main에 push 완료**(pre-push verify+drift 통과). 트리 clean, 미push 없음.
+- skip-gate 코드/문서 커밋 + **v0.18.0 릴리즈 완료**. 릴리즈는 repo-owned `scripts/release/prepare-release.mjs`(버전 5개 표면 bump + skills:sync-packaged + claim-freshness) → 내러티브 작성 → `publish-release.mjs`(branch+tag push) → tag-triggered `release-artifacts.yml` 워크플로(run `28349446031`)가 GitHub 릴리즈 생성+공개 검증. 공개 URL `https://github.com/corca-ai/cautilus/releases/tag/v0.18.0` HTTP 200(distinct-channel) 확인. 릴리즈 기록: `charness-artifacts/release/latest.md`.
+- ⚠️ 릴리즈 트랩(재발): charness `release` 스킬의 generic `publish_release.py`/`bump_version.py`는 `package.json`에 `claude.manifest.version` 구조를 가정해서 이 repo(flat package.json)에선 `KeyError: 'claude'`로 첫 스텝부터 실패. **repo-owned `scripts/release/*`가 정식 경로**. 다음 릴리즈도 repo 스크립트로 직접 진행할 것(charness 릴리즈 스킬 publisher 사용 금지).
 - 계약 `docs/contracts/acceptance-risk-tier.md` Status: **Implemented**. Implementation Status 항목 5–9가 landed 명세, 전 SC proven(테스트명 명시).
 - 구현 critique 1회(fresh-eye 서브에이전트, verdict `ready`, 0 blockers). should-fix 2건 반영: (1) non-`required` target에 `--waiver` 주면 무시 대신 stderr warning, (2) acceptance 게이트만 실패할 때 doctor summary가 "adapter 불완전" 대신 "pending acceptance read"를 명시. nit(history-file이 `--scope agent-surface`에선 무시됨; status가 `incomplete_adapter` 공유)은 deferred로 계약에 기록.
 - 설계 결정(사용자 확정): enforcement 표면 = read-only `cautilus doctor`(Cautilus엔 기계적 accept 명령 없음), operator-acceptance.md 인간 단계가 이 게이트를 가리킴; waiver-on-skip 기록은 별도 `waive-skip` 명령.

@@ -36,7 +36,27 @@ The product owns only the closed effect vocabulary (`required`/`optional`/`skipp
 
 ## Release State
 
-- local release mutation: pending publish helper
-- branch/tag push: pending publish helper
-- GitHub release record: pending tag-triggered `release-artifacts.yml` workflow
-- public release surface verification: pending `verify-public-release.mjs`
+- local release mutation: complete
+- branch/tag push: complete (`publish-release.mjs`, both branch and tag verified against the remote)
+- GitHub release record: verified URL `https://github.com/corca-ai/cautilus/releases/tag/v0.18.0`
+- public release surface verification: verified
+
+## Public Release Verification
+
+- Tag-triggered `release-artifacts.yml` workflow (run `28349446031`) succeeded: built and attested binaries for darwin/linux × arm64/x64, generated checksums and self-contained release notes, created the GitHub release via `softprops/action-gh-release@v3`, and the dependent `verify-public-release` job passed `verify-public-release.mjs`.
+- Release is published, not draft, not prerelease; 7 assets attached.
+
+## Distinct-Channel Verification
+
+- Rung-2 distinct-channel verdict: `confirmed` via `https-fetch` (a channel distinct from `gh release view` and from the CI backend that created the release).
+- Channel URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.18.0`
+- HTTP status: `200`
+
+## Release Helper Note
+
+- The charness `release` skill's generic `publish_release.py`/`bump_version.py` failed first (`KeyError: 'claude'`) because it assumes a `package.json` with `claude.manifest.version`; this repo uses a flat `package.json` and its own canonical helpers under `scripts/release/`. No mutation occurred on that failure. The release was cut through the repo-owned `prepare-release.mjs` + `publish-release.mjs` path. This is a recurring release-helper-shape mismatch worth a retro lesson.
+
+## User Update Steps
+
+- Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
+- Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo.
