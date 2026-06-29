@@ -2,39 +2,37 @@
 
 ## Workflow Trigger
 
-권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — v0.17.0 릴리시 완료(공개 검증됨). 다음은 HITL 스펙다운 리뷰(전체 spec 트리). 사용자가 먼저 직접 읽고 코멘트한 뒤 시작하기로 함 — 사용자가 "시작" 신호를 주기 전에는 quality 권고/HITL 루프를 자동 착수하지 말 것. 시작 신호가 오면: 먼저 charness:quality로 specdown 검증 권고를 받고(repo 계약: validation-shaped는 quality 먼저), 그다음 charness:hitl로 docs/specs 전체 트리(contracts/promises/evidence/rules/ledger/audit + index.spec.md)를 chunked/resumable 루프로 리뷰한다.`
+권장 호출(다음 세션): `@docs/internal/handoff.md 핸드오프대로 진행 — 이슈 #51 final-acceptance-set 메커니즘 슬라이스 완료(커밋 9개, verify green, 아직 push 안 함). 다음 슬라이스: acceptance read의 risk-tier 정책. 먼저 9개 커밋 push 여부를 사용자에게 확인한 뒤, charness:spec으로 risk-tier 계약을 좁히고 charness:impl로 구현한다.`
 
-이 트리거는 픽업 시 자동 착수가 아니라 **사용자 코멘트 대기**가 기본이다. mention-only 픽업이면 현재 상태만 확인하고, HITL 스펙다운을 사용자가 어떻게 좁히고 싶은지(전체 vs 특정 영역, 무엇을 사람이 판정할지) 물은 뒤 진행한다.
+mention-only 픽업이면 현재 상태(아래)만 확인하고, push 여부와 risk-tier 스코프를 사용자와 좁힌 뒤 진행한다. 자동 push 금지.
+
+## Continuation Capability
+
+#51의 **메커니즘**은 끝났다 — `split: acceptance`(+`all`=train+test로 재정의), `acceptance` results mode, 검색 결과의 `heldOutExposureCount`/`heldOutScenarioIds`, `cautilus evaluate acceptance`(contamination 가드 + 일반화 갭 + reliability flag + `acceptanceReads` history), advisory-only(자동 적용/거부 없음).
+남은 건 **정책**: 어떤 행동 표면에 acceptance read를 required/optional/skippable로 강제할지를 정하는 risk-tier 축. 메커니즘은 출시됨, 정책 미출시.
 
 ## Current State
 
-- **v0.17.0 릴리시 완료 + 공개 검증됨.** tag `v0.17.0`@`0fa8a4cf` push, `release-artifacts` 워크플로 success(5m14s), 공개 GitHub 릴리시 published(non-draft) + 자산 7개(darwin/linux × arm64/x64 + checksums + sha256 + notes). install.sh smoke green(`--version`→0.17.0, `update`→already current, `ok:true`). minor 범프(additive runner-readiness + specdown 재구조), delegated release critique = ready-to-publish.
-- **origin/main = `0fa8a4cf`** (릴리시 commit). 이 핸드오프 commit만 그 뒤에 있음.
-- Fork B + gate-router 작업(이전 트랙)은 모두 land+push+release. 측정 SOT는 References.
+- 이슈 #51 슬라이스: 커밋 `dc16402f`…`b49aaee1`(9개), `npm run verify` all phases passed(운영자 보고), golangci 0 issues, claims packet refresh됨(`claims:evidence-state:check` green). **아직 push 안 함 — push 후 이 상태 줄을 갱신/삭제할 것.**
+- origin/main = `b82dd7b9`(v0.17.1). #51 9개가 그 위에 미push(base = origin/main).
+- 계약 SOT: `docs/contracts/final-acceptance-set.md`(Status: Implemented). risk-tier는 "Deferred Decisions"에 명시됨.
+- 잠정 product 상수(`internal/runtime/acceptance.go`): reliability floor=10, gap tolerance=5.0 — **둘 다 현재 고정 product 상수**. 계약이 deferred한 건 **reliability floor의 adapter 설정화뿐**이다(gap-tolerance를 adapter로 옮기는 건 risk-tier 슬라이스가 새로 정당화해야 하는 결정, 자동 이월 아님).
+- 2회 fresh-eye critique 반영 완료(spec: profile-split 공허 가드 → contamination 검사 / impl: empty-held-out 우회 + baseline 부재 시 accept 차단).
 
-## Next Session — HITL 스펙다운 (사용자 신호 대기)
+## Next Session — risk-tier 정책 슬라이스
 
-- **타깃:** `docs/specs` 전체 트리 광범위 리뷰(사용자 선택). proof-spine + typed traceability로 최근 재구조됨. apex `index.spec.md`는 7/7 proven 주장.
-- **경로:** charness:quality(검증 권고) → charness:hitl(chunked/resumable, 청크별 사람 판정). repo 계약상 validation-shaped/operator-reading은 quality를 먼저 거친다.
-- **무엇을 판정?(사용자와 좁힐 것):** (a) promise/claim spec과 proof badge(proven/declared/promised)가 엔진 변경 후에도 정직한가, (b) executable specdown 체크 drift/실패, (c) 전체 트리 청크 리뷰. 사용자가 직접 읽고 코멘트한 결과로 스코프가 정해질 것.
-
-## Carry-forward (릴리시로 응결됨, 재개 시 참고)
-
-- **Fork B 잔여 eval→det = 4** (deferred, over-flip 위험 큼): #1 packet-emission prose, #2 static-taxonomy, #4 status-routing, #8 R6-ish boundary. #8은 R6/R12 ownership-family 결정(human→det ×9와 동형), Fork B discriminator 아님.
-- **deferred gate-router deaths**(저blast 아님): ` needs `(claimNeedsScenario, restructure 필요), provider-failover, provider-caveat — `TestGateRouterCoherence` allowlist에 DEATH-로 잔존, 코퍼스 영향 0.
-- 선재 latent 버그(범위 밖): `truncateReviewSourceRefs`(claim_discovery.go) byte-slice excerpt 멀티바이트 rune 분할 가능.
+1. #51 커밋 9개 push 여부 사용자 확인(자동 금지).
+2. charness:spec — 먼저 `final-acceptance-set.md` Deferred Decisions + `improvement-search.md` 65-66(budget-tier 소유 모델)을 읽고 좁힌다. **product**는 축/라벨 형태 + "tier가 acceptance를 required/optional/skippable로 표시한다"는 계약만 소유, **adapter**는 어떤 표면이 어느 tier인지 + reliability floor 임계값 소유. (gap-tolerance의 adapter화는 계약상 deferred 아님 — 필요하면 이 슬라이스에서 별도 정당화.)
+3. charness:impl — required tier에서 acceptance read 미수행 시 doctor/readiness 또는 명령이 blocked 또는 명시적 waiver를 표면화하고, reliability floor를 adapter-configurable로 전환.
 
 ## Discuss
 
-- HITL 스펙다운 스코프는 사용자 코멘트로 확정. 자동 착수 금지.
-- Fork B 재개(C1)는 한계효용 체감+위험 증가 구간 — 재개한다면 R6/R12 family(C2)나 남은 #1/#2/#4 중 over-flip surface 측정 후 선택.
+- risk-tier **카테고리는 host/adapter 소유**(working rules: adapter schema repo-agnostic). product가 위험 범주를 정의하면 안 됨 — 라벨/계약 형태만.
+- (별도 dormant 트랙) HITL 스펙다운 리뷰는 여전히 사용자 신호 대기. 재개 시 charness:quality → charness:hitl, 스코프는 사용자가 좁힌다. 자동 착수 금지.
 
 ## References
 
-- 릴리시 기록: `charness-artifacts/release/latest.md`(v0.17.0, Release Scope/Verification)
-- Fork B 측정 SOT: `charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md`(After: schema-field-persistence / command-absence)
-- 슬라이스 contract: `charness-artifacts/eval-trust/2026-06-22-fork-b-schema-field-persistence.spec.md`, `2026-06-22-fork-b-command-absence.spec.md`
-- gate-router: `charness-artifacts/debug/2026-06-21-gate-router-verb-coverage-deaths.md`(LANDED: 저blast batch + deferred)
-- 계약: `docs/contracts/facet-decomposition.md`(Fork B 1–4), `docs/contracts/claim-discovery-workflow.md`(lexicon)
-- 엔진: `internal/runtime/claim_discovery.go` / 테스트: `internal/runtime/claim_discovery_test.go`
-- specdown 아펙스: `docs/specs/index.spec.md`; ground truth: `charness-artifacts/eval-trust/goldset-v2-reextract-head/gold-set-proposal.json`(overlap 56)
+- 계약: `docs/contracts/final-acceptance-set.md`(Deferred Decisions = risk-tier), `docs/contracts/improvement-search.md`(budget-tier 소유 모델 lines 65-66)
+- 코어: `internal/runtime/acceptance.go`, `internal/app/app.go`(`handleEvalAcceptance`), `internal/cli/command-registry.json`(`evaluate acceptance`)
+- 로드맵: `docs/master-plan.md`(Phase 5: shipped + risk-tier deferred)
+- dormant 트랙 상세(단일소스): 릴리시 `charness-artifacts/release/latest.md`; Fork B/gate-router/latent bug `charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md`, `charness-artifacts/eval-trust/2026-06-21-rune-bound-recall.spec.md`; specdown 아펙스 `docs/specs/index.spec.md`
