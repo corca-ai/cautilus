@@ -1,7 +1,7 @@
 {
   "name": "cautilus",
   "private": true,
-  "version": "0.17.1",
+  "version": "0.18.0",
   "type": "module",
   "description": "Adapter-driven framework for discovering, evaluating, and improving agent behavior",
   "engines": {

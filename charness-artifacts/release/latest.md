@@ -1,117 +1,42 @@
 # Release Surface Check
-Date: 2026-06-22
+Date: 2026-06-29
 
-## Scope
+Released Cautilus `v0.18.0`.
 
-Advanced `cautilus` toward release `0.17.1` (tag `v0.17.1`) through the repo-owned release helper.
+## Release Scope
+
+Advanced `cautilus` to release `0.18.0` (tag `v0.18.0`) from `0.17.1` through the repo-owned release helper (`scripts/release/prepare-release.mjs` + `publish-release.mjs`).
+
+Everything since tag `v0.17.1` is one coherent feature — the optimizer-untouchable final-acceptance-set read plus the acceptance risk-tier policy:
+
+- read-time enforcement in `cautilus evaluate acceptance` (`--target`/`--waiver`, per-tier reliability floor, block-or-waiver).
+- skip-time gate in read-only `cautilus doctor` (`--history-file`, the `acceptanceReadiness` block and `acceptance_read_readiness` check) plus the explicit `cautilus evaluate acceptance waive-skip` recorder.
+
+The product owns only the closed effect vocabulary (`required`/`optional`/`skippable`); risk categories and tier names stay host/adapter-owned, and the acceptance read stays advisory — it never auto-applies or auto-rejects a candidate.
 
 ## Current Version
 
-- previous version: `0.17.0`
-- target version: `0.17.1`
+- previous version: `0.17.1`
+- target version: `0.18.0`
 - git branch: `main`
 - git remote: `origin`
+- bump rationale: minor — net-new operator commands (`evaluate acceptance`, `evaluate acceptance waive-skip`) and an optional `doctor --history-file` flag, with no breaking change to existing callers.
 
 ## Verification
 
-- `npm run verify` passed before publish.
-- `current_release.py` reported no version drift across packaging and generated install surfaces.
-- initial release push carried the release branch update and tag from the release helper.
-- post-publish artifact push recorded the verified public release state on the release branch.
-
-## Release State
-
-- local release mutation: complete
-- branch/tag push: complete
-- GitHub release record: verified URL `https://github.com/corca-ai/cautilus/releases/tag/v0.17.1`
-- public release surface verification: verified
-- audit narrative: durable record written to `charness-artifacts/release/latest.md` and committed with this slice
-
-## Public Release Verification
-
-- GitHub release publication: verified by the release backend.
-
-## Distinct-Channel Verification
-
-- Rung-2 distinct-channel verdict: `confirmed` via `https-fetch` (a channel distinct from `gh release view`).
-- Channel URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.17.1`
-- HTTP status: `200`
-- Rung-1 floor: a per-surface verdict is recorded (presence), so issue closeout was not silent; the honesty of this verdict is the human rung-2 disposition review.
-
-## Release Adapter Preflight
-
-- Release adapter focused preflight status: `not_required`.
-- Reason: release adapter did not change in the release delta
-- Focused preflight commands: none executed.
-
-## Retro Trigger Evaluation
-
-- Triggered: `True`.
-- Evaluated at: `final_release_paths`.
-- Input mode: `explicit_paths`.
-- Reason: Changed surfaces hit configured install/update/support/export/discovery retro triggers.
-- Closeout status: `written`.
-- Retro artifact: `charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md`.
-- Recent lessons: `charness-artifacts/retro/recent-lessons.md`.
-- Surface hits: 1.
-  - `release-packaging`
-- Path hits: 0.
-- Evaluated changed paths: 49.
-  - `.agents/skills/cautilus-agent/references/skill-evaluation.md`
-  - `.agents/skills/cautilus-agent/references/skill-testing.md`
-  - `.claude-plugin/marketplace.json`
-  - `charness-artifacts/critique/2026-06-22-104735-packet.json`
-  - `charness-artifacts/critique/2026-06-22-104735-packet.md`
-  - `charness-artifacts/critique/2026-06-22-113232-packet.json`
-  - `charness-artifacts/critique/2026-06-22-113232-packet.md`
-  - `charness-artifacts/critique/2026-06-22-115039-packet.json`
-  - `charness-artifacts/critique/2026-06-22-115039-packet.md`
-  - `charness-artifacts/critique/2026-06-22-issue-49-resolution-critique.md`
-  - `charness-artifacts/critique/2026-06-22-uncached-token-threshold-critique.md`
-  - `charness-artifacts/critique/2026-06-22-v0.17.1-release-critique.md`
-  - `charness-artifacts/debug/2026-06-22-claude-subagent-threshold-lint-complexity.md`
-  - `charness-artifacts/debug/2026-06-22-release-helper-cli-surface-wrapper.md`
-  - `charness-artifacts/debug/2026-06-22-verify-live-codex-exec.md`
-  - `charness-artifacts/debug/latest.md`
-  - `charness-artifacts/find-skills/latest.json`
-  - `charness-artifacts/find-skills/latest.md`
-  - `charness-artifacts/release/latest.md`
-  - `charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md`
-  - ... 29 more
-
-## Real-Host Verification
-
-- No configured release-time real-host verification trigger matched this slice.
-
-## Real-Host Proof
-
-- No configured release-time real-host proof trigger matched this slice.
+- `npm run verify` passed before publish (all phases).
+- `npm run hooks:check` ready; the publish push re-runs `npm run verify` plus generated-artifact drift via the pre-push hook.
+- `prepare-release.mjs` bumped all five version surfaces to `0.18.0` with no drift; `npm run skills:sync-packaged` left no diff (the Cautilus Agent skill is unchanged this release).
+- `release:claim-freshness` reported `fresh`.
+- Go build clean; runtime and app test suites green; new fixture and smoke tests cover the skip-gate (`TestCLIDoctorAcceptanceSkipGate*`, `TestBuildAcceptanceReadiness*`).
 
 ## Review Proof
 
-- Review proof: `charness-artifacts/critique/2026-06-22-v0.17.1-release-critique.md`.
+- Release critique: `charness-artifacts/critique/2026-06-29-v0.18.0-release-critique.md` (verdict: ship, 0 act-before-ship, 2 documented post-release follow-ups — Cautilus Agent acceptance-sequence routing and executable-spec coverage).
 
-## Post-Publish Proof
+## Release State
 
-- Public release check: `gh release view v0.17.1`.
-
-## Install Refresh
-
-- Post-publish install refresh status: `not_configured`.
-
-## Fresh Checkout Probes
-
-- Fresh-checkout probe status: passed.
-- `git fetch --unshallow --quiet || true`
-- `npm run claims:evidence-state:check`
-- `npm run claims:status-report:check`
-- `npm run generated:drift:check`
-
-## Issue Closeout
-
-- Issue closeout verification: `not_requested`.
-
-## User Update Steps
-
-- Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
-- Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo.
+- local release mutation: pending publish helper
+- branch/tag push: pending publish helper
+- GitHub release record: pending tag-triggered `release-artifacts.yml` workflow
+- public release surface verification: pending `verify-public-release.mjs`
