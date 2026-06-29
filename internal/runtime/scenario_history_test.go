@@ -36,6 +36,41 @@ func TestSelectProfileScenarioIDsReturnsAllTrainScenariosWithoutHistory(t *testi
 	}
 }
 
+func testScenarioProfileWithAcceptance() map[string]any {
+	return map[string]any{
+		"schemaVersion": contracts.ScenarioProfileSchema,
+		"profileId":     "default-train",
+		"scenarios": []any{
+			map[string]any{"scenarioId": "probe-a", "split": "train", "cadence": "graduated"},
+			map[string]any{"scenarioId": "held-out-a", "split": "test", "cadence": "always"},
+			map[string]any{"scenarioId": "accept-a", "split": "acceptance", "cadence": "always"},
+		},
+	}
+}
+
+func TestSelectProfileScenarioIDsAllExcludesAcceptance(t *testing.T) {
+	profile := testScenarioProfileWithAcceptance()
+	selected, err := SelectProfileScenarioIDs(profile, "all", nil, false)
+	if err != nil {
+		t.Fatalf("SelectProfileScenarioIDs returned error: %v", err)
+	}
+	// `all` is the union of train and test only; acceptance stays untouchable.
+	if !reflect.DeepEqual(selected, []string{"probe-a", "held-out-a"}) {
+		t.Fatalf("split all should return train+test only, got %#v", selected)
+	}
+}
+
+func TestSelectProfileScenarioIDsAcceptanceSplitIsSelectable(t *testing.T) {
+	profile := testScenarioProfileWithAcceptance()
+	selected, err := SelectProfileScenarioIDs(profile, "acceptance", nil, false)
+	if err != nil {
+		t.Fatalf("SelectProfileScenarioIDs returned error: %v", err)
+	}
+	if !reflect.DeepEqual(selected, []string{"accept-a"}) {
+		t.Fatalf("split acceptance should return only acceptance scenarios, got %#v", selected)
+	}
+}
+
 func TestUpdateScenarioHistoryGraduatesPerfectTrainScenarios(t *testing.T) {
 	profile := testScenarioProfile()
 	initialHistory, err := CreateEmptyScenarioHistory(profile)

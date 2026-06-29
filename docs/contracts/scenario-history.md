@@ -71,8 +71,11 @@ Optional but useful fields:
 
 Allowed values:
 
-- `split`: `train`, `test`, or `all`
+- `split`: `train`, `test`, `all`, or `acceptance`
 - `cadence`: `always` or `graduated`
+
+The `acceptance` split is an optimizer-untouchable final acceptance surface owned by [final-acceptance-set.md](./final-acceptance-set.md).
+It is selectable by the acceptance read command but is structurally excluded from `improve search` and from the `all` request.
 
 ## History Shape
 
@@ -122,7 +125,7 @@ Persisted history should be profile-scoped and append-only at the run level.
 
 `Cautilus` should select scenarios with these rules:
 
-1. If the requested split is not `train`, run every scenario in the requested split.
+1. If the requested split is not `train`, run every scenario in the requested split, except that the `all` request resolves to the union of `train` and `test` only and never includes `acceptance`.
 2. If the run is a full check, run every scenario in the requested split even when train graduation history exists.
 3. For ordinary train runs:
    - always include scenarios whose cadence is `always`
@@ -232,6 +235,7 @@ Current runtime note:
 
 - Should perfect-result thresholds stay fixed at `100` and `1.0`, or become adapter-configurable once multiple evaluation backends exist?
 - Should `split: all` stay explicit in profile data, or remain a runtime union over `train` and `test`?
+  The acceptance case is now settled: the `all` request is a runtime union over `train` and `test` and never includes `acceptance` (see [final-acceptance-set.md](./final-acceptance-set.md)).
 
 ## Deferred Decisions
 

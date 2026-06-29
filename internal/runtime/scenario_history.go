@@ -85,7 +85,10 @@ func SelectProfileScenarioIDs(profile map[string]any, split string, history map[
 	}
 	if split != "train" || fullCheck {
 		for _, scenario := range scenarios {
-			if split == "all" || stringOrEmpty(scenario["split"]) == split {
+			scenarioSplit := stringOrEmpty(scenario["split"])
+			// `all` resolves to the union of train and test only; an acceptance
+			// scenario is optimizer-untouchable and is never selected through `all`.
+			if (split == "all" && scenarioSplit != "acceptance") || scenarioSplit == split {
 				selected = append(selected, stringOrEmpty(scenario["scenarioId"]))
 			}
 		}
@@ -277,8 +280,8 @@ func profileScenarios(profile map[string]any, label string) ([]map[string]any, e
 		if err != nil {
 			return nil, err
 		}
-		if !slices.Contains([]string{"train", "test", "all"}, split) {
-			return nil, fmt.Errorf("%s.scenarios[%d].split must be train, test, or all", label, index)
+		if !slices.Contains([]string{"train", "test", "all", "acceptance"}, split) {
+			return nil, fmt.Errorf("%s.scenarios[%d].split must be train, test, all, or acceptance", label, index)
 		}
 		cadence, err := normalizeNonEmptyString(scenario["cadence"], fmt.Sprintf("%s.scenarios[%d].cadence", label, index))
 		if err != nil {
