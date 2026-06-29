@@ -437,6 +437,13 @@ func validateAdapterData(data map[string]any) (map[string]any, []string) {
 			validated["improve_search"] = normalized
 		}
 	}
+	if acceptanceRisk, ok := data["acceptance_risk"]; ok && acceptanceRisk != nil {
+		normalized, riskErrors := validateAdapterAcceptanceRisk(acceptanceRisk)
+		errors = append(errors, riskErrors...)
+		if normalized != nil {
+			validated["acceptance_risk"] = normalized
+		}
+	}
 	if claimDiscovery, ok := data["claim_discovery"]; ok && claimDiscovery != nil {
 		normalized, claimErrors := validateAdapterClaimDiscovery(claimDiscovery)
 		errors = append(errors, claimErrors...)
@@ -1166,6 +1173,98 @@ func isKnownImproveSearchBudget(value string) bool {
 		}
 	}
 	return false
+}
+
+// validateAdapterAcceptanceRisk validates the adapter-owned acceptance risk-tier
+// block. The product owns only the closed effect enum required/optional/skippable
+// (a renamed or extra value is an error); the adapter owns the tier names, the
+// target-to-tier mapping, and the per-tier reliability floor. See
+// docs/contracts/acceptance-risk-tier.md.
+func validateAdapterAcceptanceRisk(value any) (map[string]any, []string) {
+	record, ok := value.(map[string]any)
+	if !ok {
+		return nil, []string{"acceptance_risk must be a mapping"}
+	}
+	errors := []string{}
+	validated := map[string]any{}
+
+	if defaultEffect, ok := record["default_effect"]; ok && defaultEffect != nil {
+		text, err := normalizeNonEmptyString(defaultEffect, "acceptance_risk.default_effect")
+		if err != nil || !acceptanceEffects[text] {
+			errors = append(errors, "acceptance_risk.default_effect must be one of: required, optional, skippable")
+		} else {
+			validated["default_effect"] = text
+		}
+	}
+
+	// Tiers must be validated before targets so target references can be checked
+	// against the set of declared tier names.
+	declaredTiers := map[string]bool{}
+	if tiers, ok := record["tiers"]; ok && tiers != nil {
+		items, ok := tiers.(map[string]any)
+		if !ok {
+			errors = append(errors, "acceptance_risk.tiers must be a mapping")
+		} else {
+			normalizedTiers := map[string]any{}
+			for tierName, rawTier := range items {
+				if strings.TrimSpace(tierName) == "" {
+					errors = append(errors, "acceptance_risk.tiers keys must be non-empty")
+					continue
+				}
+				tierRecord, ok := rawTier.(map[string]any)
+				if !ok {
+					errors = append(errors, fmt.Sprintf("acceptance_risk.tiers.%s must be a mapping", tierName))
+					continue
+				}
+				entry := map[string]any{}
+				effect, err := normalizeNonEmptyString(tierRecord["effect"], fmt.Sprintf("acceptance_risk.tiers.%s.effect", tierName))
+				if err != nil || !acceptanceEffects[effect] {
+					errors = append(errors, fmt.Sprintf("acceptance_risk.tiers.%s.effect must be one of: required, optional, skippable", tierName))
+				} else {
+					entry["effect"] = effect
+					declaredTiers[tierName] = true
+				}
+				if rawFloor, ok := tierRecord["reliability_floor"]; ok && rawFloor != nil {
+					number, err := normalizeInteger(rawFloor, fmt.Sprintf("acceptance_risk.tiers.%s.reliability_floor", tierName))
+					if err != nil || number == nil || *number <= 0 {
+						errors = append(errors, fmt.Sprintf("acceptance_risk.tiers.%s.reliability_floor must be a positive integer", tierName))
+					} else {
+						entry["reliability_floor"] = *number
+					}
+				}
+				normalizedTiers[tierName] = entry
+			}
+			validated["tiers"] = normalizedTiers
+		}
+	}
+
+	if targets, ok := record["targets"]; ok && targets != nil {
+		items, ok := targets.(map[string]any)
+		if !ok {
+			errors = append(errors, "acceptance_risk.targets must be a mapping")
+		} else {
+			normalizedTargets := map[string]any{}
+			for targetID, rawTier := range items {
+				if strings.TrimSpace(targetID) == "" {
+					errors = append(errors, "acceptance_risk.targets keys must be non-empty")
+					continue
+				}
+				tierName, err := normalizeNonEmptyString(rawTier, fmt.Sprintf("acceptance_risk.targets.%s", targetID))
+				if err != nil {
+					errors = append(errors, fmt.Sprintf("acceptance_risk.targets.%s must name a declared tier", targetID))
+					continue
+				}
+				if !declaredTiers[tierName] {
+					errors = append(errors, fmt.Sprintf("acceptance_risk.targets.%s references undeclared tier %q", targetID, tierName))
+					continue
+				}
+				normalizedTargets[targetID] = tierName
+			}
+			validated["targets"] = normalizedTargets
+		}
+	}
+
+	return validated, errors
 }
 
 func stringSliceNoValidate(items []any) []string {
