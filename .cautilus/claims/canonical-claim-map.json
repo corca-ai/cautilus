@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:d022506d7a19380a7fef3d8d04f27bd0b8ec1839d9018de97bc734a7257e0166"
+      "contentHash": "sha256:8815e4b028c9a4ae7a8d997e9692ec9bcc7b84c5def37fa7d5d998f40a96d269"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "37fc1570c4d984f98e537cfaf4a911093ed9e0f5",
+  "claimsPacketGitCommit": "db3bd667b0dd354b195f963f228db787cd89a79d",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 509,
+  "claimsPacketCandidateCount": 529,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,37 +200,37 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 509,
+    "totalRawClaimCount": 529,
     "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
     "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 431,
+    "semanticReviewRecommendedCount": 451,
     "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 380,
+      "mapped-to-maintainer-canonical": 400,
       "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 380,
+      "developer": 400,
       "user": 129
     },
     "byMappingConfidence": {
       "high": 78,
-      "low": 152,
-      "medium": 279
+      "low": 153,
+      "medium": 298
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
       "M1": 5,
-      "M10": 15,
-      "M11": 53,
-      "M12": 11,
-      "M2": 24,
-      "M3": 98,
-      "M4": 82,
-      "M5": 34,
+      "M10": 23,
+      "M11": 55,
+      "M12": 12,
+      "M2": 25,
+      "M3": 99,
+      "M4": 85,
+      "M5": 36,
       "M6": 11,
-      "M7": 15,
+      "M7": 17,
       "M8": 23,
       "M9": 9
     },
@@ -460,9 +460,9 @@
       "claim-docs-master-plan-md-79",
       "claim-docs-master-plan-md-80",
       "claim-docs-master-plan-md-91",
-      "claim-docs-master-plan-md-181",
-      "claim-docs-master-plan-md-184",
-      "claim-docs-master-plan-md-194",
+      "claim-docs-master-plan-md-186",
+      "claim-docs-master-plan-md-189",
+      "claim-docs-master-plan-md-199",
       "claim-docs-specs-index-spec-md-16",
       "claim-docs-specs-index-spec-md-17",
       "claim-docs-specs-index-spec-md-33",
@@ -589,6 +589,19 @@
       "claim-docs-contracts-facet-decomposition-md-82",
       "claim-docs-contracts-facet-decomposition-md-86",
       "claim-docs-contracts-facet-decomposition-md-88",
+      "claim-docs-contracts-final-acceptance-set-md-18",
+      "claim-docs-contracts-final-acceptance-set-md-39",
+      "claim-docs-contracts-final-acceptance-set-md-46",
+      "claim-docs-contracts-final-acceptance-set-md-50",
+      "claim-docs-contracts-final-acceptance-set-md-68",
+      "claim-docs-contracts-final-acceptance-set-md-70",
+      "claim-docs-contracts-final-acceptance-set-md-72",
+      "claim-docs-contracts-final-acceptance-set-md-78",
+      "claim-docs-contracts-final-acceptance-set-md-82",
+      "claim-docs-contracts-final-acceptance-set-md-93",
+      "claim-docs-contracts-final-acceptance-set-md-94",
+      "claim-docs-contracts-final-acceptance-set-md-164",
+      "claim-docs-contracts-final-acceptance-set-md-185",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -716,19 +729,26 @@
       "claim-docs-contracts-claim-extraction-template-md-257",
       "claim-docs-contracts-claim-extraction-template-md-306",
       "claim-docs-contracts-claim-extraction-template-md-357",
-      "claim-docs-contracts-final-acceptance-set-md-18",
-      "claim-docs-contracts-final-acceptance-set-md-39",
-      "claim-docs-contracts-final-acceptance-set-md-46",
-      "claim-docs-contracts-final-acceptance-set-md-50",
-      "claim-docs-contracts-final-acceptance-set-md-68",
-      "claim-docs-contracts-final-acceptance-set-md-70",
-      "claim-docs-contracts-final-acceptance-set-md-72",
-      "claim-docs-contracts-final-acceptance-set-md-78",
-      "claim-docs-contracts-final-acceptance-set-md-82",
-      "claim-docs-contracts-final-acceptance-set-md-93",
-      "claim-docs-contracts-final-acceptance-set-md-94",
-      "claim-docs-contracts-final-acceptance-set-md-164",
-      "claim-docs-contracts-final-acceptance-set-md-185",
+      "claim-docs-contracts-improvement-search-md-3",
+      "claim-docs-contracts-improvement-search-md-6",
+      "claim-docs-contracts-improvement-search-md-14",
+      "claim-docs-contracts-improvement-search-md-16",
+      "claim-docs-contracts-improvement-search-md-45",
+      "claim-docs-contracts-improvement-search-md-53",
+      "claim-docs-contracts-improvement-search-md-80",
+      "claim-docs-contracts-improvement-search-md-126",
+      "claim-docs-contracts-improvement-search-md-175",
+      "claim-docs-contracts-improvement-search-md-197",
+      "claim-docs-contracts-improvement-search-md-282",
+      "claim-docs-contracts-improvement-search-md-372",
+      "claim-docs-contracts-improvement-search-md-405",
+      "claim-docs-contracts-improvement-search-md-406",
+      "claim-docs-contracts-improvement-search-md-438",
+      "claim-docs-contracts-improvement-search-md-481",
+      "claim-docs-contracts-improvement-search-md-486",
+      "claim-docs-contracts-improvement-search-md-503",
+      "claim-docs-contracts-improvement-search-md-504",
+      "claim-docs-contracts-improvement-search-md-524",
       "claim-docs-contracts-improvement-md-27",
       "claim-docs-contracts-improvement-md-34",
       "claim-docs-contracts-improvement-md-37",
@@ -863,7 +883,7 @@
     {
       "canonicalClaimId": "M2",
       "title": "Claim Discovery Workflow",
-      "absorbedRawClaimCount": 24,
+      "absorbedRawClaimCount": 25,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-500",
         "claim-docs-master-plan-md-78",
@@ -881,12 +901,13 @@
         "claim-docs-contracts-claim-discovery-workflow-md-560",
         "claim-docs-contracts-claim-discovery-workflow-md-694",
         "claim-docs-contracts-claim-discovery-workflow-md-749",
+        "claim-docs-contracts-final-acceptance-set-md-93",
         "claim-docs-contracts-workbench-instance-discovery-md-100",
         "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-17",
         "claim-docs-specs-contracts-claim-discovery-workflow-spec-md-21",
         "claim-docs-contracts-claim-extraction-template-md-39",
         "claim-docs-contracts-claim-extraction-template-md-306",
-        "claim-docs-contracts-final-acceptance-set-md-93",
+        "claim-docs-contracts-improvement-search-md-80",
         "claim-skills-cautilus-agent-skill-md-109",
         "claim-skills-cautilus-agent-skill-md-123"
       ],
@@ -988,6 +1009,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-93",
+          "claimFingerprint": "sha256:972496947f1465755f133532529c28fa29a29a60e9d92f4f294cc4e0d30939de",
+          "mappingConfidence": "low",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-workbench-instance-discovery-md-100",
           "claimFingerprint": "sha256:54a51cdc72f76d3d9714c0f3b87a4d83f8b95d55bc9fd0d34b5d5030c2f45389",
           "mappingConfidence": "low",
@@ -1018,9 +1045,9 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-93",
-          "claimFingerprint": "sha256:972496947f1465755f133532529c28fa29a29a60e9d92f4f294cc4e0d30939de",
-          "mappingConfidence": "low",
+          "claimId": "claim-docs-contracts-improvement-search-md-80",
+          "claimFingerprint": "sha256:5cf42db7ada76c83f6866d8238ed2a510376c8dc6db300366eaa97e6828f80ce",
+          "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
@@ -1038,26 +1065,26 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 7,
-        "unknown": 17
+        "unknown": 18
       },
       "byReviewStatus": {
         "agent-reviewed": 9,
-        "heuristic": 15
+        "heuristic": 16
       },
       "byRecommendedProof": {
-        "deterministic": 8,
+        "deterministic": 9,
         "human-auditable": 16
       },
       "byMappingConfidence": {
         "high": 5,
         "low": 5,
-        "medium": 14
+        "medium": 15
       }
     },
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 98,
+      "absorbedRawClaimCount": 99,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
         "claim-agents-md-142",
@@ -1111,6 +1138,7 @@
         "claim-docs-contracts-facet-decomposition-md-57",
         "claim-docs-contracts-facet-decomposition-md-67",
         "claim-docs-contracts-facet-decomposition-md-73",
+        "claim-docs-contracts-final-acceptance-set-md-46",
         "claim-docs-contracts-live-run-invocation-batch-md-77",
         "claim-docs-contracts-reporting-md-48",
         "claim-docs-contracts-runner-readiness-md-29",
@@ -1136,7 +1164,7 @@
         "claim-docs-contracts-claim-extraction-template-md-187",
         "claim-docs-contracts-claim-extraction-template-md-299",
         "claim-docs-contracts-claim-extraction-template-md-357",
-        "claim-docs-contracts-final-acceptance-set-md-46",
+        "claim-docs-contracts-improvement-search-md-197",
         "claim-docs-contracts-realsurface-judge-convergence-md-32",
         "claim-docs-contracts-realsurface-judge-convergence-md-43",
         "claim-docs-contracts-realsurface-judge-convergence-md-98",
@@ -1472,6 +1500,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-46",
+          "claimFingerprint": "sha256:65fd53ff7fbdde38a627b611415a4e6176a6dcfd1b6ee966a25ff48a70219256",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-batch-md-77",
           "claimFingerprint": "sha256:57c666ca6aca677b5b250c22b235e4a0d037aaaa07bb1c66151ad9947217cabf",
           "mappingConfidence": "medium",
@@ -1622,8 +1656,8 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-46",
-          "claimFingerprint": "sha256:65fd53ff7fbdde38a627b611415a4e6176a6dcfd1b6ee966a25ff48a70219256",
+          "claimId": "claim-docs-contracts-improvement-search-md-197",
+          "claimFingerprint": "sha256:fc019bf4d62c7fd5d9dc99725d30c5dfabf5fe8f125a4bb0e0b3b45747dada34",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1750,27 +1784,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 80
+        "unknown": 81
       },
       "byReviewStatus": {
         "agent-reviewed": 26,
-        "heuristic": 72
+        "heuristic": 73
       },
       "byRecommendedProof": {
-        "cautilus-eval": 29,
+        "cautilus-eval": 30,
         "deterministic": 54,
         "human-auditable": 15
       },
       "byMappingConfidence": {
         "high": 22,
         "low": 1,
-        "medium": 75
+        "medium": 76
       }
     },
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 82,
+      "absorbedRawClaimCount": 85,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
@@ -1809,6 +1843,7 @@
         "claim-docs-contracts-eval-judge-collaboration-md-235",
         "claim-docs-contracts-facet-decomposition-md-50",
         "claim-docs-contracts-facet-decomposition-md-59",
+        "claim-docs-contracts-final-acceptance-set-md-185",
         "claim-docs-contracts-live-run-invocation-md-24",
         "claim-docs-contracts-live-run-invocation-md-59",
         "claim-docs-contracts-reporting-md-131",
@@ -1839,7 +1874,9 @@
         "claim-docs-specs-rules-host-owned-execution-spec-md-20",
         "claim-docs-contracts-claim-extraction-template-md-69",
         "claim-docs-contracts-claim-extraction-template-md-359",
-        "claim-docs-contracts-final-acceptance-set-md-185",
+        "claim-docs-contracts-improvement-search-md-126",
+        "claim-docs-contracts-improvement-search-md-503",
+        "claim-docs-contracts-improvement-search-md-504",
         "claim-docs-contracts-improvement-md-37",
         "claim-docs-contracts-improvement-md-38",
         "claim-docs-contracts-improvement-md-132",
@@ -2079,6 +2116,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-185",
+          "claimFingerprint": "sha256:a77f4b7fe0431dd7aa83c3211f4f37a7f3f26687bc1cbe97b9550f50ace89f5f",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-md-24",
           "claimFingerprint": "sha256:47034d0a3d9bd406d1f4ba72ec4165eaa08af324e5bd9c65bb7460a32e496aef",
           "mappingConfidence": "medium",
@@ -2259,8 +2302,20 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-185",
-          "claimFingerprint": "sha256:a77f4b7fe0431dd7aa83c3211f4f37a7f3f26687bc1cbe97b9550f50ace89f5f",
+          "claimId": "claim-docs-contracts-improvement-search-md-126",
+          "claimFingerprint": "sha256:a2466fae5a60624faf4c25d1940b377e25a819e302d685a54e9344f163bb04b6",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-503",
+          "claimFingerprint": "sha256:6c54bcbb38c2dbcc75acb53600a67ac1098c7ffe7a90576c7db41dc10aa72560",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-504",
+          "claimFingerprint": "sha256:aeb5a688ca8e70a855950af3bd5d109a64b9aaa13815dbc482a56687907eeeda",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2351,27 +2406,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 65
+        "unknown": 68
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 54
+        "heuristic": 57
       },
       "byRecommendedProof": {
         "cautilus-eval": 35,
-        "deterministic": 26,
-        "human-auditable": 21
+        "deterministic": 28,
+        "human-auditable": 22
       },
       "byMappingConfidence": {
         "high": 10,
         "low": 3,
-        "medium": 69
+        "medium": 72
       }
     },
     {
       "canonicalClaimId": "M5",
       "title": "Evaluation Surfaces And Runners",
-      "absorbedRawClaimCount": 34,
+      "absorbedRawClaimCount": 36,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-223",
         "claim-docs-contracts-adapter-contract-md-304",
@@ -2385,6 +2440,7 @@
         "claim-docs-contracts-claim-discovery-workflow-md-311",
         "claim-docs-contracts-claim-discovery-workflow-md-515",
         "claim-docs-contracts-claim-discovery-workflow-md-593",
+        "claim-docs-contracts-final-acceptance-set-md-70",
         "claim-docs-contracts-runner-readiness-md-43",
         "claim-docs-contracts-runner-readiness-md-45",
         "claim-docs-contracts-runner-readiness-md-121",
@@ -2400,7 +2456,8 @@
         "claim-docs-specs-rules-cost-and-proof-freshness-spec-md-7",
         "claim-docs-specs-rules-reviewable-artifacts-spec-md-7",
         "claim-docs-contracts-behavior-eval-live-proof-md-29",
-        "claim-docs-contracts-final-acceptance-set-md-70",
+        "claim-docs-contracts-improvement-search-md-14",
+        "claim-docs-contracts-improvement-search-md-486",
         "claim-docs-contracts-realsurface-judge-convergence-md-45",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-8",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-42",
@@ -2478,6 +2535,12 @@
         {
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-593",
           "claimFingerprint": "sha256:2d630a492b608ecb895b2c84c1dfb26f817aa6b3bdbb1b6515c0ea9e1f1bc93d",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-70",
+          "claimFingerprint": "sha256:42dd4a3e4393e02052e323622a4e9a0b21ca92b10dcba91daaf20cfdfbda4bc9",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2572,8 +2635,14 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-70",
-          "claimFingerprint": "sha256:42dd4a3e4393e02052e323622a4e9a0b21ca92b10dcba91daaf20cfdfbda4bc9",
+          "claimId": "claim-docs-contracts-improvement-search-md-14",
+          "claimFingerprint": "sha256:c779fa339d95fe838415fae1b571dcfc59ae5f5d80a6f35f906e0c94d9275e79",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-486",
+          "claimFingerprint": "sha256:bb7505abc4f75cccdf56dec139e5390138215d478a3d2e7ba5e7b8d3cd523887",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2616,21 +2685,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 14,
-        "unknown": 20
+        "unknown": 22
       },
       "byReviewStatus": {
         "agent-reviewed": 14,
-        "heuristic": 20
+        "heuristic": 22
       },
       "byRecommendedProof": {
-        "cautilus-eval": 16,
-        "deterministic": 14,
+        "cautilus-eval": 17,
+        "deterministic": 15,
         "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 5,
         "low": 1,
-        "medium": 28
+        "medium": 30
       }
     },
     {
@@ -2739,20 +2808,22 @@
     {
       "canonicalClaimId": "M7",
       "title": "Improvement Loop",
-      "absorbedRawClaimCount": 15,
+      "absorbedRawClaimCount": 17,
       "absorbedRawClaimIds": [
         "claim-agents-md-32",
         "claim-docs-specs-index-spec-md-61",
         "claim-docs-specs-index-spec-md-63",
         "claim-docs-contracts-claim-discovery-workflow-md-420",
+        "claim-docs-contracts-final-acceptance-set-md-68",
+        "claim-docs-contracts-final-acceptance-set-md-78",
+        "claim-docs-contracts-final-acceptance-set-md-82",
         "claim-docs-contracts-reporting-md-170",
         "claim-docs-specs-contracts-improvement-loop-spec-md-30",
         "claim-docs-specs-rules-cost-and-proof-freshness-spec-md-19",
         "claim-docs-contracts-behavior-eval-live-proof-md-11",
         "claim-docs-contracts-behavior-eval-live-proof-md-24",
-        "claim-docs-contracts-final-acceptance-set-md-68",
-        "claim-docs-contracts-final-acceptance-set-md-78",
-        "claim-docs-contracts-final-acceptance-set-md-82",
+        "claim-docs-contracts-improvement-search-md-406",
+        "claim-docs-contracts-improvement-search-md-438",
         "claim-docs-contracts-improvement-md-34",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-47",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-154"
@@ -2779,6 +2850,24 @@
         {
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-420",
           "claimFingerprint": "sha256:2a32466ef9625c53036cca28142e05c9d37139c43ee5171a4b5aa9534dd860f2",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-68",
+          "claimFingerprint": "sha256:3f0d762c6f453c91b1ef642cc80a8f414f979b1ab79b52ff7f33c839a8bfe101",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-78",
+          "claimFingerprint": "sha256:bc34c1b3b2d2815bdaa379b2b9c10d042b420b33216233519f9e86cedb01b87a",
+          "mappingConfidence": "low",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-82",
+          "claimFingerprint": "sha256:18aae8682da8873957cf5b36c2ff3b2ad956f81b2e5e576d840c52378e969dae",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2813,20 +2902,14 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-68",
-          "claimFingerprint": "sha256:3f0d762c6f453c91b1ef642cc80a8f414f979b1ab79b52ff7f33c839a8bfe101",
+          "claimId": "claim-docs-contracts-improvement-search-md-406",
+          "claimFingerprint": "sha256:5f88014d24e4c531b7f2cb4c4f216630f0c4dbe3163407a70fc8923fe50a606a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-78",
-          "claimFingerprint": "sha256:bc34c1b3b2d2815bdaa379b2b9c10d042b420b33216233519f9e86cedb01b87a",
-          "mappingConfidence": "low",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-82",
-          "claimFingerprint": "sha256:18aae8682da8873957cf5b36c2ff3b2ad956f81b2e5e576d840c52378e969dae",
+          "claimId": "claim-docs-contracts-improvement-search-md-438",
+          "claimFingerprint": "sha256:68418c5da4a7e4407275d11bd553e240440a6b04a423b32678ce1daf287c79c3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2851,21 +2934,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 3,
-        "unknown": 12
+        "unknown": 14
       },
       "byReviewStatus": {
         "agent-reviewed": 4,
-        "heuristic": 11
+        "heuristic": 13
       },
       "byRecommendedProof": {
-        "cautilus-eval": 2,
+        "cautilus-eval": 3,
         "deterministic": 9,
-        "human-auditable": 4
+        "human-auditable": 5
       },
       "byMappingConfidence": {
         "high": 5,
         "low": 3,
-        "medium": 7
+        "medium": 9
       }
     },
     {
@@ -2882,6 +2965,7 @@
         "claim-docs-contracts-eval-judge-collaboration-md-119",
         "claim-docs-contracts-facet-decomposition-md-80",
         "claim-docs-contracts-facet-decomposition-md-86",
+        "claim-docs-contracts-final-acceptance-set-md-18",
         "claim-docs-contracts-live-run-invocation-md-12",
         "claim-docs-contracts-live-run-invocation-md-193",
         "claim-docs-contracts-runner-readiness-md-117",
@@ -2891,7 +2975,6 @@
         "claim-docs-contracts-runner-readiness-md-348",
         "claim-docs-specs-contracts-readiness-runtime-status-spec-md-18",
         "claim-docs-specs-contracts-readiness-runtime-status-spec-md-25",
-        "claim-docs-contracts-final-acceptance-set-md-18",
         "claim-docs-contracts-realsurface-judge-convergence-md-34",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
         "claim-docs-contracts-skill-surface-judge-convergence-md-87",
@@ -2953,6 +3036,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-18",
+          "claimFingerprint": "sha256:ea6079091988cb153c2f7a8a9243cc9fd6fbb0a072e5ca5747805434e2350f63",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-live-run-invocation-md-12",
           "claimFingerprint": "sha256:ae0122e9a32cdc900075bb4a92bef7f3ed1984464ccba320f1a5824446ee45d2",
           "mappingConfidence": "medium",
@@ -3007,12 +3096,6 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-18",
-          "claimFingerprint": "sha256:ea6079091988cb153c2f7a8a9243cc9fd6fbb0a072e5ca5747805434e2350f63",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
           "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-34",
           "claimFingerprint": "sha256:7999383e2ed5f328d1059e9da0f52196f422a25d9ebe0c406fede3fcfed18e53",
           "mappingConfidence": "medium",
@@ -3063,11 +3146,11 @@
         "claim-docs-contracts-active-run-md-59",
         "claim-docs-contracts-active-run-md-157",
         "claim-docs-contracts-active-run-md-221",
+        "claim-docs-contracts-final-acceptance-set-md-94",
         "claim-docs-contracts-live-run-invocation-md-160",
         "claim-docs-contracts-scenario-history-md-191",
         "claim-docs-specs-contracts-active-run-workspace-spec-md-7",
         "claim-docs-specs-contracts-active-run-workspace-spec-md-17",
-        "claim-docs-contracts-final-acceptance-set-md-94",
         "claim-docs-contracts-improvement-md-136"
       ],
       "absorbedRawClaims": [
@@ -3088,6 +3171,12 @@
           "claimFingerprint": "sha256:3d2a20d102796beaf896d44e99f5b0cc2118f72769b881aa505b083b4f4a168c",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-94",
+          "claimFingerprint": "sha256:5c0e5f1a104425fcc592e06c546ce00ecf51e09655cd18016303c26d58a4169f",
+          "mappingConfidence": "low",
+          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-contracts-live-run-invocation-md-160",
@@ -3112,12 +3201,6 @@
           "claimFingerprint": "sha256:c4c35b7c9f5f004954bd73b859149a249e97f73c456260efcf5c5d34ea5f8013",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-94",
-          "claimFingerprint": "sha256:5c0e5f1a104425fcc592e06c546ce00ecf51e09655cd18016303c26d58a4169f",
-          "mappingConfidence": "low",
-          "requiresSemanticReview": true
         },
         {
           "claimId": "claim-docs-contracts-improvement-md-136",
@@ -3148,7 +3231,7 @@
     {
       "canonicalClaimId": "M10",
       "title": "Live Invocation Runtime",
-      "absorbedRawClaimCount": 15,
+      "absorbedRawClaimCount": 23,
       "absorbedRawClaimIds": [
         "claim-docs-master-plan-md-91",
         "claim-docs-specs-index-spec-md-48",
@@ -3162,6 +3245,14 @@
         "claim-docs-contracts-reporting-md-50",
         "claim-docs-contracts-runner-readiness-md-208",
         "claim-docs-specs-contracts-live-invocation-runtime-spec-md-17",
+        "claim-docs-contracts-improvement-search-md-3",
+        "claim-docs-contracts-improvement-search-md-6",
+        "claim-docs-contracts-improvement-search-md-16",
+        "claim-docs-contracts-improvement-search-md-175",
+        "claim-docs-contracts-improvement-search-md-282",
+        "claim-docs-contracts-improvement-search-md-372",
+        "claim-docs-contracts-improvement-search-md-405",
+        "claim-docs-contracts-improvement-search-md-481",
         "claim-docs-contracts-realsurface-judge-convergence-md-11",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-100",
         "claim-docs-specs-ledger-names-and-keys-spec-md-4"
@@ -3240,6 +3331,54 @@
           "requiresSemanticReview": false
         },
         {
+          "claimId": "claim-docs-contracts-improvement-search-md-3",
+          "claimFingerprint": "sha256:9d432b180360fedca57647c6a8c0931647d2a2ed7dcbd11fde075acabc90d3c6",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-6",
+          "claimFingerprint": "sha256:b43043b78e1979c0c531bd159b3d7b418ce3202dc38fbd3dc596a4d02344a2e3",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-16",
+          "claimFingerprint": "sha256:28f7f96c65345722cb9d0e0a14a3e36271ed712a1106f8514ffdb6d1bd86c484",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-175",
+          "claimFingerprint": "sha256:6bd41f0ae1b9ec52e2613f448c686cbd3336df42d3743992ec661f8412a18613",
+          "mappingConfidence": "low",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-282",
+          "claimFingerprint": "sha256:d194ab332d996d59dee78fcc4930aee86d5318b656fdc609fa1cf8392ba30c1b",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-372",
+          "claimFingerprint": "sha256:c5268d78bb88bf3c62fe36dfc562e979188694bca34563ab66fb363cd96ab3ea",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-405",
+          "claimFingerprint": "sha256:8f67c146b7aa80cef2d62d7fbc215fc5e67bc213e9dc592a9453f01ba8262414",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-improvement-search-md-481",
+          "claimFingerprint": "sha256:5c4cebe0757a4f713a15278bf2c259db04c3b35e00025070d3ab255f9143eec6",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-realsurface-judge-convergence-md-11",
           "claimFingerprint": "sha256:465772f780f5263e6d75a067f9f0619934a74d9e3f91edf4ae576066f30b5773",
           "mappingConfidence": "medium",
@@ -3260,27 +3399,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 2,
-        "unknown": 13
+        "unknown": 21
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
-        "heuristic": 10
+        "heuristic": 18
       },
       "byRecommendedProof": {
-        "cautilus-eval": 7,
+        "cautilus-eval": 15,
         "deterministic": 4,
         "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 4,
-        "low": 1,
-        "medium": 10
+        "low": 2,
+        "medium": 17
       }
     },
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 53,
+      "absorbedRawClaimCount": 55,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-234",
         "claim-docs-contracts-adapter-contract-md-452",
@@ -3288,9 +3427,9 @@
         "claim-docs-contracts-adapter-contract-md-504",
         "claim-docs-contracts-review-packet-md-3",
         "claim-docs-master-plan-md-30",
-        "claim-docs-master-plan-md-181",
-        "claim-docs-master-plan-md-184",
-        "claim-docs-master-plan-md-194",
+        "claim-docs-master-plan-md-186",
+        "claim-docs-master-plan-md-189",
+        "claim-docs-master-plan-md-199",
         "claim-docs-specs-index-spec-md-102",
         "claim-docs-specs-index-spec-md-160",
         "claim-docs-specs-index-spec-md-167",
@@ -3306,6 +3445,11 @@
         "claim-docs-contracts-facet-decomposition-md-76",
         "claim-docs-contracts-facet-decomposition-md-82",
         "claim-docs-contracts-facet-decomposition-md-88",
+        "claim-docs-contracts-final-acceptance-set-md-39",
+        "claim-docs-contracts-final-acceptance-set-md-50",
+        "claim-docs-contracts-final-acceptance-set-md-72",
+        "claim-docs-contracts-final-acceptance-set-md-85",
+        "claim-docs-contracts-final-acceptance-set-md-164",
         "claim-docs-contracts-reporting-md-123",
         "claim-docs-contracts-reporting-md-125",
         "claim-docs-contracts-reporting-md-129",
@@ -3320,11 +3464,8 @@
         "claim-docs-specs-evidence-index-spec-md-8",
         "claim-docs-contracts-claim-extraction-template-md-178",
         "claim-docs-contracts-claim-extraction-template-md-257",
-        "claim-docs-contracts-final-acceptance-set-md-39",
-        "claim-docs-contracts-final-acceptance-set-md-50",
-        "claim-docs-contracts-final-acceptance-set-md-72",
-        "claim-docs-contracts-final-acceptance-set-md-85",
-        "claim-docs-contracts-final-acceptance-set-md-164",
+        "claim-docs-contracts-improvement-search-md-53",
+        "claim-docs-contracts-improvement-search-md-524",
         "claim-docs-contracts-improvement-md-27",
         "claim-docs-contracts-improvement-md-151",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
@@ -3374,19 +3515,19 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-master-plan-md-181",
+          "claimId": "claim-docs-master-plan-md-186",
           "claimFingerprint": "sha256:862486870933c2f77a6e870f56ecd39d3d61d0e1dc05327473b89897e5897be2",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-master-plan-md-184",
+          "claimId": "claim-docs-master-plan-md-189",
           "claimFingerprint": "sha256:1e1d3781f4946fb70586c315428377ac72b570373e576db85aa852ad118d001e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-master-plan-md-194",
+          "claimId": "claim-docs-master-plan-md-199",
           "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3482,6 +3623,36 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-39",
+          "claimFingerprint": "sha256:a715e5b60aacc4b785d768c11b7c95a867f22eb3567a767aa9632dd2800aea34",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-50",
+          "claimFingerprint": "sha256:11f103c2ada3fa8a601b1a73311cdc64b810ee86421a965413ede3ca90195023",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-72",
+          "claimFingerprint": "sha256:b47da52a7f65747316aefc416c5134b52afdf4ec5f90abc337c1a831a482870e",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-85",
+          "claimFingerprint": "sha256:35ccd9e0d84d054c895b9cd3a5f34d9a9b8fa70a8c922871c9dca095c382cab2",
+          "mappingConfidence": "high",
+          "requiresSemanticReview": false
+        },
+        {
+          "claimId": "claim-docs-contracts-final-acceptance-set-md-164",
+          "claimFingerprint": "sha256:4c93fec8e7723c69c58e06f3dcdc1d1f17c779ee113eb99ac99c9886c4694c95",
+          "mappingConfidence": "low",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-reporting-md-123",
           "claimFingerprint": "sha256:84e20fceee7b13f03574081e031d1ebd73a26ab909f01a9ef7f75d864fe70b82",
           "mappingConfidence": "medium",
@@ -3566,33 +3737,15 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-39",
-          "claimFingerprint": "sha256:a715e5b60aacc4b785d768c11b7c95a867f22eb3567a767aa9632dd2800aea34",
+          "claimId": "claim-docs-contracts-improvement-search-md-53",
+          "claimFingerprint": "sha256:72f2e5decfc8dc19f20d8e9911152f8e43ff299310fb6b7b977021de02b90c30",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-50",
-          "claimFingerprint": "sha256:11f103c2ada3fa8a601b1a73311cdc64b810ee86421a965413ede3ca90195023",
+          "claimId": "claim-docs-contracts-improvement-search-md-524",
+          "claimFingerprint": "sha256:07062a67684ad574abdd792f8b474b19f94b2498f57e0e8217e0a16b62354185",
           "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-72",
-          "claimFingerprint": "sha256:b47da52a7f65747316aefc416c5134b52afdf4ec5f90abc337c1a831a482870e",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-85",
-          "claimFingerprint": "sha256:35ccd9e0d84d054c895b9cd3a5f34d9a9b8fa70a8c922871c9dca095c382cab2",
-          "mappingConfidence": "high",
-          "requiresSemanticReview": false
-        },
-        {
-          "claimId": "claim-docs-contracts-final-acceptance-set-md-164",
-          "claimFingerprint": "sha256:4c93fec8e7723c69c58e06f3dcdc1d1f17c779ee113eb99ac99c9886c4694c95",
-          "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
@@ -3658,27 +3811,27 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 36
+        "unknown": 38
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 34
+        "heuristic": 36
       },
       "byRecommendedProof": {
         "cautilus-eval": 3,
-        "deterministic": 33,
+        "deterministic": 35,
         "human-auditable": 17
       },
       "byMappingConfidence": {
         "high": 12,
         "low": 3,
-        "medium": 38
+        "medium": 40
       }
     },
     {
       "canonicalClaimId": "M12",
       "title": "Scenario History And Proposal Normalization",
-      "absorbedRawClaimCount": 11,
+      "absorbedRawClaimCount": 12,
       "absorbedRawClaimIds": [
         "claim-agents-md-68",
         "claim-docs-contracts-claim-discovery-workflow-md-689",
@@ -3686,6 +3839,7 @@
         "claim-docs-specs-contracts-scenario-history-normalization-spec-md-17",
         "claim-docs-specs-contracts-scenario-history-normalization-spec-md-21",
         "claim-docs-specs-contracts-scenario-history-normalization-spec-md-30",
+        "claim-docs-contracts-improvement-search-md-45",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-161",
         "claim-docs-contracts-scenario-proposal-sources-md-235",
         "claim-docs-contracts-scenario-proposal-sources-md-236",
@@ -3730,6 +3884,12 @@
           "requiresSemanticReview": false
         },
         {
+          "claimId": "claim-docs-contracts-improvement-search-md-45",
+          "claimFingerprint": "sha256:5a31fb1823369f2ba9ef80dfb42c860bd3c85fb228f393000768f613cd079651",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-contracts-runtime-fingerprint-improvement-md-161",
           "claimFingerprint": "sha256:eb509d39b7141dd9acfde015c6a2c4373e70a55f3e61535769d1388d3bf85dcc",
           "mappingConfidence": "low",
@@ -3762,22 +3922,22 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 5,
-        "unknown": 6
+        "unknown": 7
       },
       "byReviewStatus": {
         "agent-reviewed": 7,
-        "heuristic": 3,
+        "heuristic": 4,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 2,
-        "deterministic": 7,
+        "deterministic": 8,
         "human-auditable": 2
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 1,
-        "medium": 7
+        "medium": 8
       }
     }
   ],
@@ -7068,12 +7228,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-master-plan-md-181",
+      "claimId": "claim-docs-master-plan-md-186",
       "summary": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):",
       "sourceRefs": [
         {
           "path": "docs/master-plan.md",
-          "line": 181,
+          "line": 186,
           "excerpt": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):"
         }
       ],
@@ -7107,12 +7267,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-master-plan-md-184",
+      "claimId": "claim-docs-master-plan-md-189",
       "summary": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21).",
       "sourceRefs": [
         {
           "path": "docs/master-plan.md",
-          "line": 184,
+          "line": 189,
           "excerpt": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21)."
         }
       ],
@@ -7146,12 +7306,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-master-plan-md-194",
+      "claimId": "claim-docs-master-plan-md-199",
       "summary": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
       "sourceRefs": [
         {
           "path": "docs/master-plan.md",
-          "line": 194,
+          "line": 199,
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first."
         }
       ],
@@ -12698,6 +12858,535 @@
         "routing",
         "same",
         "schema"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-18",
+      "summary": "Repeatedly querying the same valset through the selection channel turns it into a de facto training signal over many generations, so the selected finalist's held-out score can drift away from true generalization.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 18,
+          "excerpt": "Repeatedly querying the same valset through the selection channel turns it into a de facto training signal over many generations, so the selected finalist's held-out score can drift away from true generalization."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:ea6079091988cb153c2f7a8a9243cc9fd6fbb0a072e5ca5747805434e2350f63",
+      "canonicalClaimId": "M8",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 6,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "adapter",
+        "contract",
+        "named",
+        "over",
+        "same",
+        "selected",
+        "surface",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-39",
+      "summary": "A maintainer can read one optimizer-untouchable acceptance surface exactly once, at the human accept/reject step, to report the point-delta generalization gap between the selected finalist's valset score and its acceptance score, with an honest reliability flag, and to see how heavily held-out was queried to produce that finalist.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 39,
+          "excerpt": "A maintainer can read one optimizer-untouchable acceptance surface exactly once, at the human accept/reject step, to report the point-delta generalization gap between the selected finalist's valset score and its acceptance score, with an honest reliability flag, and to see how heavily held-out was queried to produce that finalist."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:a715e5b60aacc4b785d768c11b7c95a867f22eb3567a767aa9632dd2800aea34",
+      "canonicalClaimId": "M11",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M6",
+      "runnerUpScore": 8,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "evidence",
+        "gap",
+        "human",
+        "judgment",
+        "maintainer",
+        "packet",
+        "report",
+        "reporting",
+        "selected",
+        "surface"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-46",
+      "summary": "This slice ships the acceptance mechanism, not the risk-tier policy that decides when it is mandatory.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 46,
+          "excerpt": "This slice ships the acceptance mechanism, not the risk-tier policy that decides when it is mandatory."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:65fd53ff7fbdde38a627b611415a4e6176a6dcfd1b6ee966a25ff48a70219256",
+      "canonicalClaimId": "M3",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 10,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "any",
+        "cautilu",
+        "check",
+        "command",
+        "contract",
+        "deterministic",
+        "eval",
+        "keep",
+        "route",
+        "subclaim",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-50",
+      "summary": "one human-driven read command that evaluates the selected finalist on the acceptance set",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 50,
+          "excerpt": "one human-driven read command that evaluates the selected finalist on the acceptance set"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:11f103c2ada3fa8a601b1a73311cdc64b810ee86421a965413ede3ca90195023",
+      "canonicalClaimId": "M11",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 4,
+      "scoreMargin": 3,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "command",
+        "contract",
+        "evaluate",
+        "evidence",
+        "human",
+        "judgment",
+        "selected"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-68",
+      "summary": "A search run completes and emits a finalist plus a `cautilus.improve_search_result.v1` record that now also surfaces the held-out exposure count and the finalist's held-out scenario ids.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 68,
+          "excerpt": "A search run completes and emits a finalist plus a `cautilus.improve_search_result.v1` record that now also surfaces the held-out exposure count and the finalist's held-out scenario ids."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:3f0d762c6f453c91b1ef642cc80a8f414f979b1ab79b52ff7f33c839a8bfe101",
+      "canonicalClaimId": "M7",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M12",
+      "runnerUpScore": 11,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "deterministic",
+        "eval",
+        "held-out",
+        "improvement",
+        "plu",
+        "proof",
+        "record",
+        "run",
+        "scenario",
+        "search",
+        "subclaim",
+        "surface"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-70",
+      "summary": "The maintainer runs the acceptance read once, passing the `cautilus.improve_search_result.v1` record so the command can recover the selected finalist's prompt snapshot and its recorded held-out scenario ids.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 70,
+          "excerpt": "The maintainer runs the acceptance read once, passing the `cautilus.improve_search_result.v1` record so the command can recover the selected finalist's prompt snapshot and its recorded held-out scenario ids."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:42dd4a3e4393e02052e323622a4e9a0b21ca92b10dcba91daaf20cfdfbda4bc9",
+      "canonicalClaimId": "M5",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M7",
+      "runnerUpScore": 9,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "app/prompt",
+        "evaluate",
+        "fixture",
+        "maintainer",
+        "prompt",
+        "record",
+        "run",
+        "scenario",
+        "selected"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-72",
+      "summary": "`Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read as a distinct `acceptanceReads` entry in scenario history.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 72,
+          "excerpt": "`Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read as a distinct `acceptanceReads` entry in scenario history."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:b47da52a7f65747316aefc416c5134b52afdf4ec5f90abc337c1a831a482870e",
+      "canonicalClaimId": "M11",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M7",
+      "runnerUpScore": 8,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cautilu",
+        "contract",
+        "count",
+        "evaluate",
+        "evidence",
+        "gap",
+        "human",
+        "judgment",
+        "path",
+        "same"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-78",
+      "summary": "Splitting a scarce, expensive-to-author held-out set three ways thins each split and trades known selection power for a noisy detector; authoring fresh boundary cases after search keeps the \"never queried\" guarantee and leaves held-out selection power intact.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 78,
+          "excerpt": "Splitting a scarce, expensive-to-author held-out set three ways thins each split and trades known selection power for a noisy detector; authoring fresh boundary cases after search keeps the \"never queried\" guarantee and leaves held-out selection power intact."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:bc34c1b3b2d2815bdaa379b2b9c10d042b420b33216233519f9e86cedb01b87a",
+      "canonicalClaimId": "M7",
+      "score": 6,
+      "runnerUpCanonicalClaimId": "M2",
+      "runnerUpScore": 5,
+      "scoreMargin": 1,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "held-out",
+        "improvement",
+        "satisfied",
+        "search",
+        "surface",
+        "test"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-82",
+      "summary": "The acceptance read must intersect its acceptance scenario ids with the finalist's recorded held-out scenario ids (from `cautilus.improve_search_result.v1`), exclude any contaminated ids from the gap, list them explicitly in the report, and refuse with a blocked result only when no clean acceptance scenario remains.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 82,
+          "excerpt": "The acceptance read must intersect its acceptance scenario ids with the finalist's recorded held-out scenario ids (from `cautilus.improve_search_result.v1`), exclude any contaminated ids from the gap, list them explicitly in the report, and refuse with a blocked result only when no clean acceptance scenario remains."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:18aae8682da8873957cf5b36c2ff3b2ad956f81b2e5e576d840c52378e969dae",
+      "canonicalClaimId": "M7",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 7,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "blocked",
+        "evidence",
+        "gap",
+        "held-out",
+        "improvement",
+        "result",
+        "scenario",
+        "search"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-85",
+      "summary": "The acceptance read ships as a new `cautilus evaluate acceptance` subcommand in the existing `evaluate` command family, matching the registered `evaluate fixture` and `evaluate review variants` subcommands ([app.go](../../internal/app/app.go) lines 196 and 240).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 85,
+          "excerpt": "The acceptance read ships as a new `cautilus evaluate acceptance` subcommand in the existing `evaluate` command family, matching the registered `evaluate fixture` and `evaluate review variants` subcommands ([app.go](../../internal/app/app.go) lines 196 and 240)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:35ccd9e0d84d054c895b9cd3a5f34d9a9b8fa70a8c922871c9dca095c382cab2",
+      "canonicalClaimId": "M11",
+      "score": 15,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 12,
+      "scoreMargin": 3,
+      "mappingConfidence": "high",
+      "requiresSemanticReview": false,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "cautilu",
+        "check",
+        "command",
+        "contract",
+        "deterministic",
+        "evaluate",
+        "existing",
+        "family",
+        "fixture",
+        "keep",
+        "review"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-93",
+      "summary": "It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 93,
+          "excerpt": "It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:972496947f1465755f133532529c28fa29a29a60e9d92f4f294cc4e0d30939de",
+      "canonicalClaimId": "M2",
+      "score": 6,
+      "runnerUpCanonicalClaimId": "M6",
+      "runnerUpScore": 6,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "candidate",
+        "contract",
+        "emit",
+        "evidence",
+        "rejection",
+        "review"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-94",
+      "summary": "`accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 94,
+          "excerpt": "`accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5c0e5f1a104425fcc592e06c546ce00ecf51e09655cd18016303c26d58a4169f",
+      "canonicalClaimId": "M9",
+      "score": 6,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 6,
+      "scoreMargin": 0,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "contract",
+        "evidence",
+        "gap",
+        "one",
+        "product",
+        "review"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-164",
+      "summary": "CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap.aggregate`, per-scenario score lists, `reliability`, and `heldOutExposureCount`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 164,
+          "excerpt": "CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap.aggregate`, per-scenario score lists, `reliability`, and `heldOutExposureCount`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:4c93fec8e7723c69c58e06f3dcdc1d1f17c779ee113eb99ac99c9886c4694c95",
+      "canonicalClaimId": "M11",
+      "score": 6,
+      "runnerUpCanonicalClaimId": "M5",
+      "runnerUpScore": 5,
+      "scoreMargin": 1,
+      "mappingConfidence": "low",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "evidence",
+        "fixture",
+        "human",
+        "judgment",
+        "over",
+        "test"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-final-acceptance-set-md-185",
+      "summary": "A subsequent decide-first pass resolved the three carried probes: the reliability floor is a single fixed product constant (provisional value in code, adapter-configurability deferred), the read ships as a new `cautilus evaluate acceptance` subcommand, and contamination degrades gracefully (exclude and flag the overlap, refuse only when no clean scenario remains).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/final-acceptance-set.md",
+          "line": 185,
+          "excerpt": "A subsequent decide-first pass resolved the three carried probes: the reliability floor is a single fixed product constant (provisional value in code, adapter-configurability deferred), the read ships as a new `cautilus evaluate acceptance` subcommand, and contamination degrades gracefully (exclude and flag the overlap, refuse only when no clean scenario remains)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:a77f4b7fe0431dd7aa83c3211f4f37a7f3f26687bc1cbe97b9550f50ace89f5f",
+      "canonicalClaimId": "M4",
+      "score": 13,
+      "runnerUpCanonicalClaimId": "M10",
+      "runnerUpScore": 12,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "acceptance",
+        "adapter",
+        "any",
+        "cautilu",
+        "code",
+        "command",
+        "deterministic",
+        "flag",
+        "keep",
+        "new",
+        "product",
+        "remain"
       ]
     },
     {
@@ -18840,206 +19529,13 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-18",
-      "summary": "Repeatedly querying the same valset through the selection channel turns it into a de facto training signal over many generations, so the selected finalist's held-out score can drift away from true generalization.",
+      "claimId": "claim-docs-contracts-improvement-search-md-3",
+      "summary": "`Cautilus` should expose one bounded prompt-search seam above explicit evaluation, review, and history evidence.",
       "sourceRefs": [
         {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 18,
-          "excerpt": "Repeatedly querying the same valset through the selection channel turns it into a de facto training signal over many generations, so the selected finalist's held-out score can drift away from true generalization."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:ea6079091988cb153c2f7a8a9243cc9fd6fbb0a072e5ca5747805434e2350f63",
-      "canonicalClaimId": "M8",
-      "score": 8,
-      "runnerUpCanonicalClaimId": "M4",
-      "runnerUpScore": 6,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "adapter",
-        "contract",
-        "named",
-        "over",
-        "same",
-        "selected",
-        "surface",
-        "thi"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-39",
-      "summary": "A maintainer can read one optimizer-untouchable acceptance surface exactly once, at the human accept/reject step, to report the point-delta generalization gap between the selected finalist's valset score and its acceptance score, with an honest reliability flag, and to see how heavily held-out was queried to produce that finalist.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 39,
-          "excerpt": "A maintainer can read one optimizer-untouchable acceptance surface exactly once, at the human accept/reject step, to report the point-delta generalization gap between the selected finalist's valset score and its acceptance score, with an honest reliability flag, and to see how heavily held-out was queried to produce that finalist."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:a715e5b60aacc4b785d768c11b7c95a867f22eb3567a767aa9632dd2800aea34",
-      "canonicalClaimId": "M11",
-      "score": 10,
-      "runnerUpCanonicalClaimId": "M6",
-      "runnerUpScore": 8,
-      "scoreMargin": 2,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "evidence",
-        "gap",
-        "human",
-        "judgment",
-        "maintainer",
-        "packet",
-        "report",
-        "reporting",
-        "selected",
-        "surface"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-46",
-      "summary": "This slice ships the acceptance mechanism, not the risk-tier policy that decides when it is mandatory.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 46,
-          "excerpt": "This slice ships the acceptance mechanism, not the risk-tier policy that decides when it is mandatory."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:65fd53ff7fbdde38a627b611415a4e6176a6dcfd1b6ee966a25ff48a70219256",
-      "canonicalClaimId": "M3",
-      "score": 11,
-      "runnerUpCanonicalClaimId": "M4",
-      "runnerUpScore": 10,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "any",
-        "cautilu",
-        "check",
-        "command",
-        "contract",
-        "deterministic",
-        "eval",
-        "keep",
-        "route",
-        "subclaim",
-        "thi"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-50",
-      "summary": "one human-driven read command that evaluates the selected finalist on the acceptance set",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 50,
-          "excerpt": "one human-driven read command that evaluates the selected finalist on the acceptance set"
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:11f103c2ada3fa8a601b1a73311cdc64b810ee86421a965413ede3ca90195023",
-      "canonicalClaimId": "M11",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M4",
-      "runnerUpScore": 4,
-      "scoreMargin": 3,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "command",
-        "contract",
-        "evaluate",
-        "evidence",
-        "human",
-        "judgment",
-        "selected"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-68",
-      "summary": "A search run completes and emits a finalist plus a `cautilus.improve_search_result.v1` record that now also surfaces the held-out exposure count and the finalist's held-out scenario ids.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 68,
-          "excerpt": "A search run completes and emits a finalist plus a `cautilus.improve_search_result.v1` record that now also surfaces the held-out exposure count and the finalist's held-out scenario ids."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:3f0d762c6f453c91b1ef642cc80a8f414f979b1ab79b52ff7f33c839a8bfe101",
-      "canonicalClaimId": "M7",
-      "score": 12,
-      "runnerUpCanonicalClaimId": "M12",
-      "runnerUpScore": 11,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "deterministic",
-        "eval",
-        "held-out",
-        "improvement",
-        "plu",
-        "proof",
-        "record",
-        "run",
-        "scenario",
-        "search",
-        "subclaim",
-        "surface"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-70",
-      "summary": "The maintainer runs the acceptance read once, passing the `cautilus.improve_search_result.v1` record so the command can recover the selected finalist's prompt snapshot and its recorded held-out scenario ids.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 70,
-          "excerpt": "The maintainer runs the acceptance read once, passing the `cautilus.improve_search_result.v1` record so the command can recover the selected finalist's prompt snapshot and its recorded held-out scenario ids."
+          "path": "docs/contracts/improvement-search.md",
+          "line": 3,
+          "excerpt": "`Cautilus` should expose one bounded prompt-search seam above explicit evaluation, review, and history evidence."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -19049,74 +19545,269 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:42dd4a3e4393e02052e323622a4e9a0b21ca92b10dcba91daaf20cfdfbda4bc9",
+      "claimFingerprint": "sha256:9d432b180360fedca57647c6a8c0931647d2a2ed7dcbd11fde075acabc90d3c6",
+      "canonicalClaimId": "M10",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 7,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "app/prompt",
+        "cautilu",
+        "evidence",
+        "explicit",
+        "expose",
+        "fixture",
+        "host-owned",
+        "run"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-6",
+      "summary": "The goal is to bring the useful shape of `dspy.GEPA` into `Cautilus`'s packet-first product boundary so an operator can run bounded prompt evolution without weakening held-out, comparison, or structured review discipline.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 6,
+          "excerpt": "The goal is to bring the useful shape of `dspy.GEPA` into `Cautilus`'s packet-first product boundary so an operator can run bounded prompt evolution without weakening held-out, comparison, or structured review discipline."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:b43043b78e1979c0c531bd159b3d7b418ce3202dc38fbd3dc596a4d02344a2e3",
+      "canonicalClaimId": "M10",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 8,
+      "scoreMargin": 3,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "app/prompt",
+        "boundary",
+        "cautilu",
+        "fixture",
+        "host-owned",
+        "operator",
+        "product",
+        "prompt",
+        "run",
+        "shape",
+        "without"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-14",
+      "summary": "and \"which alternate prompt candidate should we try next\"",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 14,
+          "excerpt": "and \"which alternate prompt candidate should we try next\""
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:c779fa339d95fe838415fae1b571dcfc59ae5f5d80a6f35f906e0c94d9275e79",
       "canonicalClaimId": "M5",
-      "score": 9,
-      "runnerUpCanonicalClaimId": "M7",
-      "runnerUpScore": 9,
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M10",
+      "runnerUpScore": 8,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "app/prompt",
+        "contract",
         "evaluate",
         "fixture",
-        "maintainer",
+        "next",
         "prompt",
-        "record",
         "run",
-        "scenario",
-        "selected"
+        "which"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-72",
-      "summary": "`Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read as a distinct `acceptanceReads` entry in scenario history.",
+      "claimId": "claim-docs-contracts-improvement-search-md-16",
+      "summary": "When prompt search remains outside the product boundary, hosts end up re-implementing the same control plane:",
       "sourceRefs": [
         {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 72,
-          "excerpt": "`Cautilus` evaluates the finalist on the clean acceptance scenarios through the same scoring path as held-out, computes the generalization gap, sets the reliability flag from the clean count, and records the read as a distinct `acceptanceReads` entry in scenario history."
+          "path": "docs/contracts/improvement-search.md",
+          "line": 16,
+          "excerpt": "When prompt search remains outside the product boundary, hosts end up re-implementing the same control plane:"
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:b47da52a7f65747316aefc416c5134b52afdf4ec5f90abc337c1a831a482870e",
-      "canonicalClaimId": "M11",
-      "score": 10,
+      "claimFingerprint": "sha256:28f7f96c65345722cb9d0e0a14a3e36271ed712a1106f8514ffdb6d1bd86c484",
+      "canonicalClaimId": "M10",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 10,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "app/prompt",
+        "boundary",
+        "cautilu",
+        "fixture",
+        "host",
+        "host-owned",
+        "product",
+        "prompt",
+        "remain",
+        "run",
+        "same"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-45",
+      "summary": "the search output stays reopenable as a durable artifact and can feed the existing bounded `improve propose` seam",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 45,
+          "excerpt": "the search output stays reopenable as a durable artifact and can feed the existing bounded `improve propose` seam"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5a31fb1823369f2ba9ef80dfb42c860bd3c85fb228f393000768f613cd079651",
+      "canonicalClaimId": "M12",
+      "score": 11,
       "runnerUpCanonicalClaimId": "M7",
-      "runnerUpScore": 8,
+      "runnerUpScore": 9,
       "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "cautilu",
-        "contract",
-        "count",
-        "evaluate",
-        "evidence",
-        "gap",
-        "human",
-        "judgment",
-        "path",
-        "same"
+        "artifact",
+        "deterministic",
+        "durable",
+        "improve",
+        "improvement",
+        "keep",
+        "output",
+        "packet",
+        "proof",
+        "reopenable",
+        "stay"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-78",
-      "summary": "Splitting a scarce, expensive-to-author held-out set three ways thins each split and trades known selection power for a noisy detector; authoring fresh boundary cases after search keeps the \"never queried\" guarantee and leaves held-out selection power intact.",
+      "claimId": "claim-docs-contracts-improvement-search-md-53",
+      "summary": "Until a future schema bridge adds an explicit robustness-report reference to `cautilus.improve_search_inputs.v1`, robustness findings should enter search through explicit report evidence, review findings, or documented provenance.",
       "sourceRefs": [
         {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 78,
-          "excerpt": "Splitting a scarce, expensive-to-author held-out set three ways thins each split and trades known selection power for a noisy detector; authoring fresh boundary cases after search keeps the \"never queried\" guarantee and leaves held-out selection power intact."
+          "path": "docs/contracts/improvement-search.md",
+          "line": 53,
+          "excerpt": "Until a future schema bridge adds an explicit robustness-report reference to `cautilus.improve_search_inputs.v1`, robustness findings should enter search through explicit report evidence, review findings, or documented provenance."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:72f2e5decfc8dc19f20d8e9911152f8e43ff299310fb6b7b977021de02b90c30",
+      "canonicalClaimId": "M11",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 9,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "build",
+        "check",
+        "deterministic",
+        "evidence",
+        "explicit",
+        "keep",
+        "report",
+        "review",
+        "schema"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-80",
+      "summary": "If search-readiness evidence is insufficient, `Cautilus` must stop before candidate generation and emit a machine-readable blocked result.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 80,
+          "excerpt": "If search-readiness evidence is insufficient, `Cautilus` must stop before candidate generation and emit a machine-readable blocked result."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5cf42db7ada76c83f6866d8238ed2a510376c8dc6db300366eaa97e6828f80ce",
+      "canonicalClaimId": "M2",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 10,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "candidate",
+        "deterministic",
+        "discovery",
+        "emit",
+        "evidence",
+        "generation",
+        "keep",
+        "packet",
+        "proof",
+        "review"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-126",
+      "summary": "This keeps the useful GEPA shape while staying honest about `Cautilus`'s different product boundary.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 126,
+          "excerpt": "This keeps the useful GEPA shape while staying honest about `Cautilus`'s different product boundary."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -19126,215 +19817,333 @@
       "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:bc34c1b3b2d2815bdaa379b2b9c10d042b420b33216233519f9e86cedb01b87a",
-      "canonicalClaimId": "M7",
-      "score": 6,
-      "runnerUpCanonicalClaimId": "M2",
-      "runnerUpScore": 5,
-      "scoreMargin": 1,
-      "mappingConfidence": "low",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "held-out",
-        "improvement",
-        "satisfied",
-        "search",
-        "surface",
-        "test"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-82",
-      "summary": "The acceptance read must intersect its acceptance scenario ids with the finalist's recorded held-out scenario ids (from `cautilus.improve_search_result.v1`), exclude any contaminated ids from the gap, list them explicitly in the report, and refuse with a blocked result only when no clean acceptance scenario remains.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 82,
-          "excerpt": "The acceptance read must intersect its acceptance scenario ids with the finalist's recorded held-out scenario ids (from `cautilus.improve_search_result.v1`), exclude any contaminated ids from the gap, list them explicitly in the report, and refuse with a blocked result only when no clean acceptance scenario remains."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:18aae8682da8873957cf5b36c2ff3b2ad956f81b2e5e576d840c52378e969dae",
-      "canonicalClaimId": "M7",
+      "claimFingerprint": "sha256:a2466fae5a60624faf4c25d1940b377e25a819e302d685a54e9344f163bb04b6",
+      "canonicalClaimId": "M4",
       "score": 8,
-      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpCanonicalClaimId": "M10",
       "runnerUpScore": 7,
       "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "blocked",
-        "evidence",
-        "gap",
-        "held-out",
-        "improvement",
-        "result",
-        "scenario",
-        "search"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-85",
-      "summary": "The acceptance read ships as a new `cautilus evaluate acceptance` subcommand in the existing `evaluate` command family, matching the registered `evaluate fixture` and `evaluate review variants` subcommands ([app.go](../../internal/app/app.go) lines 196 and 240).",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 85,
-          "excerpt": "The acceptance read ships as a new `cautilus evaluate acceptance` subcommand in the existing `evaluate` command family, matching the registered `evaluate fixture` and `evaluate review variants` subcommands ([app.go](../../internal/app/app.go) lines 196 and 240)."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "deterministic",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:35ccd9e0d84d054c895b9cd3a5f34d9a9b8fa70a8c922871c9dca095c382cab2",
-      "canonicalClaimId": "M11",
-      "score": 15,
-      "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 12,
-      "scoreMargin": 3,
-      "mappingConfidence": "high",
-      "requiresSemanticReview": false,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "add",
+        "adapter",
         "cautilu",
-        "check",
-        "command",
-        "contract",
-        "deterministic",
-        "evaluate",
-        "existing",
-        "family",
-        "fixture",
         "keep",
-        "review"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-93",
-      "summary": "It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 93,
-          "excerpt": "It emits an `accept` or `review` recommendation (and `blocked` when fully contaminated); rejection stays a human act, so the read never auto-rejects or auto-applies a candidate."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:972496947f1465755f133532529c28fa29a29a60e9d92f4f294cc4e0d30939de",
-      "canonicalClaimId": "M2",
-      "score": 6,
-      "runnerUpCanonicalClaimId": "M6",
-      "runnerUpScore": 6,
-      "scoreMargin": 0,
-      "mappingConfidence": "low",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "candidate",
-        "contract",
-        "emit",
-        "evidence",
-        "rejection",
-        "review"
-      ]
-    },
-    {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-94",
-      "summary": "`accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 94,
-          "excerpt": "`accept` requires a `reliable` read with the aggregate gap within a provisional product gap-tolerance constant; otherwise the recommendation is `review`."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:5c0e5f1a104425fcc592e06c546ce00ecf51e09655cd18016303c26d58a4169f",
-      "canonicalClaimId": "M9",
-      "score": 6,
-      "runnerUpCanonicalClaimId": "M11",
-      "runnerUpScore": 6,
-      "scoreMargin": 0,
-      "mappingConfidence": "low",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "contract",
-        "evidence",
-        "gap",
-        "one",
         "product",
-        "review"
+        "shape",
+        "test",
+        "thi",
+        "while"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-164",
-      "summary": "CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap.aggregate`, per-scenario score lists, `reliability`, and `heldOutExposureCount`.",
+      "claimId": "claim-docs-contracts-improvement-search-md-175",
+      "summary": "whether frontier-promotion checkpoint feedback should be reinjected into later mutation prompts",
       "sourceRefs": [
         {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 164,
-          "excerpt": "CLI/fixture test: the acceptance read over a fixture finalist recovered from a `cautilus.improve_search_result.v1` record emits `cautilus.acceptance_report.v1` with a populated `generalizationGap.aggregate`, per-scenario score lists, `reliability`, and `heldOutExposureCount`."
+          "path": "docs/contracts/improvement-search.md",
+          "line": 175,
+          "excerpt": "whether frontier-promotion checkpoint feedback should be reinjected into later mutation prompts"
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "cautilus-eval",
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:4c93fec8e7723c69c58e06f3dcdc1d1f17c779ee113eb99ac99c9886c4694c95",
-      "canonicalClaimId": "M11",
+      "claimFingerprint": "sha256:6bd41f0ae1b9ec52e2613f448c686cbd3336df42d3743992ec661f8412a18613",
+      "canonicalClaimId": "M10",
       "score": 6,
-      "runnerUpCanonicalClaimId": "M5",
+      "runnerUpCanonicalClaimId": "M4",
       "runnerUpScore": 5,
       "scoreMargin": 1,
       "mappingConfidence": "low",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "evidence",
+        "app/prompt",
+        "cautilu",
         "fixture",
-        "human",
-        "judgment",
-        "over",
-        "test"
+        "host-owned",
+        "prompt",
+        "run"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-final-acceptance-set-md-185",
-      "summary": "A subsequent decide-first pass resolved the three carried probes: the reliability floor is a single fixed product constant (provisional value in code, adapter-configurability deferred), the read ships as a new `cautilus evaluate acceptance` subcommand, and contamination degrades gracefully (exclude and flag the overlap, refuse only when no clean scenario remains).",
+      "claimId": "claim-docs-contracts-improvement-search-md-197",
+      "summary": "For agent-driven ingress, `Cautilus` may also accept direct JSON input, but it must immediately materialize:",
       "sourceRefs": [
         {
-          "path": "docs/contracts/final-acceptance-set.md",
-          "line": 185,
-          "excerpt": "A subsequent decide-first pass resolved the three carried probes: the reliability floor is a single fixed product constant (provisional value in code, adapter-configurability deferred), the read ships as a new `cautilus evaluate acceptance` subcommand, and contamination degrades gracefully (exclude and flag the overlap, refuse only when no clean scenario remains)."
+          "path": "docs/contracts/improvement-search.md",
+          "line": 197,
+          "excerpt": "For agent-driven ingress, `Cautilus` may also accept direct JSON input, but it must immediately materialize:"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:fc019bf4d62c7fd5d9dc99725d30c5dfabf5fe8f125a4bb0e0b3b45747dada34",
+      "canonicalClaimId": "M3",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M5",
+      "runnerUpScore": 7,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "agent-driven",
+        "cautilu",
+        "direct",
+        "fixture",
+        "json",
+        "run",
+        "skill",
+        "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-282",
+      "summary": "a canonical input file reference so an operator or agent can reopen the same blocked state and discuss what evidence should be created next",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 282,
+          "excerpt": "a canonical input file reference so an operator or agent can reopen the same blocked state and discuss what evidence should be created next"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:d194ab332d996d59dee78fcc4930aee86d5318b656fdc609fa1cf8392ba30c1b",
+      "canonicalClaimId": "M10",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M5",
+      "runnerUpScore": 10,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "canonical",
+        "cautilu",
+        "evidence",
+        "fixture",
+        "host-owned",
+        "next",
+        "operator",
+        "reopen",
+        "run",
+        "same",
+        "state"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-372",
+      "summary": "v1 now consumes `trainScenarioLimit` when shaping each mutation prompt so checkpoint-scoped repair can outrank broader but less urgent reflection work",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 372,
+          "excerpt": "v1 now consumes `trainScenarioLimit` when shaping each mutation prompt so checkpoint-scoped repair can outrank broader but less urgent reflection work"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:c5268d78bb88bf3c62fe36dfc562e979188694bca34563ab66fb363cd96ab3ea",
+      "canonicalClaimId": "M10",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 6,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "app/prompt",
+        "cautilu",
+        "contract",
+        "fixture",
+        "host-owned",
+        "prompt",
+        "run"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-405",
+      "summary": "When target snapshots are available, prompt length should follow the same late tie-breaker rule.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 405,
+          "excerpt": "When target snapshots are available, prompt length should follow the same late tie-breaker rule."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:8f67c146b7aa80cef2d62d7fbc215fc5e67bc213e9dc592a9453f01ba8262414",
+      "canonicalClaimId": "M10",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 7,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "app/prompt",
+        "cautilu",
+        "contract",
+        "fixture",
+        "host-owned",
+        "prompt",
+        "run",
+        "same"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-406",
+      "summary": "`shorter_target` may break ties only after held-out behavior, comparison, and review guardrails remain satisfied, and search results should preserve the measured target-size delta or mark it `unknown`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 406,
+          "excerpt": "`shorter_target` may break ties only after held-out behavior, comparison, and review guardrails remain satisfied, and search results should preserve the measured target-size delta or mark it `unknown`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5f88014d24e4c531b7f2cb4c4f216630f0c4dbe3163407a70fc8923fe50a606a",
+      "canonicalClaimId": "M7",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 6,
+      "scoreMargin": 3,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "behavior",
+        "held-out",
+        "improvement",
+        "preserve",
+        "result",
+        "run",
+        "satisfied",
+        "search",
+        "target"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-438",
+      "summary": "the deduplicated held-out scenario set the search evaluated against, exposed so a result-only reader such as the acceptance read can run its contamination check (see [final-acceptance-set.md](./final-acceptance-set.md))",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 438,
+          "excerpt": "the deduplicated held-out scenario set the search evaluated against, exposed so a result-only reader such as the acceptance read can run its contamination check (see [final-acceptance-set.md](./final-acceptance-set.md))"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:68418c5da4a7e4407275d11bd553e240440a6b04a423b32678ce1daf287c79c3",
+      "canonicalClaimId": "M7",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M12",
+      "runnerUpScore": 6,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "against",
+        "check",
+        "evidence",
+        "held-out",
+        "improvement",
+        "run",
+        "scenario",
+        "search"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-481",
+      "summary": "`Cautilus` can run a bounded prompt-search loop from explicit packets and explicit target-file snapshots.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 481,
+          "excerpt": "`Cautilus` can run a bounded prompt-search loop from explicit packets and explicit target-file snapshots."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:5c4cebe0757a4f713a15278bf2c259db04c3b35e00025070d3ab255f9143eec6",
+      "canonicalClaimId": "M10",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 6,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "app/prompt",
+        "cautilu",
+        "explicit",
+        "fixture",
+        "host-owned",
+        "loop",
+        "packet",
+        "run"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-486",
+      "summary": "The canonical search packet records resolved search config sources so operators can reopen why a given run used a given budget or policy.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 486,
+          "excerpt": "The canonical search packet records resolved search config sources so operators can reopen why a given run used a given budget or policy."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -19344,28 +20153,144 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:a77f4b7fe0431dd7aa83c3211f4f37a7f3f26687bc1cbe97b9550f50ace89f5f",
+      "claimFingerprint": "sha256:bb7505abc4f75cccdf56dec139e5390138215d478a3d2e7ba5e7b8d3cd523887",
+      "canonicalClaimId": "M5",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M7",
+      "runnerUpScore": 10,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cli",
+        "deterministic",
+        "keep",
+        "packet",
+        "proof",
+        "readines",
+        "record",
+        "reopen",
+        "run",
+        "source"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-503",
+      "summary": "the selected candidate remains reopenable as a bounded revision artifact",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 503,
+          "excerpt": "the selected candidate remains reopenable as a bounded revision artifact"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:6c54bcbb38c2dbcc75acb53600a67ac1098c7ffe7a90576c7db41dc10aa72560",
       "canonicalClaimId": "M4",
-      "score": 13,
-      "runnerUpCanonicalClaimId": "M10",
-      "runnerUpScore": 12,
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M7",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "deterministic",
+        "keep",
+        "packet",
+        "proof",
+        "readines",
+        "remain",
+        "schema",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-504",
+      "summary": "blocked readiness emits machine-readable reason codes and the canonical input file path",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 504,
+          "excerpt": "blocked readiness emits machine-readable reason codes and the canonical input file path"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:aeb5a688ca8e70a855950af3bd5d109a64b9aaa13815dbc482a56687907eeeda",
+      "canonicalClaimId": "M4",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 10,
       "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "acceptance",
-        "adapter",
-        "any",
-        "cautilu",
         "code",
-        "command",
         "deterministic",
-        "flag",
+        "discovery",
+        "file",
         "keep",
-        "new",
-        "product",
-        "remain"
+        "packet",
+        "path",
+        "proof",
+        "readines",
+        "schema",
+        "thi"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-improvement-search-md-524",
+      "summary": "The next slice can build on this by extending the same packet boundary into true multi-generation execution, actual checkpoint runners, merge synthesis, and selection-cap enforcement without reshaping the product surface.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/improvement-search.md",
+          "line": 524,
+          "excerpt": "The next slice can build on this by extending the same packet boundary into true multi-generation execution, actual checkpoint runners, merge synthesis, and selection-cap enforcement without reshaping the product surface."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:07062a67684ad574abdd792f8b474b19f94b2498f57e0e8217e0a16b62354185",
+      "canonicalClaimId": "M11",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 11,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "add",
+        "build",
+        "check",
+        "deterministic",
+        "keep",
+        "next",
+        "packet",
+        "reporting",
+        "same",
+        "schema",
+        "surface",
+        "without"
       ]
     },
     {

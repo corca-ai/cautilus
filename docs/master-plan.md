@@ -148,10 +148,15 @@ Product-owned pieces shipped:
 - product-owned helper scripts carry the bounded improvement loop orchestration (input build, propose, build-artifact)
 - live held-out improve loop proven on the dev/skill surface (`npm run proof:improve:live`): a degraded prompt is rewritten until a mutated candidate recovers a held-out scenario it was never tuned on (seed 0, winner 100), surfacing and fixing three load-bearing improve-search/runner bugs along the way — the apex `Bounded Improvement` badge is now proven
 
+Also shipped:
+
+- optimizer-untouchable final-acceptance-set detection on top of improve search ([final-acceptance-set.md](./contracts/final-acceptance-set.md)): a post-hoc authored `acceptance` split, `heldOutExposureCount` on the search result, and `cautilus evaluate acceptance` which reads a finalist on the acceptance set to report the generalization gap with a contamination guard and a reliability flag, advisory-only at the human accept step
+
 Still open:
 
 - decide whether richer merge heuristics are actually needed — dogfood evidence should justify the next seam rather than adding heuristics speculatively
 - keep every improver surface bounded by held-out, comparison, and structured review gates
+- the risk-tier policy that would make the acceptance read required for high-risk surfaces and skippable for low-risk ones is deferred (mechanism shipped, policy not)
 
 Still intentionally excluded:
 
