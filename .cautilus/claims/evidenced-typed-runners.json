@@ -1,9 +1,9 @@
 {
-  "candidateCount": 547,
+  "candidateCount": 548,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 529,
+    "matchedClaimCount": 548,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3732,6 +3732,35 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:98e0f85947834f4b4391910de08dc6f1c870af7b5e7cdd701f9f1bd98eee860a",
+      "claimId": "claim-docs-master-plan-md-154",
+      "claimSemanticGroup": "Claim discovery and review",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "docs",
+        "human-auditable",
+        "linked-from:README.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "the risk-tier policy on top of the acceptance read ([acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories",
+          "line": 154,
+          "path": "docs/master-plan.md"
+        }
+      ],
+      "summary": "the risk-tier policy on top of the acceptance read ([acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:862486870933c2f77a6e870f56ecd39d3d61d0e1dc05327473b89897e5897be2",
       "claimId": "claim-docs-master-plan-md-186",
       "claimSemanticGroup": "Documentation and contracts",
@@ -5176,35 +5205,6 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:a5b8772477c2460938ca3c7fd5f2d5c56180d10977425a3bc0476828f4be96ca",
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-6",
-      "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "human-auditable",
-        "linked-from:docs/master-plan.md"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status.",
-          "line": 6,
-          "path": "docs/contracts/acceptance-risk-tier.md"
-        }
-      ],
-      "summary": "What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status.",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a2677ec66589e60f418a64dd44dbe81034decb4113b30e5e222b4ddef3ddd8b6",
       "claimId": "claim-docs-contracts-acceptance-risk-tier-md-8",
       "claimSemanticGroup": "Documentation and contracts",
@@ -5498,7 +5498,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:985095aa8132955ed50c1edcd080e3f66b54a2ec2b502c0ead5ac840cf20f6b0",
+      "claimFingerprint": "sha256:4a488ef590a26882974d65d61dfa775ba7045ce79537b2d8f88453471a77a74b",
       "claimId": "claim-docs-contracts-acceptance-risk-tier-md-88",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
@@ -5515,12 +5515,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status).",
+          "excerpt": "Resolved: `cautilus evaluate acceptance` enforces the block when a read is run, and `cautilus doctor` is the skip-gate that catches a `required` target never read at all by scanning scenario history for a read (matched by target id) or a waiver. There is no mechanical accept command, so the read-only doctor/readiness surface — which the human `operator-acceptance.md` accept step points at — is the enforcement point, and `cautilus evaluate acceptance waive-skip` is the explicit operator command that records a waiver-on-skip (keeping doctor read-only).",
           "line": 88,
           "path": "docs/contracts/acceptance-risk-tier.md"
         }
       ],
-      "summary": "Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status).",
+      "summary": "Resolved: `cautilus evaluate acceptance` enforces the block when a read is run, and `cautilus doctor` is the skip-gate that catches a `required` target never read at all by scanning scenario history for a read (matched by target id) or a waiver. There is no mechanical accept command, so the read-only doctor/readiness surface — which the human `operator-acceptance.md` accept step points at — is the enforcement point, and `cautilus evaluate acceptance waive-skip` is the explicit operator command that records a waiver-on-skip (keeping doctor read-only).",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
@@ -5528,7 +5528,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:94b6343b431ae4800c5d30437254dd9a6e8efbc4d9e33c54e25678b717a39fe7",
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-102",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-104",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5545,7 +5545,7 @@
       "sourceRefs": [
         {
           "excerpt": "Auto-rejecting or auto-applying a candidate on any tier; the read stays advisory.",
-          "line": 102,
+          "line": 104,
           "path": "docs/contracts/acceptance-risk-tier.md"
         }
       ],
@@ -5557,7 +5557,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2c47b3dffcd2b46a8eca2130175e110b11270b1129666e6881ec03466927dd0b",
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-118",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-120",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5574,7 +5574,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep the adapter schema repo-agnostic: the product validates the effect enum and the block shape, never the tier names or target ids beyond shape (AGENTS.md working rules).",
-          "line": 118,
+          "line": 120,
           "path": "docs/contracts/acceptance-risk-tier.md"
         }
       ],
@@ -5585,9 +5585,9 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:3954975ea0b30e7bbfa643096f4c003a28bfef031171ff9e5c1ec7f4724f1f9e",
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-127",
-      "claimSemanticGroup": "Adapter and portability",
+      "claimFingerprint": "sha256:e70e195fe884e09e234ff44de05a19465531ba9f12a2ffa4e336dc71c3a89314",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-129",
+      "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
@@ -5602,12 +5602,41 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`).",
-          "line": 127,
+          "excerpt": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`). Proven (skip-gate): a `required` target that is *never read* (no recorded read and no waiver) is blocked by `cautilus doctor`, which flips `ready` to false, and clears once a read or a waiver is recorded (`TestCLIDoctorAcceptanceSkipGateBlocksRequiredTargetNeverReadThenClearsOnRead`, `BuildAcceptanceReadiness` fixtures).",
+          "line": 129,
           "path": "docs/contracts/acceptance-risk-tier.md"
         }
       ],
-      "summary": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`).",
+      "summary": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`). Proven (skip-gate): a `required` target that is *never read* (no recorded read and no waiver) is blocked by `cautilus doctor`, which flips `ready` to false, and clears once a read or a waiver is recorded (`TestCLIDoctorAcceptanceSkipGateBlocksRequiredTargetNeverReadThenClearsOnRead`, `BuildAcceptanceReadiness` fixtures).",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:464fd4be345ff1f60a96b0f1b50eb736943830ef8cf5747689c70541ee3ee296",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-130",
+      "claimSemanticGroup": "Quality gates",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Proven (skip-gate): an `optional` (or default) target whose read is *skipped entirely* records a waiver-on-skip via `cautilus evaluate acceptance waive-skip` but never blocks; before the waiver the doctor gate reports it `skip_pending_waiver`, after it reports `satisfied` (`TestCLIDoctorAcceptanceSkipGateClearsWithWaiveSkipAndExemptsSkippable`). The read-time half — an `optional`/`skippable` read never blocks — stays proven (`TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock`).",
+          "line": 130,
+          "path": "docs/contracts/acceptance-risk-tier.md"
+        }
+      ],
+      "summary": "Proven (skip-gate): an `optional` (or default) target whose read is *skipped entirely* records a waiver-on-skip via `cautilus evaluate acceptance waive-skip` but never blocks; before the waiver the doctor gate reports it `skip_pending_waiver`, after it reports `satisfied` (`TestCLIDoctorAcceptanceSkipGateClearsWithWaiveSkipAndExemptsSkippable`). The read-time half — an `optional`/`skippable` read never blocks — stays proven (`TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock`).",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
     },
@@ -5615,7 +5644,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d38351e767df15ce8b61cfb72ff90f7c0a9add517ce90abf73621d2f084694d9",
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-139",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-141",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5632,7 +5661,7 @@
       "sourceRefs": [
         {
           "excerpt": "Policy test: an `optional` (and a default, undeclared) target with no read proceeds and emits a recorded waiver; a `skippable` target with no read proceeds and emits no waiver.",
-          "line": 139,
+          "line": 141,
           "path": "docs/contracts/acceptance-risk-tier.md"
         }
       ],
@@ -5644,7 +5673,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:757f51eddb3ca3087b3a37ae9f31aad587e99018ad38d43907e7b6a077588493",
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-175",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-177",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -5661,7 +5690,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus evaluate acceptance` ([app.go](../../internal/app/app.go) `handleEvalAcceptance`) takes `--target`, `--waiver`, and `--repo-root`/`--adapter[-name]`, surfaces a `riskTier` block and an `acceptanceDecision`, blocks a `required` target whose read is not a clean reliable `accept` and has no waiver (exit 1), and records a `--waiver` override in scenario history (`RecordAcceptanceWaiver`). An invalid adapter fails closed whenever an acceptance-risk policy was intended — a `--target` is named or an `acceptance_risk` block was declared (even one that failed validation) — so an invalid adapter can never silently downgrade a `required` policy, including a `default_effect: required`.",
-          "line": 175,
+          "line": 177,
           "path": "docs/contracts/acceptance-risk-tier.md"
         }
       ],
@@ -5672,32 +5701,31 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:f8ba347ac4a03e4d8f1e5a99ba5d8b62f30ef4dcbf7cbfc2b397db5726317ac4",
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-180",
-      "claimSemanticGroup": "Claim discovery and review",
+      "claimFingerprint": "sha256:ebd93555f7b68090b28f007524a99ac8680718f1cb86aa937062ae5bd3cac015",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-185",
+      "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "cautilus-eval",
         "contract",
-        "linked-from:docs/master-plan.md",
-        "needs-scenario"
+        "deterministic",
+        "linked-from:docs/master-plan.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Use the scenario proposal flow to normalize candidate evidence before creating a checked-in eval fixture.",
-      "recommendedProof": "cautilus-eval",
+      "nextAction": "Keep or add deterministic readiness, preflight, or command-contract proof for this claim.",
+      "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt.",
-          "line": 180,
+          "excerpt": "`cautilus evaluate acceptance waive-skip` ([app.go](../../internal/app/app.go) `handleEvalAcceptanceWaiveSkip`) is the explicit operator command that records a waiver-on-skip (`RecordAcceptanceWaiver`) for a target whose read is skipped entirely — used to acknowledge an `optional`/default skip or to override a `required` target without a read — keeping `doctor` itself read-only. It fails closed on an invalid adapter and never runs a read or accepts a candidate.",
+          "line": 185,
           "path": "docs/contracts/acceptance-risk-tier.md"
         }
       ],
-      "summary": "A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt.",
-      "verificationReadiness": "needs-scenario",
-      "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
+      "summary": "`cautilus evaluate acceptance waive-skip` ([app.go](../../internal/app/app.go) `handleEvalAcceptanceWaiveSkip`) is the explicit operator command that records a waiver-on-skip (`RecordAcceptanceWaiver`) for a target whose read is skipped entirely — used to acknowledge an `optional`/default skip or to override a `required` target without a read — keeping `doctor` itself read-only. It fails closed on an invalid adapter and never runs a read or accepts a candidate.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names readiness, preflight, or command-contract behavior that should be protected by deterministic checks."
     },
     {
       "claimAudience": "developer",
@@ -18484,7 +18512,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 418,
+      "developer": 419,
       "user": 129
     },
     "byClaimSemanticGroup": {
@@ -18496,31 +18524,31 @@
       "General product behavior": 1,
       "Improvement and improvement": 56,
       "Packets and reporting": 60,
-      "Quality gates": 35,
+      "Quality gates": 36,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 405
+      "unknown": 406
     },
     "byLifecycle": {
-      "new": 547
+      "new": 548
     },
     "byRecommendedProof": {
-      "cautilus-eval": 154,
-      "deterministic": 247,
-      "human-auditable": 146
+      "cautilus-eval": 153,
+      "deterministic": 248,
+      "human-auditable": 147
     },
     "byReviewStatus": {
       "agent-reviewed": 192,
-      "heuristic": 354,
+      "heuristic": 355,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 33,
       "needs-alignment": 55,
-      "needs-scenario": 2,
-      "ready-for-proof": 457
+      "needs-scenario": 1,
+      "ready-for-proof": 459
     }
   },
   "discoveryEngine": {
@@ -18719,7 +18747,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
+  "gitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -20718,7 +20746,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:0555c68ccac071e8e330eb7328df0e4311ada1474668075c6a072b63decaf41b",
+      "contentHash": "sha256:a8c1d39d92480ef8d54792f49a9b0ca2856e5c734b80709d81423a6f5c9f14f1",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20778,7 +20806,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:841a1e949412f28895db5bc2b38a47fd98239b0b8253ed23f69a51deea2000e7",
+      "contentHash": "sha256:c69c8e54e8d3cb6c5f2fc5633492b391aecbdb89a8a227e89e4cd2379b0d2e93",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

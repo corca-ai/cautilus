@@ -143,6 +143,11 @@ improve search로 finalist를 고른 뒤 변경을 실제로 수용할지 판단
 일반화 갭, `reliability`(작은 read는 `low_confidence`), 오염 시나리오 목록, held-out 노출 카운트를 보고 사람이 accept/reject를 정한다.
 이 read는 절대 자동 적용하거나 자동 거부하지 않는다 — 계약은 [docs/contracts/final-acceptance-set.md](../contracts/final-acceptance-set.md).
 
+adapter가 `acceptance_risk` 정책을 선언했다면, 사람 accept 단계 직전에 skip-time 게이트를 확인한다.
+Cautilus엔 기계적 accept 명령이 없으므로 read-only인 `cautilus doctor --repo-root . --history-file <scenario-history.json>`가 그 표면이다 — `required` target이 read도 waiver도 없으면 `acceptanceReadiness`가 그 target을 `blocked`로 보고하고 `ready`를 false로 내린다(history 미제공 시 fail-closed).
+`required` target은 실제 acceptance read를 돌리거나, read 없이 넘어가려면 `cautilus evaluate acceptance waive-skip --target <id> --reason <why> --history-file <path>`로 명시적 waiver를 기록한 뒤에만 사람이 accept한다.
+`optional`/default target의 skip은 같은 waive-skip로 기록(`skip_pending_waiver` → `satisfied`)하고, `skippable` target은 `exempt`로 면제된다 — 계약은 [docs/contracts/acceptance-risk-tier.md](../contracts/acceptance-risk-tier.md).
+
 ### 3f. Eval 비교
 
 | # | 명령 | 통과 조건 | 실행자 |

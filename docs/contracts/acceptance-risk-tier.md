@@ -1,9 +1,9 @@
 # Acceptance Risk Tier
 
-Status: Partially implemented for [issue #51](https://github.com/spilist/cautilus/issues/51) follow-up.
+Status: Implemented for [issue #51](https://github.com/spilist/cautilus/issues/51) follow-up.
 This contract decides the policy axis that the [final-acceptance-set.md](./final-acceptance-set.md) mechanism left in Deferred Decisions: the axis, the product-owned effect vocabulary, the product/adapter ownership split, and the default.
-The command-side enforcement has landed — the adapter `acceptance_risk` block parser, the per-tier reliability floor, and the block-or-waiver decision in `cautilus evaluate acceptance` — proving the read-time success criteria.
-What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status.
+The command-side enforcement landed first — the adapter `acceptance_risk` block parser, the per-tier reliability floor, and the block-or-waiver decision in `cautilus evaluate acceptance` — proving the read-time success criteria.
+The skip-case readiness gate has since landed too: `cautilus doctor` reports a read-only `acceptanceReadiness` block that catches a `required` target that was *never read* (so the read is enforced before accept), and `cautilus evaluate acceptance waive-skip` records an explicit waiver-on-skip for an `optional`/default (or required-override) target. See Implementation Status.
 
 `Cautilus` should let a host declare which acceptance targets must read the optimizer-untouchable acceptance surface before a finalist is accepted, without the product ever defining what counts as high or low risk.
 
@@ -37,7 +37,7 @@ It fixes:
 - that the reliability floor becomes an adapter-owned, optionally per-tier threshold (the deferred trigger condition is now met), while the gap tolerance stays a fixed product constant
 
 The adapter block parser, the per-tier reliability floor, and the read-time block-or-waiver enforcement in `cautilus evaluate acceptance` have since landed (see Implementation Status).
-The skip-time readiness gate — catching a `required` target that was never read — is the one remaining slice.
+The skip-time readiness gate — catching a `required` target that was never read — has since landed too, on the `cautilus doctor`/readiness surface with an explicit `waive-skip` recorder.
 
 ## Entities
 
@@ -85,7 +85,7 @@ All four probes were resolved against repo truth during implementation.
 - Resolved: risk tiers live in a new top-level adapter `acceptance_risk` block, validated in [adapter.go](../../internal/runtime/adapter.go) beside `improve_search` (`validateAdapterAcceptanceRisk`). Shape: `default_effect`, `tiers.<name>.{effect, reliability_floor}`, and `targets.<id>: <tier-name>`.
 - Resolved: the acceptance target is keyed by an explicit `--target <id>` flag on `cautilus evaluate acceptance`, matched against the adapter `targets` map. The caller (operator or agent) names the target it is accepting, rather than the product deriving identity from the `cautilus.improve_search_result.v1` paths — which carry no top-level target key and would make prompt-file-path the fragile identity the draft flagged. An absent `--target` resolves to the default effect.
 - Resolved: the waiver is recorded in scenario history under a new `acceptanceWaivers` array (`RecordAcceptanceWaiver`), beside `acceptanceReads`, carrying timestamp, candidate id, target id, tier, effect, and reason. The report also carries a `waiver` object when an override is taken.
-- Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status).
+- Resolved: `cautilus evaluate acceptance` enforces the block when a read is run, and `cautilus doctor` is the skip-gate that catches a `required` target never read at all by scanning scenario history for a read (matched by target id) or a waiver. There is no mechanical accept command, so the read-only doctor/readiness surface — which the human `operator-acceptance.md` accept step points at — is the enforcement point, and `cautilus evaluate acceptance waive-skip` is the explicit operator command that records a waiver-on-skip (keeping doctor read-only).
 
 ## Deferred Decisions
 
@@ -93,6 +93,8 @@ All four probes were resolved against repo truth during implementation.
 - Multi-finalist acceptance under a tier, carried from [final-acceptance-set.md](./final-acceptance-set.md) line 119; v1 still reads one selected finalist.
 - Tiering of any gate other than the acceptance read.
 - Adapter-configurability of the gap tolerance, which stays out of scope until a concrete consumer need is shown and separately justified.
+- Enumerating *undeclared* targets under a `default_effect: required`. The `cautilus doctor` skip-gate evaluates only the targets the adapter lists in `acceptance_risk.targets`; it surfaces the resolved `defaultEffect` so undeclared targets are visible, but it cannot enumerate a target it was never told about. An undeclared target is still enforced at read time through the `--target` path on `cautilus evaluate acceptance`. Closing this would require the adapter to enumerate every acceptable target (or Cautilus to own target discovery), which the ownership split deliberately leaves to the host.
+- A dedicated top-level doctor status for a pending acceptance read. When the acceptance gate is the only failing check the top-level `status` stays the generic `incomplete_adapter` (reusing `allChecksReady`), but the `summary` names the pending acceptance read and the `acceptance_read_readiness` check plus the `acceptanceReadiness.blockedTargets` carry the precise signal. A distinct status string (e.g. `acceptance_read_pending`) would ripple into `doctor_next_action` and the doctor-readiness executable spec and is deferred until a consumer needs to branch on it.
 
 ## Non-Goals
 
@@ -122,11 +124,11 @@ All four probes were resolved against repo truth during implementation.
 
 ## Success Criteria
 
-Read-time criteria are proven by the landed slice; the two skip-time criteria are carried by the deferred readiness gate.
+All criteria are proven by the landed slices.
 
-- Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`).
-- Deferred (skip-gate): an `optional` (or default) target whose read is *skipped entirely* records a waiver-on-skip but does not block. The read-time half — an `optional`/`skippable` read never blocks — is proven (`TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock`); the skip-detection half needs the readiness gate.
-- Deferred (skip-gate): a `skippable` target accepts a finalist with *no acceptance read at all*. The read-time half is proven by the same test; enforcing it without any read needs the readiness gate.
+- Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`). Proven (skip-gate): a `required` target that is *never read* (no recorded read and no waiver) is blocked by `cautilus doctor`, which flips `ready` to false, and clears once a read or a waiver is recorded (`TestCLIDoctorAcceptanceSkipGateBlocksRequiredTargetNeverReadThenClearsOnRead`, `BuildAcceptanceReadiness` fixtures).
+- Proven (skip-gate): an `optional` (or default) target whose read is *skipped entirely* records a waiver-on-skip via `cautilus evaluate acceptance waive-skip` but never blocks; before the waiver the doctor gate reports it `skip_pending_waiver`, after it reports `satisfied` (`TestCLIDoctorAcceptanceSkipGateClearsWithWaiveSkipAndExemptsSkippable`). The read-time half — an `optional`/`skippable` read never blocks — stays proven (`TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock`).
+- Proven (skip-gate): a `skippable` target is `exempt` and accepts a finalist with *no acceptance read at all* and no waiver (`TestCLIDoctorAcceptanceSkipGateClearsWithWaiveSkipAndExemptsSkippable`, `TestBuildAcceptanceReadinessSkippableTargetIsExempt`).
 - Proven: an adapter block that renames or adds an acceptance-effect value is rejected with a clear error; tier names and target ids are not constrained beyond shape (`TestValidateAdapterAcceptanceRiskRejectsRenamedEffect`, `TestValidateAdapterAcceptanceRiskAcceptsArbitraryNamesAndTargets`).
 - Proven: a per-tier `reliability_floor` overrides the product default for reads on that tier's targets, and an unset floor falls back to the product constant (`TestResolveAcceptanceRiskTierDeclaredTargetWithPerTierFloor`, `TestCLIEvaluateAcceptanceRequiredTierAcceptsWithPerTierFloor`).
 - Proven: the gap tolerance is identical across tiers and is not adapter-overridable (the adapter block has no gap-tolerance key; `AcceptanceGapTolerance` stays the only source).
@@ -175,6 +177,10 @@ Landed (read-time enforcement):
 3. `cautilus evaluate acceptance` ([app.go](../../internal/app/app.go) `handleEvalAcceptance`) takes `--target`, `--waiver`, and `--repo-root`/`--adapter[-name]`, surfaces a `riskTier` block and an `acceptanceDecision`, blocks a `required` target whose read is not a clean reliable `accept` and has no waiver (exit 1), and records a `--waiver` override in scenario history (`RecordAcceptanceWaiver`). An invalid adapter fails closed whenever an acceptance-risk policy was intended — a `--target` is named or an `acceptance_risk` block was declared (even one that failed validation) — so an invalid adapter can never silently downgrade a `required` policy, including a `default_effect: required`.
 4. The new fields (`riskTier`, `acceptanceDecision`, `waiver` on the report; `acceptanceWaivers` in history) extend `cautilus.acceptance_report.v1` and scenario history additively; neither has a strict schema validator, so no contract-version bump is required, and the existing `AcceptanceReportSchema` constant is unchanged.
 
-Remaining (skip-time enforcement — next slice):
+Landed (skip-time enforcement):
 
-5. A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt.
+5. The acceptance read record now carries the target id (`RecordAcceptanceRead` in [acceptance.go](../../internal/runtime/acceptance.go) takes `targetID`), and `cautilus evaluate acceptance` records the read only when the accept step proceeds — a blocked `required` read leaves no history trace, so a recorded read is a genuine proceed rather than a rejected attempt.
+6. `BuildAcceptanceReadiness` in [acceptance_readiness.go](../../internal/runtime/acceptance_readiness.go) is a read-only pure function over the validated `acceptance_risk` block and scenario history. Per adapter-declared target it resolves the effect and reports a status: `required` with neither a recorded read nor a waiver is `blocked` (and flips the overall `ready` to false); `optional`/default without either is `skip_pending_waiver` (non-blocking); `skippable` is `exempt`. A nil/empty history fails closed.
+7. `cautilus doctor` ([adapter.go](../../internal/runtime/adapter.go) `DoctorRepo`, plumbed through `--history-file`) attaches the `acceptanceReadiness` block and an `acceptance_read_readiness` check whenever the adapter declares an `acceptance_risk` policy; with no policy declared the gate is inert and adds no check. It is the enforcement surface because Cautilus has no mechanical accept command, and `operator-acceptance.md` points its human accept step at it.
+8. `cautilus evaluate acceptance waive-skip` ([app.go](../../internal/app/app.go) `handleEvalAcceptanceWaiveSkip`) is the explicit operator command that records a waiver-on-skip (`RecordAcceptanceWaiver`) for a target whose read is skipped entirely — used to acknowledge an `optional`/default skip or to override a `required` target without a read — keeping `doctor` itself read-only. It fails closed on an invalid adapter and never runs a read or accepts a candidate.
+9. The new fields (`targetId` on read records, the `acceptanceReadiness` doctor block) extend scenario history and the doctor payload additively; neither has a strict schema validator, so no contract-version bump is required.

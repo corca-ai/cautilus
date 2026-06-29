@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:e22edeeb033fb95f7300b664a9616fa9b6e6347a1eb72b4966cf93db4fcd8f24",
+    "claimsHash": "sha256:81b7320290d5993e890aaf584bf80c9378d328c834039ae68b746734dd757ea1",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:9365d865032b0dedb98abadb5d53ddcd6e3a6c42889cae74e57245bf4be9dc46",
+    "statusHash": "sha256:9939839d95574da99b14a0204a8c0b84e3c1eab45a584989779cf6a97e51efe8",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,54 +22,54 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
+    "currentGitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
+    "packetGitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 547,
+    "candidateCount": 548,
     "sourceCount": 72,
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 405
+      "unknown": 406
     },
     "byRecommendedProof": {
-      "cautilus-eval": 154,
-      "deterministic": 247,
-      "human-auditable": 146
+      "cautilus-eval": 153,
+      "deterministic": 248,
+      "human-auditable": 147
     },
     "byVerificationReadiness": {
       "blocked": 33,
       "needs-alignment": 55,
-      "needs-scenario": 2,
-      "ready-for-proof": 457
+      "needs-scenario": 1,
+      "ready-for-proof": 459
     },
     "byReviewStatus": {
       "agent-reviewed": 192,
-      "heuristic": 354,
+      "heuristic": 355,
       "human-reviewed": 1
     }
   },
   "openCautilusEval": {
-    "total": 150,
+    "total": 149,
     "readyForProof": 148,
-    "needsScenario": 2,
+    "needsScenario": 1,
     "bySurface": {
-      "(none)": 6,
+      "(none)": 5,
       "app/chat": 4,
       "app/prompt": 20,
       "dev/repo": 82,
       "dev/skill": 38
     },
     "byReadiness": {
-      "needs scenario": 2,
+      "needs scenario": 1,
       "ready for proof": 148
     },
     "rawByReadiness": {
-      "needs-scenario": 2,
+      "needs-scenario": 1,
       "ready-for-proof": 148
     },
     "proofReadySamples": [
@@ -148,15 +148,6 @@
     ],
     "scenarioSamples": [
       {
-        "claimId": "claim-docs-contracts-acceptance-risk-tier-md-180",
-        "source": "docs/contracts/acceptance-risk-tier.md:180",
-        "surface": "surface undecided",
-        "readiness": "needs scenario",
-        "rawReadiness": "needs-scenario",
-        "review": "heuristic",
-        "summary": "A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt."
-      },
-      {
         "claimId": "claim-docs-specs-promises-ownership-spec-md-7",
         "source": "docs/specs/promises/ownership.spec.md:7",
         "surface": "surface undecided",
@@ -182,14 +173,14 @@
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 107,
+      "count": 108,
       "actor": "agent",
       "evidence": {
-        "unknown": 107
+        "unknown": 108
       },
       "review": {
         "agent-reviewed": 2,
-        "heuristic": 104,
+        "heuristic": 105,
         "human-reviewed": 1
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
@@ -209,14 +200,13 @@
     },
     {
       "id": "agent-design-scenario",
-      "count": 2,
+      "count": 1,
       "actor": "agent",
       "evidence": {
-        "unknown": 2
+        "unknown": 1
       },
       "review": {
-        "agent-reviewed": 1,
-        "heuristic": 1
+        "agent-reviewed": 1
       },
       "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
     },
@@ -235,13 +225,13 @@
     },
     {
       "id": "human-confirm-or-decompose",
-      "count": 60,
+      "count": 61,
       "actor": "human",
       "evidence": {
-        "unknown": 60
+        "unknown": 61
       },
       "review": {
-        "heuristic": 60
+        "heuristic": 61
       },
       "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
     },
@@ -262,7 +252,7 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 354,
+      "count": 355,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [

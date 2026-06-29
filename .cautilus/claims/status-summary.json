@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 354
+          "unknown": 355
         },
         "byReviewStatus": {
-          "heuristic": 354
+          "heuristic": 355
         },
-        "count": 354,
+        "count": 355,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 107
+          "unknown": 108
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 104,
+          "heuristic": 105,
           "human-reviewed": 1
         },
-        "count": 107,
+        "count": 108,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -84,17 +84,15 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 2
+          "unknown": 1
         },
         "byReviewStatus": {
-          "agent-reviewed": 1,
-          "heuristic": 1
+          "agent-reviewed": 1
         },
-        "count": 2,
+        "count": 1,
         "id": "agent-design-scenario",
         "recommendedActor": "agent",
         "sampleClaimIds": [
-          "claim-docs-contracts-acceptance-risk-tier-md-180",
           "claim-docs-specs-promises-ownership-spec-md-7"
         ],
         "summary": "Decompose the behavior into a concrete scenario before protected eval planning."
@@ -121,20 +119,20 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 60
+          "unknown": 61
         },
         "byReviewStatus": {
-          "heuristic": 60
+          "heuristic": 61
         },
-        "count": 60,
+        "count": 61,
         "id": "human-confirm-or-decompose",
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-60",
+          "claim-docs-master-plan-md-154",
           "claim-docs-specs-index-spec-md-101",
           "claim-docs-specs-index-spec-md-102",
-          "claim-docs-specs-index-spec-md-168",
-          "claim-docs-specs-promises-reviewable-artifacts-spec-md-68"
+          "claim-docs-specs-index-spec-md-168"
         ],
         "summary": "Confirm, decompose, or accept a human-auditable claim before treating it as proven."
       },
@@ -160,7 +158,7 @@
       }
     ]
   },
-  "candidateCount": 547,
+  "candidateCount": 548,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -177,7 +175,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 418,
+      "developer": 419,
       "user": 129
     },
     "byClaimSemanticGroup": {
@@ -189,31 +187,31 @@
       "General product behavior": 1,
       "Improvement and improvement": 56,
       "Packets and reporting": 60,
-      "Quality gates": 35,
+      "Quality gates": 36,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 142,
-      "unknown": 405
+      "unknown": 406
     },
     "byLifecycle": {
-      "new": 547
+      "new": 548
     },
     "byRecommendedProof": {
-      "cautilus-eval": 154,
-      "deterministic": 247,
-      "human-auditable": 146
+      "cautilus-eval": 153,
+      "deterministic": 248,
+      "human-auditable": 147
     },
     "byReviewStatus": {
       "agent-reviewed": 192,
-      "heuristic": 354,
+      "heuristic": 355,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 33,
       "needs-alignment": 55,
-      "needs-scenario": 2,
-      "ready-for-proof": 457
+      "needs-scenario": 1,
+      "ready-for-proof": 459
     }
   },
   "discoveryBoundary": {
@@ -3418,7 +3416,7 @@
       }
     ]
   },
-  "gitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
+  "gitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3430,10 +3428,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
+    "currentGitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
+    "packetGitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3457,9 +3455,9 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 313,
+    "heuristicClaimsReadyForReview": 315,
     "needsAlignment": 55,
-    "needsScenario": 2
+    "needsScenario": 1
   },
   "sampleClaims": [
     {

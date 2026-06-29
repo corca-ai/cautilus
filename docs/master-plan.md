@@ -151,12 +151,12 @@ Product-owned pieces shipped:
 Also shipped:
 
 - optimizer-untouchable final-acceptance-set detection on top of improve search ([final-acceptance-set.md](./contracts/final-acceptance-set.md)): a post-hoc authored `acceptance` split, `heldOutExposureCount` on the search result, and `cautilus evaluate acceptance` which reads a finalist on the acceptance set to report the generalization gap with a contamination guard and a reliability flag, advisory-only at the human accept step
+- the risk-tier policy on top of the acceptance read ([acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories
 
 Still open:
 
 - decide whether richer merge heuristics are actually needed — dogfood evidence should justify the next seam rather than adding heuristics speculatively
 - keep every improver surface bounded by held-out, comparison, and structured review gates
-- the risk-tier policy that makes the acceptance read required for high-risk surfaces and skippable for low-risk ones is decided and partially implemented in [acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md): the adapter `acceptance_risk` block, the per-tier reliability floor, and the read-time block-or-waiver enforcement in `cautilus evaluate acceptance` have landed; the skip-time doctor/readiness gate (catching a `required` target never read) is the remaining slice
 
 Still intentionally excluded:
 

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:e22edeeb033fb95f7300b664a9616fa9b6e6347a1eb72b4966cf93db4fcd8f24"
+      "contentHash": "sha256:81b7320290d5993e890aaf584bf80c9378d328c834039ae68b746734dd757ea1"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf"
     }
   },
-  "claimsPacketGitCommit": "34df49afd43d26df8edaad6302ae323de9d12857",
+  "claimsPacketGitCommit": "1fd015db0ec13a56f77a7af9363356dec95396d4",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 547,
+  "claimsPacketCandidateCount": 548,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,36 +200,36 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 547,
+    "totalRawClaimCount": 548,
     "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
     "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 469,
+    "semanticReviewRecommendedCount": 470,
     "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 418,
+      "mapped-to-maintainer-canonical": 419,
       "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 418,
+      "developer": 419,
       "user": 129
     },
     "byMappingConfidence": {
       "high": 78,
       "low": 158,
-      "medium": 311
+      "medium": 312
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
       "M1": 7,
       "M10": 23,
-      "M11": 60,
+      "M11": 58,
       "M12": 12,
       "M2": 26,
       "M3": 100,
-      "M4": 89,
+      "M4": 91,
       "M5": 37,
-      "M6": 12,
+      "M6": 13,
       "M7": 17,
       "M8": 25,
       "M9": 10
@@ -460,6 +460,7 @@
       "claim-docs-master-plan-md-79",
       "claim-docs-master-plan-md-80",
       "claim-docs-master-plan-md-91",
+      "claim-docs-master-plan-md-154",
       "claim-docs-master-plan-md-186",
       "claim-docs-master-plan-md-189",
       "claim-docs-master-plan-md-199",
@@ -501,7 +502,6 @@
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-68",
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-71",
       "claim-docs-specs-user-index-spec-md-5",
-      "claim-docs-contracts-acceptance-risk-tier-md-6",
       "claim-docs-contracts-acceptance-risk-tier-md-8",
       "claim-docs-contracts-acceptance-risk-tier-md-15",
       "claim-docs-contracts-acceptance-risk-tier-md-16",
@@ -513,12 +513,13 @@
       "claim-docs-contracts-acceptance-risk-tier-md-70",
       "claim-docs-contracts-acceptance-risk-tier-md-76",
       "claim-docs-contracts-acceptance-risk-tier-md-88",
-      "claim-docs-contracts-acceptance-risk-tier-md-102",
-      "claim-docs-contracts-acceptance-risk-tier-md-118",
-      "claim-docs-contracts-acceptance-risk-tier-md-127",
-      "claim-docs-contracts-acceptance-risk-tier-md-139",
-      "claim-docs-contracts-acceptance-risk-tier-md-175",
-      "claim-docs-contracts-acceptance-risk-tier-md-180",
+      "claim-docs-contracts-acceptance-risk-tier-md-104",
+      "claim-docs-contracts-acceptance-risk-tier-md-120",
+      "claim-docs-contracts-acceptance-risk-tier-md-129",
+      "claim-docs-contracts-acceptance-risk-tier-md-130",
+      "claim-docs-contracts-acceptance-risk-tier-md-141",
+      "claim-docs-contracts-acceptance-risk-tier-md-177",
+      "claim-docs-contracts-acceptance-risk-tier-md-185",
       "claim-docs-contracts-active-run-md-3",
       "claim-docs-contracts-active-run-md-59",
       "claim-docs-contracts-active-run-md-157",
@@ -845,7 +846,7 @@
       "absorbedRawClaimCount": 7,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-acceptance-risk-tier-md-60",
-        "claim-docs-contracts-acceptance-risk-tier-md-102",
+        "claim-docs-contracts-acceptance-risk-tier-md-104",
         "claim-docs-contracts-runner-readiness-md-172",
         "claim-docs-specs-contracts-rules-policy-spec-md-6",
         "claim-docs-contracts-realsurface-judge-convergence-md-90",
@@ -860,7 +861,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-102",
+          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-104",
           "claimFingerprint": "sha256:94b6343b431ae4800c5d30437254dd9a6e8efbc4d9e33c54e25678b717a39fe7",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
@@ -1331,7 +1332,7 @@
         },
         {
           "claimId": "claim-docs-contracts-acceptance-risk-tier-md-88",
-          "claimFingerprint": "sha256:985095aa8132955ed50c1edcd080e3f66b54a2ec2b502c0ead5ac840cf20f6b0",
+          "claimFingerprint": "sha256:4a488ef590a26882974d65d61dfa775ba7045ce79537b2d8f88453471a77a74b",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1850,7 +1851,7 @@
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 89,
+      "absorbedRawClaimCount": 91,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
@@ -1865,6 +1866,7 @@
         "claim-docs-contracts-adapter-contract-md-433",
         "claim-docs-master-plan-md-29",
         "claim-docs-master-plan-md-57",
+        "claim-docs-master-plan-md-154",
         "claim-docs-specs-index-spec-md-16",
         "claim-docs-specs-index-spec-md-45",
         "claim-docs-specs-index-spec-md-81",
@@ -1875,7 +1877,8 @@
         "claim-docs-contracts-acceptance-risk-tier-md-19",
         "claim-docs-contracts-acceptance-risk-tier-md-23",
         "claim-docs-contracts-acceptance-risk-tier-md-66",
-        "claim-docs-contracts-acceptance-risk-tier-md-118",
+        "claim-docs-contracts-acceptance-risk-tier-md-120",
+        "claim-docs-contracts-acceptance-risk-tier-md-185",
         "claim-docs-contracts-active-run-md-3",
         "claim-docs-contracts-claim-discovery-workflow-md-77",
         "claim-docs-contracts-claim-discovery-workflow-md-92",
@@ -2022,6 +2025,12 @@
           "requiresSemanticReview": true
         },
         {
+          "claimId": "claim-docs-master-plan-md-154",
+          "claimFingerprint": "sha256:98e0f85947834f4b4391910de08dc6f1c870af7b5e7cdd701f9f1bd98eee860a",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
           "claimId": "claim-docs-specs-index-spec-md-16",
           "claimFingerprint": "sha256:39513791f0993da9c5c8971002d728b2862814a3a685d36dcf3dab109fe38b67",
           "mappingConfidence": "medium",
@@ -2082,8 +2091,14 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-118",
+          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-120",
           "claimFingerprint": "sha256:2c47b3dffcd2b46a8eca2130175e110b11270b1129666e6881ec03466927dd0b",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-185",
+          "claimFingerprint": "sha256:ebd93555f7b68090b28f007524a99ac8680718f1cb86aa937062ae5bd3cac015",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2480,21 +2495,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 72
+        "unknown": 74
       },
       "byReviewStatus": {
         "agent-reviewed": 28,
-        "heuristic": 61
+        "heuristic": 63
       },
       "byRecommendedProof": {
         "cautilus-eval": 35,
-        "deterministic": 29,
-        "human-auditable": 25
+        "deterministic": 30,
+        "human-auditable": 26
       },
       "byMappingConfidence": {
         "high": 10,
         "low": 3,
-        "medium": 76
+        "medium": 78
       }
     },
     {
@@ -2508,7 +2523,7 @@
         "claim-docs-specs-index-spec-md-54",
         "claim-docs-specs-index-spec-md-55",
         "claim-docs-specs-index-spec-md-77",
-        "claim-docs-contracts-acceptance-risk-tier-md-175",
+        "claim-docs-contracts-acceptance-risk-tier-md-177",
         "claim-docs-contracts-claim-discovery-workflow-md-6",
         "claim-docs-contracts-claim-discovery-workflow-md-90",
         "claim-docs-contracts-claim-discovery-workflow-md-296",
@@ -2578,7 +2593,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-175",
+          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-177",
           "claimFingerprint": "sha256:757f51eddb3ca3087b3a37ae9f31aad587e99018ad38d43907e7b6a077588493",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2786,10 +2801,11 @@
     {
       "canonicalClaimId": "M6",
       "title": "Evidence State And Review Artifacts",
-      "absorbedRawClaimCount": 12,
+      "absorbedRawClaimCount": 13,
       "absorbedRawClaimIds": [
         "claim-docs-specs-index-spec-md-168",
         "claim-docs-contracts-acceptance-risk-tier-md-70",
+        "claim-docs-contracts-acceptance-risk-tier-md-130",
         "claim-docs-contracts-claim-discovery-workflow-md-374",
         "claim-docs-contracts-claim-discovery-workflow-md-752",
         "claim-docs-contracts-claim-discovery-workflow-md-753",
@@ -2812,6 +2828,12 @@
           "claimId": "claim-docs-contracts-acceptance-risk-tier-md-70",
           "claimFingerprint": "sha256:a5715c28a05d9b18dde035cf712b0b37cd6237f5867c3cc9cafdbd16b8e33d59",
           "mappingConfidence": "low",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-130",
+          "claimFingerprint": "sha256:464fd4be345ff1f60a96b0f1b50eb736943830ef8cf5747689c70541ee3ee296",
+          "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
@@ -2877,20 +2899,20 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 3,
-        "unknown": 9
+        "unknown": 10
       },
       "byReviewStatus": {
         "agent-reviewed": 3,
-        "heuristic": 9
+        "heuristic": 10
       },
       "byRecommendedProof": {
         "deterministic": 5,
-        "human-auditable": 7
+        "human-auditable": 8
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 3,
-        "medium": 6
+        "medium": 7
       }
     },
     {
@@ -3046,7 +3068,7 @@
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-565",
         "claim-docs-contracts-acceptance-risk-tier-md-8",
-        "claim-docs-contracts-acceptance-risk-tier-md-127",
+        "claim-docs-contracts-acceptance-risk-tier-md-129",
         "claim-docs-contracts-claim-discovery-workflow-md-18",
         "claim-docs-contracts-claim-discovery-workflow-md-47",
         "claim-docs-contracts-claim-discovery-workflow-md-304",
@@ -3084,8 +3106,8 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-127",
-          "claimFingerprint": "sha256:3954975ea0b30e7bbfa643096f4c003a28bfef031171ff9e5c1ec7f4724f1f9e",
+          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-129",
+          "claimFingerprint": "sha256:e70e195fe884e09e234ff44de05a19465531ba9f12a2ffa4e336dc71c3a89314",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -3528,7 +3550,7 @@
     {
       "canonicalClaimId": "M11",
       "title": "Reporting And Review Variants",
-      "absorbedRawClaimCount": 60,
+      "absorbedRawClaimCount": 58,
       "absorbedRawClaimIds": [
         "claim-docs-contracts-adapter-contract-md-234",
         "claim-docs-contracts-adapter-contract-md-452",
@@ -3542,11 +3564,9 @@
         "claim-docs-specs-index-spec-md-102",
         "claim-docs-specs-index-spec-md-160",
         "claim-docs-specs-index-spec-md-167",
-        "claim-docs-contracts-acceptance-risk-tier-md-6",
         "claim-docs-contracts-acceptance-risk-tier-md-15",
         "claim-docs-contracts-acceptance-risk-tier-md-16",
-        "claim-docs-contracts-acceptance-risk-tier-md-139",
-        "claim-docs-contracts-acceptance-risk-tier-md-180",
+        "claim-docs-contracts-acceptance-risk-tier-md-141",
         "claim-docs-contracts-claim-discovery-workflow-md-95",
         "claim-docs-contracts-claim-discovery-workflow-md-217",
         "claim-docs-contracts-claim-discovery-workflow-md-369",
@@ -3665,12 +3685,6 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-6",
-          "claimFingerprint": "sha256:a5b8772477c2460938ca3c7fd5f2d5c56180d10977425a3bc0476828f4be96ca",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
-        {
           "claimId": "claim-docs-contracts-acceptance-risk-tier-md-15",
           "claimFingerprint": "sha256:e74e3e4109d34836e956ea2e22b51210f82592caa329191097b757481f4f6b01",
           "mappingConfidence": "medium",
@@ -3683,15 +3697,9 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-139",
+          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-141",
           "claimFingerprint": "sha256:d38351e767df15ce8b61cfb72ff90f7c0a9add517ce90abf73621d2f084694d9",
           "mappingConfidence": "low",
-          "requiresSemanticReview": true
-        },
-        {
-          "claimId": "claim-docs-contracts-acceptance-risk-tier-md-180",
-          "claimFingerprint": "sha256:f8ba347ac4a03e4d8f1e5a99ba5d8b62f30ef4dcbf7cbfc2b397db5726317ac4",
-          "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
@@ -3955,21 +3963,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 17,
-        "unknown": 43
+        "unknown": 41
       },
       "byReviewStatus": {
         "agent-reviewed": 19,
-        "heuristic": 41
+        "heuristic": 39
       },
       "byRecommendedProof": {
-        "cautilus-eval": 4,
+        "cautilus-eval": 3,
         "deterministic": 35,
-        "human-auditable": 21
+        "human-auditable": 20
       },
       "byMappingConfidence": {
         "high": 12,
         "low": 4,
-        "medium": 44
+        "medium": 42
       }
     },
     {
@@ -7372,6 +7380,45 @@
       ]
     },
     {
+      "claimId": "claim-docs-master-plan-md-154",
+      "summary": "the risk-tier policy on top of the acceptance read ([acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories",
+      "sourceRefs": [
+        {
+          "path": "docs/master-plan.md",
+          "line": 154,
+          "excerpt": "the risk-tier policy on top of the acceptance read ([acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories"
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:98e0f85947834f4b4391910de08dc6f1c870af7b5e7cdd701f9f1bd98eee860a",
+      "canonicalClaimId": "M4",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 9,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "acceptance",
+        "adapter",
+        "cautilu",
+        "discovery",
+        "evidence",
+        "explicit",
+        "host",
+        "policy",
+        "product",
+        "vocabulary"
+      ]
+    },
+    {
       "claimId": "claim-docs-master-plan-md-186",
       "summary": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):",
       "sourceRefs": [
@@ -8974,45 +9021,6 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-6",
-      "summary": "What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status.",
-      "sourceRefs": [
-        {
-          "path": "docs/contracts/acceptance-risk-tier.md",
-          "line": 6,
-          "excerpt": "What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status."
-        }
-      ],
-      "disposition": "mapped-to-maintainer-canonical",
-      "mappingStatus": "heuristic-auto-map",
-      "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "unknown",
-      "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:a5b8772477c2460938ca3c7fd5f2d5c56180d10977425a3bc0476828f4be96ca",
-      "canonicalClaimId": "M11",
-      "score": 10,
-      "runnerUpCanonicalClaimId": "M5",
-      "runnerUpScore": 9,
-      "scoreMargin": 1,
-      "mappingConfidence": "medium",
-      "requiresSemanticReview": true,
-      "matchedAnchors": [],
-      "matchedKeywords": [
-        "default",
-        "discovery",
-        "evidence",
-        "human",
-        "judgment",
-        "next",
-        "over",
-        "review",
-        "statu",
-        "surface"
-      ]
-    },
-    {
       "claimId": "claim-docs-contracts-acceptance-risk-tier-md-8",
       "summary": "`Cautilus` should let a host declare which acceptance targets must read the optimizer-untouchable acceptance surface before a finalist is accepted, without the product ever defining what counts as high or low risk.",
       "sourceRefs": [
@@ -9376,12 +9384,12 @@
     },
     {
       "claimId": "claim-docs-contracts-acceptance-risk-tier-md-88",
-      "summary": "Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status).",
+      "summary": "Resolved: `cautilus evaluate acceptance` enforces the block when a read is run, and `cautilus doctor` is the skip-gate that catches a `required` target never read at all by scanning scenario history for a read (matched by target id) or a waiver. There is no mechanical accept command, so the read-only doctor/readiness surface — which the human `operator-acceptance.md` accept step points at — is the enforcement point, and `cautilus evaluate acceptance waive-skip` is the explicit operator command that records a waiver-on-skip (keeping doctor read-only).",
       "sourceRefs": [
         {
           "path": "docs/contracts/acceptance-risk-tier.md",
           "line": 88,
-          "excerpt": "Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status)."
+          "excerpt": "Resolved: `cautilus evaluate acceptance` enforces the block when a read is run, and `cautilus doctor` is the skip-gate that catches a `required` target never read at all by scanning scenario history for a read (matched by target id) or a waiver. There is no mechanical accept command, so the read-only doctor/readiness surface — which the human `operator-acceptance.md` accept step points at — is the enforcement point, and `cautilus evaluate acceptance waive-skip` is the explicit operator command that records a waiver-on-skip (keeping doctor read-only)."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -9391,34 +9399,36 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:985095aa8132955ed50c1edcd080e3f66b54a2ec2b502c0ead5ac840cf20f6b0",
+      "claimFingerprint": "sha256:4a488ef590a26882974d65d61dfa775ba7045ce79537b2d8f88453471a77a74b",
       "canonicalClaimId": "M3",
-      "score": 9,
-      "runnerUpCanonicalClaimId": "M6",
-      "runnerUpScore": 9,
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 11,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "cautilu",
+        "command",
         "discovery",
         "doctor",
         "enforce",
         "evidence",
+        "explicit",
         "never",
         "review",
         "run",
-        "statu"
+        "surface"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-102",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-104",
       "summary": "Auto-rejecting or auto-applying a candidate on any tier; the read stays advisory.",
       "sourceRefs": [
         {
           "path": "docs/contracts/acceptance-risk-tier.md",
-          "line": 102,
+          "line": 104,
           "excerpt": "Auto-rejecting or auto-applying a candidate on any tier; the read stays advisory."
         }
       ],
@@ -9446,12 +9456,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-118",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-120",
       "summary": "Keep the adapter schema repo-agnostic: the product validates the effect enum and the block shape, never the tier names or target ids beyond shape (AGENTS.md working rules).",
       "sourceRefs": [
         {
           "path": "docs/contracts/acceptance-risk-tier.md",
-          "line": 118,
+          "line": 120,
           "excerpt": "Keep the adapter schema repo-agnostic: the product validates the effect enum and the block shape, never the tier names or target ids beyond shape (AGENTS.md working rules)."
         }
       ],
@@ -9484,13 +9494,13 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-127",
-      "summary": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`).",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-129",
+      "summary": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`). Proven (skip-gate): a `required` target that is *never read* (no recorded read and no waiver) is blocked by `cautilus doctor`, which flips `ready` to false, and clears once a read or a waiver is recorded (`TestCLIDoctorAcceptanceSkipGateBlocksRequiredTargetNeverReadThenClearsOnRead`, `BuildAcceptanceReadiness` fixtures).",
       "sourceRefs": [
         {
           "path": "docs/contracts/acceptance-risk-tier.md",
-          "line": 127,
-          "excerpt": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`)."
+          "line": 129,
+          "excerpt": "Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`). Proven (skip-gate): a `required` target that is *never read* (no recorded read and no waiver) is blocked by `cautilus doctor`, which flips `ready` to false, and clears once a read or a waiver is recorded (`TestCLIDoctorAcceptanceSkipGateBlocksRequiredTargetNeverReadThenClearsOnRead`, `BuildAcceptanceReadiness` fixtures)."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -9500,32 +9510,73 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:3954975ea0b30e7bbfa643096f4c003a28bfef031171ff9e5c1ec7f4724f1f9e",
+      "claimFingerprint": "sha256:e70e195fe884e09e234ff44de05a19465531ba9f12a2ffa4e336dc71c3a89314",
       "canonicalClaimId": "M8",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M7",
-      "runnerUpScore": 6,
-      "scoreMargin": 1,
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M6",
+      "runnerUpScore": 9,
+      "scoreMargin": 2,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
         "adapter",
         "blocked",
+        "cautilu",
+        "doctor",
         "evidence",
         "map",
         "proven",
+        "ready",
         "result",
+        "which",
         "without"
       ]
     },
     {
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-139",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-130",
+      "summary": "Proven (skip-gate): an `optional` (or default) target whose read is *skipped entirely* records a waiver-on-skip via `cautilus evaluate acceptance waive-skip` but never blocks; before the waiver the doctor gate reports it `skip_pending_waiver`, after it reports `satisfied` (`TestCLIDoctorAcceptanceSkipGateClearsWithWaiveSkipAndExemptsSkippable`). The read-time half — an `optional`/`skippable` read never blocks — stays proven (`TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock`).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/acceptance-risk-tier.md",
+          "line": 130,
+          "excerpt": "Proven (skip-gate): an `optional` (or default) target whose read is *skipped entirely* records a waiver-on-skip via `cautilus evaluate acceptance waive-skip` but never blocks; before the waiver the doctor gate reports it `skip_pending_waiver`, after it reports `satisfied` (`TestCLIDoctorAcceptanceSkipGateClearsWithWaiveSkipAndExemptsSkippable`). The read-time half — an `optional`/`skippable` read never blocks — stays proven (`TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock`)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:464fd4be345ff1f60a96b0f1b50eb736943830ef8cf5747689c70541ee3ee296",
+      "canonicalClaimId": "M6",
+      "score": 8,
+      "runnerUpCanonicalClaimId": "M11",
+      "runnerUpScore": 8,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "but",
+        "doctor",
+        "evidence",
+        "make",
+        "never",
+        "report",
+        "satisfied",
+        "stay"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-141",
       "summary": "Policy test: an `optional` (and a default, undeclared) target with no read proceeds and emits a recorded waiver; a `skippable` target with no read proceeds and emits no waiver.",
       "sourceRefs": [
         {
           "path": "docs/contracts/acceptance-risk-tier.md",
-          "line": 139,
+          "line": 141,
           "excerpt": "Policy test: an `optional` (and a default, undeclared) target with no read proceeds and emits a recorded waiver; a `skippable` target with no read proceeds and emits no waiver."
         }
       ],
@@ -9554,12 +9605,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-175",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-177",
       "summary": "`cautilus evaluate acceptance` ([app.go](../../internal/app/app.go) `handleEvalAcceptance`) takes `--target`, `--waiver`, and `--repo-root`/`--adapter[-name]`, surfaces a `riskTier` block and an `acceptanceDecision`, blocks a `required` target whose read is not a clean reliable `accept` and has no waiver (exit 1), and records a `--waiver` override in scenario history (`RecordAcceptanceWaiver`). An invalid adapter fails closed whenever an acceptance-risk policy was intended — a `--target` is named or an `acceptance_risk` block was declared (even one that failed validation) — so an invalid adapter can never silently downgrade a `required` policy, including a `default_effect: required`.",
       "sourceRefs": [
         {
           "path": "docs/contracts/acceptance-risk-tier.md",
-          "line": 175,
+          "line": 177,
           "excerpt": "`cautilus evaluate acceptance` ([app.go](../../internal/app/app.go) `handleEvalAcceptance`) takes `--target`, `--waiver`, and `--repo-root`/`--adapter[-name]`, surfaces a `riskTier` block and an `acceptanceDecision`, blocks a `required` target whose read is not a clean reliable `accept` and has no waiver (exit 1), and records a `--waiver` override in scenario history (`RecordAcceptanceWaiver`). An invalid adapter fails closed whenever an acceptance-risk policy was intended — a `--target` is named or an `acceptance_risk` block was declared (even one that failed validation) — so an invalid adapter can never silently downgrade a `required` policy, including a `default_effect: required`."
         }
       ],
@@ -9590,44 +9641,44 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-180",
-      "summary": "A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt.",
+      "claimId": "claim-docs-contracts-acceptance-risk-tier-md-185",
+      "summary": "`cautilus evaluate acceptance waive-skip` ([app.go](../../internal/app/app.go) `handleEvalAcceptanceWaiveSkip`) is the explicit operator command that records a waiver-on-skip (`RecordAcceptanceWaiver`) for a target whose read is skipped entirely — used to acknowledge an `optional`/default skip or to override a `required` target without a read — keeping `doctor` itself read-only. It fails closed on an invalid adapter and never runs a read or accepts a candidate.",
       "sourceRefs": [
         {
           "path": "docs/contracts/acceptance-risk-tier.md",
-          "line": 180,
-          "excerpt": "A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt."
+          "line": 185,
+          "excerpt": "`cautilus evaluate acceptance waive-skip` ([app.go](../../internal/app/app.go) `handleEvalAcceptanceWaiveSkip`) is the explicit operator command that records a waiver-on-skip (`RecordAcceptanceWaiver`) for a target whose read is skipped entirely — used to acknowledge an `optional`/default skip or to override a `required` target without a read — keeping `doctor` itself read-only. It fails closed on an invalid adapter and never runs a read or accepts a candidate."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "needs-scenario",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:f8ba347ac4a03e4d8f1e5a99ba5d8b62f30ef4dcbf7cbfc2b397db5726317ac4",
-      "canonicalClaimId": "M11",
-      "score": 13,
-      "runnerUpCanonicalClaimId": "M7",
+      "claimFingerprint": "sha256:ebd93555f7b68090b28f007524a99ac8680718f1cb86aa937062ae5bd3cac015",
+      "canonicalClaimId": "M4",
+      "score": 12,
+      "runnerUpCanonicalClaimId": "M8",
       "runnerUpScore": 12,
-      "scoreMargin": 1,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
+        "acceptance",
+        "adapter",
         "cautilu",
-        "check",
-        "default",
-        "discovery",
-        "evidence",
-        "fixture",
-        "flow",
-        "normalize",
-        "only",
-        "proposal",
-        "report",
-        "review"
+        "command",
+        "deterministic",
+        "explicit",
+        "keep",
+        "proof",
+        "readines",
+        "run",
+        "thi",
+        "without"
       ]
     },
     {
