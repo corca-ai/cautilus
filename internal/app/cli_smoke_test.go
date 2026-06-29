@@ -4013,6 +4013,30 @@ func TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock(t *testing
 	}
 }
 
+func TestCLIEvaluateAcceptanceInvalidAdapterWithPolicyFailsClosed(t *testing.T) {
+	root := t.TempDir()
+	// An invalid acceptance_risk block (renamed effect) must not silently fail
+	// open to the optional default, even when no --target is named.
+	writeAcceptanceRiskAdapter(t, root, "acceptance_risk:\n  tiers:\n    critical:\n      effect: mandatory\n")
+	searchResultPath, acceptanceResultsPath := writeAcceptanceFixtures(t, root,
+		[]int{90, 90},
+		[]map[string]any{{"scenarioId": "acc-1", "overallScore": 80}},
+	)
+	outputPath := filepath.Join(root, "report.json")
+	_, stderr, code := runCLI(t, root, "evaluate", "acceptance",
+		"--search-result", searchResultPath,
+		"--acceptance-results", acceptanceResultsPath,
+		"--repo-root", root,
+		"--output", outputPath,
+	)
+	if code != 1 {
+		t.Fatalf("invalid acceptance_risk policy must fail closed (exit 1) without a target, got %d stderr=%s", code, stderr)
+	}
+	if !strings.Contains(stderr, "adapter is invalid") {
+		t.Fatalf("expected an invalid-adapter message, got stderr=%s", stderr)
+	}
+}
+
 func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose(t *testing.T) {
 	root := t.TempDir()
 	chatbotInputPath := filepath.Join(root, "chatbot-input.json")

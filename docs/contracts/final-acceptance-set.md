@@ -112,9 +112,9 @@ The one implementation-discovery probe is also resolved.
 
 ## Deferred Decisions
 
-- The risk-tier axis that makes acceptance required for high-risk surfaces and skippable for low-risk ones is now specified in [acceptance-risk-tier.md](./acceptance-risk-tier.md) (Status: Specified, implementation deferred).
+- The risk-tier axis that makes acceptance required for high-risk surfaces and skippable for low-risk ones is decided and partially implemented in [acceptance-risk-tier.md](./acceptance-risk-tier.md) (read-time enforcement in `cautilus evaluate acceptance` landed; the skip-time readiness gate is the remaining slice).
   Product owns only the axis/label shape and the contract that a risk tier can mark acceptance `required`, `optional`, or `skippable`; the adapter owns which surfaces are which tier and the numeric thresholds, mirroring the budget-tier ownership split in [improvement-search.md](./improvement-search.md) lines 65-66.
-- Adapter-configurability of the reliability floor: the trigger condition (a real consumer need for a different floor) is met by the risk-tier slice, so [acceptance-risk-tier.md](./acceptance-risk-tier.md) decides to make the floor an adapter-owned per-tier threshold; the floor stays a fixed product constant until that implementation slice lands.
+- Adapter-configurability of the reliability floor landed with the risk-tier slice: the adapter `acceptance_risk` block sets an optional per-tier `reliability_floor`, and `ResolveAcceptanceRiskTier` threads it into the acceptance read, defaulting to the product constant when unset. See [acceptance-risk-tier.md](./acceptance-risk-tier.md).
 - Any reusable-holdout or differential-privacy "thresholdout" mechanism that would let held-out be reused more times before degrading instead of adding a separate set.
 - Multi-finalist acceptance comparison; v1 reads one selected finalist.
 - A defense-in-depth readiness rejection if profile-driven held-out selection is ever added to the search loop; it is unnecessary while search selects held-out from report buckets and results files only.

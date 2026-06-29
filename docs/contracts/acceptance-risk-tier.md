@@ -1,9 +1,9 @@
 # Acceptance Risk Tier
 
-Status: Specified for [issue #51](https://github.com/spilist/cautilus/issues/51) follow-up; implementation deferred.
-This contract decides the policy axis that the [final-acceptance-set.md](./final-acceptance-set.md) mechanism left in Deferred Decisions.
-It defines the axis, the product-owned effect vocabulary, the product/adapter ownership split, and the default; it ships no code in this slice.
-The enforcement seam (block-or-waiver on `required`, the waiver record, the adapter block parser, and reliability-floor adapter-configurability) is the next implementation slice.
+Status: Partially implemented for [issue #51](https://github.com/spilist/cautilus/issues/51) follow-up.
+This contract decides the policy axis that the [final-acceptance-set.md](./final-acceptance-set.md) mechanism left in Deferred Decisions: the axis, the product-owned effect vocabulary, the product/adapter ownership split, and the default.
+The command-side enforcement has landed — the adapter `acceptance_risk` block parser, the per-tier reliability floor, and the block-or-waiver decision in `cautilus evaluate acceptance` — proving the read-time success criteria.
+What remains is the skip-case readiness gate: detecting and dispositioning a `required` target that was *never read* (so the read is enforced before accept) and recording a waiver-on-skip for `optional`/default targets. That gate is a distinct surface (doctor/readiness over scenario history) and is the next slice; see Implementation Status.
 
 `Cautilus` should let a host declare which acceptance targets must read the optimizer-untouchable acceptance surface before a finalist is accepted, without the product ever defining what counts as high or low risk.
 
@@ -36,8 +36,8 @@ It fixes:
 - the default effect for a target with no adapter declaration
 - that the reliability floor becomes an adapter-owned, optionally per-tier threshold (the deferred trigger condition is now met), while the gap tolerance stays a fixed product constant
 
-It does not ship the adapter block parser, the block-or-waiver enforcement, the waiver record, or the reliability-floor wiring.
-Those are the First Implementation Slice below, intentionally held for a separate slice after this contract is reviewed.
+The adapter block parser, the per-tier reliability floor, and the read-time block-or-waiver enforcement in `cautilus evaluate acceptance` have since landed (see Implementation Status).
+The skip-time readiness gate — catching a `required` target that was never read — is the one remaining slice.
 
 ## Entities
 
@@ -80,12 +80,12 @@ The advisory nature of the read itself is unchanged: even on a `required` target
 
 ## Probe Questions
 
-These resolve during the implementation slice against the real adapter and search-result shapes, not now.
+All four probes were resolved against repo truth during implementation.
 
-- The exact adapter block shape and key: whether risk tiers live in a new top-level `acceptance_risk` block or nest under an existing acceptance/evaluate block, following the `improve_search` block precedent ([improvement-search.md](./improvement-search.md) lines 206-235).
-- How an acceptance target is keyed for the target-to-tier mapping, which is closer to a now-decision than routine discovery: the `cautilus.improve_search_result.v1` record the acceptance read consumes currently exposes no top-level target key — only `inputFile` and `improveInputFile` paths ([result.schema.json](../../fixtures/improve-search/result.schema.json)), with the target recoverable only indirectly through the improve input. So the implementation slice must either thread a stable target key onto the result (a registered schema change) or define a canonical recovery path from `improveInputFile` to the target, and it must treat prompt-file-path-as-identity as fragile, because renaming the target file would silently break the tier mapping.
-- Where the waiver is durably recorded: alongside `acceptanceReads` in scenario history, inside the `cautilus.acceptance_report.v1` packet, or in a separate accept-step ledger, and what identifying fields it must carry to be auditable.
-- Which command and readiness surfaces enforce the block: `cautilus evaluate acceptance`, `cautilus doctor`/readiness, and/or the human accept step in [operator-acceptance.md](../maintainers/operator-acceptance.md), and how a `required` block is reported there.
+- Resolved: risk tiers live in a new top-level adapter `acceptance_risk` block, validated in [adapter.go](../../internal/runtime/adapter.go) beside `improve_search` (`validateAdapterAcceptanceRisk`). Shape: `default_effect`, `tiers.<name>.{effect, reliability_floor}`, and `targets.<id>: <tier-name>`.
+- Resolved: the acceptance target is keyed by an explicit `--target <id>` flag on `cautilus evaluate acceptance`, matched against the adapter `targets` map. The caller (operator or agent) names the target it is accepting, rather than the product deriving identity from the `cautilus.improve_search_result.v1` paths — which carry no top-level target key and would make prompt-file-path the fragile identity the draft flagged. An absent `--target` resolves to the default effect.
+- Resolved: the waiver is recorded in scenario history under a new `acceptanceWaivers` array (`RecordAcceptanceWaiver`), beside `acceptanceReads`, carrying timestamp, candidate id, target id, tier, effect, and reason. The report also carries a `waiver` object when an override is taken.
+- Resolved (read-time) / deferred (skip-time): `cautilus evaluate acceptance` enforces the block when a read is run. The `cautilus doctor`/readiness skip-gate that catches a `required` target never read at all is the remaining slice (Implementation Status).
 
 ## Deferred Decisions
 
@@ -122,14 +122,14 @@ These resolve during the implementation slice against the real adapter and searc
 
 ## Success Criteria
 
-These are the bar the implementation slice must prove; this contract slice satisfies none of them yet by design.
+Read-time criteria are proven by the landed slice; the two skip-time criteria are carried by the deferred readiness gate.
 
-- An adapter can map an acceptance target to a `required` tier, and accepting a finalist on that target without a clean, reliable, `accept`-recommending acceptance read and without a recorded waiver is blocked.
-- An adapter mapping a target to `optional` (or leaving it to the default) records a skipped read as an explicit waiver but does not block the accept step.
-- A `skippable` target accepts a finalist with no acceptance read and no waiver, leaving the held-out exposure count as the only signal.
-- An adapter block that renames or adds an acceptance-effect value is rejected with a clear error; tier names and target ids are not constrained beyond shape.
-- A per-tier `reliability_floor` overrides the product default for reads on that tier's targets, and an unset floor falls back to the product constant.
-- The gap tolerance is identical across tiers and is not adapter-overridable.
+- Proven: an adapter can map an acceptance target to a `required` tier, and running the read on that target without a clean, reliable, `accept`-recommending result and without a `--waiver` is blocked (`TestCLIEvaluateAcceptanceRequiredTierBlocksWithoutWaiverAndProceedsWithWaiver`).
+- Deferred (skip-gate): an `optional` (or default) target whose read is *skipped entirely* records a waiver-on-skip but does not block. The read-time half — an `optional`/`skippable` read never blocks — is proven (`TestCLIEvaluateAcceptanceSkippableAndUndeclaredTargetsNeverBlock`); the skip-detection half needs the readiness gate.
+- Deferred (skip-gate): a `skippable` target accepts a finalist with *no acceptance read at all*. The read-time half is proven by the same test; enforcing it without any read needs the readiness gate.
+- Proven: an adapter block that renames or adds an acceptance-effect value is rejected with a clear error; tier names and target ids are not constrained beyond shape (`TestValidateAdapterAcceptanceRiskRejectsRenamedEffect`, `TestValidateAdapterAcceptanceRiskAcceptsArbitraryNamesAndTargets`).
+- Proven: a per-tier `reliability_floor` overrides the product default for reads on that tier's targets, and an unset floor falls back to the product constant (`TestResolveAcceptanceRiskTierDeclaredTargetWithPerTierFloor`, `TestCLIEvaluateAcceptanceRequiredTierAcceptsWithPerTierFloor`).
+- Proven: the gap tolerance is identical across tiers and is not adapter-overridable (the adapter block has no gap-tolerance key; `AcceptanceGapTolerance` stays the only source).
 
 ## Acceptance Checks
 
@@ -158,17 +158,23 @@ The remaining open items (adapter block shape, exact target-key mechanism, waive
 
 The default-effect (`optional`), the `required` waiver-escape teeth, and the rename to `acceptance target` were confirmed with the user in a contract review after the critique.
 
+A second bounded fresh-eye critique ran against the landed implementation (verdict `ready`: 0 blockers, 1 should-fix, 1 nit, verified against the runtime). It confirmed the `required` decision keyed off `recommendation == "accept"` is equivalent to — not weaker than — the contract's clean-and-reliable-and-accept bar, that the product invents no risk category, and that the read-time-proven / skip-time-deferred split is honest. The should-fix — an invalid adapter with a declared `acceptance_risk` block (including `default_effect: required`) failing open when no `--target` was named — was folded in: the command now fails closed whenever a policy was intended, covered by `TestCLIEvaluateAcceptanceInvalidAdapterWithPolicyFailsClosed`.
+
 ## Canonical Artifact
 
 This document is the canonical build contract for the acceptance risk-tier policy.
 It sits beside [final-acceptance-set.md](./final-acceptance-set.md) and [improvement-search.md](./improvement-search.md) and references them rather than restating their rules.
 [final-acceptance-set.md](./final-acceptance-set.md) Deferred Decisions points here as the resolution of its risk-tier and reliability-floor entries.
 
-## First Implementation Slice
+## Implementation Status
 
-Held for a separate slice, after this contract is reviewed:
+Landed (read-time enforcement):
 
-1. Parse an adapter risk-tier block (shape resolved in Probe Questions): tier name to acceptance effect, target to tier, and an optional per-tier reliability floor, validating the effect enum and rejecting renamed values.
-2. Make the reliability floor adapter-resolvable, per tier, defaulting to `AcceptanceReliabilityFloor`, and thread it into `BuildAcceptanceReport` in place of the fixed argument.
-3. Enforce the effect at the accept step: block a `required` accept lacking a clean reliable `accept` read and a waiver, record the waiver for `optional`/default skips, and no-op for `skippable`, surfaced through the command and readiness path resolved in Probe Questions.
-4. Register any new schema surface in both contract-version registries and back each success criterion with the matching acceptance check.
+1. The adapter `acceptance_risk` block is parsed and validated in [adapter.go](../../internal/runtime/adapter.go) (`validateAdapterAcceptanceRisk`): the closed effect enum is enforced, renamed values are rejected, per-tier `reliability_floor` must be a positive integer, and a target must reference a declared tier. Tier names and target ids are unconstrained.
+2. `ResolveAcceptanceRiskTier` in [risk_tier.go](../../internal/runtime/risk_tier.go) turns a target id into its effect and reliability floor, defaulting an undeclared target to `optional` and the product `AcceptanceReliabilityFloor`. The resolved floor is threaded into `BuildAcceptanceReport`.
+3. `cautilus evaluate acceptance` ([app.go](../../internal/app/app.go) `handleEvalAcceptance`) takes `--target`, `--waiver`, and `--repo-root`/`--adapter[-name]`, surfaces a `riskTier` block and an `acceptanceDecision`, blocks a `required` target whose read is not a clean reliable `accept` and has no waiver (exit 1), and records a `--waiver` override in scenario history (`RecordAcceptanceWaiver`). An invalid adapter fails closed whenever an acceptance-risk policy was intended — a `--target` is named or an `acceptance_risk` block was declared (even one that failed validation) — so an invalid adapter can never silently downgrade a `required` policy, including a `default_effect: required`.
+4. The new fields (`riskTier`, `acceptanceDecision`, `waiver` on the report; `acceptanceWaivers` in history) extend `cautilus.acceptance_report.v1` and scenario history additively; neither has a strict schema validator, so no contract-version bump is required, and the existing `AcceptanceReportSchema` constant is unchanged.
+
+Remaining (skip-time enforcement — next slice):
+
+5. A `cautilus doctor`/readiness skip-gate that, for each `required` target, checks scenario history for a recorded acceptance read or waiver and reports the target blocked when neither exists, and records a waiver-on-skip for `optional`/default targets accepted without a read. This needs the acceptance read record to also carry the target id (today `RecordAcceptanceRead` records only candidate id and scenario ids), so the gate can match a read to a target. `skippable` targets are exempt.

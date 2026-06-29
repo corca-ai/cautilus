@@ -1370,16 +1370,29 @@ func handleEvalAcceptance(repoRoot string, cwd string, args []string, stdout io.
 	}
 	var acceptanceRisk map[string]any
 	if adapterPayload.Found && !adapterPayload.Valid {
-		// Fail closed when policy is explicitly requested (a target is named):
-		// an invalid adapter must not silently downgrade a required target.
-		if strings.TrimSpace(target) != "" {
-			fmt.Fprintf(stderr, "adapter is invalid; fix it before applying acceptance risk-tier policy for --target %s:\n", target)
+		// Fail closed when an acceptance-risk policy was intended: a target is
+		// named, or the adapter declared an acceptance_risk block (even one that
+		// failed validation). An invalid adapter must not silently downgrade a
+		// required policy, including a default_effect: required that bites when no
+		// target is named.
+		policyIntended := strings.TrimSpace(target) != ""
+		if _, ok := adapterPayload.Data["acceptance_risk"]; ok {
+			policyIntended = true
+		}
+		for _, message := range adapterPayload.Errors {
+			if strings.Contains(message, "acceptance_risk") {
+				policyIntended = true
+				break
+			}
+		}
+		if policyIntended {
+			fmt.Fprintf(stderr, "adapter is invalid; fix it before applying acceptance risk-tier policy:\n")
 			for _, message := range adapterPayload.Errors {
 				fmt.Fprintf(stderr, "  - %s\n", message)
 			}
 			return 1
 		}
-		fmt.Fprintf(stderr, "warning: adapter is invalid; ignoring acceptance_risk policy and using the default effect\n")
+		fmt.Fprintf(stderr, "warning: adapter is invalid; no acceptance_risk policy was declared, using the default effect\n")
 	} else if adapterPayload.Data != nil {
 		acceptanceRisk, _ = adapterPayload.Data["acceptance_risk"].(map[string]any)
 	}
