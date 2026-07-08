@@ -17,18 +17,26 @@ Advanced `cautilus` toward release `0.18.1` (tag `v0.18.1`) through the repo-own
 - `npm run verify` passed before publish.
 - `current_release.py` reported no version drift across packaging and generated install surfaces.
 - initial release push carried the release branch update and tag from the release helper.
+- post-publish artifact push recorded the verified public release state on the release branch.
 
 ## Release State
 
 - local release mutation: complete
 - branch/tag push: complete
-- GitHub release record: target URL `https://github.com/corca-ai/cautilus/releases/tag/v0.18.1`; creation runs after the branch/tag push
-- public release surface verification: not checked by this helper
+- GitHub release record: verified URL `https://github.com/corca-ai/cautilus/releases/tag/v0.18.1`
+- public release surface verification: verified
 - audit narrative: durable record written to `charness-artifacts/release/latest.md` and committed with this slice
 
 ## Public Release Verification
 
-- GitHub release publication: expected after branch/tag push; not verified yet.
+- GitHub release publication: verified by the release backend.
+
+## Distinct-Channel Verification
+
+- Rung-2 distinct-channel verdict: `confirmed` via `https-fetch` (a channel distinct from `gh release view`).
+- Channel URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.18.1`
+- HTTP status: `200`
+- Rung-1 floor: a per-surface verdict is recorded (presence), so issue closeout was not silent; the honesty of this verdict is the human rung-2 disposition review.
 
 ## Release Adapter Preflight
 
@@ -91,9 +99,13 @@ Advanced `cautilus` toward release `0.18.1` (tag `v0.18.1`) through the repo-own
 - Configured command count: `0`.
 - Warning: requested_review_commands is empty; requested-review enforcement is advisory-only for this release.
 
+## Post-Publish Proof
+
+- Public release check: `gh release view v0.18.1`.
+
 ## Install Refresh
 
-- Post-publish install refresh: pending final publish verification.
+- Post-publish install refresh status: `not_configured`.
 
 ## Release Runtime
 
@@ -101,6 +113,11 @@ Advanced `cautilus` toward release `0.18.1` (tag `v0.18.1`) through the repo-own
 - `cli_skill_surface_gate`: 0.070s
 - `quality_command`: 84.036s
 - `fresh_checkout_probes_initial`: 10.006s
+- `fresh_checkout_probes_after_amend`: 10.176s
+- `push_create_verify_release`: 93.647s
+- `distinct_channel_verification`: 0.444s
+- `issue_closeout`: 0.000s
+- `post_publish_install_refresh`: 0.000s
 
 ## Fresh Checkout Probes
 
@@ -112,7 +129,7 @@ Advanced `cautilus` toward release `0.18.1` (tag `v0.18.1`) through the repo-own
 
 ## Issue Closeout
 
-- Issue closeout verification: pending or not requested.
+- Issue closeout verification: `not_requested`.
 
 ## User Update Steps
 
