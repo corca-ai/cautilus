@@ -30,25 +30,29 @@ Local Node verification is faster while keeping real `bin/cautilus --version`, c
 - Hook verification: `npm run hooks:check` passed.
 - Generated drift: `npm run generated:drift:check` passed.
 - Version readback: `./bin/cautilus --version` returned `0.18.2`.
-- Publish dry-run: pending release commit because `publish-release.mjs --dry-run` requires a clean worktree.
+- Publish dry-run: `node scripts/release/publish-release.mjs --version 0.18.2 --dry-run --json` passed after the release commit.
+- Publish helper: `npm run release:publish -- --version 0.18.2 --json` pushed `main` and tag `v0.18.2` at `6e7cd5725841394e1aca53fe96075313a0bd5282`.
+- GitHub release workflow: `release-artifacts` run `28920681750` passed, including the `verify-public-release` job.
+- Public release verifier: `node ./scripts/release/verify-public-release.mjs --version v0.18.2 --retry-attempts 3 --retry-delay-ms 10000` passed.
+- Install readback: `npm run release:smoke-install:current -- --skip-update` installed and read back Cautilus `0.18.2`.
 
 ## Release State
 
 - local release mutation: complete
-- branch/tag push: not started
-- GitHub release record: not started
-- public release surface verification: not started
-- requested review commands: passed locally; publish helper will rerun before branch or tag push
-- post-publish install readback: pending public release
+- branch/tag push: complete
+- GitHub release record: published at `https://github.com/corca-ai/cautilus/releases/tag/v0.18.2`
+- public release surface verification: complete
+- requested review commands: passed locally and through the publish helper before branch/tag push
+- post-publish install readback: complete
 
 ## Public Release Verification
 
-- Public release verification is pending tag-triggered GitHub workflow publication.
-- Local public-release verification is not a substitute for workflow publication.
+- Public release verification passed in tag-triggered GitHub workflow run `28920681750`.
+- Local public-release verification also passed against `https://github.com/corca-ai/cautilus/releases/tag/v0.18.2`.
 
 ## Distinct-Channel Verification
 
-- Distinct-channel verification is pending public release visibility.
+- Distinct-channel verification passed through the install-sh smoke path against the published `v0.18.2` release asset.
 
 ## Release Adapter Preflight
 
@@ -70,19 +74,19 @@ Local Node verification is faster while keeping real `bin/cautilus --version`, c
 
 ## Requested Review Gate
 
-- Requested-review gate status: passed locally; pending publish-helper rerun.
+- Requested-review gate status: passed locally and in the publish helper.
 - Configuration status: configured.
 - Policy: publish helper must run configured requested review commands before branch or tag push.
 
 ## Post-Publish Proof
 
-- Public release check: pending tag-triggered release workflow.
-- Install readback: pending `npm run release:smoke-install:current -- --skip-update` after public release visibility.
+- Public release check: `release-artifacts` run `28920681750` passed.
+- Install readback: `npm run release:smoke-install:current -- --skip-update` passed after public release visibility.
 
 ## Install Refresh
 
-- Post-publish install refresh status: pending public release.
-- Full install/update smoke after public release: `npm run release:smoke-install -- --channel install_sh --version v0.18.2`.
+- Post-publish install refresh status: complete.
+- Full install/update smoke after public release remains available for broader channel validation: `npm run release:smoke-install -- --channel install_sh --version v0.18.2`.
 
 ## User Update Steps
 
