@@ -380,10 +380,10 @@ test("checked-in evidence lookup batching preserves duplicate unreadable finding
 		const warnMode = auditClaimEvidenceHashes({ repoRoot, referenceScope: "active" });
 		assert.equal(warnMode.status, "ok");
 		assert.equal(warnMode.issueCount, 0);
-		assert.equal(warnMode.warningCount, 2);
-		assert.equal(warnMode.checkedInEvidenceLookupCount, 1);
-		assert.equal(warnMode.checkedInEvidenceBatchCount, 1);
-		assert.equal(warnMode.checkedInEvidenceFallbackLookupCount, 0);
+			assert.equal(warnMode.warningCount, 2);
+			assert.equal(warnMode.checkedInEvidenceLookupCount, 1);
+			assert.equal(warnMode.checkedInEvidenceBatchCount, 1);
+			assert.equal(warnMode.checkedInEvidenceFallbackLookupCount, 0);
 		assert.deepEqual(warnMode.warnings.map((warning) => warning.file).sort(), [
 			".cautilus/claims/evidence-missing-a.json",
 			".cautilus/claims/evidence-missing-b.json",
@@ -398,6 +398,167 @@ test("checked-in evidence lookup batching preserves duplicate unreadable finding
 		assert.equal(strictMode.issueCount, 2);
 		assert.equal(strictMode.warningCount, 0);
 		assert.equal(strictMode.checkedInEvidenceLookupCount, 1);
+	} finally {
+		rmSync(repoRoot, { recursive: true, force: true });
+	}
+});
+
+test("checked-in evidence lookup batches mixed commits in one process", () => {
+	const { repoRoot, claimsDir, commit } = createRepoFixture();
+	try {
+		writeFileSync(join(repoRoot, "second.txt"), "second v1\n", "utf8");
+		git(repoRoot, ["add", "second.txt"]);
+		git(repoRoot, ["commit", "-m", "second"]);
+		const secondCommit = git(repoRoot, ["rev-parse", "HEAD"]);
+		const firstEvidencePath = join(claimsDir, "evidence-first-commit.json");
+		const secondEvidencePath = join(claimsDir, "evidence-second-commit.json");
+		writeJson(firstEvidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: commit,
+			createdForClaimIds: ["claim-first"],
+			checkedInEvidence: [
+				{
+					path: "source.txt",
+					kind: "source",
+					contentHash: sha256Buffer(Buffer.from("source v1\n")),
+				},
+			],
+		});
+		writeJson(secondEvidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: secondCommit,
+			createdForClaimIds: ["claim-second"],
+			checkedInEvidence: [
+				{
+					path: "second.txt",
+					kind: "source",
+					contentHash: sha256Buffer(Buffer.from("second v1\n")),
+				},
+			],
+		});
+		writeJson(join(claimsDir, "status-summary.json"), {
+			evidenceSatisfaction: {
+				satisfiedClaims: [
+					{
+						claimId: "claim-first",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-first-commit.json",
+								contentHash: sha256File(firstEvidencePath),
+								supportsClaimIds: ["claim-first"],
+							},
+						],
+					},
+					{
+						claimId: "claim-second",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-second-commit.json",
+								contentHash: sha256File(secondEvidencePath),
+								supportsClaimIds: ["claim-second"],
+							},
+						],
+					},
+				],
+			},
+		});
+
+		const result = auditClaimEvidenceHashes({ repoRoot, referenceScope: "active" });
+		assert.equal(result.status, "ok");
+		assert.equal(result.warningCount, 0);
+		assert.equal(result.checkedInEvidenceLookupCount, 2);
+		assert.equal(result.checkedInEvidenceBatchCount, 1);
+		assert.equal(result.checkedInEvidenceFallbackLookupCount, 0);
+	} finally {
+		rmSync(repoRoot, { recursive: true, force: true });
+	}
+});
+
+test("checked-in evidence lookup falls back for newline-delimited specs", () => {
+	const { repoRoot, claimsDir, commit } = createRepoFixture();
+	try {
+		const evidencePath = join(claimsDir, "evidence-newline-path.json");
+		writeJson(evidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: commit,
+			createdForClaimIds: ["claim-newline"],
+			checkedInEvidence: [
+				{
+					path: "missing\npath.txt",
+					kind: "source",
+					contentHash: "sha256:missing-source-hash",
+				},
+			],
+		});
+		writeJson(join(claimsDir, "status-summary.json"), {
+			evidenceSatisfaction: {
+				satisfiedClaims: [
+					{
+						claimId: "claim-newline",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-newline-path.json",
+								contentHash: sha256File(evidencePath),
+								supportsClaimIds: ["claim-newline"],
+							},
+						],
+					},
+				],
+			},
+		});
+
+		const result = auditClaimEvidenceHashes({ repoRoot, referenceScope: "active" });
+		assert.equal(result.status, "ok");
+		assert.equal(result.warningCount, 1);
+		assert.equal(result.warnings[0].kind, "checked-in-evidence-unreadable");
+		assert.equal(result.checkedInEvidenceLookupCount, 1);
+		assert.equal(result.checkedInEvidenceBatchCount, 0);
+		assert.equal(result.checkedInEvidenceFallbackLookupCount, 1);
+	} finally {
+		rmSync(repoRoot, { recursive: true, force: true });
+	}
+});
+
+test("checked-in evidence lookup falls back for newline-delimited commits", () => {
+	const { repoRoot, claimsDir, commit } = createRepoFixture();
+	try {
+		const evidencePath = join(claimsDir, "evidence-newline-commit.json");
+		writeJson(evidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: `${commit}\nHEAD`,
+			createdForClaimIds: ["claim-newline-commit"],
+			checkedInEvidence: [
+				{
+					path: "source.txt",
+					kind: "source",
+					contentHash: sha256Buffer(Buffer.from("source v1\n")),
+				},
+			],
+		});
+		writeJson(join(claimsDir, "status-summary.json"), {
+			evidenceSatisfaction: {
+				satisfiedClaims: [
+					{
+						claimId: "claim-newline-commit",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-newline-commit.json",
+								contentHash: sha256File(evidencePath),
+								supportsClaimIds: ["claim-newline-commit"],
+							},
+						],
+					},
+				],
+			},
+		});
+
+		const result = auditClaimEvidenceHashes({ repoRoot, referenceScope: "active" });
+		assert.equal(result.status, "ok");
+		assert.equal(result.warningCount, 1);
+		assert.equal(result.warnings[0].kind, "checked-in-evidence-unreadable");
+		assert.equal(result.checkedInEvidenceLookupCount, 1);
+		assert.equal(result.checkedInEvidenceBatchCount, 0);
+		assert.equal(result.checkedInEvidenceFallbackLookupCount, 1);
 	} finally {
 		rmSync(repoRoot, { recursive: true, force: true });
 	}

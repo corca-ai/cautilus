@@ -3,73 +3,76 @@ Date: 2026-07-08
 
 ## Problem
 
-`node --check scripts/agent-runtime/audit-claim-evidence-hashes.mjs` failed after adding batch checked-in evidence lookup helpers.
-The exact error was `SyntaxError: Unexpected token '}'` at line 401.
+The mixed-commit `git cat-file --batch` optimization regressed `claims:audit-evidence` from about 1.0s back to about 4.1s.
+The audit summary reported `checkedInEvidenceBatchCount: 0` and `checkedInEvidenceFallbackLookupCount: 521`.
 
 ## Correct Behavior
 
-Given the claim evidence audit batches checked-in evidence lookups, when helper code is inserted, then the file should remain syntactically valid before behavior tests or timing comparisons continue.
+Given checked-in evidence lookups are batchable across commits, when active mode resolves 521 unique `repoCommit:path` lookups, then it should use one successful batch process and avoid per-lookup fallback except for unsafe newline-delimited specs.
 
 ## Observed Facts
 
-- `node --check scripts/agent-runtime/audit-claim-evidence-hashes.mjs` exited 1.
-- The parser pointed at an unexpected closing brace near line 401.
-- Reading lines 369-404 showed a complete new `auditCheckedInEvidence` implementation followed by a leftover tail from the previous loop body.
-- The batch lookup design itself had not yet reached behavior verification.
+- `/usr/bin/time -p npm run --silent claims:audit-evidence` exited 0 but reported 521 fallback lookups and took about 4.13s.
+- `/usr/bin/time -p npm run --silent claims:audit-evidence:full` exited 0 but reported 816 fallback lookups and took about 6.20s.
+- A direct reproduction with the active spec set showed `spawnSync git ENOBUFS` with about 1,053,163 stdout bytes captured before failure.
+- The same active spec set succeeded with `maxBuffer: 64 * 1024 * 1024` and produced about 21.5MB of output.
+- The full spec set succeeded with `maxBuffer: 128 * 1024 * 1024` and produced about 31.3MB of output.
 
 ## Reproduction
 
-- Run `node --check scripts/agent-runtime/audit-claim-evidence-hashes.mjs` after the initial batch lookup patch.
-- Observed result: syntax check fails before any runtime behavior can execute.
+- Build the active audit spec set from current-state evidence refs, then call `execFileSync("git", ["cat-file", "--batch"], { input })` with Node's default `maxBuffer`.
+- Observed result: the call throws `ENOBUFS`, the audit catches it, falls back to per-lookup `git show`, and loses the intended speedup.
 
 ## Candidate Causes
 
-- A manual patch left stale loop-body lines after replacing `auditCheckedInEvidence`.
-- The new helper functions have an unbalanced brace.
-- `Map.groupBy` or newer syntax is unsupported by the local Node runtime and caused a parse error.
+- The global batch output exceeded Node's default `execFileSync` stdout buffer.
+- The mixed-commit batch parser misread one header and threw.
+- A malformed path or commit injected an extra batch line and poisoned the whole batch.
 
 ## Hypothesis
 
-- Falsifiable claim: the failure is a stale duplicated block after `auditCheckedInEvidence`, not unsupported syntax or a malformed helper.
-- Disconfirmer: if removing the leftover lines does not make `node --check` pass, inspect helper brace balance and runtime syntax support next.
+- Falsifiable claim: the regression is default `execFileSync` buffer exhaustion, not mixed-commit batch semantics.
+- Disconfirmer: if adding an explicit batch `maxBuffer` still reports `checkedInEvidenceBatchCount: 0` or nonzero fallback count on the current repo, then parser or spec-shape handling is the real cause.
 
 ## Verification
 
 - Result: confirmed.
-- `node --check scripts/agent-runtime/audit-claim-evidence-hashes.mjs` passed after removing the stale block.
-- `npx eslint scripts/agent-runtime/audit-claim-evidence-hashes.mjs scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs scripts/github-actions.test.mjs` passed.
-- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs scripts/github-actions.test.mjs` passed.
+- `npx eslint scripts/agent-runtime/audit-claim-evidence-hashes.mjs scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs` passed.
+- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs` passed with mixed-commit batching and newline fallback tests.
+- `/usr/bin/time -p npm run --silent claims:audit-evidence` reported one batch, zero fallbacks, and about 0.38s wall time.
+- `/usr/bin/time -p npm run --silent claims:audit-evidence:full` reported one batch, zero fallbacks, and about 0.42s wall time.
 
 ## Root Cause
 
-The root cause was an incomplete manual replacement of `auditCheckedInEvidence`.
-The new implementation was inserted, but the old inner `if (issue)` block and return tail remained after the function, creating extra closing braces.
+The root cause was moving from many smaller per-commit batch outputs to one global batch output without raising Node's synchronous child-process `maxBuffer`.
+The batch itself was valid, but the parent process killed the read with `ENOBUFS`, and the safe fallback path made the command correct but slow.
 
 ## Invariant Proof
 
-- Invariant: structural rewrites of loop-owning functions should run `node --check` before behavior testing and timing claims.
-- Producer Proof: `node --check` identified the syntax break before tests ran.
-- Final-Consumer Proof: focused audit behavior tests and eslint passed after removing the stale block.
-- Interface-Shape Sibling Scan: the stale block sat immediately after the rewritten function, not in a separate workflow boundary.
-- Non-Claims: this debug note does not claim the batch lookup optimization is behavior-preserving or faster yet.
+- Invariant: batch optimizations over repository blobs must size the child-process buffer to the expected output envelope or stream the output.
+- Producer Proof: the direct active/full reproductions measured 21.5MB and 31.3MB batch outputs, above Node's default buffer.
+- Final-Consumer Proof: focused tests and timed active/full audit commands passed after adding the explicit batch buffer.
+- Interface-Shape Sibling Scan: newline-delimited commit/path specs remain excluded from batch input and are handled by `git show` fallback.
+- Non-Claims: this note does not claim the local runtime budget should be tightened; recent medians still include older samples.
 
 ## Detection Gap
 
-- surface: manual patch integrity | what did not fire: no edit-time structural check before reading the file | smallest change to fire it: run `node --check` immediately after replacing a function body with nested braces.
+- surface: batch lookup runtime proof | what did not fire: focused tests used tiny fixtures whose batch output never exceeded the default buffer | smallest change to fire it: assert real command summary counts in timed active/full audit and keep newline fallback unit tests.
 
 ## Sibling Search
 
-- Mental model: apply_patch replacement around a function body will remove all obsolete loop tail code.
-- same-file axis: `auditCheckedInEvidence` replacement tail | decision: same bug, fix now | proof: `nl -ba` showed duplicate stale block lines after the new function.
-- cross-file: parser complexity debug records in `scripts/run-verify.mjs` and `scripts/agent-runtime/scenario-proposals.mjs` | decision: same class, diagnostic-only for this slice | proof: prior records show JavaScript control-flow edits should be checked before broad gates.
+- Mental model: fewer batch processes is automatically faster when the input is valid.
+- same-file axis: `batchGitObjectHashes` child-process call | decision: same bug, fix now | proof: default-buffer direct reproduction threw `ENOBUFS`.
+- same-file axis: newline path and newline commit specs | decision: same class, diagnostic-only for this slice | proof: existing and added tests keep unsafe specs out of batch input.
+- cross-file: `scripts/run-verify.mjs` runtime-signal path | decision: same class, diagnostic-only for this slice | proof: runtime signals caught the phase regression once the standing command was run.
 
 ## Seam Risk
 
-- Interrupt ID: claim-evidence-batch-lookup-syntax-tail-2026-07-08
+- Interrupt ID: claim-evidence-global-batch-maxbuffer-2026-07-08
 - Risk Class: none
-- Seam: manual JavaScript function rewrite to syntax gate
-- Disproving Observation: syntax check failed deterministically before runtime behavior was claimed.
-- What Local Reasoning Cannot Prove: n/a
+- Seam: Git batch output to Node synchronous child-process buffer
+- Disproving Observation: mixed-spec `git cat-file --batch` succeeds with a larger buffer.
+- What Local Reasoning Cannot Prove: future repository growth may exceed the chosen buffer; runtime summary remains the detection surface.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -81,4 +84,4 @@ The new implementation was inserted, but the old inner `if (issue)` block and re
 
 ## Prevention
 
-After replacing a JavaScript function that owns nested loops, run `node --check` before continuing with behavior or performance claims.
+When replacing many small child-process calls with one broad child-process call, measure stdout size under current fixtures and set an explicit buffer or stream the output before claiming a speed win.

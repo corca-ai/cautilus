@@ -8,6 +8,7 @@ import { pathToFileURL } from "node:url";
 
 const CLAIM_EVIDENCE_BUNDLE_SCHEMA = "cautilus.claim_evidence_bundle.v1";
 const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
+const GIT_CAT_FILE_BATCH_MAX_BUFFER = 128 * 1024 * 1024;
 const CURRENT_STATE_REFERENCE_FILES = new Set([
 	"evidenced-typed-runners.json",
 	"status-summary.json",
@@ -237,20 +238,36 @@ function gitShowFileHash(repoRoot, repoCommit, filePath) {
 	}
 }
 
-function batchGitObjectHashes(repoRoot, repoCommit, filePaths) {
-	const specs = filePaths.map((filePath) => checkedInEvidenceSpec(repoCommit, filePath));
+function isBatchableLookupRequest(request) {
+	return !request.repoCommit.includes("\n") && !request.filePath.includes("\n");
+}
+
+function batchGitObjectHashes(repoRoot, requests) {
+	const specs = requests.map((request) => checkedInEvidenceSpec(request.repoCommit, request.filePath));
 	const input = `${specs.join("\n")}\n`;
 	try {
-		return parseBatchObjectHashes(execFileSync("git", ["-C", repoRoot, "cat-file", "--batch"], {
-			input,
-			stdio: ["pipe", "pipe", "ignore"],
-		}), specs);
+		return {
+			batchCount: 1,
+			fallbackCount: 0,
+			hashes: parseBatchObjectHashes(execFileSync("git", ["-C", repoRoot, "cat-file", "--batch"], {
+				input,
+				maxBuffer: GIT_CAT_FILE_BATCH_MAX_BUFFER,
+				stdio: ["pipe", "pipe", "ignore"],
+			}), specs),
+		};
 	} catch {
 		const hashes = new Map();
-		for (const filePath of filePaths) {
-			hashes.set(checkedInEvidenceSpec(repoCommit, filePath), gitShowFileHash(repoRoot, repoCommit, filePath));
+		for (const request of requests) {
+			hashes.set(
+				checkedInEvidenceSpec(request.repoCommit, request.filePath),
+				gitShowFileHash(repoRoot, request.repoCommit, request.filePath),
+			);
 		}
-		return hashes;
+		return {
+			batchCount: 0,
+			fallbackCount: requests.length,
+			hashes,
+		};
 	}
 }
 
@@ -261,22 +278,21 @@ function resolveCheckedInEvidenceLookups({ repoRoot, lookupRequests }) {
 		checkedInEvidenceBatchCount: 0,
 		checkedInEvidenceFallbackLookupCount: 0,
 	};
-	const pathsByCommit = Map.groupBy(lookupRequests.values(), (request) => request.repoCommit);
-	for (const [repoCommit, requests] of pathsByCommit) {
-		const batchable = requests.filter((request) => !request.filePath.includes("\n"));
-		const fallback = requests.filter((request) => request.filePath.includes("\n"));
-		if (batchable.length > 0) {
-			stats.checkedInEvidenceBatchCount += 1;
-			const batchHashes = batchGitObjectHashes(repoRoot, repoCommit, batchable.map((request) => request.filePath));
-			for (const request of batchable) {
-				const spec = checkedInEvidenceSpec(repoCommit, request.filePath);
-				lookups.set(request.key, batchHashes.get(spec));
-			}
+	const requests = [...lookupRequests.values()];
+	const batchable = requests.filter(isBatchableLookupRequest);
+	const fallback = requests.filter((request) => !isBatchableLookupRequest(request));
+	if (batchable.length > 0) {
+		const batchResult = batchGitObjectHashes(repoRoot, batchable);
+		stats.checkedInEvidenceBatchCount += batchResult.batchCount;
+		stats.checkedInEvidenceFallbackLookupCount += batchResult.fallbackCount;
+		for (const request of batchable) {
+			const spec = checkedInEvidenceSpec(request.repoCommit, request.filePath);
+			lookups.set(request.key, batchResult.hashes.get(spec));
 		}
-		for (const request of fallback) {
-			stats.checkedInEvidenceFallbackLookupCount += 1;
-			lookups.set(request.key, gitShowFileHash(repoRoot, repoCommit, request.filePath));
-		}
+	}
+	for (const request of fallback) {
+		stats.checkedInEvidenceFallbackLookupCount += 1;
+		lookups.set(request.key, gitShowFileHash(repoRoot, request.repoCommit, request.filePath));
 	}
 	return { lookups, stats };
 }
