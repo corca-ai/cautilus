@@ -36,7 +36,7 @@
     "skill_ergonomics_gate_rules": "preserved",
     "runtime_profile_default": "preserved",
     "runtime_budgets": "preserved",
-    "runtime_budget_profiles": "defaulted",
+    "runtime_budget_profiles": "preserved",
     "startup_probes": "preserved",
     "quality_phases": "defaulted",
     "concept_paths": "preserved",

@@ -90,7 +90,6 @@ runtime_budget_profiles:
       lint · eslint: 8000
       lint · promise ledger: 4000
       security · govulncheck: 3500
-      test · node: 3000
 startup_probes:
   - label: cautilus-version
     command:

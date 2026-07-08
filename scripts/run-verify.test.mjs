@@ -36,6 +36,13 @@ function makeSpawn(plan) {
 	};
 }
 
+function nodeTestGlobs(script) {
+	const nodeTestStart = script.indexOf("node --test ");
+	assert.notEqual(nodeTestStart, -1, `script does not run node --test: ${script}`);
+	const nodeTestCommand = script.slice(nodeTestStart).split(" && ")[0];
+	return nodeTestCommand.split(/\s+/).filter((token) => token.endsWith(".test.mjs"));
+}
+
 test("PHASES covers every npm run verify sub-phase", () => {
 	const ids = PHASES.map((p) => p.id);
 	assert.deepEqual(ids, [
@@ -59,10 +66,17 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"security:govulncheck",
 		"security:secrets",
 		"test:go:race",
-		"test:node",
 		"test:coverage",
 		"coverage:floor:check",
 	]);
+});
+
+test("coverage node runners keep the same test glob as test:node", () => {
+	const { scripts } = JSON.parse(readFileSync("package.json", "utf-8"));
+	const expectedGlobs = nodeTestGlobs(scripts["test:node"]);
+
+	assert.deepEqual(nodeTestGlobs(scripts["test:node:coverage"]), expectedGlobs);
+	assert.deepEqual(nodeTestGlobs(scripts["test:node:coverage:spec"]), expectedGlobs);
 });
 
 test("parseArgs defaults to non-verbose", () => {
@@ -129,9 +143,9 @@ test("parseArgs rejects unknown flags", () => {
 });
 
 test("resolveScript swaps to verbose id when requested", () => {
-	const testNode = PHASES.find((p) => p.id === "test:node");
-	assert.equal(resolveScript(testNode, { verbose: false }), "test:node");
-	assert.equal(resolveScript(testNode, { verbose: true }), "test:node:spec");
+	const coverage = PHASES.find((p) => p.id === "test:coverage");
+	assert.equal(resolveScript(coverage, { verbose: false }), "test:coverage");
+	assert.equal(resolveScript(coverage, { verbose: true }), "test:coverage:spec");
 });
 
 test("resolveScript keeps phase id when no verbose id declared", () => {

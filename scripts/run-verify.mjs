@@ -27,8 +27,7 @@ export const PHASES = [
 	{ id: "security:govulncheck", label: "security · govulncheck" },
 	{ id: "security:secrets", label: "security · secret scan" },
 	{ id: "test:go:race", label: "test · go race" },
-	{ id: "test:node", verboseId: "test:node:spec", label: "test · node" },
-	{ id: "test:coverage", label: "test · coverage" },
+	{ id: "test:coverage", verboseId: "test:coverage:spec", label: "test · coverage" },
 	{ id: "coverage:floor:check", label: "test · coverage floor" },
 ];
 
@@ -345,7 +344,7 @@ function main() {
 				"",
 				"Runs the repo's verify phases with labels so a failing sub-phase is",
 				"locatable without scrolling the log. --verbose swaps the dot reporter",
-				"for Node's spec reporter on test:node.",
+				"for Node's spec reporter inside the coverage phase.",
 				"--runtime-signal writes a structured timing packet for quality review.",
 				"--runtime-profile names the runner class used for timing budgets.",
 			].join("\n") + "\n",
