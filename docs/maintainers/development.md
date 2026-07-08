@@ -37,6 +37,7 @@ Use `npm run lint` or `npm run test` directly only when iterating on one seam.
 Do not require all three in sequence before stopping.
 `npm run lint:specs` validates the spec index, checks relative spec links, runs the full public spec suite with `specdown run -quiet`, validates the typed trace graph, and checks generated promise-ledger drift from that same trace.
 On success it prints a compact timing line for the check, specdown, trace, and ledger phases so future slow-gate work can start from measured hot spots.
+After `npm run verify:runtime`, use `npm run verify:lint-specs:subphases` to render the stored `lint:specs` subphase samples from `.charness/quality/runtime-signals.json`.
 Pass one or more spec files after `--` to validate only those linked files and run each one as a focused temporary specdown entry:
 
 ```bash
