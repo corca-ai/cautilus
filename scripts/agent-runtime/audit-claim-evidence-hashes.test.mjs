@@ -71,16 +71,18 @@ test("auditClaimEvidenceHashes accepts current bundle refs and commit-relative c
 					],
 				},
 			],
-		});
-		const result = auditClaimEvidenceHashes({ repoRoot });
-		assert.equal(result.status, "ok");
-		assert.equal(result.mode, "full");
-		assert.equal(result.issueCount, 0);
-		assert.equal(result.evidenceBundleCount, 1);
-	} finally {
-		rmSync(repoRoot, { recursive: true, force: true });
-	}
-});
+			});
+			const result = auditClaimEvidenceHashes({ repoRoot });
+			assert.equal(result.status, "ok");
+			assert.equal(result.mode, "full");
+			assert.equal(result.issueCount, 0);
+			assert.equal(result.evidenceBundleCount, 1);
+			assert.equal(result.checkedInEvidenceLookupCount, 1);
+			assert.equal(result.checkedInEvidenceBatchCount, 1);
+		} finally {
+			rmSync(repoRoot, { recursive: true, force: true });
+		}
+	});
 
 test("parseArgs recognizes active-only mode", () => {
 	assert.equal(parseArgs(["--reference-scope", "active"]).referenceScope, "active");
@@ -317,10 +319,85 @@ test("auditClaimEvidenceHashes can fail on checked-in evidence drift in strict m
 				},
 			],
 		});
-		const result = auditClaimEvidenceHashes({ repoRoot, strictCheckedInEvidence: true });
-		assert.equal(result.status, "failed");
-		assert.equal(result.issues[0].kind, "checked-in-evidence-content-hash-mismatch");
-		assert.equal(result.checkedInEvidencePolicy, "strict");
+			const result = auditClaimEvidenceHashes({ repoRoot, strictCheckedInEvidence: true });
+			assert.equal(result.status, "failed");
+			assert.equal(result.issues[0].kind, "checked-in-evidence-content-hash-mismatch");
+			assert.equal(result.checkedInEvidencePolicy, "strict");
+		} finally {
+			rmSync(repoRoot, { recursive: true, force: true });
+		}
+	});
+
+test("checked-in evidence lookup batching preserves duplicate unreadable findings", () => {
+	const { repoRoot, claimsDir, commit } = createRepoFixture();
+	try {
+		const evidenceAPath = join(claimsDir, "evidence-missing-a.json");
+		const evidenceBPath = join(claimsDir, "evidence-missing-b.json");
+		const missingEntry = {
+			path: "missing.txt",
+			kind: "source",
+			contentHash: "sha256:missing-source-hash",
+		};
+		writeJson(evidenceAPath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: commit,
+			createdForClaimIds: ["claim-a"],
+			checkedInEvidence: [missingEntry],
+		});
+		writeJson(evidenceBPath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: commit,
+			createdForClaimIds: ["claim-b"],
+			checkedInEvidence: [missingEntry],
+		});
+		writeJson(join(claimsDir, "status-summary.json"), {
+			evidenceSatisfaction: {
+				satisfiedClaims: [
+					{
+						claimId: "claim-a",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-missing-a.json",
+								contentHash: sha256File(evidenceAPath),
+								supportsClaimIds: ["claim-a"],
+							},
+						],
+					},
+					{
+						claimId: "claim-b",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-missing-b.json",
+								contentHash: sha256File(evidenceBPath),
+								supportsClaimIds: ["claim-b"],
+							},
+						],
+					},
+				],
+			},
+		});
+
+		const warnMode = auditClaimEvidenceHashes({ repoRoot, referenceScope: "active" });
+		assert.equal(warnMode.status, "ok");
+		assert.equal(warnMode.issueCount, 0);
+		assert.equal(warnMode.warningCount, 2);
+		assert.equal(warnMode.checkedInEvidenceLookupCount, 1);
+		assert.equal(warnMode.checkedInEvidenceBatchCount, 1);
+		assert.equal(warnMode.checkedInEvidenceFallbackLookupCount, 0);
+		assert.deepEqual(warnMode.warnings.map((warning) => warning.file).sort(), [
+			".cautilus/claims/evidence-missing-a.json",
+			".cautilus/claims/evidence-missing-b.json",
+		]);
+
+		const strictMode = auditClaimEvidenceHashes({
+			repoRoot,
+			referenceScope: "active",
+			strictCheckedInEvidence: true,
+		});
+		assert.equal(strictMode.status, "failed");
+		assert.equal(strictMode.issueCount, 2);
+		assert.equal(strictMode.warningCount, 0);
+		assert.equal(strictMode.checkedInEvidenceLookupCount, 1);
 	} finally {
 		rmSync(repoRoot, { recursive: true, force: true });
 	}

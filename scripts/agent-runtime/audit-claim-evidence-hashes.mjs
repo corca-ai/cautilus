@@ -183,6 +183,104 @@ function gitShowFile(repoRoot, commit, filePath) {
 	});
 }
 
+function checkedInEvidenceLookupKey(repoCommit, filePath) {
+	return `${repoCommit}\0${filePath}`;
+}
+
+function checkedInEvidenceSpec(repoCommit, filePath) {
+	return `${repoCommit}:${filePath}`;
+}
+
+function readBufferLine(buffer, offset) {
+	const end = buffer.indexOf(10, offset);
+	if (end < 0) {
+		throw new Error("Unexpected end of git cat-file output");
+	}
+	return {
+		line: buffer.subarray(offset, end).toString("utf8"),
+		nextOffset: end + 1,
+	};
+}
+
+function parseBatchObjectHashes(output, specs) {
+	const hashes = new Map();
+	let offset = 0;
+	for (const spec of specs) {
+		const header = readBufferLine(output, offset);
+		offset = header.nextOffset;
+		if (header.line === `${spec} missing`) {
+			hashes.set(spec, { errorMessage: `Object not found: ${spec}` });
+			continue;
+		}
+		const match = /^([0-9a-f]+) ([a-z]+) ([0-9]+)$/.exec(header.line);
+		if (!match) {
+			throw new Error(`Unexpected git cat-file header: ${header.line}`);
+		}
+		const [, , objectType, sizeText] = match;
+		const size = Number(sizeText);
+		const content = output.subarray(offset, offset + size);
+		offset += size;
+		if (output[offset] !== 10) {
+			throw new Error(`Unexpected git cat-file body terminator for ${spec}`);
+		}
+		offset += 1;
+		hashes.set(spec, objectType === "blob" ? { contentHash: sha256Buffer(content) } : { nonBlob: true });
+	}
+	return hashes;
+}
+
+function gitShowFileHash(repoRoot, repoCommit, filePath) {
+	try {
+		return { contentHash: sha256Buffer(gitShowFile(repoRoot, repoCommit, filePath)) };
+	} catch (error) {
+		return { errorMessage: error.message };
+	}
+}
+
+function batchGitObjectHashes(repoRoot, repoCommit, filePaths) {
+	const specs = filePaths.map((filePath) => checkedInEvidenceSpec(repoCommit, filePath));
+	const input = `${specs.join("\n")}\n`;
+	try {
+		return parseBatchObjectHashes(execFileSync("git", ["-C", repoRoot, "cat-file", "--batch"], {
+			input,
+			stdio: ["pipe", "pipe", "ignore"],
+		}), specs);
+	} catch {
+		const hashes = new Map();
+		for (const filePath of filePaths) {
+			hashes.set(checkedInEvidenceSpec(repoCommit, filePath), gitShowFileHash(repoRoot, repoCommit, filePath));
+		}
+		return hashes;
+	}
+}
+
+function resolveCheckedInEvidenceLookups({ repoRoot, lookupRequests }) {
+	const lookups = new Map();
+	const stats = {
+		checkedInEvidenceLookupCount: lookupRequests.size,
+		checkedInEvidenceBatchCount: 0,
+		checkedInEvidenceFallbackLookupCount: 0,
+	};
+	const pathsByCommit = Map.groupBy(lookupRequests.values(), (request) => request.repoCommit);
+	for (const [repoCommit, requests] of pathsByCommit) {
+		const batchable = requests.filter((request) => !request.filePath.includes("\n"));
+		const fallback = requests.filter((request) => request.filePath.includes("\n"));
+		if (batchable.length > 0) {
+			stats.checkedInEvidenceBatchCount += 1;
+			const batchHashes = batchGitObjectHashes(repoRoot, repoCommit, batchable.map((request) => request.filePath));
+			for (const request of batchable) {
+				const spec = checkedInEvidenceSpec(repoCommit, request.filePath);
+				lookups.set(request.key, batchHashes.get(spec));
+			}
+		}
+		for (const request of fallback) {
+			stats.checkedInEvidenceFallbackLookupCount += 1;
+			lookups.set(request.key, gitShowFileHash(repoRoot, repoCommit, request.filePath));
+		}
+	}
+	return { lookups, stats };
+}
+
 function issueTarget(result, { strict }) {
 	return strict ? result.issues : result.warnings;
 }
@@ -231,27 +329,33 @@ function collectEvidenceBundles({ repoRoot, claimsDir, result, includePaths = nu
 	return evidenceBundles;
 }
 
-function checkedInEvidenceIssue({ repoRoot, bundle, repoCommit, entry }) {
-	let observed;
-	try {
-		observed = sha256Buffer(gitShowFile(repoRoot, repoCommit, entry.path));
-	} catch (error) {
+function checkedInEvidenceIssue({ bundle, repoCommit, entry, lookup }) {
+	if (!lookup || lookup.errorMessage) {
 		return {
 			kind: "checked-in-evidence-unreadable",
 			file: bundle.relativePath,
 			repoCommit,
 			path: entry.path,
-			message: error.message,
+			message: lookup?.errorMessage || "Checked-in evidence lookup did not run",
 		};
 	}
-	if (observed !== entry.contentHash) {
+	if (lookup.nonBlob) {
+		return {
+			kind: "checked-in-evidence-unreadable",
+			file: bundle.relativePath,
+			repoCommit,
+			path: entry.path,
+			message: "Checked-in evidence path is not a blob",
+		};
+	}
+	if (lookup.contentHash !== entry.contentHash) {
 		return {
 			kind: "checked-in-evidence-content-hash-mismatch",
 			file: bundle.relativePath,
 			repoCommit,
 			path: entry.path,
 			expected: entry.contentHash,
-			observed,
+			observed: lookup.contentHash,
 		};
 	}
 	return null;
@@ -264,6 +368,8 @@ function checkedInEvidenceEntries(bundle) {
 
 function auditCheckedInEvidence({ repoRoot, evidenceBundles, result, strict }) {
 	let checkedInEvidenceBundleCount = 0;
+	const entriesByBundle = [];
+	const lookupRequests = new Map();
 	for (const bundle of evidenceBundles.values()) {
 		const repoCommit = typeof bundle.packet.repoCommit === "string" ? bundle.packet.repoCommit.trim() : "";
 		if (!repoCommit) {
@@ -274,10 +380,17 @@ function auditCheckedInEvidence({ repoRoot, evidenceBundles, result, strict }) {
 			checkedInEvidenceBundleCount += 1;
 		}
 		for (const entry of entries) {
-			const issue = checkedInEvidenceIssue({ repoRoot, bundle, repoCommit, entry });
-			if (issue) {
-				recordCheckedInEvidenceIssue(result, issue, { strict });
-			}
+			const key = checkedInEvidenceLookupKey(repoCommit, entry.path);
+			entriesByBundle.push({ bundle, entry, key, repoCommit });
+			lookupRequests.set(key, { filePath: entry.path, key, repoCommit });
+		}
+	}
+	const { lookups, stats } = resolveCheckedInEvidenceLookups({ repoRoot, lookupRequests });
+	Object.assign(result, stats);
+	for (const item of entriesByBundle) {
+		const issue = checkedInEvidenceIssue({ ...item, lookup: lookups.get(item.key) });
+		if (issue) {
+			recordCheckedInEvidenceIssue(result, issue, { strict });
 		}
 	}
 	return checkedInEvidenceBundleCount;
@@ -411,6 +524,9 @@ export function auditClaimEvidenceHashes(options = {}) {
 		scannedReferenceFileCount: referenceFiles.length,
 		skippedReferenceFileCount: fullReferenceFileCount - referenceFiles.length,
 		checkedInEvidenceBundleCount: 0,
+		checkedInEvidenceLookupCount: 0,
+		checkedInEvidenceBatchCount: 0,
+		checkedInEvidenceFallbackLookupCount: 0,
 		issueCount: 0,
 		warningCount: 0,
 		issues: [],
@@ -458,13 +574,16 @@ export function main(argv = process.argv.slice(2)) {
 			referenceScope: result.referenceScope,
 			evidenceBundleCount: result.evidenceBundleCount,
 			checkedInEvidenceBundleCount: result.checkedInEvidenceBundleCount,
-				scannedReferenceFileCount: result.scannedReferenceFileCount,
-				skippedReferenceFileCount: result.skippedReferenceFileCount,
-				issueCount: result.issueCount,
-				warningCount: result.warningCount,
-				issueKindCounts: result.issueKindCounts,
-				warningKindCounts: result.warningKindCounts,
-				checkedInEvidencePolicy: result.checkedInEvidencePolicy,
+			checkedInEvidenceLookupCount: result.checkedInEvidenceLookupCount,
+			checkedInEvidenceBatchCount: result.checkedInEvidenceBatchCount,
+			checkedInEvidenceFallbackLookupCount: result.checkedInEvidenceFallbackLookupCount,
+			scannedReferenceFileCount: result.scannedReferenceFileCount,
+			skippedReferenceFileCount: result.skippedReferenceFileCount,
+			issueCount: result.issueCount,
+			warningCount: result.warningCount,
+			issueKindCounts: result.issueKindCounts,
+			warningKindCounts: result.warningKindCounts,
+			checkedInEvidencePolicy: result.checkedInEvidencePolicy,
 			warningTruncated: result.warningTruncated,
 			status: result.status,
 		}
