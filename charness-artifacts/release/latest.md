@@ -35,21 +35,29 @@ No public command shape is added or removed in this release.
 
 ## Release State
 
-- local release mutation: prepared
-- branch/tag push: pending publish helper
-- GitHub release record: pending tag-triggered workflow
-- public release surface verification: pending tag-triggered workflow
-- requested review commands: passed locally; publish helper will rerun configured commands before branch/tag push
-- post-publish install readback: pending public release visibility
+- local release mutation: prepared and committed at `97042dd964980898182d3c7c57f299e4de3c6dcb`
+- branch/tag push: published; at publish time `origin/main` and `refs/tags/v0.18.3` both pointed at `97042dd964980898182d3c7c57f299e4de3c6dcb`
+- release tag commit: `refs/tags/v0.18.3` remains fixed at `97042dd964980898182d3c7c57f299e4de3c6dcb`
+- GitHub release record: published by `release-artifacts` workflow run `28981602710`
+- public release surface verification: passed in the workflow and passed locally through `scripts/release/verify-public-release.mjs`
+- requested review commands: passed locally and passed inside the publish helper before branch/tag push
+- post-publish install readback: passed through `npm run release:smoke-install:current -- --skip-update --json`
 
 ## Public Release Verification
 
-- Pending: the tag-triggered `release-artifacts` workflow owns public release verification for `v0.18.3`.
-- Local public-release verification has not run because the tag has not been published yet.
+- GitHub Actions: `release-artifacts` run `28981602710` completed successfully.
+- Workflow jobs: `release-artifacts` passed in 4m13s and `verify-public-release` passed in 12s.
+- Public release URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.18.3`.
+- Local verifier: `node ./scripts/release/verify-public-release.mjs --version v0.18.3 --json --retry-attempts 5 --retry-delay-ms 10000` passed on the first attempt.
+- Expected assets were present: `cautilus-v0.18.3.sha256`, four platform tarballs, `cautilus-v0.18.3-checksums.txt`, and `release-notes-v0.18.3.md`.
+- Checksum verification passed, and the release-notes source archive checksum matched `46de6c046117c208e147a317d15b7295fe4e61ffe59f079065f39acb4e7051d6`.
 
 ## Distinct-Channel Verification
 
-- Pending: post-publish install readback through `npm run release:smoke-install:current -- --skip-update`.
+- `npm run release:smoke-install:current -- --skip-update --json` passed.
+- The install-sh smoke installed `https://github.com/corca-ai/cautilus/releases/download/v0.18.3/cautilus_0.18.3_linux_x64.tar.gz`.
+- The installed wrapper returned `0.18.3` for `--version`.
+- `cautilus version --verbose` reported `current.version` as `0.18.3`, `installKind` as `install_sh_binary`, and the installed binary path under the smoke workdir.
 
 ## Release Adapter Preflight
 
@@ -78,12 +86,12 @@ No public command shape is added or removed in this release.
 
 ## Post-Publish Proof
 
-- Public release check: pending `release-artifacts` workflow after tag push.
-- Install readback: pending `npm run release:smoke-install:current -- --skip-update` after public release visibility.
+- Public release check: passed in GitHub Actions and passed locally.
+- Install readback: passed through `npm run release:smoke-install:current -- --skip-update --json`.
 
 ## Install Refresh
 
-- Post-publish install refresh status: pending.
+- Post-publish install refresh status: passed.
 - Full install/update smoke after public release remains available for broader channel validation: `npm run release:smoke-install -- --channel install_sh --version v0.18.3`.
 
 ## User Update Steps

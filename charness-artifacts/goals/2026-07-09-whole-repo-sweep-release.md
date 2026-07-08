@@ -1,6 +1,6 @@
 # Achieve Goal: Whole repo sweep and release
 
-Status: active
+Status: complete
 Created: 2026-07-09
 Activation: `/goal @charness-artifacts/goals/2026-07-09-whole-repo-sweep-release.md`
 
@@ -9,9 +9,9 @@ It is active because the user explicitly requested an autonomous sweep plus rele
 
 ## Active Operating Frame
 
-- Current slice: Inventory whole-repo quality signals and release readiness.
-- Current slice intent: Identify high-value bug, performance, stale-proof, and release-blocking issues without widening beyond Cautilus's standalone CLI plus Cautilus Agent product boundary.
-- Next action: run the `quality` planner and repo gates, inspect failures or strong advisory signals, then route any concrete bug through `debug` before editing.
+- Current slice: Completed release closeout.
+- Current slice intent: Record final public proof and close the sweep goal without moving the published tag.
+- Next action: none — final public release proof and install readback are complete.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -75,25 +75,15 @@ For a completed release, the user can open the published release/tag URL and com
 
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Inventory current repo state, quality plan, and existing gates | Avoid guessing where bugs are and respect speed | quality planner output, gate list, initial status | active |
-| 2 | Investigate concrete failures or high-signal advisories | Repo rule requires debug before bug fixes | debug artifact or explicit no-bug classification | pending |
-| 3 | Implement smallest high-value fixes | Keep release candidate tight | focused diffs, targeted tests | pending |
-| 4 | Run final verification and release planner | Prove the candidate before remote mutation | `npm run verify`, `npm run hooks:check`, release artifact | pending |
-| 5 | Push release through repo-owned path | User requested release push after completion | tag/branch push, CI/release readback, public URL when available | pending |
+| 1 | Inventory current repo state, quality plan, and existing gates | Avoid guessing where bugs are and respect speed | quality planner output, gate list, initial status | completed |
+| 2 | Investigate concrete failures or high-signal advisories | Repo rule requires debug before bug fixes | debug artifact or explicit no-bug classification | completed |
+| 3 | Implement smallest high-value fixes | Keep release candidate tight | focused diffs, targeted tests | completed |
+| 4 | Run final verification and release planner | Prove the candidate before remote mutation | `npm run verify`, `npm run hooks:check`, release artifact | completed |
+| 5 | Push release through repo-owned path | User requested release push after completion | tag/branch push, CI/release readback, public URL when available | completed |
 
 ## Operator Decision Queue
 
-Record decisions, confirmations, credential actions, manual proof steps, and
-external-boundary approvals discovered during the run when they do not block
-safe local progress. Use `none — <reason>` when the queue is empty at closeout.
-
-Queue item form:
-
-- Decision: operator-only decision or confirmation needed
-- Owner: operator or named human owner
-- Why deferred: why the run did not stop immediately
-- Unblock action: exact action or answer needed
-- Revisit trigger: event, date, or proof boundary that reopens this
+none — the user explicitly authorized autonomous fixes and release push, and repo-owned release tooling provided the remaining external proof boundaries.
 
 ## Coordination Cues
 
@@ -132,6 +122,8 @@ closeout floors are presence-only, so no stub is seeded for them — add their l
 per the bullets above when that boundary is crossed):
 
 - `Routing: find-skills -> <skill> — <why this phase needs it>`
+- Routing: find-skills -> achieve + impl + quality + debug + release + retro — the sweep needed goal lifecycle control, implementation edits, quality inventory, disciplined bug investigation, repo-owned release handling, and final session closeout.
+- Release: charness-artifacts/release/latest.md — v0.18.3 prepared, published, publicly verified, and install-read back.
 
 ## Discuss Before Activation
 
@@ -149,16 +141,44 @@ applies.
 ### Slice 1: Fix release-readiness startup probes
 
 - Objective: Repair stale quality startup probes and Cautilus Agent command-discovery guidance discovered by the whole-repo quality sweep.
-- Why this approach:
-- Commits:
-- What changed:
-- Alternatives rejected:
+- Why this approach: the sweep found a concrete release-readiness failure rather than a speculative refactor target.
+- Commits: `b490f88f` Repair release readiness probes.
+- What changed: `.agents/quality-adapter.yaml` now probes `doctor binary`, `doctor commands`, and `discover scenarios`; repo-local, source, and packaged Cautilus Agent guidance now points at `doctor commands`.
+- Alternatives rejected: keeping compatibility with removed top-level aliases would preserve stale guidance and weaken the startup probe.
 - Targeted verification: measure_startup_probes.py --repo-root . --json passed; npm run lint:skill-disclosure passed; validate_debug_artifact.py passed; npm run verify passed; npm run hooks:check passed.
-- Test duplication pressure:
-- Critique:
-- Off-goal findings:
-- Lessons carried forward:
-- Metrics:
+- Test duplication pressure: no new duplicate fixture was needed because the existing startup probe gate owns this behavior.
+- Critique: subagent quality review found stale startup probes and stale release proof; the probe finding was fixed before release.
+- Off-goal findings: quality inventory showed `lint · specs` as the largest current runtime, but it remained inside budget.
+- Lessons carried forward: stale command guidance belongs in deterministic startup probes and release publisher checks, not release prose.
+- Metrics: post-fix `npm run verify` passed in 43.80s before the version bump.
+
+### Slice 2: Prepare and publish v0.18.3
+
+- Objective: Prepare and publish the smallest release carrying the release-readiness fix.
+- Why this approach: the user requested a release push after the sweep, and local proof supported a patch release.
+- Commits: `97042dd9` Prepare v0.18.3 release.
+- What changed: version surfaces moved to `0.18.3`, claim state was refreshed, release critique proof was recorded, and the release narrative was rewritten for the patch scope.
+- Alternatives rejected: using the generic Charness publisher was rejected because this repo's handoff records that path as incompatible; moving forward without claim refresh was rejected because release preparation caught stale claim state.
+- Targeted verification: `npm run verify`, `npm run hooks:check`, `npm run security:secrets:history`, `npm run release:publisher-policy:check`, `npm run test:on-demand`, `npm run generated:drift:check`, and release publish dry-run passed.
+- Test duplication pressure: no additional runtime test was needed because the changed surfaces are release metadata and generated claim proof.
+- Critique: release subagent blocked until the release was prepared, worktree clean, and narrative aligned; all three were resolved before publish.
+- Off-goal findings: none that required a new issue.
+- Lessons carried forward: release public proof should stay pending until the tag workflow and install readback prove it.
+- Metrics: post-bump `npm run verify` passed in 49.36s.
+
+### Slice 3: Close public release proof
+
+- Objective: Verify the published public release and record post-publish proof without moving the release tag.
+- Why this approach: the tag-triggered workflow owns public release publication, while the checked-in release artifact owns durable operator evidence.
+- Commits: post-release proof commit `Record v0.18.3 public release proof`.
+- What changed: release and goal artifacts now record the successful workflow, public release verifier, install-sh readback, retro, and disposition review.
+- Alternatives rejected: moving the release tag was rejected because `v0.18.3` already points at the prepared release commit and public assets are published from it.
+- Targeted verification: GitHub Actions run `28981602710` succeeded; `verify-public-release` passed locally; `release:smoke-install:current -- --skip-update --json` passed.
+- Test duplication pressure: no new duplicate test was needed because this slice records external proof.
+- Critique: final disposition review is recorded at `charness-artifacts/critique/2026-07-09-whole-repo-sweep-release-disposition-review.md`.
+- Off-goal findings: none.
+- Lessons carried forward: post-tag artifact updates should be pushed to `main` without retagging.
+- Metrics: release workflow `release-artifacts` passed in 4m13s and workflow `verify-public-release` passed in 12s.
 
 ## Context Sources
 
@@ -205,13 +225,19 @@ retro / host-log probe / disposition-review artifact) or an explicit
 `skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
 `TODO` / `<path>` / `TBD` until you do.
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+Retro: charness-artifacts/retro/2026-07-09-session-retro.md
+Host log probe: skipped: host-log-not-exposed: current host session logs are not exposed through a scoped immutable artifact for this goal, and no token or host-efficiency claim depends on them.
+Disposition review: charness-artifacts/critique/2026-07-09-whole-repo-sweep-release-disposition-review.md
 
 ## User Verification Instructions
 
+- Inspect the published release at `https://github.com/corca-ai/cautilus/releases/tag/v0.18.3`.
+- Confirm `v0.18.3` points at release commit `97042dd964980898182d3c7c57f299e4de3c6dcb`.
+- Confirm `origin/main` contains the post-release proof commit after this closeout is pushed.
+- Re-run `node ./scripts/release/verify-public-release.mjs --version v0.18.3 --json` for public asset proof.
+- Re-run `npm run release:smoke-install:current -- --skip-update --json` for install-sh readback.
+
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: repaired stale startup probes, aligned Cautilus Agent guidance, published `v0.18.3`, and recorded public release plus install readback proof.
+Structural follow-up: none — the retro found no transferable sibling pattern beyond this repo's existing release publisher policy gate and handoff reminder.
