@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { chmodSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -17,6 +17,10 @@ async function withTempDir(label, fn) {
 }
 
 function sendAssert(cwd, message, env = {}) {
+	return sendAsserts(cwd, [message], env).then((responses) => responses[0]);
+}
+
+function sendAsserts(cwd, messages, env = {}) {
 	return new Promise((resolve, reject) => {
 		const child = spawn("node", [ADAPTER_PATH], {
 			cwd,
@@ -37,9 +41,9 @@ function sendAssert(cwd, message, env = {}) {
 				reject(new Error(`adapter exited ${code}: ${stderr}`));
 				return;
 			}
-			resolve(JSON.parse(stdout.trim()));
+			resolve(stdout.trim().split("\n").filter(Boolean).map((line) => JSON.parse(line)));
 		});
-		child.stdin.end(`${JSON.stringify(message)}\n`);
+		child.stdin.end(messages.map((message) => JSON.stringify(message)).join("\n") + "\n");
 	});
 }
 
@@ -134,6 +138,50 @@ test("cautilus-json-command can verify nonzero JSON command payloads", async () 
 			{ CAUTILUS_BIN: fakeCautilus },
 		);
 		assert.equal(response.type, "passed");
+	});
+});
+
+test("cautilus-json-command reuses identical command JSON within one adapter process", async () => {
+	await withTempDir("json-command-cache", async (root) => {
+		const fakeCautilus = join(root, "fake-cautilus.mjs");
+		const counterPath = join(root, "counter.txt");
+		writeFileSync(
+			fakeCautilus,
+			[
+				"#!/usr/bin/env node",
+				"import { existsSync, readFileSync, writeFileSync } from 'node:fs';",
+				`const counterPath = ${JSON.stringify(counterPath)};`,
+				"const current = existsSync(counterPath) ? Number(readFileSync(counterPath, 'utf-8')) : 0;",
+				"writeFileSync(counterPath, String(current + 1));",
+				"console.log(JSON.stringify({ schemaVersion: 'example.v1', status: 'ready' }));",
+			].join("\n"),
+			"utf-8",
+		);
+		chmodSync(fakeCautilus, 0o755);
+		const responses = await sendAsserts(
+			root,
+			[
+				{
+					type: "assert",
+					id: 1,
+					check: "cautilus-json-command",
+					checkParams: { command: "cautilus doctor --repo-root ." },
+					columns: ["path", "equals"],
+					cells: ["schemaVersion", "example.v1"],
+				},
+				{
+					type: "assert",
+					id: 2,
+					check: "cautilus-json-command",
+					checkParams: { command: "cautilus doctor --repo-root ." },
+					columns: ["path", "equals"],
+					cells: ["status", "ready"],
+				},
+			],
+			{ CAUTILUS_BIN: fakeCautilus },
+		);
+		assert.deepEqual(responses.map((response) => response.type), ["passed", "passed"]);
+		assert.equal(readFileSync(counterPath, "utf-8"), "1");
 	});
 });
 

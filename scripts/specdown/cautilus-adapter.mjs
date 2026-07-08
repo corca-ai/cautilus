@@ -3,6 +3,8 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { createInterface } from "node:readline";
 
+const jsonCommandCache = new Map();
+
 function cell(columns, cells, name) {
 	const index = columns.indexOf(name);
 	return index === -1 ? "" : cells[index];
@@ -84,6 +86,18 @@ function jsonExpectation(req) {
 			valueFor(req, "path") ||
 			valueFor(req, "json_path"),
 	};
+}
+
+function cacheKeyForJSONCommand(expectation) {
+	if (expectation.args.includes("--output")) {
+		return "";
+	}
+	return JSON.stringify({
+		bin: expectation.bin,
+		args: expectation.args,
+		envPath: expectation.envPath,
+		cwd: process.cwd(),
+	});
 }
 
 function cautilusCommand() {
@@ -254,21 +268,41 @@ function meaningPathFor(path) {
 function handleJSONCommand(req) {
 	const expectation = jsonExpectation(req);
 	const label = expectation.label || `${expectation.args.join(" ")} ${expectation.jsonPath}`.trim();
+	const commandResult = runJSONCommand(expectation);
+	const exitFailure = verifyExitCode(commandResult.result, expectation.expectedExitCode, label);
+	if (exitFailure) return exitFailure;
+	if (commandResult.parseError) {
+		return failed(
+			"Command stdout was not JSON",
+			"valid JSON",
+			commandResult.result.stdout || commandResult.parseError,
+			label,
+		);
+	}
+	return verifyJSONValue(commandResult.payload, expectation, label) ?? { type: "passed" };
+}
+
+function runJSONCommand(expectation) {
+	const cacheKey = cacheKeyForJSONCommand(expectation);
+	if (cacheKey && jsonCommandCache.has(cacheKey)) {
+		return jsonCommandCache.get(cacheKey);
+	}
 	const result = spawnSync(expectation.bin, expectation.args, {
 		cwd: process.cwd(),
 		encoding: "utf-8",
 		env: expectation.envPath ? { ...process.env, PATH: expectation.envPath } : process.env,
 		maxBuffer: 10 * 1024 * 1024,
 	});
-	const exitFailure = verifyExitCode(result, expectation.expectedExitCode, label);
-	if (exitFailure) return exitFailure;
-	let payload;
+	const commandResult = { result, payload: null, parseError: null };
 	try {
-		payload = JSON.parse(result.stdout);
+		commandResult.payload = JSON.parse(result.stdout);
 	} catch (error) {
-		return failed("Command stdout was not JSON", "valid JSON", result.stdout || error.message, label);
+		commandResult.parseError = error.message;
 	}
-	return verifyJSONValue(payload, expectation, label) ?? { type: "passed" };
+	if (cacheKey) {
+		jsonCommandCache.set(cacheKey, commandResult);
+	}
+	return commandResult;
 }
 
 function handleJSONFile(req) {
