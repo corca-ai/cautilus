@@ -8,7 +8,7 @@ import { pathToFileURL } from "node:url";
 
 const CLAIM_EVIDENCE_BUNDLE_SCHEMA = "cautilus.claim_evidence_bundle.v1";
 const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
-const ACTIVE_REFERENCE_FILES = new Set([
+const CURRENT_STATE_REFERENCE_FILES = new Set([
 	"evidenced-typed-runners.json",
 	"status-summary.json",
 ]);
@@ -17,7 +17,7 @@ const INACTIVE_REFERENCE_PREFIXES = ["eval-plan-", "review-input-"];
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/agent-runtime/audit-claim-evidence-hashes.mjs [--repo-root <dir>] [--claims-dir <dir>]",
+		"  node ./scripts/agent-runtime/audit-claim-evidence-hashes.mjs [--repo-root <dir>] [--claims-dir <dir>] [--reference-scope active|full]",
 		"",
 		"Checks claim evidence bundle file hashes, active evidence refs, and checked-in evidence hashes.",
 	].join("\n");
@@ -39,11 +39,47 @@ function readRequiredValue(argv, index, option) {
 	return value;
 }
 
+function applyValueOption(options, option, value) {
+	if (option === "--repo-root") {
+		options.repoRoot = value;
+		return;
+	}
+	if (option === "--claims-dir") {
+		options.claimsDir = value;
+		return;
+	}
+	if (option === "--reference-scope") {
+		if (!["active", "full"].includes(value)) {
+			fail(`Invalid value for ${option}: ${value}`);
+		}
+		options.referenceScope = value;
+		return;
+	}
+	fail(`Unknown argument: ${option}`);
+}
+
+function applyFlagOption(options, option) {
+	if (option === "--strict-checked-in-evidence") {
+		options.strictCheckedInEvidence = true;
+		return true;
+	}
+	if (option === "--active-only") {
+		options.referenceScope = "active";
+		return true;
+	}
+	if (option === "--summary") {
+		options.summary = true;
+		return true;
+	}
+	return false;
+}
+
 export function parseArgs(argv = process.argv.slice(2)) {
 	const options = {
 		repoRoot: process.cwd(),
 		claimsDir: DEFAULT_CLAIMS_DIR,
 		strictCheckedInEvidence: false,
+		referenceScope: "full",
 		summary: false,
 	};
 	for (let index = 0; index < argv.length; index += 1) {
@@ -51,22 +87,12 @@ export function parseArgs(argv = process.argv.slice(2)) {
 		if (arg === "-h" || arg === "--help") {
 			usage(0);
 		}
-		if (arg === "--repo-root") {
-			options.repoRoot = readRequiredValue(argv, index + 1, arg);
+		if (["--repo-root", "--claims-dir", "--reference-scope"].includes(arg)) {
+			applyValueOption(options, arg, readRequiredValue(argv, index + 1, arg));
 			index += 1;
 			continue;
 		}
-		if (arg === "--claims-dir") {
-			options.claimsDir = readRequiredValue(argv, index + 1, arg);
-			index += 1;
-			continue;
-		}
-		if (arg === "--strict-checked-in-evidence") {
-			options.strictCheckedInEvidence = true;
-			continue;
-		}
-		if (arg === "--summary") {
-			options.summary = true;
+		if (applyFlagOption(options, arg)) {
 			continue;
 		}
 		fail(`Unknown argument: ${arg}`);
@@ -133,9 +159,17 @@ function shouldScanReferenceFile(path) {
 	return isActiveReferenceFile(path) || isInactiveReferenceFile(path);
 }
 
+function shouldScanReferenceFileForMode(path, { activeOnly }) {
+	return activeOnly ? isCurrentStateReferenceFile(path) : shouldScanReferenceFile(path);
+}
+
+function isCurrentStateReferenceFile(path) {
+	return CURRENT_STATE_REFERENCE_FILES.has(basename(path));
+}
+
 function isActiveReferenceFile(path) {
 	const name = basename(path);
-	return name.startsWith("review-result-") || ACTIVE_REFERENCE_FILES.has(name);
+	return name.startsWith("review-result-") || isCurrentStateReferenceFile(path);
 }
 
 function isInactiveReferenceFile(path) {
@@ -162,10 +196,14 @@ function recordEvidenceRefIssue(result, issue, { referencePath }) {
 	target.push(issue);
 }
 
-function collectEvidenceBundles({ repoRoot, claimsDir, result }) {
+function collectEvidenceBundles({ repoRoot, claimsDir, result, includePaths = null }) {
 	const evidenceBundles = new Map();
 	for (const path of listClaimJsonFiles(claimsDir)) {
 		if (!basename(path).startsWith("evidence-")) {
+			continue;
+		}
+		const relativePath = repoRelativePath(repoRoot, path);
+		if (includePaths && !includePaths.has(relativePath)) {
 			continue;
 		}
 		let packet;
@@ -182,7 +220,6 @@ function collectEvidenceBundles({ repoRoot, claimsDir, result }) {
 		if (packet?.schemaVersion !== CLAIM_EVIDENCE_BUNDLE_SCHEMA) {
 			continue;
 		}
-		const relativePath = repoRelativePath(repoRoot, path);
 		const contentHash = sha256File(path);
 		evidenceBundles.set(relativePath, {
 			contentHash,
@@ -226,18 +263,24 @@ function checkedInEvidenceEntries(bundle) {
 }
 
 function auditCheckedInEvidence({ repoRoot, evidenceBundles, result, strict }) {
+	let checkedInEvidenceBundleCount = 0;
 	for (const bundle of evidenceBundles.values()) {
 		const repoCommit = typeof bundle.packet.repoCommit === "string" ? bundle.packet.repoCommit.trim() : "";
 		if (!repoCommit) {
 			continue;
 		}
-		for (const entry of checkedInEvidenceEntries(bundle)) {
+		const entries = checkedInEvidenceEntries(bundle);
+		if (entries.length > 0) {
+			checkedInEvidenceBundleCount += 1;
+		}
+		for (const entry of entries) {
 			const issue = checkedInEvidenceIssue({ repoRoot, bundle, repoCommit, entry });
 			if (issue) {
 				recordCheckedInEvidenceIssue(result, issue, { strict });
 			}
 		}
 	}
+	return checkedInEvidenceBundleCount;
 }
 
 function evidenceRefIssue({ object, repoRoot, claimEvidenceDir, evidenceBundles }) {
@@ -267,6 +310,26 @@ function evidenceRefIssue({ object, repoRoot, claimEvidenceDir, evidenceBundles 
 	};
 }
 
+function evidenceRefPath({ object, repoRoot, claimEvidenceDir }) {
+	if (typeof object.path !== "string" || typeof object.contentHash !== "string") {
+		return null;
+	}
+	const relativePath = repoRelativePath(repoRoot, object.path);
+	if (!relativePath || !relativePath.startsWith(`${claimEvidenceDir}/evidence-`)) {
+		return null;
+	}
+	return relativePath;
+}
+
+function collectEvidenceRefPathsInPacket({ repoRoot, claimEvidenceDir, packet, referencedPaths }) {
+	walkObjects(packet, (object) => {
+		const relativePath = evidenceRefPath({ object, repoRoot, claimEvidenceDir });
+		if (relativePath) {
+			referencedPaths.add(relativePath);
+		}
+	});
+}
+
 function auditEvidenceRefsInPacket({ repoRoot, claimEvidenceDir, evidenceBundles, result, path, packet }) {
 	walkObjects(packet, (object) => {
 		if (typeof object.path !== "string" || typeof object.contentHash !== "string") {
@@ -282,9 +345,33 @@ function auditEvidenceRefsInPacket({ repoRoot, claimEvidenceDir, evidenceBundles
 	});
 }
 
-function auditEvidenceRefs({ repoRoot, claimsDir, evidenceBundles, result }) {
+function referenceFilesForMode({ claimsDir, activeOnly }) {
+	return listClaimJsonFiles(claimsDir).filter((path) => shouldScanReferenceFileForMode(path, { activeOnly }));
+}
+
+function collectReferencedEvidencePaths({ repoRoot, claimsDir, referenceFiles, result }) {
 	const claimEvidenceDir = slashPath(relative(repoRoot, claimsDir));
-	for (const path of listClaimJsonFiles(claimsDir).filter(shouldScanReferenceFile)) {
+	const referencedPaths = new Set();
+	for (const path of referenceFiles) {
+		let packet;
+		try {
+			packet = readJsonFile(path);
+		} catch (error) {
+			result.issues.push({
+				kind: "invalid-json",
+				file: slashPath(relative(repoRoot, path)),
+				message: error.message,
+			});
+			continue;
+		}
+		collectEvidenceRefPathsInPacket({ repoRoot, claimEvidenceDir, packet, referencedPaths });
+	}
+	return referencedPaths;
+}
+
+function auditEvidenceRefs({ repoRoot, claimsDir, evidenceBundles, result, referenceFiles }) {
+	const claimEvidenceDir = slashPath(relative(repoRoot, claimsDir));
+	for (const path of referenceFiles) {
 		let packet;
 		try {
 			packet = readJsonFile(path);
@@ -311,11 +398,19 @@ function kindCounts(items) {
 export function auditClaimEvidenceHashes(options = {}) {
 	const repoRoot = resolve(options.repoRoot || process.cwd());
 	const claimsDir = resolve(repoRoot, options.claimsDir || DEFAULT_CLAIMS_DIR);
+	const referenceScope = options.referenceScope === "active" || options.activeOnly === true ? "active" : "full";
+	const activeOnly = referenceScope === "active";
+	const referenceFiles = referenceFilesForMode({ claimsDir, activeOnly });
+	const fullReferenceFileCount = listClaimJsonFiles(claimsDir).filter(shouldScanReferenceFile).length;
 	const result = {
 		schemaVersion: "cautilus.claim_evidence_hash_audit.v1",
 		claimsDir: slashPath(relative(repoRoot, claimsDir)),
+		mode: activeOnly ? "active-only" : "full",
+		referenceScope,
 		evidenceBundleCount: 0,
-		scannedReferenceFileCount: listClaimJsonFiles(claimsDir).filter(shouldScanReferenceFile).length,
+		scannedReferenceFileCount: referenceFiles.length,
+		skippedReferenceFileCount: fullReferenceFileCount - referenceFiles.length,
+		checkedInEvidenceBundleCount: 0,
 		issueCount: 0,
 		warningCount: 0,
 		issues: [],
@@ -323,15 +418,23 @@ export function auditClaimEvidenceHashes(options = {}) {
 		checkedInEvidencePolicy: options.strictCheckedInEvidence ? "strict" : "warn",
 		status: "ok",
 	};
-	const evidenceBundles = collectEvidenceBundles({ repoRoot, claimsDir, result });
+	const referencedEvidencePaths = activeOnly
+		? collectReferencedEvidencePaths({ repoRoot, claimsDir, referenceFiles, result })
+		: null;
+	const evidenceBundles = collectEvidenceBundles({
+		repoRoot,
+		claimsDir,
+		result,
+		includePaths: referencedEvidencePaths,
+	});
 	result.evidenceBundleCount = evidenceBundles.size;
-	auditCheckedInEvidence({
+	result.checkedInEvidenceBundleCount = auditCheckedInEvidence({
 		repoRoot,
 		evidenceBundles,
 		result,
 		strict: options.strictCheckedInEvidence === true,
 	});
-	auditEvidenceRefs({ repoRoot, claimsDir, evidenceBundles, result });
+	auditEvidenceRefs({ repoRoot, claimsDir, evidenceBundles, result, referenceFiles });
 	result.issueCount = result.issues.length;
 	result.warningCount = result.warnings.length;
 	result.status = result.issueCount === 0 ? "ok" : "failed";
@@ -351,8 +454,12 @@ export function main(argv = process.argv.slice(2)) {
 		? {
 			schemaVersion: result.schemaVersion,
 			claimsDir: result.claimsDir,
+			mode: result.mode,
+			referenceScope: result.referenceScope,
 			evidenceBundleCount: result.evidenceBundleCount,
+			checkedInEvidenceBundleCount: result.checkedInEvidenceBundleCount,
 				scannedReferenceFileCount: result.scannedReferenceFileCount,
+				skippedReferenceFileCount: result.skippedReferenceFileCount,
 				issueCount: result.issueCount,
 				warningCount: result.warningCount,
 				issueKindCounts: result.issueKindCounts,

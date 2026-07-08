@@ -6,7 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { auditClaimEvidenceHashes } from "./audit-claim-evidence-hashes.mjs";
+import { auditClaimEvidenceHashes, parseArgs } from "./audit-claim-evidence-hashes.mjs";
 
 function writeJson(path, value) {
 	writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
@@ -74,8 +74,187 @@ test("auditClaimEvidenceHashes accepts current bundle refs and commit-relative c
 		});
 		const result = auditClaimEvidenceHashes({ repoRoot });
 		assert.equal(result.status, "ok");
+		assert.equal(result.mode, "full");
 		assert.equal(result.issueCount, 0);
 		assert.equal(result.evidenceBundleCount, 1);
+	} finally {
+		rmSync(repoRoot, { recursive: true, force: true });
+	}
+});
+
+test("parseArgs recognizes active-only mode", () => {
+	assert.equal(parseArgs(["--reference-scope", "active"]).referenceScope, "active");
+	assert.equal(parseArgs(["--active-only"]).referenceScope, "active");
+});
+
+test("active-only audit scans current state refs and skips historical drift", () => {
+	const { repoRoot, claimsDir, commit } = createRepoFixture();
+	try {
+		const currentEvidencePath = join(claimsDir, "evidence-current.json");
+		writeJson(currentEvidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: commit,
+			createdForClaimIds: ["claim-current"],
+			checkedInEvidence: [
+				{
+					path: "source.txt",
+					kind: "source",
+					contentHash: sha256Buffer(Buffer.from("source v1\n")),
+				},
+			],
+		});
+		const historicalEvidencePath = join(claimsDir, "evidence-history.json");
+		writeJson(historicalEvidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			repoCommit: commit,
+			createdForClaimIds: ["claim-history"],
+			checkedInEvidence: [
+				{
+					path: "source.txt",
+					kind: "source",
+					contentHash: "sha256:not-the-source-hash",
+				},
+			],
+		});
+		writeJson(join(claimsDir, "status-summary.json"), {
+			evidenceSatisfaction: {
+				satisfiedClaims: [
+					{
+						claimId: "claim-current",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-current.json",
+								contentHash: sha256File(currentEvidencePath),
+								supportsClaimIds: ["claim-current"],
+							},
+						],
+					},
+				],
+			},
+		});
+		writeJson(join(claimsDir, "review-input-history.json"), {
+			clusters: [
+				{
+					claims: [
+						{
+							claimId: "claim-history",
+							evidenceRefs: [
+								{
+									path: ".cautilus/claims/evidence-history.json",
+									contentHash: "sha256:old-history-hash",
+									supportsClaimIds: ["claim-history"],
+								},
+							],
+						},
+					],
+				},
+			],
+		});
+
+		const activeOnly = auditClaimEvidenceHashes({ repoRoot, activeOnly: true });
+		assert.equal(activeOnly.mode, "active-only");
+		assert.equal(activeOnly.referenceScope, "active");
+		assert.equal(activeOnly.status, "ok");
+		assert.equal(activeOnly.issueCount, 0);
+		assert.equal(activeOnly.warningCount, 0);
+		assert.equal(activeOnly.evidenceBundleCount, 1);
+		assert.equal(activeOnly.checkedInEvidenceBundleCount, 1);
+		assert.equal(activeOnly.scannedReferenceFileCount, 1);
+		assert.equal(activeOnly.skippedReferenceFileCount, 1);
+
+		const full = auditClaimEvidenceHashes({ repoRoot });
+		assert.equal(full.mode, "full");
+		assert.equal(full.referenceScope, "full");
+		assert.equal(full.status, "ok");
+		assert.equal(full.issueCount, 0);
+		assert.equal(full.warningCount, 2);
+		assert.deepEqual(full.warningKindCounts, {
+			"checked-in-evidence-content-hash-mismatch": 1,
+			"evidence-ref-content-hash-mismatch": 1,
+		});
+	} finally {
+		rmSync(repoRoot, { recursive: true, force: true });
+	}
+});
+
+test("active-only audit fails stale refs in current state packets", () => {
+	const { repoRoot, claimsDir } = createRepoFixture();
+	try {
+		const evidencePath = join(claimsDir, "evidence-current-stale.json");
+		writeJson(evidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			createdForClaimIds: ["claim-current"],
+		});
+		writeJson(join(claimsDir, "status-summary.json"), {
+			evidenceSatisfaction: {
+				satisfiedClaims: [
+					{
+						claimId: "claim-current",
+						evidenceRefs: [
+							{
+								path: ".cautilus/claims/evidence-current-stale.json",
+								contentHash: "sha256:old-current-hash",
+								supportsClaimIds: ["claim-current"],
+							},
+						],
+					},
+				],
+			},
+		});
+
+		const result = auditClaimEvidenceHashes({ repoRoot, referenceScope: "active" });
+		assert.equal(result.status, "failed");
+		assert.equal(result.issueCount, 1);
+		assert.equal(result.issues[0].kind, "evidence-ref-content-hash-mismatch");
+		assert.equal(result.issues[0].observed, sha256File(evidencePath));
+	} finally {
+		rmSync(repoRoot, { recursive: true, force: true });
+	}
+});
+
+test("active-only audit skips stale review results that full audit still checks", () => {
+	const { repoRoot, claimsDir } = createRepoFixture();
+	try {
+		const evidencePath = join(claimsDir, "evidence-review-result.json");
+		writeJson(evidencePath, {
+			schemaVersion: "cautilus.claim_evidence_bundle.v1",
+			createdForClaimIds: ["claim-history"],
+		});
+		writeJson(join(claimsDir, "status-summary.json"), {
+			evidenceSatisfaction: {
+				satisfiedClaims: [],
+			},
+		});
+		writeJson(join(claimsDir, "review-result-history.json"), {
+			clusterResults: [
+				{
+					claimUpdates: [
+						{
+							claimId: "claim-history",
+							evidenceRefs: [
+								{
+									path: ".cautilus/claims/evidence-review-result.json",
+									contentHash: "sha256:old-review-result-hash",
+									supportsClaimIds: ["claim-history"],
+								},
+							],
+						},
+					],
+				},
+			],
+		});
+
+		const activeOnly = auditClaimEvidenceHashes({ repoRoot, referenceScope: "active" });
+		assert.equal(activeOnly.status, "ok");
+		assert.equal(activeOnly.issueCount, 0);
+		assert.equal(activeOnly.warningCount, 0);
+		assert.equal(activeOnly.evidenceBundleCount, 0);
+
+		const full = auditClaimEvidenceHashes({ repoRoot });
+		assert.equal(full.status, "failed");
+		assert.equal(full.issueCount, 1);
+		assert.equal(full.issues[0].kind, "evidence-ref-content-hash-mismatch");
+		assert.equal(full.issues[0].observed, sha256File(evidencePath));
 	} finally {
 		rmSync(repoRoot, { recursive: true, force: true });
 	}

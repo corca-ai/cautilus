@@ -23,3 +23,10 @@ test("package scripts keep local gates and external consumer onboarding smoke", 
 	assert.equal(packageJSON.scripts["hooks:check"], "node scripts/check-git-hooks.mjs");
 	assert.equal(packageJSON.scripts["consumer:onboard:smoke"], "node scripts/on-demand/smoke-external-consumer.mjs");
 });
+
+test("package scripts keep standing claim evidence audit scoped", () => {
+	const packageJSON = JSON.parse(readFileSync("package.json", "utf8"));
+
+	assert.match(packageJSON.scripts["claims:audit-evidence"], /--reference-scope active/);
+	assert.match(packageJSON.scripts["claims:audit-evidence:full"], /--reference-scope full/);
+});
