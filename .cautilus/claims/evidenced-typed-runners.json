@@ -3,7 +3,7 @@
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 548,
+    "matchedClaimCount": 559,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -12003,7 +12003,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:e50641758558dd627c85e968ff90da6abcac592b832b40141273d8e24e031e09",
+      "claimFingerprint": "sha256:3dc8b3a5e4a7be5f383f9ce57cdc24db81eb62021a856dcd1b56081a5533f90d",
       "claimId": "claim-docs-contracts-skillopt-absorption-md-24",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
@@ -12022,12 +12022,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "A host repo can hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions.",
+          "excerpt": "Design target: a host repo should be able to hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions once the relevant packet seam exists.",
           "line": 24,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
-      "summary": "A host repo can hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions.",
+      "summary": "Design target: a host repo should be able to hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions once the relevant packet seam exists.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -19117,7 +19117,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "344b3ea72d1b7bddaeff7cc16a2ffa62f3f156b7",
+  "gitCommit": "03cfac60c33a572455046becc91b3f46d0f8a17f",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -21327,7 +21327,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:170b920617d752434aa19a4d75529a77d29a8eabe57236558423083aefcec670",
+      "contentHash": "sha256:eec95fad52c0b252305653e933f46fdb3c3573e9755ebb77d58384ccd3e2eec7",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

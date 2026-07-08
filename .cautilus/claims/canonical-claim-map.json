@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:35d49f494c4f48cc96fd94954b2288aa34f7eea845fcc3f9c97e18f6f19ddbce"
+      "contentHash": "sha256:27acff438b84d1d9f84ddabafe6a23b167264404c9559abec67e1dcf0fe93e89"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:9d9fde198d6ad64e00dd0a06b7dddf225dea75fc45cd6165567af31b9647934d"
     }
   },
-  "claimsPacketGitCommit": "344b3ea72d1b7bddaeff7cc16a2ffa62f3f156b7",
+  "claimsPacketGitCommit": "03cfac60c33a572455046becc91b3f46d0f8a17f",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 560,
   "catalogs": {
@@ -2384,7 +2384,7 @@
         },
         {
           "claimId": "claim-docs-contracts-skillopt-absorption-md-24",
-          "claimFingerprint": "sha256:e50641758558dd627c85e968ff90da6abcac592b832b40141273d8e24e031e09",
+          "claimFingerprint": "sha256:3dc8b3a5e4a7be5f383f9ce57cdc24db81eb62021a856dcd1b56081a5533f90d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -16951,12 +16951,12 @@
     },
     {
       "claimId": "claim-docs-contracts-skillopt-absorption-md-24",
-      "summary": "A host repo can hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions.",
+      "summary": "Design target: a host repo should be able to hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions once the relevant packet seam exists.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
           "line": 24,
-          "excerpt": "A host repo can hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions."
+          "excerpt": "Design target: a host repo should be able to hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions once the relevant packet seam exists."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -16966,11 +16966,11 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:e50641758558dd627c85e968ff90da6abcac592b832b40141273d8e24e031e09",
+      "claimFingerprint": "sha256:3dc8b3a5e4a7be5f383f9ce57cdc24db81eb62021a856dcd1b56081a5533f90d",
       "canonicalClaimId": "M4",
-      "score": 9,
+      "score": 10,
       "runnerUpCanonicalClaimId": "M10",
-      "runnerUpScore": 9,
+      "runnerUpScore": 10,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -16983,6 +16983,7 @@
         "fixture",
         "host",
         "host-owned",
+        "packet",
         "repo",
         "run"
       ]
