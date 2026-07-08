@@ -9,10 +9,10 @@ It is active for the current `/goal` pursuit.
 
 ## Active Operating Frame
 
-- Current slice: Slice 1/2 combined doc and contract alignment implemented locally; fresh-eye critique is blocked by host delegation authorization.
-- Current disposition: active; deterministic checks passed, generated claim surfaces refreshed, committed in current HEAD.
+- Current slice: Slice 1/2 combined doc and contract alignment under delegated fresh-eye critique remediation.
+- Current disposition: active; deterministic checks passed, generated claim surfaces need refresh after critique fixes.
 - Current slice intent: align stale living docs with the current proof state, then design the Cautilus-native way to absorb useful SkillOpt and SkillOpt-Sleep patterns.
-- Next action: next resumed slice should either get explicit user authorization for delegated fresh-eye critique or continue without claiming critique satisfaction, then decide whether a minimal executable packet slice is warranted.
+- Next action: commit critique-driven doc/goal fixes, refresh claim surfaces against that committed HEAD, then decide whether closeout can proceed without a new runtime packet slice.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -83,8 +83,8 @@ Align Cautilus's living docs after the current proof-state drift, then design a 
 
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Align Cautilus living docs with current proof state. | The SkillOpt absorption decision should not land on top of stale public claims. | README/master-plan/spec wording agrees on proven/debt state; `npm run lint:specs` or documented substitute. | implemented locally; critique blocked |
-| 2 | Write the SkillOpt absorption design contract. | The useful lessons need a Cautilus-native boundary before implementation. | Contract/design doc names accepted patterns, rejected imports, command-family landing zones, packet boundaries, and contamination/safety constraints. | implemented locally; critique blocked |
+| 1 | Align Cautilus living docs with current proof state. | The SkillOpt absorption decision should not land on top of stale public claims. | README/master-plan/spec wording agrees on proven/debt state; `npm run lint:specs` or documented substitute. | implemented; critique remediating |
+| 2 | Write the SkillOpt absorption design contract. | The useful lessons need a Cautilus-native boundary before implementation. | Contract/design doc names accepted patterns, rejected imports, command-family landing zones, packet boundaries, and contamination/safety constraints. | implemented; critique remediating |
 | 3 | Implement the smallest normalizer/evidence slice if the design chooses one. | A goal should land one executable proof when it adds a new runtime surface. | Fixture/schema/test for session-derived proposal input or rejected-candidate evidence; no raw transcript reader in product. | conditional |
 | 4 | Final quality, critique, and closeout. | The user needs an auditable decision and next-step proof, not a private analysis. | `npm run verify`, `npm run hooks:check`, critique disposition, final verification, residual non-claims. | planned |
 
@@ -147,14 +147,14 @@ per the bullets above when that boundary is crossed):
 
 - Objective: Align README/master-plan/spec-facing contract surfaces with the current 7/7 proven audit state and add a Cautilus-native SkillOpt absorption design boundary.
 - Why this approach: The absorption decision needed to land on a consistent proof-state story and preserve Cautilus's host-owned raw data, packet-first, held-out, no-auto-apply boundaries.
-- Commits: pending commit
+- Commits: `bcb7cf5d` plus follow-up critique remediation commit pending.
 - What changed: README proof-state prose now matches the apex audit; docs/contracts/skillopt-absorption.md defines accepted patterns, rejected imports, command-family landing zones, safety rules, and deferred packet questions; docs/master-plan.md and docs/specs/contracts/index.spec.md link the design boundary; claim generated surfaces were refreshed after README changed.
 - Alternatives rejected: Rejected lowering apex/spec status because .cautilus/audit/surface-audit.json and docs/specs/index.spec.md prove 7/7 current badge consistency; rejected importing SkillOpt/Sleep runtime surfaces because raw transcript readers, schedulers, plugin shells, and auto-apply violate Cautilus boundaries.
-- Targeted verification: git diff --check; npm run lint:specs; npm run claims:refresh:all; npm run lint:specs after refresh.
+- Targeted verification: git diff --check; npm run lint:specs; npm run claims:refresh:all; npm run lint:specs after refresh; npm run hooks:check; npm run verify.
 - Test duplication pressure:
-- Critique: blocked host-signal: subagent tool exists but requires explicit user delegation authorization; repo-required fresh-eye critique was not run and same-agent review was not substituted.
+- Critique: parent-delegated fresh-eye review consumed `charness-artifacts/critique/2026-07-08-003218-packet.md`; angle reviewers found absolute local SkillOpt refs, stale slice log, current-HEAD claim refresh drift, and capability wording risk; counterweight triaged absolute refs, stale slice log, and claim refresh drift as Act Before Ship, capability wording and verification evidence as Bundle Anyway, and master-plan packet-slice wording as Over-Worry.
 - Off-goal findings: none
-- Lessons carried forward: Generated claim surfaces need refresh when README proof-state prose changes; next slice should either get explicit delegation authorization for critique or avoid claiming fresh-eye satisfaction.
+- Lessons carried forward: Generated claim surfaces need a post-fix refresh commit because claim packets record the commit they inspected; local research paths in product contracts should be labeled as local context or gathered into durable artifacts before becoming public evidence.
 - Metrics: not captured
 
 ## Context Sources
@@ -169,11 +169,11 @@ per the bullets above when that boundary is crossed):
 - `docs/contracts/final-acceptance-set.md`: optimizer-untouchable acceptance and contamination guard boundary.
 - `docs/contracts/acceptance-risk-tier.md`: adapter-owned risk-tier policy boundary.
 - `skills/cautilus-agent/SKILL.md`: Cautilus Agent stable/opt-in surface distinctions.
-- `/home/hwidong/codes/SkillOpt/README.md`: SkillOpt product claim and optimizer framing.
-- `/home/hwidong/codes/SkillOpt/docs/sleep/README.md`: SkillOpt-Sleep cycle, staged adoption, held-out gate, replay/recall/dream knobs.
-- `/home/hwidong/codes/SkillOpt/docs/sleep/RESULTS.md`: scope and limitations of sleep gains.
-- `/home/hwidong/codes/SkillOpt/skillopt_sleep/cycle.py`: concrete sleep-cycle orchestration and diagnostics/staging behavior.
-- `/home/hwidong/codes/SkillOpt/skillopt_sleep/types.py`: `SessionDigest`, `TaskRecord`, `SleepReport`, and edit/report data boundaries.
+- Local SkillOpt README from the operator's checkout: SkillOpt product claim and optimizer framing.
+- Local SkillOpt-Sleep README from the operator's checkout: SkillOpt-Sleep cycle, staged adoption, held-out gate, replay/recall/dream knobs.
+- Local SkillOpt-Sleep results notes from the operator's checkout: scope and limitations of sleep gains.
+- Local SkillOpt-Sleep `cycle.py` from the operator's checkout: concrete sleep-cycle orchestration and diagnostics/staging behavior.
+- Local SkillOpt-Sleep `types.py` from the operator's checkout: `SessionDigest`, `TaskRecord`, `SleepReport`, and edit/report data boundaries.
 
 ## Interview Decisions
 

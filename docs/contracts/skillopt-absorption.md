@@ -21,8 +21,8 @@ Absorption should strengthen those seams, not add an always-on nightly optimizer
 
 ## Capability Contract
 
-A host repo can hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions.
-`Cautilus` can then turn that evidence into scenario proposals, evaluation packets, improvement inputs, acceptance/readiness checks, and reviewable artifacts without reading raw transcripts or applying edits by itself.
+Design target: a host repo should be able to hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions once the relevant packet seam exists.
+`Cautilus` should then turn that evidence into scenario proposals, evaluation packets, improvement inputs, acceptance/readiness checks, and reviewable artifacts without reading raw transcripts or applying edits by itself.
 
 ## Accepted Patterns
 
@@ -165,8 +165,11 @@ Accepted absorption depends on these invariants:
 - [scenario-proposal-normalization.md](./scenario-proposal-normalization.md)
 - [improvement-search.md](./improvement-search.md)
 - [final-acceptance-set.md](./final-acceptance-set.md)
-- `/home/hwidong/codes/SkillOpt/README.md`
-- `/home/hwidong/codes/SkillOpt/docs/sleep/README.md`
-- `/home/hwidong/codes/SkillOpt/docs/sleep/RESULTS.md`
-- `/home/hwidong/codes/SkillOpt/skillopt_sleep/types.py`
-- `/home/hwidong/codes/SkillOpt/skillopt_sleep/cycle.py`
+
+Local research context used while drafting, not public Cautilus evidence:
+
+- SkillOpt README from the operator's local checkout: product claim and optimizer framing.
+- SkillOpt-Sleep README from the operator's local checkout: sleep cycle, staged adoption, held-out gate, replay/recall/dream knobs.
+- SkillOpt-Sleep results notes from the operator's local checkout: scope and limitations of sleep gains.
+- SkillOpt-Sleep `types.py` from the operator's local checkout: `SessionDigest`, `TaskRecord`, `SleepReport`, and edit/report data boundaries.
+- SkillOpt-Sleep `cycle.py` from the operator's local checkout: concrete sleep-cycle orchestration and diagnostics/staging behavior.
