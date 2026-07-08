@@ -1,60 +1,118 @@
 # Release Surface Check
-Date: 2026-06-29
+Date: 2026-07-08
 
-Released Cautilus `v0.18.0`.
+## Scope
 
-## Release Scope
-
-Advanced `cautilus` to release `0.18.0` (tag `v0.18.0`) from `0.17.1` through the repo-owned release helper (`scripts/release/prepare-release.mjs` + `publish-release.mjs`).
-
-Everything since tag `v0.17.1` is one coherent feature — the optimizer-untouchable final-acceptance-set read plus the acceptance risk-tier policy:
-
-- read-time enforcement in `cautilus evaluate acceptance` (`--target`/`--waiver`, per-tier reliability floor, block-or-waiver).
-- skip-time gate in read-only `cautilus doctor` (`--history-file`, the `acceptanceReadiness` block and `acceptance_read_readiness` check) plus the explicit `cautilus evaluate acceptance waive-skip` recorder.
-
-The product owns only the closed effect vocabulary (`required`/`optional`/`skippable`); risk categories and tier names stay host/adapter-owned, and the acceptance read stays advisory — it never auto-applies or auto-rejects a candidate.
+Advanced `cautilus` toward release `0.18.1` (tag `v0.18.1`) through the repo-owned release helper.
 
 ## Current Version
 
-- previous version: `0.17.1`
-- target version: `0.18.0`
+- previous version: `0.18.0`
+- target version: `0.18.1`
 - git branch: `main`
 - git remote: `origin`
-- bump rationale: minor — net-new operator commands (`evaluate acceptance`, `evaluate acceptance waive-skip`) and an optional `doctor --history-file` flag, with no breaking change to existing callers.
 
 ## Verification
 
-- `npm run verify` passed before publish (all phases).
-- `npm run hooks:check` ready; the publish push re-runs `npm run verify` plus generated-artifact drift via the pre-push hook.
-- `prepare-release.mjs` bumped all five version surfaces to `0.18.0` with no drift; `npm run skills:sync-packaged` left no diff (the Cautilus Agent skill is unchanged this release).
-- `release:claim-freshness` reported `fresh`.
-- Go build clean; runtime and app test suites green; new fixture and smoke tests cover the skip-gate (`TestCLIDoctorAcceptanceSkipGate*`, `TestBuildAcceptanceReadiness*`).
-
-## Review Proof
-
-- Release critique: `charness-artifacts/critique/2026-06-29-v0.18.0-release-critique.md` (verdict: ship, 0 act-before-ship, 2 documented post-release follow-ups — Cautilus Agent acceptance-sequence routing and executable-spec coverage).
+- `npm run verify` passed before publish.
+- `current_release.py` reported no version drift across packaging and generated install surfaces.
+- initial release push carried the release branch update and tag from the release helper.
 
 ## Release State
 
 - local release mutation: complete
-- branch/tag push: complete (`publish-release.mjs`, both branch and tag verified against the remote)
-- GitHub release record: verified URL `https://github.com/corca-ai/cautilus/releases/tag/v0.18.0`
-- public release surface verification: verified
+- branch/tag push: complete
+- GitHub release record: target URL `https://github.com/corca-ai/cautilus/releases/tag/v0.18.1`; creation runs after the branch/tag push
+- public release surface verification: not checked by this helper
+- audit narrative: durable record written to `charness-artifacts/release/latest.md` and committed with this slice
 
 ## Public Release Verification
 
-- Tag-triggered `release-artifacts.yml` workflow (run `28349446031`) succeeded: built and attested binaries for darwin/linux × arm64/x64, generated checksums and self-contained release notes, created the GitHub release via `softprops/action-gh-release@v3`, and the dependent `verify-public-release` job passed `verify-public-release.mjs`.
-- Release is published, not draft, not prerelease; 7 assets attached.
+- GitHub release publication: expected after branch/tag push; not verified yet.
 
-## Distinct-Channel Verification
+## Release Adapter Preflight
 
-- Rung-2 distinct-channel verdict: `confirmed` via `https-fetch` (a channel distinct from `gh release view` and from the CI backend that created the release).
-- Channel URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.18.0`
-- HTTP status: `200`
+- Release adapter focused preflight status: `not_required`.
+- Reason: release adapter did not change in the release delta
+- Focused preflight commands: none executed.
 
-## Release Helper Note
+## Retro Trigger Evaluation
 
-- The charness `release` skill's generic `publish_release.py`/`bump_version.py` failed first (`KeyError: 'claude'`) because it assumes a `package.json` with `claude.manifest.version`; this repo uses a flat `package.json` and its own canonical helpers under `scripts/release/`. No mutation occurred on that failure. The release was cut through the repo-owned `prepare-release.mjs` + `publish-release.mjs` path. This is a recurring release-helper-shape mismatch worth a retro lesson.
+- Triggered: `True`.
+- Evaluated at: `final_release_paths`.
+- Input mode: `explicit_paths`.
+- Reason: Changed surfaces hit configured install/update/support/export/discovery retro triggers.
+- Closeout status: `written`.
+- Retro artifact: `charness-artifacts/retro/2026-07-08-v0-18-1-release-auto-retro.md`.
+- Recent lessons: `charness-artifacts/retro/recent-lessons.md`.
+- Surface hits: 1.
+  - `release-packaging`
+- Path hits: 0.
+- Evaluated changed paths: 54.
+  - `.cautilus/claims/canonical-claim-map.json`
+  - `.cautilus/claims/claim-status-report.md`
+  - `.cautilus/claims/evidence-state.json`
+  - `.cautilus/claims/evidenced-typed-runners.json`
+  - `.cautilus/claims/latest.json`
+  - `.cautilus/claims/status-summary.json`
+  - `.claude-plugin/marketplace.json`
+  - `README.md`
+  - `charness-artifacts/critique/2026-07-08-003218-packet.json`
+  - `charness-artifacts/critique/2026-07-08-003218-packet.md`
+  - `charness-artifacts/critique/2026-07-08-013231-packet.json`
+  - `charness-artifacts/critique/2026-07-08-013231-packet.md`
+  - `charness-artifacts/critique/2026-07-08-015851-packet.json`
+  - `charness-artifacts/critique/2026-07-08-015851-packet.md`
+  - `charness-artifacts/critique/2026-07-08-025153-packet.json`
+  - `charness-artifacts/critique/2026-07-08-025153-packet.md`
+  - `charness-artifacts/critique/2026-07-08-scenario-provenance-validation-fix-review.md`
+  - `charness-artifacts/critique/2026-07-08-skillopt-absorption-disposition-review.md`
+  - `charness-artifacts/critique/2026-07-08-skillopt-provenance-post-commit-critique.md`
+  - `charness-artifacts/debug/2026-07-08-release-helper-packaging-manifest-mismatch.md`
+  - ... 34 more
+
+## Real-Host Verification
+
+- No configured release-time real-host verification trigger matched this slice.
+
+## Real-Host Proof
+
+- No configured release-time real-host proof trigger matched this slice.
+
+## Review Proof
+
+- Review proof: `charness-artifacts/critique/2026-07-08-scenario-provenance-validation-fix-review.md`.
+
+## Requested Review Gate
+
+- Requested-review gate status: `ok`.
+- Configuration status: `not_configured`.
+- Policy: `warn-if-unconfigured`.
+- Configured command count: `0`.
+- Warning: requested_review_commands is empty; requested-review enforcement is advisory-only for this release.
+
+## Install Refresh
+
+- Post-publish install refresh: pending final publish verification.
+
+## Release Runtime
+
+- `requested_review_gate`: 0.001s
+- `cli_skill_surface_gate`: 0.070s
+- `quality_command`: 84.036s
+- `fresh_checkout_probes_initial`: 10.006s
+
+## Fresh Checkout Probes
+
+- Fresh-checkout probe status: passed.
+- `git fetch --unshallow --quiet || true`
+- `npm run claims:evidence-state:check`
+- `npm run claims:status-report:check`
+- `npm run generated:drift:check`
+
+## Issue Closeout
+
+- Issue closeout verification: pending or not requested.
 
 ## User Update Steps
 
