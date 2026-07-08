@@ -96,8 +96,6 @@ export function renderPromiseLedger(promises) {
 		"Reverse view: which promises each cross-cutting rule governs (derived from the same `governed-by::` edges).",
 	);
 	lines.push("");
-	lines.push("| Cross-cutting rule | Governs promises |");
-	lines.push("| --- | --- |");
 	const ruleCoverage = new Map();
 	for (const promise of promises) {
 		for (const rule of promise.rules) {
@@ -108,8 +106,14 @@ export function renderPromiseLedger(promises) {
 		}
 	}
 	const sortedRules = [...ruleCoverage.values()].sort((a, b) => a.rule.name.localeCompare(b.rule.name));
-	for (const { rule, promises: governed } of sortedRules) {
-		lines.push(`| ${mdLink(rule)} | ${governed.join(", ")} |`);
+	if (sortedRules.length === 0) {
+		lines.push("No cross-cutting rule coverage edges are present in the typed trace graph.");
+	} else {
+		lines.push("| Cross-cutting rule | Governs promises |");
+		lines.push("| --- | --- |");
+		for (const { rule, promises: governed } of sortedRules) {
+			lines.push(`| ${mdLink(rule)} | ${governed.join(", ")} |`);
+		}
 	}
 	lines.push("");
 	return `${lines.join("\n")}\n`;
@@ -133,10 +137,13 @@ function readGraph(repoRoot) {
 	return JSON.parse(result.stdout);
 }
 
-export function generate(repoRoot) {
-	const graph = readGraph(repoRoot);
+export function generateFromGraph(repoRoot, graph) {
 	const promises = buildLedgerModel(graph, (path) => readTitle(repoRoot, path));
 	return { promises, markdown: renderPromiseLedger(promises) };
+}
+
+export function generate(repoRoot) {
+	return generateFromGraph(repoRoot, readGraph(repoRoot));
 }
 
 export function parseArgs(argv) {
@@ -167,18 +174,25 @@ export function parseArgs(argv) {
 	return args;
 }
 
-function summary(promises) {
+export function summary(promises) {
 	const edgeCount = promises.reduce((sum, p) => sum + p.rules.length + p.contracts.length, 0);
 	return `promise ledger rendered: ${promises.length} promise(s), ${edgeCount} governed-by/implemented-by edge(s)`;
 }
 
+export function checkPromiseLedger(repoRoot, graph = null) {
+	const { promises, markdown } = graph ? generateFromGraph(repoRoot, graph) : generate(repoRoot);
+	const abs = resolve(repoRoot, LEDGER_PAGE_PATH);
+	const onDisk = existsSync(abs) ? readFileSync(abs, "utf-8") : null;
+	return { stale: onDisk !== markdown, promises, markdown };
+}
+
 export function main(argv) {
 	const args = parseArgs(argv);
-	const { promises, markdown } = generate(args.repoRoot);
+	const { promises, markdown, stale } = args.check
+		? checkPromiseLedger(args.repoRoot)
+		: generate(args.repoRoot);
 	const abs = resolve(args.repoRoot, LEDGER_PAGE_PATH);
 	if (args.check) {
-		const onDisk = existsSync(abs) ? readFileSync(abs, "utf-8") : null;
-		const stale = onDisk !== markdown;
 		if (args.json) {
 			process.stdout.write(`${JSON.stringify({ ok: !stale }, null, 2)}\n`);
 		} else if (stale) {

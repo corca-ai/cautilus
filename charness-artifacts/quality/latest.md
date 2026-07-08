@@ -3,94 +3,94 @@ Date: 2026-07-08
 
 ## Scope
 
-Target boundary: repo-wide quality and test-speed economics for Cautilus as an installable CLI plus Cautilus Agent surface, focused on collapsing checked-in evidence source hashing from per-commit batches into one bounded Git batch.
+Target boundary: repo-wide quality and test-speed economics for Cautilus as an installable CLI plus Cautilus Agent surface, focused on spec-related standing verify overlap.
 
-Ambient repo findings: post-change runtime medians, pre-push runtime sampling, checked-in evidence warning debt, and Cautilus Agent ergonomics remain separate slices.
+Ambient repo findings: `lint · specs` remains the largest standing hotspot; `security · secret scan` remains second and still scans full git history.
 
 ## Current Gates
 
-- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs`
-- `npm run claims:audit-evidence`
-- `npm run claims:audit-evidence:full`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs scripts/agent-runtime/render-promise-ledger.test.mjs scripts/run-verify.test.mjs`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/*.test.mjs scripts/agent-runtime/*.test.mjs`
+- `npm run --silent lint:eslint`
+- `npm run --silent lint:specs`
 - `npm run verify:runtime`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/render_runtime_summary.py --repo-root . --json`
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/check_runtime_budget.py --repo-root .`
 
 ## Runtime Signals
 
 - runtime source: structured metrics from `.charness/quality/runtime-signals.json` rendered by `render_runtime_summary.py`; profile `local-verify`.
-- runtime hot spots: `lint · specs` 16.2s latest / 20.6s median, budget 35.0s; `security · secret scan` 6.6s latest / 6.8s median, budget 12.0s; `test · coverage` 3.8s latest / 4.9s median, budget 10.0s; `lint · eslint` 3.4s latest / 3.4s median, budget 8.0s; `lint · promise ledger` 2.4s latest / 2.4s median, budget 4.0s.
+- runtime hot spots: after the change, `lint · specs` 16.0s latest / 16.1s median, budget 35.0s; `security · secret scan` 7.0s latest / 6.8s median, budget 12.0s; `test · coverage` 3.8s latest / 3.8s median, budget 10.0s; `lint · eslint` 3.5s latest / 3.5s median, budget 8.0s; `security · govulncheck` 1.8s latest / 1.9s median, budget 3.5s.
+- removed overlap: standalone `lint · promise ledger` no longer runs as a separate `verify` phase; its drift check is executed inside `lint:specs` using the strict trace graph already produced there.
+- runtime signal hygiene: full passing runtime samples now drop command labels that did not run, so removed phases do not remain current hot spots; partial failing samples still preserve unobserved phase history.
 - coverage gate: `npm run verify:runtime` ran the standing `test · coverage` phase, including Go coverage and the c8-wrapped Node test run.
-- claim audit before/after signal: active standing audit now resolves 521 unique checked-in evidence lookups through one `git cat-file --batch` process and reports 382ms in `verify:runtime`; the prior per-commit batch shape reported about 1.10s, and the earlier per-entry `git show` shape reported about 4.2s.
-- evaluator depth: deterministic local gates only; this slice changed Git lookup execution shape and tests, not agent behavior.
+- evaluator depth: deterministic local gates only; this slice changed spec and runtime-signal orchestration, not agent behavior or live evaluator prompts.
 
 ## Healthy
 
-- `audit-claim-evidence-hashes.mjs` now batches mixed-commit `repoCommit:path` specs in one `git cat-file --batch` call.
-- The batch call has an explicit 128MiB stdout buffer; current active output measured about 21.5MB and full output about 31.3MB.
-- Unsafe newline-delimited `repoCommit` or `path` values are excluded from batch input and handled through the existing `git show` fallback.
-- Active mode still scans 2 current-state reference files, skips 172 historical reference files, and reports the same 48 warning-only checked-in evidence findings.
-- Full mode still scans all 174 reference files and reports the same 118 warning-only historical findings.
-- `npm run verify:runtime` passed with `lint · claim evidence hashes` at 382ms latest, under the 9.0s local budget.
+- `lint:specs` now reuses the `specdown trace -strict` JSON graph to check generated promise-ledger drift instead of asking `specdown:ledger:check` to spawn a second trace process.
+- `specdown:ledger:check` remains available as a standalone manual/regeneration guard; only the standing `verify` overlap was removed.
+- The generated promise-ledger renderer now emits a prose empty state when no cross-cutting rule coverage edges exist, avoiding specdown-invalid header-only tables.
+- Runtime signal merging now prunes stale phase labels after full passing runs, so quality summaries reflect the current verify phase surface.
+- Documentation now says `npm run lint:specs` covers typed trace and promise-ledger drift.
 
 ## Weak
 
-- The runtime median for `lint · claim evidence hashes` is still 6.34s because the recent sample window includes pre-batch and pre-active-only samples.
-- The 128MiB buffer is a bounded local choice, not a streaming parser; future evidence growth could require streaming or chunked batches.
-- Active standing audit still reports 48 warning-only checked-in evidence findings; the optimization reduced process overhead, not evidence warning debt.
-- Full historical audit still reports 118 warnings, including 30 historical evidence reference mismatches, so it remains useful but noisy.
-- `lint · specs` remains the largest standing hotspot by recent median.
+- `lint · specs` remains the top standing hotspot at about 16s latest on this local profile.
+- The ledger fold saves a separate roughly 2.1-2.4s phase from `verify`, but it does not reduce the underlying `specdown run` cost inside `lint:specs`.
+- Runtime medians for removed phases disappear from the current signal after a passing run; historical comparison for deleted labels must come from git history or prior artifacts.
+- Debug artifact validation for all historical debug files still exits 1 because legacy records use older `Risk Class` / `Generalization Pressure` values; the current `latest.md` was validated in the command output before the historical failures.
 
 ## Missing
 
-- No post-change median window exists yet with global-batched active-only claim audit in every recent runtime sample.
-- No policy decision exists yet for whether active checked-in evidence warnings should be reduced, tolerated, or moved behind a slower full audit.
-- No CI or slower-machine runtime profile exists to decide whether the local claim audit budget should be portable.
+- No deeper specdown suite profiling exists yet to separate `specdown run` block execution cost from trace and check-specs overhead.
+- No policy decision exists yet for whether the history-wide `security:secrets` scan should stay in every standing verify run or split into local/current-tree plus on-demand history proof.
 
 ## Deferred
 
-- Tightening the `lint · claim evidence hashes` budget is deferred until more post-change `verify:runtime` samples replace older measurements.
-- Replacing the bounded batch buffer with a streaming parser is deferred because current full output is about 31.3MB against a 128MiB bound and the standing phase is now sub-second.
-- Reducing the 48 active checked-in evidence warnings is deferred because this slice changed lookup execution shape, not evidence bundle storage or source availability.
-- Cautilus Agent progressive-disclosure cleanup remains a separate skill-surface quality slice.
+- Folding `specdown:project:check` and `specdown:claim-state:check` is deferred; they are only about 0.15-0.19s each and still provide a clear producer/consumer boundary.
+- Changing secret-scan scope is deferred because it is a security coverage tradeoff, not just a runtime cleanup.
+- Further `lint · specs` optimization should profile specdown execution before changing proof depth.
 
 ## Advisory
 
-- structural review result: command: direct active/full `git cat-file --batch` reproduction showed default Node `execFileSync` failed with `ENOBUFS`, while explicit 64MiB/128MiB buffers succeeded.
-- runtime result: command: `/usr/bin/time -p npm run --silent claims:audit-evidence` reported 521 lookups, 1 batch, 0 fallbacks, and about 0.38s wall time.
-- preservation result: command: `/usr/bin/time -p npm run --silent claims:audit-evidence:full` reported 816 lookups, 1 batch, 0 fallbacks, and about 0.42s wall time while preserving the full audit warning profile.
-- prose review result: command: `node --test ... scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs` proves mixed-commit specs share one batch and newline commit/path specs fall back without entering batch input.
-- runtime interpretation: command: `render_runtime_summary.py --repo-root . --json` no longer lists `lint · claim evidence hashes` in the top runtime hot spots because the latest sample is 382ms; the separate budget checker still shows its median at 6.34s until older samples age out.
-- delegated review result: subagent `Bernoulli` confirmed mixed-commit batch is behavior-preserving if output is consumed in input order, logical NUL lookup keys are retained, newline injection is tested, and summary semantics are explicit.
+- structural review result: command `sed -n '1,280p' scripts/lint-specs.mjs` and `sed -n '1,260p' scripts/agent-runtime/render-promise-ledger.mjs` showed `lint:specs` and `specdown:ledger:check` both ran `specdown trace`; the new path keeps one strict trace and reuses its graph for ledger drift.
+- runtime result: command `/usr/bin/time -p npm run --silent specdown:ledger:check` measured about 2.09s before folding; command `npm run verify:runtime` passed in 37.73s with no separate promise-ledger phase.
+- renderer robustness result: command `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs scripts/agent-runtime/render-promise-ledger.test.mjs scripts/run-verify.test.mjs` covers zero-rule generated ledger output so a header-only Markdown table cannot recur.
+- runtime hygiene result: command `node -e '...'` over `.charness/quality/runtime-signals.json` reported `ledger-absent`, and focused tests cover partial-run preservation plus full-run stale-label pruning.
+- delegated review result: subagent `McClintock` confirmed the ledger folding is the safest immediate overlap removal and recommended preserving standalone `specdown:ledger:check`.
 
 ## Delegated Review
 
-- Delegated Review: executed by subagent `Bernoulli`; status `completed`; scope `read-only safety review for mixed-commit checked-in evidence batching`.
-- Slow-gate lenses applied: fixture-economics, parallel-critical-path, duplicated-proof.
-- Reviewer verdict: safe if mixed-commit batch preserves input order mapping, keeps logical `repoCommit + NUL + path` lookup keys, and tests newline injection/fallback boundaries.
-- Reviewer-requested guard: mixed commit/path specs should batch in one process, newline path should fallback, and newline commit should fallback; implemented.
+- Delegated Review: executed by explorer subagent `McClintock`; status `completed`; scope `read-only review of spec-related verify overlap`.
+- Slow-gate lenses applied: fixture-economics, parallel-critical-path, duplicated-proof, executable-spec economics, operator signal.
+- Reviewer verdict: ledger check folding is safe if it reuses the strict trace graph and leaves the standalone script available.
+- Reviewer follow-up: projection folding is possible later, but must still check both inventory drift and projected page drift.
 
 ## Commands Run
 
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/bootstrap_adapter.py --repo-root .`
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/resolve_quality_artifact.py --repo-root . --intent current`
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/plan_quality_run.py --repo-root . --json`
-- direct Node reproduction for mixed-spec `git cat-file --batch` output size and `ENOBUFS`
-- `npx eslint scripts/agent-runtime/audit-claim-evidence-hashes.mjs scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs`
-- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/audit-claim-evidence-hashes.test.mjs`
-- `/usr/bin/time -p npm run --silent claims:audit-evidence`
-- `/usr/bin/time -p npm run --silent claims:audit-evidence:full`
+- `/usr/bin/time -p npm run --silent lint:specs`
+- `/usr/bin/time -p npm run --silent specdown:ledger:check`
+- `/usr/bin/time -p npm run --silent specdown:project:check`
+- `/usr/bin/time -p npm run --silent specdown:claim-state:check`
+- `/usr/bin/time -p npm run --silent security:secrets`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs scripts/agent-runtime/render-promise-ledger.test.mjs scripts/run-verify.test.mjs`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/*.test.mjs scripts/agent-runtime/*.test.mjs`
+- `npm run --silent lint:eslint`
+- `npm run --silent lint:specs`
 - `npm run verify:runtime`
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/render_runtime_summary.py --repo-root . --json`
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/check_runtime_budget.py --repo-root .`
-- delegated safety review by subagent `Bernoulli`
+- delegated read-only review by subagent `McClintock`
 
 ## Recommended Next Quality Moves
 
-- active collect several post-change `verify:runtime` samples before tightening the `lint · claim evidence hashes` budget — capability_needed=runtime budget discipline; next_center=.agents quality runtime profile; transformation=lower budgets only after the recent median reflects global-batched active-only audit; proof_boundary=budgeted runtime summary; enforcement_posture=advisory.
-- active reduce checked-in evidence warning debt in the active bundle set — capability_needed=cleaner standing audit signal; next_center=.cautilus/claims evidence bundles; transformation=classify unreadable and mismatched checked-in evidence references; proof_boundary=active audit warning-count reduction plus full audit non-regression; enforcement_posture=advisory.
-- passive consider streaming `git cat-file --batch` output if evidence output grows near the 128MiB buffer — capability_needed=scale-safe audit runtime; next_center=checked-in evidence batch reader; transformation=replace bounded sync buffer with streaming parser; proof_boundary=large-fixture batch test plus active/full timing; enforcement_posture=no-gate until growth pressure exists.
-- passive clean Cautilus Agent ergonomics in a separate skill-surface slice because this run did not edit skill packages — capability_needed=progressive disclosure; next_center=Cautilus Agent `SKILL.md` and references; transformation=reduce core pressure and improve reference discoverability; proof_boundary=skill ergonomics inventory plus prose review; enforcement_posture=existing advisory.
+- active profile `lint · specs` internals before changing proof scope — capability_needed=specdown runtime economics; next_center=scripts/lint-specs.mjs and specdown report/runtime output; transformation=separate `checkSpecs`, `specdown run`, and trace costs with low-noise timings; proof_boundary=runtime sample plus unchanged spec proof; enforcement_posture=advisory.
+- active evaluate secret-scan split only with an explicit security coverage decision — capability_needed=security/runtime policy; next_center=package scripts and CI workflow; transformation=decide whether current-tree local scan plus on-demand/full-history scan preserves the desired guard; proof_boundary=gitleaks current-tree and history commands; enforcement_posture=needs maintainer decision.
+- passive consider projection folding later because the two remaining phases are only about 0.15-0.19s each — capability_needed=small verify cleanup; next_center=build-goldset-projection.mjs and render-projected-claim-state.mjs; transformation=check inventory and page drift in one process; proof_boundary=stale inventory, stale page, both stale, and invalid projection tests; enforcement_posture=no urgency.
 
 ## History
 

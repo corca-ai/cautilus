@@ -66,6 +66,17 @@ test("renderPromiseLedger emits a generated map with dashes for edge-less promis
 	assert.doesNotMatch(md, /\[(governed-by|implemented-by|badges)::/);
 });
 
+test("renderPromiseLedger uses a prose empty state when no rules govern promises", () => {
+	const graph = {
+		documents: GRAPH.documents.filter((doc) => doc.type === "apex" || doc.type === "promise"),
+		directEdges: GRAPH.directEdges.filter((edge) => edge.edge === "badges"),
+	};
+	const model = buildLedgerModel(graph, (path) => TITLES[path]);
+	const md = renderPromiseLedger(model);
+	assert.match(md, /No cross-cutting rule coverage edges are present/);
+	assert.doesNotMatch(md, /\| Cross-cutting rule \| Governs promises \|\n\| --- \| --- \|\n\n/);
+});
+
 test("parseArgs reads flags and rejects unknown arguments", () => {
 	const args = parseArgs(["--check", "--repo-root", "/tmp/x", "--json"]);
 	assert.equal(args.check, true);

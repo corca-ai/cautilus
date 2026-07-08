@@ -5,6 +5,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 
 import { checkSpecs } from "./check-specs.mjs";
+import { checkPromiseLedger, summary as promiseLedgerSummary } from "./agent-runtime/render-promise-ledger.mjs";
 
 function fail(message) {
 	throw new Error(message);
@@ -75,10 +76,11 @@ function runTraceStrict(repoRoot) {
 		process.stderr.write(result.stderr ?? "");
 		process.exit(result.status ?? 1);
 	}
+	let graph = {};
 	let docs = 0;
 	let edges = 0;
 	try {
-		const graph = JSON.parse(result.stdout);
+		graph = JSON.parse(result.stdout);
 		docs = graph.documents?.length ?? 0;
 		edges = graph.directEdges?.length ?? 0;
 	} catch {
@@ -93,6 +95,18 @@ function runTraceStrict(repoRoot) {
 		process.exit(1);
 	}
 	process.stdout.write(`specdown trace -strict: ${docs} typed doc(s), ${edges} edge(s), graph valid\n`);
+	return graph;
+}
+
+function checkGeneratedLedger(repoRoot, graph) {
+	const { stale, promises } = checkPromiseLedger(repoRoot, graph);
+	if (stale) {
+		process.stderr.write(
+			"FAIL:\n  - docs/specs/generated/promise-ledger.spec.md is stale — run npm run specdown:ledger to regenerate\n",
+		);
+		process.exit(1);
+	}
+	process.stdout.write(`promise ledger check: ${promiseLedgerSummary(promises)}\n`);
 }
 
 function runFocusedSpecdown(repoRoot, target, index) {
@@ -123,7 +137,8 @@ export function main(argv = process.argv.slice(2)) {
 
 		if (options.targets.length === 0) {
 			runFullSpecdown(repoRoot);
-			runTraceStrict(repoRoot);
+			const graph = runTraceStrict(repoRoot);
+			checkGeneratedLedger(repoRoot, graph);
 			return;
 		}
 

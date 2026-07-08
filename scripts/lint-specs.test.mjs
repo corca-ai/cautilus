@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "lint-specs.mjs");
+const LEDGER_SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "render-promise-ledger.mjs");
 
 function writeFile(root, relativePath, content) {
 	const fullPath = join(root, relativePath);
@@ -85,6 +86,7 @@ function writeTypedTraceFixture(root, { typeApex = "apex" } = {}) {
 			"# Test Apex",
 			"",
 			"Proof: [badges::Product](user/product.spec.md)",
+			"Generated: [Promise Ledger](generated/promise-ledger.spec.md)",
 			"",
 			"```run:shell",
 			"echo apex",
@@ -103,9 +105,29 @@ test("lint-specs full mode runs specdown and validates the typed trace graph", (
 	const root = mkdtempSync(join(tmpdir(), "cautilus-lint-specs-full-"));
 	try {
 		writeTypedTraceFixture(root);
+		const ledger = spawnSync("node", [LEDGER_SCRIPT_PATH, "--repo-root", root], {
+			cwd: root,
+			encoding: "utf-8",
+		});
+		assert.equal(ledger.status, 0, ledger.stderr);
 		const result = spawnSync("node", [SCRIPT_PATH], { cwd: root, encoding: "utf-8" });
 		assert.equal(result.status, 0, result.stderr);
-		assert.match(result.stdout, /spec checks passed \(2 specs\)/);
+		assert.match(result.stdout, /spec checks passed \(3 specs\)/);
+		assert.match(result.stdout, /specdown trace -strict: 2 typed doc\(s\), 1 edge\(s\), graph valid/);
+		assert.match(result.stdout, /promise ledger check: promise ledger rendered: 1 promise\(s\), 0 governed-by\/implemented-by edge\(s\)/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("lint-specs full mode fails when the generated promise ledger is stale", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-lint-specs-ledger-stale-"));
+	try {
+		writeTypedTraceFixture(root);
+		writeFile(root, "docs/specs/generated/promise-ledger.spec.md", "# stale\n");
+		const result = spawnSync("node", [SCRIPT_PATH], { cwd: root, encoding: "utf-8" });
+		assert.equal(result.status, 1);
+		assert.match(result.stderr, /promise-ledger\.spec\.md is stale/);
 		assert.match(result.stdout, /specdown trace -strict: 2 typed doc\(s\), 1 edge\(s\), graph valid/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -121,12 +143,17 @@ test("lint-specs full mode fails when the trace graph has no typed documents", (
 		writeFile(
 			root,
 			"docs/specs/index.spec.md",
-			["# Test Apex", "", "Proof: [Product](user/product.spec.md)", "", "```run:shell", "echo apex", "```", ""].join("\n"),
+			["# Test Apex", "", "Proof: [Product](user/product.spec.md)", "Generated: [Promise Ledger](generated/promise-ledger.spec.md)", "", "```run:shell", "echo apex", "```", ""].join("\n"),
 		);
 		writeFile(
 			root,
 			"docs/specs/user/product.spec.md",
 			["# Product", "", "```run:shell", "echo promise", "```", ""].join("\n"),
+		);
+		writeFile(
+			root,
+			"docs/specs/generated/promise-ledger.spec.md",
+			["# Promise Ledger", "", "No typed graph.", ""].join("\n"),
 		);
 		const result = spawnSync("node", [SCRIPT_PATH], { cwd: root, encoding: "utf-8" });
 		assert.equal(result.status, 1);

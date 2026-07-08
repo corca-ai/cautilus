@@ -35,7 +35,7 @@ Use `npm run lint` or `npm run test` directly only when iterating on one seam.
 `npm run lint` includes placeholder drift, `golangci-lint run`, `go vet`, and `govulncheck`.
 `npm run verify` runs the same standing lint phases, then adds `go test -race` before the standing Node test suite.
 Do not require all three in sequence before stopping.
-`npm run lint:specs` validates the spec index, checks relative spec links, and runs the full public spec suite with `specdown run -quiet`.
+`npm run lint:specs` validates the spec index, checks relative spec links, runs the full public spec suite with `specdown run -quiet`, validates the typed trace graph, and checks generated promise-ledger drift from that same trace.
 Pass one or more spec files after `--` to validate only those linked files and run each one as a focused temporary specdown entry:
 
 ```bash

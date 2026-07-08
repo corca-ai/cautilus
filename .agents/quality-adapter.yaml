@@ -88,7 +88,6 @@ runtime_budget_profiles:
       lint · claim evidence hashes: 9000
       test · coverage: 10000
       lint · eslint: 8000
-      lint · promise ledger: 4000
       security · govulncheck: 3500
 startup_probes:
   - label: cautilus-version

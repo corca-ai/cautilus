@@ -76,7 +76,7 @@ placeholder drift + specdown 기반 spec source guard) + Go race test + standing
 | 명령 | 용도 |
 |---|---|
 | `npm run lint` | lint만 (ESLint + specs + Go lint + vet + govulncheck) |
-| `npm run lint:specs` | public spec index/link 검증 + 전체 cheap spec suite |
+| `npm run lint:specs` | public spec index/link 검증 + 전체 cheap spec suite + typed trace / promise ledger drift |
 | `npm run lint:specs -- <spec-file>` | 선택한 spec 파일의 link/reachability 검증 + focused specdown 실행 |
 | `npm run specdown` | 전체 executable spec surface |
 | `npm run test` | Go test + Node test (race 없이) |

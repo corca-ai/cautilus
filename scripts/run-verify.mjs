@@ -10,7 +10,6 @@ export const PHASES = [
 	{ id: "lint:eslint", label: "lint · eslint" },
 	{ id: "audit:surface:check", label: "lint · surface honesty audit" },
 	{ id: "lint:specs", label: "lint · specs" },
-	{ id: "specdown:ledger:check", label: "lint · promise ledger" },
 	{ id: "specdown:project:check", label: "lint · specdown gold-set projection" },
 	{ id: "specdown:claim-state:check", label: "lint · projected claim state" },
 	{ id: "lint:scenario-normalizers", label: "lint · scenario normalizers" },
@@ -220,18 +219,21 @@ function medianInteger(values) {
 	return Math.round((sorted[middle - 1] + sorted[middle]) / 2);
 }
 
-function previousCommandEntry(existingSignals, runtimeProfile, label) {
-	const profileEntry = existingSignals?.profiles?.[runtimeProfile];
-	const commands = profileEntry?.commands;
-	const entry = commands?.[label];
-	return entry && typeof entry === "object" ? entry : {};
-}
-
 function previousProfileCommands(existingSignals, runtimeProfile) {
 	const profileEntry = existingSignals?.profiles?.[runtimeProfile];
 	const commands = profileEntry?.commands;
 	return commands && typeof commands === "object" && !Array.isArray(commands)
 		? commands
+		: {};
+}
+
+function initialProfileCommands(payload, previousCommands) {
+	return payload.status === "passed" ? {} : { ...previousCommands };
+}
+
+function existingProfiles(existingSignals) {
+	return existingSignals.profiles && typeof existingSignals.profiles === "object"
+		? existingSignals.profiles
 		: {};
 }
 
@@ -287,11 +289,12 @@ export function withRuntimeSignalSamples(
 	{ existingSignals = {}, runtimeProfile = machineRuntimeProfile() } = {},
 ) {
 	const profile = normalizeRuntimeProfile(runtimeProfile);
-	const commands = { ...previousProfileCommands(existingSignals, profile) };
+	const previousCommands = previousProfileCommands(existingSignals, profile);
+	const commands = initialProfileCommands(payload, previousCommands);
 	for (const phase of payload.phases || []) {
 		const label = phase.label || phase.id;
 		if (typeof label !== "string" || !label) continue;
-		const previousEntry = previousCommandEntry(existingSignals, profile, label);
+		const previousEntry = previousCommands[label] || {};
 		const summary = commandRuntimeSummary(phase, payload.generatedAt, previousEntry);
 		if (summary) {
 			commands[label] = summary;
@@ -301,9 +304,7 @@ export function withRuntimeSignalSamples(
 		...payload,
 		runtimeProfile: profile,
 		profiles: {
-			...(existingSignals.profiles && typeof existingSignals.profiles === "object"
-				? existingSignals.profiles
-				: {}),
+			...existingProfiles(existingSignals),
 			[profile]: {
 				commands,
 			},

@@ -49,7 +49,6 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"lint:eslint",
 		"audit:surface:check",
 		"lint:specs",
-		"specdown:ledger:check",
 		"specdown:project:check",
 		"specdown:claim-state:check",
 		"lint:scenario-normalizers",
@@ -315,6 +314,50 @@ test("withRuntimeSignalSamples preserves unobserved phase samples on partial run
 		merged.profiles["local-test"].commands["lint · b"],
 		existingSignals.profiles["local-test"].commands["lint · b"],
 	);
+});
+
+test("withRuntimeSignalSamples drops stale command labels after a full passing run", () => {
+	const existingSignals = {
+		profiles: {
+			"local-test": {
+				commands: {
+					"lint · removed": {
+						latest: { timestamp: "2026-07-08T00:00:00.000Z", elapsed_ms: 99 },
+						recent_elapsed_ms: [99],
+						median_recent_elapsed_ms: 99,
+						max_recent_elapsed_ms: 99,
+						samples: 1,
+					},
+				},
+			},
+		},
+	};
+	const payload = {
+		...runtimeSignalPayload(
+			{
+				ok: true,
+				status: 0,
+				totalElapsedMs: 11,
+				phaseResults: [
+					{
+						id: "lint:a",
+						label: "lint · a",
+						durationMs: 11,
+						status: "passed",
+						exitCode: 0,
+					},
+				],
+			},
+			0,
+		),
+		generatedAt: "2026-07-08T03:00:00.000Z",
+	};
+
+	const merged = withRuntimeSignalSamples(payload, {
+		existingSignals,
+		runtimeProfile: "local-test",
+	});
+	assert.deepEqual(Object.keys(merged.profiles["local-test"].commands), ["lint · a"]);
 });
 
 test("runPhases writes a failed quality runtime signal when a phase fails", () => {
