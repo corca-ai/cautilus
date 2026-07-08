@@ -1,8 +1,8 @@
 {
-  "candidateCount": 565,
+  "candidateCount": 566,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 2,
+    "evidenceSupportIdRewriteCount": 1,
     "matchedClaimCount": 565,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
@@ -271,8 +271,38 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a6527de134bae7ce78a10e589d1c68ee1d31b5dfecf3823fd011b4ecdfc320be",
+      "claimId": "claim-agents-md-116",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "dev/repo",
+        "repo-instructions"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "Do not report a task-completing goal or slice as done while meaningful implementation, workflow, or artifact work remains uncommitted, unless the deferral is explicit.",
+          "line": 116,
+          "path": "AGENTS.md"
+        }
+      ],
+      "summary": "Do not report a task-completing goal or slice as done while meaningful implementation, workflow, or artifact work remains uncommitted, unless the deferral is explicit.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
-      "claimId": "claim-agents-md-142",
+      "claimId": "claim-agents-md-144",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -281,7 +311,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-agents-md-142"
+            "claim-agents-md-144"
           ]
         }
       ],
@@ -299,7 +329,7 @@
       "sourceRefs": [
         {
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
-          "line": 142,
+          "line": 144,
           "path": "AGENTS.md"
         }
       ],
@@ -19039,7 +19069,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 436,
+      "developer": 437,
       "user": 129
     },
     "byClaimSemanticGroup": {
@@ -19050,32 +19080,32 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 59,
-      "Packets and reporting": 62,
+      "Packets and reporting": 63,
       "Quality gates": 37,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 145,
-      "unknown": 420
+      "unknown": 421
     },
     "byLifecycle": {
-      "new": 565
+      "new": 566
     },
     "byRecommendedProof": {
-      "cautilus-eval": 157,
+      "cautilus-eval": 158,
       "deterministic": 257,
       "human-auditable": 151
     },
     "byReviewStatus": {
       "agent-reviewed": 194,
-      "heuristic": 370,
+      "heuristic": 371,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 32,
       "needs-alignment": 57,
       "needs-scenario": 1,
-      "ready-for-proof": 475
+      "ready-for-proof": 476
     }
   },
   "discoveryEngine": {
@@ -19274,7 +19304,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
+  "gitCommit": "a906398f8d2e960770d2bab493ff11975b0cb04e",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19475,7 +19505,7 @@
     "appliedResultCount": 106,
     "skippedResultCount": 34,
     "keptUpdateCount": 274,
-    "rewrittenUpdateCount": 148,
+    "rewrittenUpdateCount": 149,
     "droppedUpdateCount": 254,
     "provenanceMode": "aggregate-current-review-results"
   },
@@ -21216,7 +21246,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:415a7f6796e27e34b820eb8ddb677ac93014d9555db18ba53fff25691768abeb",
+      "contentHash": "sha256:ab6973b30dc95fd67bcde7b18124a3bcff97ca7a8cb6632d2d9bd63cff6d9da7",
       "depth": 0,
       "kind": "repo-instructions",
       "path": "AGENTS.md",

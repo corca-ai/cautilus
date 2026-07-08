@@ -3,20 +3,20 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 370
+          "unknown": 371
         },
         "byReviewStatus": {
-          "heuristic": 370
+          "heuristic": 371
         },
-        "count": 370,
+        "count": 371,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-96",
+          "claim-agents-md-116",
           "claim-readme-md-6",
           "claim-readme-md-19",
-          "claim-readme-md-49",
-          "claim-readme-md-61"
+          "claim-readme-md-49"
         ],
         "summary": "Review heuristic labels before spending proof or eval budget."
       }
@@ -33,7 +33,7 @@
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
-          "claim-agents-md-142",
+          "claim-agents-md-144",
           "claim-readme-md-8",
           "claim-readme-md-9",
           "claim-readme-md-12",
@@ -64,21 +64,21 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 150
+          "unknown": 151
         },
         "byReviewStatus": {
           "agent-reviewed": 5,
-          "heuristic": 145
+          "heuristic": 146
         },
-        "count": 150,
+        "count": 151,
         "id": "agent-plan-cautilus-eval",
         "recommendedActor": "agent",
         "sampleClaimIds": [
           "claim-agents-md-96",
+          "claim-agents-md-116",
           "claim-readme-md-19",
           "claim-readme-md-49",
-          "claim-readme-md-86",
-          "claim-readme-md-97"
+          "claim-readme-md-86"
         ],
         "summary": "Draft or select Cautilus eval scenarios for ready eval claims."
       },
@@ -158,7 +158,7 @@
       }
     ]
   },
-  "candidateCount": 565,
+  "candidateCount": 566,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -175,7 +175,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 436,
+      "developer": 437,
       "user": 129
     },
     "byClaimSemanticGroup": {
@@ -186,32 +186,32 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 59,
-      "Packets and reporting": 62,
+      "Packets and reporting": 63,
       "Quality gates": 37,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
       "satisfied": 145,
-      "unknown": 420
+      "unknown": 421
     },
     "byLifecycle": {
-      "new": 565
+      "new": 566
     },
     "byRecommendedProof": {
-      "cautilus-eval": 157,
+      "cautilus-eval": 158,
       "deterministic": 257,
       "human-auditable": 151
     },
     "byReviewStatus": {
       "agent-reviewed": 194,
-      "heuristic": 370,
+      "heuristic": 371,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 32,
       "needs-alignment": 57,
       "needs-scenario": 1,
-      "ready-for-proof": 475
+      "ready-for-proof": 476
     }
   },
   "discoveryBoundary": {
@@ -426,7 +426,7 @@
     "satisfiedClaimCount": 145,
     "satisfiedClaims": [
       {
-        "claimId": "claim-agents-md-142",
+        "claimId": "claim-agents-md-144",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -435,7 +435,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-on-demand-test-gate-2026-05-16.json",
             "supportsClaimIds": [
-              "claim-agents-md-142"
+              "claim-agents-md-144"
             ]
           }
         ],
@@ -3473,7 +3473,7 @@
       }
     ]
   },
-  "gitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
+  "gitCommit": "a906398f8d2e960770d2bab493ff11975b0cb04e",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3485,10 +3485,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
+    "currentGitCommit": "a906398f8d2e960770d2bab493ff11975b0cb04e",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
+    "packetGitCommit": "a906398f8d2e960770d2bab493ff11975b0cb04e",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3512,7 +3512,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 328,
+    "heuristicClaimsReadyForReview": 329,
     "needsAlignment": 57,
     "needsScenario": 1
   },

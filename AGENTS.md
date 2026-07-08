@@ -111,7 +111,9 @@ Do not replace the blocked review with a same-agent pass while still calling it 
 
 ## Commit Discipline
 
-- After each meaningful unit of work, create a git commit before moving on.
+- Commit meaningful work slices as they finish; keep each commit scoped to one understandable unit instead of one giant end-of-run commit.
+- Treat meaningful `charness-artifacts/` changes as repo state and commit them with the work they support.
+- Do not report a task-completing goal or slice as done while meaningful implementation, workflow, or artifact work remains uncommitted, unless the deferral is explicit.
 - Write commit messages so later announcements can recover intent without guessing.
 - Prefer commit subjects that state user-facing or operator-facing purpose, not mechanism.
 - Add a short body when it clarifies the trigger, boundary, or behavior change.

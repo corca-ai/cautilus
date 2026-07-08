@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:9276305d36aa38e9cb9553393d7741ba18f5e7aabf36db4e116f28100c1417ae"
+      "contentHash": "sha256:b917f9030526f9bb53b78c7b8da3ab5490bd463ba557ce38e9acb959316b1161"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:a6f61b85d4439fa76db8a8b35cfd5b0626d47614fc4611bcb4cea57827a31d91"
     }
   },
-  "claimsPacketGitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
+  "claimsPacketGitCommit": "a906398f8d2e960770d2bab493ff11975b0cb04e",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 565,
+  "claimsPacketCandidateCount": 566,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,24 +200,24 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 565,
+    "totalRawClaimCount": 566,
     "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
     "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 487,
+    "semanticReviewRecommendedCount": 488,
     "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 436,
+      "mapped-to-maintainer-canonical": 437,
       "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 436,
+      "developer": 437,
       "user": 129
     },
     "byMappingConfidence": {
       "high": 78,
       "low": 160,
-      "medium": 327
+      "medium": 328
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
@@ -227,7 +227,7 @@
       "M12": 12,
       "M2": 26,
       "M3": 106,
-      "M4": 97,
+      "M4": 98,
       "M5": 37,
       "M6": 13,
       "M7": 18,
@@ -373,7 +373,8 @@
       "claim-agents-md-95",
       "claim-agents-md-96",
       "claim-agents-md-101",
-      "claim-agents-md-142",
+      "claim-agents-md-116",
+      "claim-agents-md-144",
       "claim-readme-md-6",
       "claim-readme-md-8",
       "claim-readme-md-9",
@@ -1144,7 +1145,7 @@
       "absorbedRawClaimCount": 106,
       "absorbedRawClaimIds": [
         "claim-agents-md-100",
-        "claim-agents-md-142",
+        "claim-agents-md-144",
         "claim-docs-contracts-adapter-contract-md-558",
         "claim-docs-contracts-adapter-contract-md-567",
         "claim-docs-internal-working-patterns-md-63",
@@ -1258,7 +1259,7 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-agents-md-142",
+          "claimId": "claim-agents-md-144",
           "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1910,13 +1911,14 @@
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 97,
+      "absorbedRawClaimCount": 98,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
         "claim-agents-md-95",
         "claim-agents-md-96",
         "claim-agents-md-101",
+        "claim-agents-md-116",
         "claim-docs-contracts-adapter-contract-md-3",
         "claim-docs-contracts-adapter-contract-md-224",
         "claim-docs-contracts-adapter-contract-md-237",
@@ -2038,6 +2040,12 @@
         {
           "claimId": "claim-agents-md-101",
           "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-agents-md-116",
+          "claimFingerprint": "sha256:a6527de134bae7ce78a10e589d1c68ee1d31b5dfecf3823fd011b4ecdfc320be",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2596,21 +2604,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 79
+        "unknown": 80
       },
       "byReviewStatus": {
         "agent-reviewed": 29,
-        "heuristic": 68
+        "heuristic": 69
       },
       "byRecommendedProof": {
-        "cautilus-eval": 37,
+        "cautilus-eval": 38,
         "deterministic": 31,
         "human-auditable": 29
       },
       "byMappingConfidence": {
         "high": 10,
         "low": 5,
-        "medium": 82
+        "medium": 83
       }
     },
     {
@@ -4538,12 +4546,50 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-142",
+      "claimId": "claim-agents-md-116",
+      "summary": "Do not report a task-completing goal or slice as done while meaningful implementation, workflow, or artifact work remains uncommitted, unless the deferral is explicit.",
+      "sourceRefs": [
+        {
+          "path": "AGENTS.md",
+          "line": 116,
+          "excerpt": "Do not report a task-completing goal or slice as done while meaningful implementation, workflow, or artifact work remains uncommitted, unless the deferral is explicit."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:a6527de134bae7ce78a10e589d1c68ee1d31b5dfecf3823fd011b4ecdfc320be",
+      "canonicalClaimId": "M4",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 8,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cautilu",
+        "explicit",
+        "fixture",
+        "host-owned",
+        "packet",
+        "remain",
+        "run",
+        "while",
+        "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-agents-md-144",
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 142,
+          "line": 144,
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."
         }
       ],

@@ -1,16 +1,19 @@
 # Setup Normalization
-Date: 2026-05-19
+Date: 2026-07-08
 
 ## Scope
 
-Re-run setup inspection and complete the previously-implicit worktree adapter seam during a `/setup` + `/quality` refresh.
+Re-run `charness:setup` normalization for the repo host-instruction surface after repeated quality optimization rounds.
+
+The narrow question was whether `AGENTS.md` or the `CLAUDE.md` compatibility surface needed another change.
 
 ## Result
 
-No core operating-surface changes were needed.
-The inspector reports `repo_mode=NORMALIZE`, `missing_surfaces=[]`, `findings=[]`, `recommendations=[]`, and `recommended_action=leave_as_is`.
+One targeted `AGENTS.md` update was needed.
 
-This slice seeded one previously-missing optional seam: `.agents/worktree-adapter.yaml`.
+The setup inspector previously emitted `commit_discipline_drift` because the repo had commit guidance, but did not explicitly say that task-completing work must not be reported done while meaningful implementation, workflow, or artifact work remains uncommitted unless that deferral is explicit.
+
+`AGENTS.md` now keeps commit discipline compact and says to commit meaningful work slices as they finish, commit meaningful `charness-artifacts/` changes with the work they support, and avoid done-claims while meaningful work remains uncommitted.
 
 ## Current Surface Map
 
@@ -24,35 +27,26 @@ This slice seeded one previously-missing optional seam: `.agents/worktree-adapte
 ## Routing
 
 The existing Skill Routing block stays intentionally repo-specific.
-The 0.7.x renderer still suggests reviewing the custom block because it does not match the compact generated block byte-for-byte; the setup adapter acknowledges `skill_routing_block_custom_or_drifted`, so this is informational, not a finding.
 
-## Worktree Adapter
-
-Seeded `.agents/worktree-adapter.yaml` tailored to cautilus's stack (npm + checked-in `.githooks`).
-Default seed template assumed pnpm + lefthook; the file was rewritten to use:
-
-- `prepare.commands`: `npm install` and `npm run hooks:install`
-- `doctor.checks`: manifest-level `hooks_check` running `npm run hooks:check`
-
-`charness worktree doctor --repo-root . --json` reports `status: pass` with the manifest `hooks_check` green.
-
-This seam was visible in the prior `inspect_repo.py` output under `agent_docs.normalization.worktree_adapter` but never surfaced as a `recommendation` because the trigger gate (`hook_manager_detected`) requires lefthook/husky/simple-git-hooks. That gap is filed upstream as `corca-ai/charness#180`.
-
-## Deliberately Not Doing
-
-- Do not create duplicate default docs such as `docs/roadmap.md` or root-level `docs/operator-acceptance.md`.
-- Do not replace the repo-specific critique packet guidance in `AGENTS.md` with the shorter generated block.
-- Do not add the `find-skills --recommend-for-task` snippet to the Skill Routing block; the block already says "Keep this block short" and that decision is the repo's prior call.
-
-## Verification
-
-- `python3 $SKILL_DIR/setup/scripts/resolve_adapter.py --repo-root .`
-- `python3 $SKILL_DIR/setup/scripts/inspect_repo.py --repo-root .`
-- `python3 $SKILL_DIR/setup/scripts/render_skill_routing.py --repo-root . --json`
-- `python3 $SKILL_DIR/setup/scripts/seed_worktree_adapter.py --repo-root .` (exited 1 with a print-only ValueError after writing the file — see `corca-ai/charness#181`)
-- `charness worktree doctor --repo-root . --json`
+The renderer still suggests reviewing the custom block because it does not match the compact generated block byte-for-byte.
+The setup adapter acknowledges `skill_routing_block_custom_or_drifted`, so this remains informational rather than an active setup recommendation.
 
 ## Delegated Review
 
-executed: parent-delegated bounded review scoped to (a) worktree adapter seed fit for cautilus's npm + `.githooks` stack and (b) the three charness improvement issues opened during this slice.
-Result recorded in `charness-artifacts/quality/latest.md` under `Delegated Review`.
+executed: bounded read-only subagent review scoped to AGENTS/CLAUDE setup normalization.
+
+The reviewer agreed that only `## Commit Discipline` needed an immediate edit, recommended leaving the custom Skill Routing block intact, and confirmed that `CLAUDE.md -> AGENTS.md` was the right host-doc shape.
+
+## Verification
+
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/setup/scripts/inspect_repo.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/setup/scripts/normalize_host_docs.py --repo-root .`
+- `git diff --check`
+- `npm run hooks:check`
+- `npm run claims:refresh:all`
+- `npm run verify`
+
+## Non-Claims
+
+- This was not a broad product quality pass.
+- This did not replace the repo-specific Skill Routing policy with the generated compact block.
