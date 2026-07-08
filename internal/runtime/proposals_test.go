@@ -391,6 +391,36 @@ func TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance(t *testing
 			want: "proposalCandidates[0].evidence[0].origin must be one of",
 		},
 		{
+			name: "invalid origin type",
+			evidence: map[string]any{
+				"sourceKind": "human_conversation",
+				"origin":     12,
+				"title":      "invalid origin type",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be a non-empty string",
+		},
+		{
+			name: "null origin",
+			evidence: map[string]any{
+				"sourceKind": "human_conversation",
+				"origin":     nil,
+				"title":      "null origin",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be a non-empty string",
+		},
+		{
+			name: "empty origin",
+			evidence: map[string]any{
+				"sourceKind": "human_conversation",
+				"origin":     "",
+				"title":      "empty origin",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be a non-empty string",
+		},
+		{
 			name: "invalid split",
 			evidence: map[string]any{
 				"sourceKind":         "agent_run",
@@ -400,6 +430,39 @@ func TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance(t *testing
 				"activityProvenance": map[string]any{"split": "acceptance"},
 			},
 			want: "proposalCandidates[0].evidence[0].activityProvenance.split must be one of",
+		},
+		{
+			name: "invalid split type",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "invalid split type",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"split": 12},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.split must be a non-empty string",
+		},
+		{
+			name: "null split",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "null split",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"split": nil},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.split must be a non-empty string",
+		},
+		{
+			name: "empty split",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "empty split",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"split": ""},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.split must be a non-empty string",
 		},
 		{
 			name: "invalid task key type",
@@ -442,6 +505,22 @@ func TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance(t *testing
 				t.Fatalf("GenerateScenarioProposals error: got %v, want containing %q", err, tc.want)
 			}
 		})
+	}
+}
+
+func TestGenerateScenarioProposalsRejectsEmptyEvidence(t *testing.T) {
+	candidate := map[string]any{
+		"proposalKey": "review-after-retro",
+		"title":       "Refresh review-after-retro scenario from recent activity",
+		"family":      "fast_regression",
+		"name":        "Review After Retro",
+		"description": "The user pivots from retro back to review in one thread.",
+		"brief":       "Recent activity shows a retro turn followed by a review turn.",
+		"evidence":    []any{},
+	}
+	_, err := GenerateScenarioProposals([]any{candidate}, nil, nil, nil, 14, time.Now())
+	if err == nil || !strings.Contains(err.Error(), "proposalCandidates[0].evidence must contain at least one item") {
+		t.Fatalf("GenerateScenarioProposals error: got %v", err)
 	}
 }
 

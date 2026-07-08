@@ -118,6 +118,9 @@ function validateCandidate(candidate, index = 0) {
 	if (!Array.isArray(candidate.evidence)) {
 		throw new Error(`proposalCandidates[${index}].evidence must be an array`);
 	}
+	if (candidate.evidence.length === 0) {
+		throw new Error(`proposalCandidates[${index}].evidence must contain at least one item`);
+	}
 	for (const [evidenceIndex, evidence] of candidate.evidence.entries()) {
 		validateEvidenceItem(evidence, `proposalCandidates[${index}].evidence[${evidenceIndex}]`);
 	}

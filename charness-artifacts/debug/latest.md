@@ -3,85 +3,99 @@ Date: 2026-07-08
 
 ## Problem
 
-During the SkillOpt runtime absorption quality pass, I ran `./scripts/run-quality.sh --read-only` and got `zsh:1: no such file or directory: ./scripts/run-quality.sh`.
-This needed classification before treating quality proof as complete.
+The post-commit SkillOpt provenance critique found that the scenario proposal runtime still accepted malformed or absent evidence at the product-owned proposal boundary.
+Go accepted numeric optional enum fields such as `origin: 12` and `activityProvenance.split: 12`, initially accepted explicit `null` optional enum fields as absent, and both Go and Node accepted candidates with `evidence: []`.
 
 ## Correct Behavior
 
-Given the quality planner emits a conditional gate packet, when the repo does not expose that exact command, the operator should use the repo's equivalent standing gates and record the missing conditional command as not applicable rather than as a product regression.
+Given a host provides a `cautilus.scenario_proposal_inputs.v1` packet, when `discover scenarios propose` validates a proposal candidate, then every candidate must carry at least one evidence item and every present optional provenance enum must be a non-empty string from the allowed enum.
+The same behavior should hold in the Go CLI runtime and the Node helper runtime.
 
 ## Observed Facts
 
-- `plan_quality_run.py --repo-root . --json` listed `./scripts/run-quality.sh --read-only` with `run_when: repo exposes this repo-native command or an equivalent standing quality gate`.
-- `./scripts/run-quality.sh --read-only` exited 127 because the file does not exist.
-- `rg -n "run-quality|quality.*read-only|read-only" scripts package.json .agents/quality-adapter.yaml` found no `run-quality.sh` script.
-- The quality adapter's standing gates are `npm run verify` and `npm run dogfood:self`, and this slice already ran `npm run verify`.
-- `npm run verify` and `npm run hooks:check` passed after the runtime absorption changes and claim refresh.
+- `docs/contracts/scenario-proposal-inputs.md` requires an `evidence` array with at least one operator-reviewable signal.
+- `fixtures/scenario-proposals/input.schema.json` has `evidence.minItems: 1`.
+- Go validation only checked that `evidence` was an array.
+- Node validation only checked that `evidence` was an array.
+- Go read optional `origin` and `activityProvenance.split` through `stringOrEmpty`, so non-string values became empty strings and bypassed enum validation.
+- A counterweight review found a second Go gap after the first repair: explicit JSON `null` for `origin` or `activityProvenance.split` was still treated as absent.
+- Node used `Set.has` directly and rejected numeric enum values.
+- Focused reproductions confirmed the critique findings before repair.
 
 ## Reproduction
 
-- From repo root, run `./scripts/run-quality.sh --read-only`.
-- Observed result: shell exits 127 with `no such file or directory`.
+- Node empty evidence: call `generateScenarioProposals({ proposalCandidates: [candidateWithEvidenceEmptyArray] })`.
+  Before repair, it emitted a proposal with `rationale: "0 recent log match(es) suggested this pattern."`.
+- Go malformed enum: run `discover scenarios propose` with an input packet whose first evidence item has `"origin": 12`, `"origin": null`, `"activityProvenance": {"split": 12}`, or `"activityProvenance": {"split": null}`.
+  Before repair, Go emitted those malformed values unchanged.
 
 ## Candidate Causes
 
-- The repo used to have `scripts/run-quality.sh` and accidentally deleted it.
-- The quality adapter is stale and should name a repo-owned quality command that no longer exists.
-- The planner emits a portable conditional packet, and I executed it without first checking whether the repo exposes the named command.
+- The original implementation treated optional enum absence and optional enum wrong-type as the same case.
+- The runtime validators relied on schema tests for `minItems` instead of enforcing the minimum at the runtime boundary.
+- The first follow-up critique focused on provenance preservation and did not include malformed type or empty-evidence negative samples.
 
 ## Hypothesis
 
-- Falsifiable claim: this is an operator misuse of a conditional planner packet, not a missing required repo gate.
-- Disconfirmer: if `.agents/quality-adapter.yaml`, `package.json`, or docs declare `scripts/run-quality.sh` as a required Cautilus gate, then the repo is missing a required command.
+- Falsifiable claim: the runtime bug is caused by missing candidate-level minimum evidence validation plus Go's `stringOrEmpty` use for optional enum validation.
+- Disconfirmer: if explicit Go type checks and evidence length checks still allow the malformed inputs, the cause is later merge/proposal construction rather than validation.
 
 ## Verification
 
 - Result: confirmed.
-- The planner text itself scopes the command to repos that expose it or an equivalent standing quality gate.
-- The Cautilus repo exposes and passed the equivalent standing gate `npm run verify`.
-- No checked-in command reference found that makes `scripts/run-quality.sh` a required Cautilus command.
+- Added Go validation that rejects empty evidence arrays before proposal construction.
+- Added Node validation that rejects empty evidence arrays before proposal construction.
+- Added Go optional enum validation that distinguishes absent from wrong-type, null, or empty present values.
+- Focused Go runtime, Node helper/schema, and Go CLI smoke tests pass after the repair.
 
 ## Root Cause
 
-The root cause was applying a conditional portable quality gate as if it were unconditionally repo-owned.
-The repo did not regress; the applicable standing quality proof for this slice is `npm run verify` plus the focused CLI/schema tests and `npm run hooks:check`.
+The root cause was incomplete runtime validation at the scenario proposal boundary.
+The schema documented the shape, but the runtimes did not enforce the evidence cardinality invariant, and the Go validator used a lossy helper that erased wrong-type optional enum values.
 
 ## Invariant Proof
 
-- Invariant: conditional planner gate packets must be checked against the resolved repo adapter before execution is treated as required proof.
-- Producer Proof: `plan_quality_run.py` marks the read-only quality command with a `run_when` condition.
-- Final-Consumer Proof: `npm run verify` and `npm run hooks:check` passed as the actual Cautilus standing gates.
-- Interface-Shape Sibling Scan: quality gate packets that name optional repo commands need applicability judgment before execution.
-- Non-Claims: this does not prove `npm run dogfood:self`; that broader dogfood gate was not required for this local runtime absorption slice.
+- Invariant: when a host input packet crosses into `discover scenarios propose`, malformed provenance and evidence-free candidates must be rejected before any reviewable proposal packet is emitted.
+- Producer Proof: focused Go and Node unit tests now exercise malformed provenance, null optional provenance, and empty evidence before proposal construction.
+- Final-Consumer Proof: Go CLI smoke tests now send malformed numeric and null provenance through `discover scenarios propose` and observe non-zero exits with the expected validation errors.
+- Interface-Shape Sibling Scan: checked the matching Node helper, Go runtime, schema fixture, schema test, and CLI smoke boundary.
+- Non-Claims: this does not prove future v2 semantic rules such as `origin: replayed` requiring `replayId`, nor does it prove rendered HTML provenance detail.
 
 ## Detection Gap
 
-- surface: operator quality workflow | what did not fire: no automatic guard prevented me from executing an inapplicable conditional gate | smallest change to fire it: not worth adding; the planner already labels `run_when`, and the correct response is operator judgment.
+- surface: Go runtime provenance tests | what did not fire: no test supplied non-string or null optional enum values | smallest change to fire it: add invalid-type, null, and empty origin and split cases to `TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance`.
+- surface: Node scenario proposal tests | what did not fire: no test supplied `evidence: []` | smallest change to fire it: add an empty-evidence negative case.
+- surface: CLI smoke tests | what did not fire: happy-path provenance preservation did not prove public-boundary rejection | smallest change to fire it: add malformed-provenance CLI negative smoke cases for numeric origin, null origin, and null split.
+- surface: schema tests | what did not fire: schema validated fixtures only, not runtime rejection behavior | smallest change to fire it: keep schema as shape proof and put runtime rejection in Go/Node tests.
 
 ## Sibling Search
 
-- Mental model: every gate packet command is mandatory.
-- gate-applicability axis: `run_when` field | decision: read and apply the condition before running | proof: planner JSON includes the condition.
-- standing-gate axis: repo-owned equivalent gate | decision: use `npm run verify` for this slice | proof: verify passed.
-- cross-file: `.agents/quality-adapter.yaml` and `package.json` define actual Cautilus gates, not `scripts/run-quality.sh`.
+- Mental model: schema-bounded optional fields are safe if the happy path preserves them.
+- same layer: `scripts/agent-runtime/scenario-proposals.mjs` | decision: same bug, fix now | proof: local unit test now rejects empty evidence.
+- same layer: `internal/runtime/proposals.go` | decision: same bug, fix now | proof: local unit test now rejects empty evidence and wrong-type, null, or empty optional enums.
+- specialization down: optional provenance identity strings | decision: same class, diagnostic-only for this slice | proof: schema now records `minLength: 1`, runtime already rejects empty strings.
+- abstraction up: public CLI boundary | decision: same bug, fix now | proof: CLI negative smoke now rejects numeric and null malformed provenance.
+- mental-model sibling: docs wording overclaiming optional provenance as universal provenance | decision: same class, diagnostic-only for this slice | proof: contract wording narrowed to optional v1 validation when present.
+- cross-file: `internal/runtime/proposals.go`, `scripts/agent-runtime/scenario-proposals.mjs`, `fixtures/scenario-proposals/input.schema.json`, and `internal/app/cli_smoke_test.go` share the proposal input validation boundary.
 
 ## Seam Risk
 
-- Interrupt ID: quality-conditional-gate-misread-2026-07-08
+- Interrupt ID: scenario-provenance-runtime-validation-parity-2026-07-08
 - Risk Class: none
-- Seam: quality planner packet to repo-specific gate execution
-- Disproving Observation: planner explicitly labels the command conditional and the repo equivalent gate passed
-- What Local Reasoning Cannot Prove: n/a
+- Seam: host-normalized scenario proposal input to product-owned proposal packet generation
+- Disproving Observation: focused runtime and CLI tests now exercise the malformed inputs at the boundary that previously accepted them
+- What Local Reasoning Cannot Prove: future semantic provenance requirements and rendered HTML review details
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
 - Resolution: resolved
-- Critique Required: no
+- Critique Required: yes
 - Next Step: impl
 - Handoff Artifact: none
 
 ## Prevention
 
-For this goal closeout, record `./scripts/run-quality.sh --read-only` as not applicable because the repo does not expose it.
-Use the passing `npm run verify`, focused tests, CLI discovery probes, and `npm run hooks:check` as the quality evidence.
+Keep scenario proposal validation parity checks in both runtimes whenever the packet schema adds a field.
+For optional fields, test absent, valid, invalid value, invalid type, and explicit null separately.
+For operator-reviewable evidence, pair schema `minItems` with runtime rejection and public CLI smoke when the field crosses a command boundary.

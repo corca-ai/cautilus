@@ -138,7 +138,8 @@ The product-owned `discover scenarios propose` command then:
 - Registry presence and recent coverage remain separate inputs.
 - `intentProfile` stays optional so non-intent-aware candidate miners do not have to invent fake dimensions.
 - `origin` and `activityProvenance` are optional v1 evidence fields, not a separate SkillOpt packet.
-- Cautilus validates those fields when present and preserves them through `discover scenarios prepare-input`; `discover scenarios propose` preserves them on the top-ranked evidence entries it emits.
+- `discover scenarios prepare-input` preserves those fields from normalized input.
+- `discover scenarios propose` validates those fields when present and preserves them on the top-ranked evidence entries it emits.
 
 ## Probe Questions
 

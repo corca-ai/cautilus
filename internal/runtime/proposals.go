@@ -349,6 +349,9 @@ func validateProposalCandidate(candidate map[string]any, index int) error {
 	if err != nil {
 		return err
 	}
+	if len(evidence) == 0 {
+		return fmt.Errorf("proposalCandidates[%d].evidence must contain at least one item", index)
+	}
 	for evidenceIndex, rawEvidence := range evidence {
 		if err := validateProposalEvidence(rawEvidence, fmt.Sprintf("proposalCandidates[%d].evidence[%d]", index, evidenceIndex)); err != nil {
 			return err
@@ -370,8 +373,8 @@ func validateProposalEvidence(rawEvidence any, field string) error {
 	if !containsString(scenarioProposalEvidenceSourceKinds, stringOrEmpty(evidence["sourceKind"])) {
 		return fmt.Errorf("%s.sourceKind must be one of %s", field, strings.Join(scenarioProposalEvidenceSourceKinds, ", "))
 	}
-	if origin := stringOrEmpty(evidence["origin"]); origin != "" && !containsString(scenarioProposalEvidenceOrigins, origin) {
-		return fmt.Errorf("%s.origin must be one of %s", field, strings.Join(scenarioProposalEvidenceOrigins, ", "))
+	if err := validateOptionalEnumString(evidence, "origin", scenarioProposalEvidenceOrigins, field+".origin"); err != nil {
+		return err
 	}
 	rawProvenance, ok := evidence["activityProvenance"]
 	if !ok || rawProvenance == nil {
@@ -393,14 +396,29 @@ func validateProposalEvidence(rawEvidence any, field string) error {
 			}
 		}
 	}
-	if split := stringOrEmpty(provenance["split"]); split != "" && !containsString(scenarioProposalEvidenceSplits, split) {
-		return fmt.Errorf("%s.activityProvenance.split must be one of %s", field, strings.Join(scenarioProposalEvidenceSplits, ", "))
+	if err := validateOptionalEnumString(provenance, "split", scenarioProposalEvidenceSplits, field+".activityProvenance.split"); err != nil {
+		return err
 	}
 	if score, ok := provenance["score"]; ok {
 		number, ok := toFloat(score)
 		if !ok || math.IsNaN(number) || math.IsInf(number, 0) {
 			return fmt.Errorf("%s.activityProvenance.score must be a number", field)
 		}
+	}
+	return nil
+}
+
+func validateOptionalEnumString(record map[string]any, key string, allowed []string, field string) error {
+	rawValue, ok := record[key]
+	if !ok {
+		return nil
+	}
+	value, err := normalizeNonEmptyString(rawValue, field)
+	if err != nil {
+		return err
+	}
+	if !containsString(allowed, value) {
+		return fmt.Errorf("%s must be one of %s", field, strings.Join(allowed, ", "))
 	}
 	return nil
 }

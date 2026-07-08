@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:07d36fff807b9773d98cdd066e58d8f7046c0f93bc5a0c693abf75186649c12e"
+      "contentHash": "sha256:96d3b16f76b4e3c46dd44306eb1b828a0d3684d30f5909549a5db5937b33c1d4"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:a6f61b85d4439fa76db8a8b35cfd5b0626d47614fc4611bcb4cea57827a31d91"
     }
   },
-  "claimsPacketGitCommit": "4e4eac2ad5c2e90e2e0314075a87fa918e594368",
+  "claimsPacketGitCommit": "cbfee8a38c6c3d6e842da9308f3047d49b215957",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 565,
   "catalogs": {
@@ -3762,7 +3762,7 @@
         },
         {
           "claimId": "claim-docs-master-plan-md-73",
-          "claimFingerprint": "sha256:273050185c3b68535cc50246ab368bd714a7e06cd31a409fdb08fd58fc4dbd55",
+          "claimFingerprint": "sha256:81e37881d69c6e361727b5669225c4b060e7d339a3a91f1fd82a54f2b4d75698",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -7317,12 +7317,12 @@
     },
     {
       "claimId": "claim-docs-master-plan-md-73",
-      "summary": "the first implemented absorption route is scenario-proposal evidence provenance: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`, and the existing prepare/propose path validates those fields and preserves them on emitted top-ranked proposal evidence",
+      "summary": "the first implemented absorption route is scenario-proposal evidence provenance handoff: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`; `prepare-input` preserves those fields, and `propose` validates them when present and preserves them on emitted top-ranked proposal evidence",
       "sourceRefs": [
         {
           "path": "docs/master-plan.md",
           "line": 73,
-          "excerpt": "the first implemented absorption route is scenario-proposal evidence provenance: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`, and the existing prepare/propose path validates those fields and preserves them on emitted top-ranked proposal evidence"
+          "excerpt": "the first implemented absorption route is scenario-proposal evidence provenance handoff: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`; `prepare-input` preserves those fields, and `propose` validates them when present and preserves them on emitted top-ranked proposal evidence"
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -7332,12 +7332,12 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:273050185c3b68535cc50246ab368bd714a7e06cd31a409fdb08fd58fc4dbd55",
+      "claimFingerprint": "sha256:81e37881d69c6e361727b5669225c4b060e7d339a3a91f1fd82a54f2b4d75698",
       "canonicalClaimId": "M11",
-      "score": 15,
-      "runnerUpCanonicalClaimId": "M8",
-      "runnerUpScore": 13,
-      "scoreMargin": 2,
+      "score": 13,
+      "runnerUpCanonicalClaimId": "M10",
+      "runnerUpScore": 12,
+      "scoreMargin": 1,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
@@ -7347,13 +7347,13 @@
         "contract",
         "deterministic",
         "evidence",
-        "existing",
         "field",
         "first",
         "keep",
-        "path",
         "preserve",
-        "proposal"
+        "proposal",
+        "route",
+        "subclaim"
       ]
     },
     {

@@ -123,16 +123,20 @@
                   "additionalProperties": false,
                   "properties": {
                     "activityId": {
-                      "type": "string"
+                      "type": "string",
+                      "minLength": 1
                     },
                     "taskKey": {
-                      "type": "string"
+                      "type": "string",
+                      "minLength": 1
                     },
                     "recurrenceKey": {
-                      "type": "string"
+                      "type": "string",
+                      "minLength": 1
                     },
                     "replayId": {
-                      "type": "string"
+                      "type": "string",
+                      "minLength": 1
                     },
                     "split": {
                       "type": "string",

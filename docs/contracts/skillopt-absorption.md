@@ -121,7 +121,7 @@ It must keep held-out as validation/selection evidence, keep acceptance as optim
 Accepted absorption depends on these invariants:
 
 - raw host data enters only through host-owned normalization or explicit source-bound packets
-- every normalized task or evidence item records whether it is real, synthetic, replayed, or operator-authored
+- new SkillOpt-derived evidence that claims this route records whether it is real, synthetic, replayed, or operator-authored; v1 preserves backwards compatibility by validating `origin` only when present
 - train, held-out, full-gate, and acceptance roles stay explicit
 - acceptance evidence is read-only at the human accept step and never becomes mutation evidence
 - recurring-task replay claims are scoped to task families with checkable correctness signals and real headroom

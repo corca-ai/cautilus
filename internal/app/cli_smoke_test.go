@@ -2073,6 +2073,82 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 	}
 }
 
+func TestCLIScenarioProposeRejectsMalformedProvenance(t *testing.T) {
+	cases := []struct {
+		name     string
+		evidence map[string]any
+		want     string
+	}{
+		{
+			name: "numeric origin",
+			evidence: map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     12,
+				"title":      "invalid replay provenance",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be a non-empty string",
+		},
+		{
+			name: "null origin",
+			evidence: map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     nil,
+				"title":      "null replay provenance",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be a non-empty string",
+		},
+		{
+			name: "null split",
+			evidence: map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     "replayed",
+				"title":      "null split provenance",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"split": nil,
+				},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.split must be a non-empty string",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root := t.TempDir()
+			inputPath := filepath.Join(root, "scenario-proposal-input.json")
+			outputPath := filepath.Join(root, "scenario-proposals.json")
+			writeJSONFile(t, inputPath, map[string]any{
+				"schemaVersion": contracts.ScenarioProposalInputsSchema,
+				"windowDays":    14,
+				"families":      []any{"fast_regression"},
+				"proposalCandidates": []any{
+					map[string]any{
+						"proposalKey": "review-after-retro",
+						"title":       "Refresh review-after-retro scenario from recent activity",
+						"family":      "fast_regression",
+						"name":        "Review After Retro",
+						"description": "The user pivots from retro back to review in one thread.",
+						"brief":       "Recent activity shows a retro turn followed by a review turn.",
+						"evidence":    []any{tc.evidence},
+					},
+				},
+				"existingScenarioRegistry": []any{},
+				"scenarioCoverage":         []any{},
+				"now":                      "2026-04-11T00:00:00.000Z",
+			})
+
+			_, stderr, exitCode := runCLI(t, root, "discover", "scenarios", "propose", "--input", inputPath, "--output", outputPath)
+			if exitCode == 0 {
+				t.Fatalf("expected malformed provenance to fail")
+			}
+			if !strings.Contains(stderr, tc.want) {
+				t.Fatalf("unexpected stderr: %s", stderr)
+			}
+		})
+	}
+}
+
 func TestCLIScenarioProposePreservesFullRankedOutputAndDerivesAttentionView(t *testing.T) {
 	root := t.TempDir()
 	inputPath := filepath.Join(root, "scenario-proposal-input.json")

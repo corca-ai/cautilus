@@ -341,7 +341,8 @@
       "example": "cautilus discover scenarios propose --input ./fixtures/scenario-proposals/standalone-input.json",
       "notes": [
         "The canonical JSON output preserves the full ranked proposal list for agents.",
-        "The output packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
+        "The output packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.",
+        "Scenario proposal evidence may carry optional `origin` and `activityProvenance`; see docs/contracts/scenario-proposal-inputs.md for the packet contract."
       ]
     },
     {

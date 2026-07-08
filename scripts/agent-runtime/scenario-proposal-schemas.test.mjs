@@ -50,6 +50,9 @@ function validateAgainstSchema(schema, value, path = "root") {
 	}
 	if (schema.type === "string") {
 		assert.equal(typeof value, "string", `${path} must be a string`);
+		if (schema.minLength !== undefined) {
+			assert.ok(value.length >= schema.minLength, `${path} must have length >= ${schema.minLength}`);
+		}
 		if (schema.const !== undefined) {
 			assert.equal(value, schema.const, `${path} must equal ${schema.const}`);
 		}
@@ -118,19 +121,20 @@ test("scenario proposal output schema matches the generated proposal packet", ()
 	validateAgainstSchema(outputSchema, proposalPacket);
 });
 
-test("scenario proposal evidence schema preserves portable provenance without host storage fields", () => {
+test("scenario proposal evidence schema bounds portable provenance fields", () => {
 	const inputSchema = readJson("input.schema.json");
 	const outputSchema = readJson("proposals.schema.json");
 	const inputEvidence = inputSchema.properties.proposalCandidates.items.properties.evidence.items;
 	const outputEvidence = outputSchema.properties.proposals.items.properties.evidence.items;
+	assert.equal(outputSchema.properties.proposals.items.properties.evidence.minItems, 1, "proposal output evidence must keep at least one signal");
 	for (const [label, schema] of Object.entries({ inputEvidence, outputEvidence })) {
 		assert.deepEqual(schema.required, ["sourceKind", "title", "observedAt"], `${label} should keep v1 evidence compatibility`);
 		assert.deepEqual(schema.properties.sourceKind.enum, PORTABLE_EVIDENCE_SOURCE_KINDS, `${label} should bound sourceKind to portable source ports`);
 		assert.deepEqual(schema.properties.origin.enum, PORTABLE_EVIDENCE_ORIGINS, `${label} should bound origin to portable activity labels`);
 		assert.deepEqual(schema.properties.activityProvenance.properties.split.enum, ["proposal", "train", "review"], `${label} should keep mutable/proposal splits explicit`);
 		assert.equal(schema.properties.activityProvenance.additionalProperties, false, `${label} should reject raw host storage fields inside activityProvenance`);
-		for (const hostField of ["path", "filePath", "storagePath", "sourcePath", "logPath", "repoPath"]) {
-			assert.equal(schema.required.includes(hostField), false, `${label} must not require host-specific ${hostField}`);
+		for (const identityField of ["activityId", "taskKey", "recurrenceKey", "replayId"]) {
+			assert.equal(schema.properties.activityProvenance.properties[identityField].minLength, 1, `${label}.${identityField} should require a non-empty string`);
 		}
 	}
 });

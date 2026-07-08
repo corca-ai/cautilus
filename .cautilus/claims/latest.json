@@ -3,7 +3,7 @@
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 562,
+    "matchedClaimCount": 564,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -3309,7 +3309,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:273050185c3b68535cc50246ab368bd714a7e06cd31a409fdb08fd58fc4dbd55",
+      "claimFingerprint": "sha256:81e37881d69c6e361727b5669225c4b060e7d339a3a91f1fd82a54f2b4d75698",
       "claimId": "claim-docs-master-plan-md-73",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
@@ -3326,12 +3326,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "the first implemented absorption route is scenario-proposal evidence provenance: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`, and the existing prepare/propose path validates those fields and preserves them on emitted top-ranked proposal evidence",
+          "excerpt": "the first implemented absorption route is scenario-proposal evidence provenance handoff: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`; `prepare-input` preserves those fields, and `propose` validates them when present and preserves them on emitted top-ranked proposal evidence",
           "line": 73,
           "path": "docs/master-plan.md"
         }
       ],
-      "summary": "the first implemented absorption route is scenario-proposal evidence provenance: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`, and the existing prepare/propose path validates those fields and preserves them on emitted top-ranked proposal evidence",
+      "summary": "the first implemented absorption route is scenario-proposal evidence provenance handoff: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`; `prepare-input` preserves those fields, and `propose` validates them when present and preserves them on emitted top-ranked proposal evidence",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
@@ -17999,7 +17999,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "4e4eac2ad5c2e90e2e0314075a87fa918e594368",
+  "gitCommit": "cbfee8a38c6c3d6e842da9308f3047d49b215957",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19897,7 +19897,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:499adbe8be5e7fcdfd58a6b36ff8fdd45559669a464b71911ec81d14179adf47",
+      "contentHash": "sha256:5641c8fceea2541ddca37e697c63c807d0db4bda2e8de48e8e34c33baaf4c787",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20077,7 +20077,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a7ce8ef23b8aa3d9ac932fabe2f4fc79b0fa16398e01a67a3c7f5a1953847417",
+      "contentHash": "sha256:7bbe5e497cee41fdc35fe4b8903e4b5fff48fa6e176af4b4ad8a2d03cc52b2b3",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -20417,7 +20417,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:3ebeb0b3066bf1ecb7688cc63342bf790b8b5873313e3ef083fbc054982008a6",
+      "contentHash": "sha256:ef13ac47322e4472ea31c21676fbe7221a1c2e86feef80fb1dcc919f8ec9d644",
       "depth": 3,
       "discoveredFrom": "docs/contracts/skillopt-absorption.md",
       "kind": "contract",
