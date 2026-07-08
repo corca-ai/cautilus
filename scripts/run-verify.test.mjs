@@ -6,10 +6,12 @@ import { join } from "node:path";
 
 import {
 	PHASES,
+	machineRuntimeProfile,
 	parseArgs,
 	resolveScript,
 	runtimeSignalPayload,
 	runPhases,
+	withRuntimeSignalSamples,
 } from "./run-verify.mjs";
 
 function makeSink() {
@@ -168,6 +170,118 @@ test("runPhases writes a quality runtime signal when requested", () => {
 		"--silent",
 		"lint:a",
 	]);
+	assert.ok(payload.profiles[machineRuntimeProfile()]);
+	assert.equal(
+		payload.profiles[machineRuntimeProfile()].commands["lint · a"].latest
+			.elapsed_ms,
+		payload.phases[0].durationMs,
+	);
+});
+
+test("withRuntimeSignalSamples keeps a bounded recent window per phase label", () => {
+	const existingSignals = {
+		profiles: {
+			"local-test": {
+				commands: {
+					"lint · a": {
+						latest: { timestamp: "2026-07-08T00:00:00.000Z", elapsed_ms: 10 },
+						recent_elapsed_ms: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+						median_recent_elapsed_ms: 6,
+						max_recent_elapsed_ms: 10,
+						samples: 10,
+					},
+				},
+			},
+		},
+	};
+	const payload = {
+		...runtimeSignalPayload(
+			{
+				ok: true,
+				status: 0,
+				totalElapsedMs: 11,
+				phaseResults: [
+					{
+						id: "lint:a",
+						label: "lint · a",
+						durationMs: 11,
+						status: "passed",
+						exitCode: 0,
+					},
+				],
+			},
+			0,
+		),
+		generatedAt: "2026-07-08T01:00:00.000Z",
+	};
+
+	const merged = withRuntimeSignalSamples(payload, {
+		existingSignals,
+		runtimeProfile: "local-test",
+	});
+	const command = merged.profiles["local-test"].commands["lint · a"];
+	assert.deepEqual(command.recent_elapsed_ms, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+	assert.equal(command.samples, 11);
+	assert.equal(command.latest.elapsed_ms, 11);
+	assert.equal(command.latest.timestamp, "2026-07-08T01:00:00.000Z");
+	assert.equal(command.median_recent_elapsed_ms, 7);
+	assert.equal(command.max_recent_elapsed_ms, 11);
+});
+
+test("withRuntimeSignalSamples preserves unobserved phase samples on partial runs", () => {
+	const existingSignals = {
+		profiles: {
+			"local-test": {
+				commands: {
+					"lint · a": {
+						latest: { timestamp: "2026-07-08T00:00:00.000Z", elapsed_ms: 10 },
+						recent_elapsed_ms: [10],
+						median_recent_elapsed_ms: 10,
+						max_recent_elapsed_ms: 10,
+						samples: 1,
+					},
+					"lint · b": {
+						latest: { timestamp: "2026-07-08T00:00:00.000Z", elapsed_ms: 20 },
+						recent_elapsed_ms: [20],
+						median_recent_elapsed_ms: 20,
+						max_recent_elapsed_ms: 20,
+						samples: 1,
+					},
+				},
+			},
+		},
+	};
+	const payload = {
+		...runtimeSignalPayload(
+			{
+				ok: false,
+				status: 7,
+				failedPhase: "lint:a",
+				phaseResults: [
+					{
+						id: "lint:a",
+						label: "lint · a",
+						durationMs: 11,
+						status: "failed",
+						exitCode: 7,
+					},
+				],
+			},
+			0,
+		),
+		generatedAt: "2026-07-08T02:00:00.000Z",
+	};
+
+	const merged = withRuntimeSignalSamples(payload, {
+		existingSignals,
+		runtimeProfile: "LOCAL TEST",
+	});
+	assert.equal(merged.runtimeProfile, "local-test");
+	assert.equal(merged.profiles["local-test"].commands["lint · a"].latest.elapsed_ms, 11);
+	assert.deepEqual(
+		merged.profiles["local-test"].commands["lint · b"],
+		existingSignals.profiles["local-test"].commands["lint · b"],
+	);
 });
 
 test("runPhases writes a failed quality runtime signal when a phase fails", () => {

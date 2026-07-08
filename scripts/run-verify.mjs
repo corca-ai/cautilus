@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpus, machine, platform } from "node:os";
 import { dirname, resolve } from "node:path";
 import process from "node:process";
 
@@ -150,9 +151,11 @@ export function runtimeSignalPayload(result, totalStarted) {
 		typeof result.totalElapsedMs === "number"
 			? result.totalElapsedMs
 			: phaseResults.reduce((sum, phase) => sum + (phase.durationMs || 0), 0);
+	const generatedAt = new Date().toISOString();
 	return {
 		schemaVersion: "cautilus.quality_runtime_signal.v1",
-		generatedAt: new Date().toISOString(),
+		generatedAt,
+		updated_at: generatedAt,
 		command: "npm run verify",
 		status: result.ok ? "passed" : "failed",
 		exitCode: result.status,
@@ -164,15 +167,130 @@ export function runtimeSignalPayload(result, totalStarted) {
 	};
 }
 
+function normalizeRuntimeProfile(value) {
+	const raw = String(value || "default").trim() || "default";
+	return raw.toLowerCase().replace(/[^A-Za-z0-9_.-]+/g, "-").replace(/^-+|-+$/g, "") || "default";
+}
+
+export function machineRuntimeProfile() {
+	const system = platform() || "unknown-os";
+	const arch = machine() || "unknown-arch";
+	const cpuCount = cpus().length || 1;
+	return normalizeRuntimeProfile(`local-${system}-${arch}-${cpuCount}cpu`);
+}
+
+function medianInteger(values) {
+	if (!values.length) return null;
+	const sorted = [...values].sort((left, right) => left - right);
+	const middle = Math.floor(sorted.length / 2);
+	if (sorted.length % 2 === 1) return sorted[middle];
+	return Math.round((sorted[middle - 1] + sorted[middle]) / 2);
+}
+
+function previousCommandEntry(existingSignals, runtimeProfile, label) {
+	const profileEntry = existingSignals?.profiles?.[runtimeProfile];
+	const commands = profileEntry?.commands;
+	const entry = commands?.[label];
+	return entry && typeof entry === "object" ? entry : {};
+}
+
+function previousProfileCommands(existingSignals, runtimeProfile) {
+	const profileEntry = existingSignals?.profiles?.[runtimeProfile];
+	const commands = profileEntry?.commands;
+	return commands && typeof commands === "object" && !Array.isArray(commands)
+		? commands
+		: {};
+}
+
+function previousRecentDurations(entry) {
+	if (Array.isArray(entry.recent_elapsed_ms)) {
+		return entry.recent_elapsed_ms.filter(
+			(value) => Number.isInteger(value) && value >= 0,
+		);
+	}
+	const latest = entry.latest;
+	const latestElapsed =
+		latest && typeof latest === "object" ? latest.elapsed_ms : null;
+	return Number.isInteger(latestElapsed) && latestElapsed >= 0
+		? [latestElapsed]
+		: [];
+}
+
+function commandRuntimeSummary(phase, generatedAt, previousEntry) {
+	const elapsed = Number.isInteger(phase.durationMs) ? phase.durationMs : null;
+	if (elapsed === null || elapsed < 0) return null;
+	const previousRecent = previousRecentDurations(previousEntry);
+	const recent = [...previousRecent, elapsed].slice(-10);
+	const previousSamples = Number.isInteger(previousEntry.samples)
+		? previousEntry.samples
+		: previousRecent.length;
+	return {
+		latest: {
+			timestamp: generatedAt,
+			elapsed_ms: elapsed,
+		},
+		median_recent_elapsed_ms: medianInteger(recent),
+		max_recent_elapsed_ms: Math.max(...recent),
+		recent_elapsed_ms: recent,
+		samples: previousSamples + 1,
+	};
+}
+
+function readExistingRuntimeSignals(runtimeSignalPath) {
+	const outputPath = resolve(runtimeSignalPath);
+	if (!existsSync(outputPath)) return {};
+	try {
+		const parsed = JSON.parse(readFileSync(outputPath, "utf-8"));
+		return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+			? parsed
+			: {};
+	} catch {
+		return {};
+	}
+}
+
+export function withRuntimeSignalSamples(
+	payload,
+	{ existingSignals = {}, runtimeProfile = machineRuntimeProfile() } = {},
+) {
+	const profile = normalizeRuntimeProfile(runtimeProfile);
+	const commands = { ...previousProfileCommands(existingSignals, profile) };
+	for (const phase of payload.phases || []) {
+		const label = phase.label || phase.id;
+		if (typeof label !== "string" || !label) continue;
+		const previousEntry = previousCommandEntry(existingSignals, profile, label);
+		const summary = commandRuntimeSummary(phase, payload.generatedAt, previousEntry);
+		if (summary) {
+			commands[label] = summary;
+		}
+	}
+	return {
+		...payload,
+		runtimeProfile: profile,
+		profiles: {
+			...(existingSignals.profiles && typeof existingSignals.profiles === "object"
+				? existingSignals.profiles
+				: {}),
+			[profile]: {
+				commands,
+			},
+		},
+	};
+}
+
 function writeRuntimeSignalIfRequested(runtimeSignalPath, result, totalStarted) {
 	if (!runtimeSignalPath) {
 		return;
 	}
 	const outputPath = resolve(runtimeSignalPath);
+	const existingSignals = readExistingRuntimeSignals(outputPath);
+	const payload = withRuntimeSignalSamples(runtimeSignalPayload(result, totalStarted), {
+		existingSignals,
+	});
 	mkdirSync(dirname(outputPath), { recursive: true });
 	writeFileSync(
 		outputPath,
-		`${JSON.stringify(runtimeSignalPayload(result, totalStarted), null, 2)}\n`,
+		`${JSON.stringify(payload, null, 2)}\n`,
 	);
 }
 
