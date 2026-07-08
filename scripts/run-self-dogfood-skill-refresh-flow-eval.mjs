@@ -28,7 +28,7 @@ function fail(message) {
 function usage(exitCode = 0) {
 	const text = [
 		"Usage:",
-		"  node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write|danger-full-access] [--timeout-ms <ms>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>] [--reviewer-smoke-backend codex_exec|claude_code]",
+		"  node ./scripts/run-self-dogfood-skill-refresh-flow-eval.mjs --repo-root <dir> --output-dir <dir> --cases-file <file> --output-file <file> [--backend codex_exec|claude_code|fixture] [--fixture-results-file <file>] [--sandbox read-only|workspace-write|danger-full-access] [--timeout-ms <ms>] [--cautilus-bin <file>] [--codex-model <model>] [--codex-reasoning-effort <level>] [--codex-config <key=value>] [--claude-model <model>] [--claude-permission-mode <mode>] [--claude-allowed-tools <rules>] [--reviewer-smoke-backend codex_exec|claude_code]",
 	].join("\n");
 	const out = exitCode === 0 ? process.stdout : process.stderr;
 	out.write(`${text}\n`);
@@ -54,6 +54,7 @@ function parsePositiveInteger(value, option) {
 function defaultOptions() {
 	return {
 		repoRoot: process.cwd(),
+		cautilusBin: BIN_PATH,
 		outputDir: null,
 		casesFile: null,
 		outputFile: null,
@@ -75,6 +76,7 @@ function defaultOptions() {
 
 const VALUE_OPTIONS = {
 	"--repo-root": (options, value) => { options.repoRoot = resolve(value); },
+	"--cautilus-bin": (options, value) => { options.cautilusBin = resolve(value); },
 	"--output-dir": (options, value) => { options.outputDir = resolve(value); },
 	"--cases-file": (options, value) => { options.casesFile = resolve(value); },
 	"--output-file": (options, value) => { options.outputFile = resolve(value); },
@@ -204,8 +206,8 @@ function syncSourceCheckout(repoRoot, candidateRepo) {
 	}
 }
 
-function runCautilus(sourceRepoRoot, args) {
-	const result = spawnSync(BIN_PATH, args, {
+function runCautilus(sourceRepoRoot, cautilusBin, args) {
+	const result = spawnSync(cautilusBin, args, {
 		cwd: sourceRepoRoot,
 		encoding: "utf-8",
 		env: process.env,
@@ -216,9 +218,9 @@ function runCautilus(sourceRepoRoot, args) {
 	return result;
 }
 
-function installCandidateSurface(sourceRepoRoot, candidateRepo) {
-	runCautilus(sourceRepoRoot, ["init", "--repo-root", candidateRepo, "--overwrite"]);
-	runCautilus(sourceRepoRoot, ["doctor", "--repo-root", candidateRepo, "--scope", "agent-surface"]);
+function installCandidateSurface(sourceRepoRoot, candidateRepo, cautilusBin) {
+	runCautilus(sourceRepoRoot, cautilusBin, ["init", "--repo-root", candidateRepo, "--overwrite"]);
+	runCautilus(sourceRepoRoot, cautilusBin, ["doctor", "--repo-root", candidateRepo, "--scope", "agent-surface"]);
 }
 
 function prepareClaimState(options, candidateRepo) {
@@ -279,7 +281,7 @@ function main() {
 	mkdirSync(options.outputDir, { recursive: true });
 	const candidateRepo = ensureDetachedWorktree(options.repoRoot, join(options.outputDir, "candidate"));
 	syncSourceCheckout(options.repoRoot, candidateRepo);
-	installCandidateSurface(options.repoRoot, candidateRepo);
+	installCandidateSurface(options.repoRoot, candidateRepo, options.cautilusBin);
 	prepareClaimState(options, candidateRepo);
 	const result = spawnSync(process.execPath, buildRunnerArgs(options, candidateRepo), {
 		cwd: options.repoRoot,

@@ -3,103 +3,86 @@ Date: 2026-07-08
 
 ## Scope
 
-Minimal SkillOpt runtime absorption slice for Cautilus scenario proposal evidence provenance.
-The review covered schema, Node runtime, Go runtime, CLI smoke, contract docs, claim refresh, and delegated fresh-eye critique disposition.
+Target boundary: test code quality and speed for local Node runner tests, especially real-boundary tests that were paying unnecessary Go, binary, and full-repo worktree costs.
+
+Ambient repo findings: quality planner and skill ergonomics inventory were read as repo context, but Cautilus Agent skill ergonomics were not changed in this slice.
 
 ## Current Gates
 
-- `./bin/cautilus doctor commands --json`
-- `./bin/cautilus discover scenarios --json`
-- `./bin/cautilus doctor --repo-root . --scope agent-surface`
-- `node --test scripts/agent-runtime/scenario-proposals.test.mjs scripts/agent-runtime/scenario-proposal-schemas.test.mjs`
-- `go test ./internal/runtime -run TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance`
-- `go test ./internal/app -run 'TestCLIScenario(ProposeGeneratesStandaloneProposalPacket|NormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose)$'`
-- `npm run lint:eslint`
-- `npm run lint:specs`
-- `npm run lint:scenario-normalizers`
-- `npm run test:coverage`
-- `npm run coverage:floor:check`
-- `npm run claims:refresh:all`
-- `npm run verify`
-- `npm run hooks:check`
+- `node --test --test-reporter=spec bin/cautilus.test.mjs`
+- `node --test --test-reporter=spec scripts/run-self-dogfood-eval.test.mjs scripts/run-self-dogfood-skill-refresh-flow-eval.test.mjs`
+- `node --test --test-reporter=spec --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs`
+- `npm exec -- eslint bin/cautilus.test.mjs scripts/run-self-dogfood-eval.mjs scripts/run-self-dogfood-skill-refresh-flow-eval.mjs scripts/run-self-dogfood-eval.test.mjs scripts/run-self-dogfood-skill-refresh-flow-eval.test.mjs scripts/test-support/*.mjs`
 
 ## Runtime Signals
 
-- runtime source: direct command output from the local quality and verification gates listed in `## Commands Run`; structured timing capture is missing.
-- runtime hot spots: unavailable because structured timing capture is missing.
-- coverage gate: `npm run test:coverage` and `npm run coverage:floor:check` passed.
-- evaluator depth: deterministic local gates only, because this slice changed packet/schema/runtime preservation and did not require live provider or on-demand evaluator proof.
-- command discovery: `./bin/cautilus doctor commands --json` passed.
-- scenario discovery: `./bin/cautilus discover scenarios --json` passed.
-- agent surface readiness: `./bin/cautilus doctor --repo-root . --scope agent-surface` passed with ready status.
-- final verification: `npm run verify` passed all phases in 95.32s.
-- hook verification: `npm run hooks:check` passed.
+- runtime source: command output captured this turn; adapter structured timing capture is missing.
+- runtime hot spots: manual profile observations are listed below, but the adapter still lacks structured runtime samples for budgeted trend review.
+- before edits, `bin/cautilus.test.mjs` took 9093ms, with `repo shim uses tmp-backed Go caches` taking 8396ms.
+- runtime hot spots after edits: `bin/cautilus.test.mjs` took 705ms, with the cache test taking 13ms.
+- dogfood eval runner tests after first minimization took 1288ms; after fake-binary boundary injection they took 561ms.
+- broad Node spec suite after fresh-eye fixes and support-coverage tests took 1476ms and had no individual test at or above 500ms.
+- coverage gate: `npm run test:coverage && npm run coverage:floor:check` passed; `scripts/agent-runtime/instruction-surface-support.mjs` recovered from 77.63% to 93.90% against its 80.77% floor.
+- evaluator depth: deterministic local Node tests only; no live-provider proof was needed because fixture-backed runner behavior was under review.
 
 ## Healthy
 
-- Scenario proposal evidence now has bounded optional `origin` values for `real`, `synthetic`, `replayed`, and `operator_authored`.
-- `activityProvenance` is a portable object with allowed keys only, bounded `split`, numeric `score`, and string identity fields.
-- Go and Node runtimes reject malformed optional provenance instead of only relying on fixture schemas.
-- CLI smoke now proves replay provenance through standalone propose and proves built-in normalized `origin: real` through normalize, prepare-input, and propose.
-- Contract docs now distinguish complete input audit trail preservation from top-ranked emitted proposal evidence preservation.
-- Final claim artifacts were refreshed after claim-source doc edits, and `npm run verify` reported claim freshness as current.
-
-## Fixed In This Slice
-
-- Added schema, fixture, runtime, and CLI proof for scenario proposal evidence provenance as the first implemented SkillOpt absorption route.
-- Narrowed public wording that previously could read as if rejected-candidate, staged-adoption, replay/recall, or optimizer-adjacent routes were already implemented.
-- Addressed delegated review findings about weak runtime validation, overbroad preservation claims, and untracked critique packets.
+- The repo shim cache test now proves the exported `GOCACHE`, `GOTMPDIR`, `TMPDIR`, and `go -C <repo> run ./cmd/cautilus` arguments directly instead of relying on a real Go compile as an indirect signal.
+- The real `bin/cautilus --version` and consumer `init` smokes remain in `bin/cautilus.test.mjs`, so the shipped boundary still has thin real-process coverage.
+- Dogfood eval runner tests now use a representative source git repo, reducing unrelated full-repo mirroring while proving disposable candidate workspace creation, included untracked file mirroring, deleted file removal, and host-local artifact exclusion.
+- The runner scripts accept an explicit `--cautilus-bin` seam and keep the default real binary path for operator use.
+- The fake Cautilus binary rejects missing `--overwrite` and missing `--scope agent-surface`, so wrapper argument drift remains visible in fast tests.
+- Shared test helpers under `scripts/test-support/` remove repeated git setup and fake-binary scaffolding without hiding the behavior assertions from the test files.
+- `instruction-surface-support` now has direct tests for malformed routing records, blocked backend observations, source-file instruction materialization, escaping path rejection, directory rejection, and default symlink capture.
 
 ## Weak
 
-- Proposal output intentionally keeps only top-ranked evidence entries, so lower-ranked evidence remains available in the input packet rather than every emitted proposal.
-- HTML proposal rendering still summarizes evidence count and does not expose provenance details.
-- `origin` remains optional in v1 for backwards compatibility.
+- The local quality adapter still lacks structured runtime samples and effective budgets, so runtime drift is visible only when a reviewer profiles manually.
+- Cautilus Agent skill ergonomics inventory still reports heuristic findings for long cores, host-surface references, and reference discoverability; this slice did not address that ambient skill-surface debt.
+- The dogfood runner tests now trust a fake `cautilus` binary for orchestration speed, so real binary lifecycle coverage depends on the separate bin and distribution tests staying in the suite.
 
 ## Missing
 
-- No raw transcript reader, scheduler, optimizer loop, recall index, long-term memory store, or auto-apply route was added.
-- No external CI, release, live-provider proof, or GitHub issue closeout was run for this local slice.
+- No deterministic test-runtime budget or slow-test ratchet exists for the Node suite.
+- No structured timing artifact was added to `.charness/quality/runtime-signals.json`.
 
 ## Deferred
 
-- A future v2 may make `origin` required or add semantic requirements such as `origin: replayed` requiring `replayId`.
-- Rejected-candidate, staged-adoption, replay/recall, and optimizer-adjacent absorption routes remain contract targets rather than shipped runtime surfaces.
-- Auditor-facing rendered provenance details can be added later if JSON packet inspection is not enough.
+- Adding a repo-owned slow-test budget should wait until the current runtime profile has at least one stable structured timing source.
+- Cautilus Agent progressive-disclosure cleanup remains a separate quality slice.
 
 ## Advisory
 
-- `./scripts/run-quality.sh --read-only` was listed only as a conditional adapter gate and does not exist in this repo.
-- The attempted invocation failed with `zsh: no such file or directory`; this was recorded as operator misuse of a conditional recommendation, not a Cautilus regression.
+- structural review result: skill ergonomics inventory is ambient, not target-scope; the reported Cautilus Agent heuristic findings are real review prompts but not regressions caused by this test-speed change.
+- prose review result: test helper extraction kept assertions visible at the `.test.mjs` sites and moved only mechanical scaffolding into helpers.
+- runtime visibility advisory: `render_runtime_summary.py --json` reported `runtime_visibility_missing_budgets`; this is an active quality gap but not a blocker for this bounded cleanup.
 
 ## Delegated Review
 
-executed: parent-delegated fresh-eye review and counterweight review scoped to the SkillOpt runtime absorption packet/schema/helper slice.
-Recorded critique packet: `charness-artifacts/critique/2026-07-08-013231-packet.md`.
-Disposition: all Act Before Ship findings were addressed before final verification.
+- executed: fresh-eye subagent `Planck` reviewed the uncommitted test-speed diff and returned `weak`.
+- Disposition: fixed the high finding by using a representative source repo that proves include, untracked, deleted, and excluded-path behavior; fixed the hidden seam finding by replacing `CAUTILUS_BIN_PATH` with explicit `--cautilus-bin`; mitigated the fake-binary finding by making the fake reject wrapper argument drift while retaining separate real-binary smokes.
+- Slow-gate lenses: fixture-economics, parallel-critical-path, and duplicated-proof were applied locally through `testability-and-selection.md` and `unit-test-quality.md`.
 
 ## Commands Run
 
-- `./bin/cautilus doctor commands --json`
-- `./bin/cautilus discover scenarios --json`
-- `./bin/cautilus doctor --repo-root . --scope agent-surface`
-- `node --test scripts/agent-runtime/scenario-proposals.test.mjs scripts/agent-runtime/scenario-proposal-schemas.test.mjs`
-- `go test ./internal/runtime -run TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance`
-- `go test ./internal/app -run 'TestCLIScenario(ProposeGeneratesStandaloneProposalPacket|NormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose)$'`
-- `npm run lint:eslint`
-- `npm run lint:specs`
-- `npm run lint:scenario-normalizers`
-- `npm run test:coverage`
-- `npm run coverage:floor:check`
-- `npm run claims:refresh:all`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/plan_quality_run.py --repo-root . --json`
+- `SKILL_DIR=/home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/render_runtime_summary.py --repo-root . --json`
+- `SKILL_DIR=/home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/inventory_skill_ergonomics.py --repo-root . --summary`
+- `node --test --test-reporter=spec bin/cautilus.test.mjs`
+- `node --test --test-reporter=spec scripts/run-self-dogfood-eval.test.mjs scripts/run-self-dogfood-skill-refresh-flow-eval.test.mjs`
+- `node --test --test-reporter=spec scripts/agent-runtime/run-local-eval-test.test.mjs`
+- `node --test --test-reporter=spec --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs`
+- `npm exec -- eslint bin/cautilus.test.mjs scripts/run-self-dogfood-eval.mjs scripts/run-self-dogfood-skill-refresh-flow-eval.mjs scripts/run-self-dogfood-eval.test.mjs scripts/run-self-dogfood-skill-refresh-flow-eval.test.mjs scripts/test-support/*.mjs`
+- `npm exec -- eslint scripts/agent-runtime/run-local-eval-test.test.mjs scripts/agent-runtime/instruction-surface-support.mjs`
+- `npm run test:coverage && npm run coverage:floor:check`
 - `npm run verify`
-- `npm run hooks:check`
+- delegated fresh-eye review by subagent `Planck`
 
 ## Recommended Next Quality Moves
 
-- active repeat broad verification when claim-source files change — capability_needed=claim freshness; next_center=claim refresh; transformation=rerun `npm run claims:refresh:all` and `npm run verify`; proof_boundary=local deterministic gates; enforcement_posture=existing gate.
-- passive rendered provenance details until auditor-facing HTML proof is claimed — capability_needed=proposal review UX; next_center=HTML renderer; transformation=show origin/provenance from emitted evidence; proof_boundary=focused renderer and proposal packet tests; enforcement_posture=no-gate because JSON packet proof is sufficient for this slice.
-- passive additional SkillOpt absorption routes until a separate goal selects one — capability_needed=product boundary design; next_center=rejected-candidate, staged-adoption, replay/recall, or optimizer-adjacent route; transformation=implement one bounded route with tests; proof_boundary=goal-specific local verification; enforcement_posture=no-gate because these routes are explicitly deferred.
+- active add structured runtime sampling — capability_needed=test runtime drift; next_center=Node and verify timing capture; transformation=write bounded machine-readable timing samples from repo-owned gates; proof_boundary=runtime summary plus focused tests; enforcement_posture=advisory until samples stabilize.
+- passive add a slow-test ratchet until structured timing has a stable baseline because a hard budget without local samples would create noisy enforcement; capability_needed=slow-test guard; next_center=Node test runner reporting; transformation=fail or warn on new 500ms tests; proof_boundary=fixture suite; enforcement_posture=no-gate.
+- passive address Cautilus Agent ergonomics until the next skill-surface slice because this test-speed cleanup did not change skill packages; capability_needed=progressive disclosure; next_center=Cautilus Agent `SKILL.md` and references; transformation=split or list references and reduce core pressure; proof_boundary=skill ergonomics inventory plus prose review; enforcement_posture=existing advisory.
 
 ## History
 

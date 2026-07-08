@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -12,6 +12,7 @@ import {
 	renderPrompt,
 } from "./run-local-eval-test.mjs";
 import {
+	backendFailureResult,
 	materializeInstructionSurface,
 	normalizeRoutingDecision,
 	relativizeObservedPath,
@@ -280,6 +281,33 @@ test("normalizeRoutingDecision canonicalizes deferred none values and tool prefi
 	);
 });
 
+test("normalizeRoutingDecision rejects malformed routing records", () => {
+	assert.deepEqual(normalizeRoutingDecision(null), {});
+	assert.throws(() => normalizeRoutingDecision("impl"), /observed\.routingDecision must be an object/);
+	assert.throws(
+		() => normalizeRoutingDecision({ selectedSkill: ["impl"] }),
+		/observed\.routingDecision\.selectedSkill must be a string/,
+	);
+});
+
+test("backendFailureResult records a blocked no-routing observation", () => {
+	assert.deepEqual(backendFailureResult("runner failed", "runner_auth_missing"), {
+		observationStatus: "blocked",
+		blockerKind: "runner_auth_missing",
+		summary: "runner failed",
+		loadedInstructionFiles: [],
+		loadedSupportingFiles: [],
+		routingDecision: {
+			selectedSkill: "none",
+			bootstrapHelper: "none",
+			workSkill: "none",
+			selectedSupport: "none",
+			firstToolCall: "none",
+			reasonSummary: "runner failed",
+		},
+	});
+});
+
 test("materializeInstructionSurface masks unspecified root aliases while a variant is active", () => {
 	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
 	const workspace = createInstructionSurfaceWorkspace();
@@ -376,6 +404,78 @@ test("materializeInstructionSurface writes nested instruction overrides under sc
 		materialized.restore();
 	}
 	assert.equal(existsSync(join(workspace, "apps/demo/AGENTS.md")), false);
+});
+
+test("materializeInstructionSurface reads instruction content from a source file", () => {
+	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const workspace = createInstructionSurfaceWorkspace();
+	const casesDir = join(artifactDir, "cases");
+	mkdirSync(casesDir, { recursive: true });
+	const sourceFile = join(casesDir, "agent-source.md");
+	writeFileSync(sourceFile, "# AGENTS\n\nLoaded from fixture source.\n", "utf-8");
+	const materialized = materializeInstructionSurface(
+		{
+			workspace,
+			casesFile: join(casesDir, "cases.json"),
+		},
+		{
+			instructionSurface: {
+				surfaceLabel: "source_file_surface",
+				files: [
+					{ path: "AGENTS.md", sourceFile: "agent-source.md" },
+				],
+			},
+		},
+		artifactDir,
+	);
+	try {
+		assert.equal(readFileSync(join(workspace, "AGENTS.md"), "utf-8"), "# AGENTS\n\nLoaded from fixture source.\n");
+		assert.equal(materialized.instructionSurface.files[0].sourceKind, "source_file");
+		assert.equal(materialized.instructionSurface.files[0].sourceFile, sourceFile);
+		assert.equal(materialized.artifactRefs.some((ref) => ref.kind === "instruction_surface_source" && ref.path === sourceFile), true);
+	} finally {
+		materialized.restore();
+	}
+});
+
+test("materializeInstructionSurface rejects paths that escape or target directories", () => {
+	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const workspace = createInstructionSurfaceWorkspace();
+	assert.throws(
+		() => materializeInstructionSurface(
+			{ workspace, casesFile: join(workspace, "cases.json") },
+			{ instructionSurface: { surfaceLabel: "escape", files: [{ path: "../AGENTS.md", content: "escape" }] } },
+			artifactDir,
+		),
+		/instruction surface path escapes workspace/,
+	);
+	mkdirSync(join(workspace, "docs"), { recursive: true });
+	assert.throws(
+		() => materializeInstructionSurface(
+			{ workspace, casesFile: join(workspace, "cases.json") },
+			{ instructionSurface: { surfaceLabel: "directory", files: [{ path: "docs", content: "directory" }] } },
+			artifactDir,
+		),
+		/instruction surface path points to a directory/,
+	);
+});
+
+test("materializeInstructionSurface captures default symlink instructions and skips directories", () => {
+	const artifactDir = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-"));
+	const workspace = mkdtempSync(join(tmpdir(), "cautilus-instruction-surface-workspace-"));
+	mkdirSync(join(workspace, "AGENTS.md"));
+	writeFileSync(join(workspace, "README.md"), "# Linked Instructions\n", "utf-8");
+	symlinkSync("README.md", join(workspace, "CLAUDE.md"));
+	const materialized = materializeInstructionSurface(
+		{ workspace, casesFile: join(workspace, "cases.json") },
+		{},
+		artifactDir,
+	);
+	assert.equal(materialized.instructionSurface.files.length, 1);
+	assert.equal(materialized.instructionSurface.files[0].path, "CLAUDE.md");
+	assert.equal(materialized.instructionSurface.files[0].kind, "symlink");
+	assert.equal(materialized.instructionSurface.files[0].targetPath, "README.md");
+	assert.equal(materialized.artifactRefs.length, 1);
 });
 
 test("materializeInstructionSurface writes linked progressive-disclosure docs that remain after the run", () => {

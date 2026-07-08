@@ -20,8 +20,28 @@ test("repo shim forwards --version to the Go CLI entry", () => {
 test("repo shim uses tmp-backed Go caches when caller does not provide them", () => {
 	const root = mkdtempSync(join(tmpdir(), "cautilus-repo-shim-go-cache-"));
 	const readOnlyTmp = join(root, "caller-tmp");
+	const fakeBin = join(root, "bin");
+	const fakeGoEnv = join(root, "fake-go-env");
 	try {
 		mkdirSync(readOnlyTmp);
+		mkdirSync(fakeBin);
+		writeFileSync(
+			join(fakeBin, "go"),
+			[
+				"#!/bin/sh",
+				"set -eu",
+				"{",
+				'  printf "GOCACHE=%s\\n" "$GOCACHE"',
+				'  printf "GOTMPDIR=%s\\n" "$GOTMPDIR"',
+				'  printf "TMPDIR=%s\\n" "$TMPDIR"',
+				'  printf "ARGS=%s\\n" "$*"',
+				'} > "$CAUTILUS_FAKE_GO_ENV"',
+				'printf "fake-cautilus\\n"',
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		chmodSync(join(fakeBin, "go"), 0o755);
 		chmodSync(readOnlyTmp, 0o555);
 		const result = spawnSync(BIN_PATH, ["--version"], {
 			cwd: process.cwd(),
@@ -29,12 +49,24 @@ test("repo shim uses tmp-backed Go caches when caller does not provide them", ()
 			env: {
 				...process.env,
 				CAUTILUS_GO_TMP_ROOT: root,
+				CAUTILUS_FAKE_GO_ENV: fakeGoEnv,
+				PATH: `${fakeBin}:${process.env.PATH}`,
 				TMPDIR: readOnlyTmp,
 				GOCACHE: "",
 				GOTMPDIR: "",
 			},
 		});
 		assert.equal(result.status, 0, result.stderr);
+		const fakeGoEnvLines = Object.fromEntries(
+			readFileSync(fakeGoEnv, "utf-8")
+				.trim()
+				.split("\n")
+				.map((line) => line.split("=", 2)),
+		);
+		assert.equal(fakeGoEnvLines.GOCACHE, join(root, "cautilus-go-build-cache"));
+		assert.equal(fakeGoEnvLines.GOTMPDIR, join(root, "cautilus-go-tmp"));
+		assert.equal(fakeGoEnvLines.TMPDIR, join(root, "cautilus-cgo-tmp"));
+		assert.equal(fakeGoEnvLines.ARGS, `-C ${process.cwd()} run ./cmd/cautilus --version`);
 		assert.equal(existsSync(join(root, "cautilus-go-build-cache")), true);
 		assert.equal(existsSync(join(root, "cautilus-go-tmp")), true);
 		assert.equal(existsSync(join(root, "cautilus-cgo-tmp")), true);
