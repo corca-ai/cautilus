@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:17038d3bd54c5eb79a08caed3e55741cc516b8569c9cd9a53fc52c70c26efdf2",
+    "claimsHash": "sha256:79bd13f855417beeaa8ed47cf07dcefd3d8431e3bdba9e0045e6f144fc03e22e",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:b7414a1bd7711aa54fd9ef11c1c3e146254c4059db59dc1f64e151d66f92b468",
+    "statusHash": "sha256:eea49264d2902ccb3f03da3cdcc2843869e096a318c9dbf3098beec5dedd8bac",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,10 +22,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "23987f669fdb39d7828d9a33d36ed7848dea4b76",
+    "currentGitCommit": "b490f88feed264110266973bc359e7cd600eeb80",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "23987f669fdb39d7828d9a33d36ed7848dea4b76",
+    "packetGitCommit": "b490f88feed264110266973bc359e7cd600eeb80",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

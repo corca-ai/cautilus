@@ -18037,7 +18037,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "23987f669fdb39d7828d9a33d36ed7848dea4b76",
+  "gitCommit": "b490f88feed264110266973bc359e7cd600eeb80",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -20585,7 +20585,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:1f61fdc25b2b5d4b204f6b45ae4c1decca78b45e4e2870499b36d6c107b5911c",
+      "contentHash": "sha256:50ebc128789e6b9611b1355a682ad4f83d94ab39b8400f96cdf041f93ddf22bc",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "skill-doc",
