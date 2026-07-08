@@ -1,122 +1,99 @@
 # Debug Review
-Date: 2026-06-22
+Date: 2026-07-08
 
 ## Problem
 
-`publish_release.py --execute` spent several minutes inside `npm run verify` because standing Go tests invoked the live `codex_exec` review backend through `improve search run`.
+`./scripts/run-quality.sh --read-only` returned `zsh:1: no such file or directory: ./scripts/run-quality.sh` during closeout quality planning.
 
 ## Correct Behavior
 
-Given `codex_exec` review variants are on-demand self-dogfood behavior, when `npm run verify` runs as a standing release gate, then it must not invoke the live `codex` CLI.
-Standing tests should use deterministic fixture backends or fast local failure paths.
+Given the quality planner emits a gate packet, when the command is not present in this repo, then the run should classify the packet as unavailable and fall back to the repo-owned canonical gates rather than inventing a replacement.
+The closeout should keep `npm run verify`, `npm run hooks:check`, and claim freshness checks as the authoritative local evidence for this documentation-design slice.
 
 ## Observed Facts
 
-During the interrupted `v0.17.1` publish, process inspection showed:
+The attempted command failed exactly as:
 
 ```text
-npm run verify
-go test -covermode=atomic -coverprofile=coverage/go.out ./internal/...
-bash scripts/agent-runtime/run-review-variant.sh --backend codex_exec ...
-timeout --foreground 180s codex exec ...
+zsh:1: no such file or directory: ./scripts/run-quality.sh
 ```
 
-The live call came from `internal/app/cli_smoke_test.go` improve-search smoke tests:
-
-- `TestCLIImproveSearchPrepareRunAndProposeFromSearch`
-- `TestCLIImproveSearchUsesHeldOutCompareArtifactReasonsAsFeedback`
-- `TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate`
-
-The release helper had already created local release commit `23b4957b` and local tag `v0.17.1`, but `git ls-remote origin refs/heads/main refs/tags/v0.17.1` showed the branch and tag were not pushed.
+`test -e scripts/run-quality.sh` returned exit code 1.
+`rg --files scripts | rg 'quality|verify|hooks'` found `scripts/coverage-floor-quality-gate.sh`, `scripts/run-verify.mjs`, and hook scripts, but no `scripts/run-quality.sh`.
+`package.json` exposes the standing `verify` and coverage-floor gates instead.
 
 ## Reproduction
 
-Run the focused standing test before the fix:
+Run:
 
 ```bash
-go test ./internal/app -run 'TestCLIImproveSearchPrepareRunAndProposeFromSearch|TestCLIImproveSearchUsesHeldOutCompareArtifactReasonsAsFeedback|TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate'
+./scripts/run-quality.sh --read-only
 ```
 
-Then inspect processes while it runs; at least one test can reach `run-review-variant.sh --backend codex_exec` and `codex exec`.
+The shell returns exit 127 because the file is absent.
 
 ## Candidate Causes
 
-- `BuildImproveSearchInput` defaults mutation backends to `codex_exec` for light budgets and `codex_exec` plus `claude_p` for medium budgets.
-- The standing smoke tests called `improve search run` after `prepare-input` without overriding `mutationConfig.backends`.
-- One smoke test used a fake `codex` binary, but that still exercised the `codex_exec` backend path inside standing `go test`.
-- `npm run verify` includes `test:go:race` and `test:go:coverage`, both of which include `./internal/app`.
+- The portable quality planner includes a generic read-only quality command that this repo does not implement.
+- The repo intentionally centralizes the broad gate in `npm run verify` and hook readiness in `npm run hooks:check`.
+- The adapter's `gate_script_pattern: "*-quality-gate.sh"` covers focused quality-gate scripts such as coverage floor, not a monolithic `run-quality.sh`.
 
 ## Hypothesis
 
-If standing improve-search tests rewrite the generated search input to use a deterministic `fixture` review backend, and `run-review-variant.sh` supports that fixture backend, then the tests can still cover mutation/evaluation/proposal behavior without invoking `codex exec`.
+If `scripts/run-quality.sh` is absent and the repo's package scripts name `verify` as the canonical broad gate, then the correct closeout action is to record the quality packet as unavailable and cite the successfully run repo-owned gates.
+Disconfirmer: `test -e scripts/run-quality.sh` returning 0, or `rg --files scripts | rg '^scripts/run-quality\\.sh$'` finding the command, would refute the missing-command hypothesis.
 
 ## Verification
 
-The focused tests passed:
-
-```bash
-go test ./internal/app -run 'TestCLIImproveSearchPrepareRunAndProposeFromSearch|TestCLIImproveSearchRunReportsWhyNoCandidatesWereGenerated|TestCLIImproveSearchUsesHeldOutCompareArtifactReasonsAsFeedback|TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate'
-```
-
-A stronger sentinel check also passed with a failing `codex` binary first on `PATH`:
-
-```bash
-PATH=/tmp/cautilus-codex-sentinel:$PATH go test ./internal/app -run 'TestCLIImproveSearchPrepareRunAndProposeFromSearch|TestCLIImproveSearchRunReportsWhyNoCandidatesWereGenerated|TestCLIImproveSearchUsesHeldOutCompareArtifactReasonsAsFeedback|TestCLIImproveSearchRunUsesEvalTestForHeldOutAndFullGate'
-```
-
-The fixture backend itself produced a valid mutation output through:
-
-```bash
-bash scripts/agent-runtime/run-review-variant.sh --backend fixture --workspace . --prompt-file <tmp>/prompt.md --schema-file <tmp>/schema.json --output-file <tmp>/out.json
-```
+Confirmed.
+The file does not exist, and repo search found the actual quality-related gate surfaces under `scripts/run-verify.mjs`, `scripts/coverage-floor-quality-gate.sh`, and `package.json`.
+No product code change is required for the SkillOpt absorption documentation goal.
 
 ## Root Cause
 
-The tests treated product-default mutation backends as harmless configuration, but `improve search run` executes the first configured backend.
-Because the generated standing-test input kept `codex_exec`, normal `go test` could launch live agent work.
+The portable quality skill planner advertised a generic gate packet that is not implemented by this repo.
+This is an unavailable optional quality packet for this closeout, not a failure of the Cautilus product surface being changed.
 
 ## Invariant Proof
 
-- Invariant: standing `npm run verify` tests for improve search must not invoke live agent review backends.
-- Producer Proof: the modified tests rewrite `mutationConfig.backends` to `fixture` or a local unsupported fixture-style backend before calling `improve search run`.
-- Final-Consumer Proof: focused improve-search tests pass with a failing `codex` sentinel first on `PATH`.
-- Interface-Shape Sibling Scan: `run-review-variant.sh` now has an explicit `fixture` backend for deterministic smoke paths while keeping `codex_exec` and `claude_p` for on-demand live review variants.
-- Non-Claims: this does not remove live `codex_exec` from product defaults or on-demand self-dogfood workflows.
+- Invariant: closeout quality evidence must come from commands that exist in the repo or from an explicit unavailable-gate note.
+- Producer Proof: `test -e scripts/run-quality.sh` returned exit code 1.
+- Final-Consumer Proof: `npm run verify` and `npm run hooks:check` are recorded as the actual broad closeout gates in the goal artifact.
+- Interface-Shape Sibling Scan: the existing `coverage-floor-quality-gate.sh` is focused coverage policy, not a substitute for a missing monolithic read-only quality runner.
+- Non-Claims: this does not fix or change the portable quality planner's generic packet list.
 
 ## Detection Gap
 
-- release publish gate | full `verify` surfaced live backend use only by taking too long | add or preserve sentinel-style focused tests for standing smoke paths that should not call live agent CLIs
-- improve-search smoke tests | asserted behavior outcomes but not backend class | rewrite generated input to fixture before standing `run` calls
-- release helper | long silent subprocess made the live backend path hard to identify | process inspection was needed to see the active `codex exec`
+- quality planner packet | command availability was discovered only when the command was executed | smallest change to fire it: record unavailable packet in closeout and rely on repo-owned gates
+- repo scripts | no monolithic `run-quality.sh` exists | smallest change to fire it: no change in this goal because the standing command is `npm run verify`
 
 ## Sibling Search
 
-- Mental model: using fake or default mutation backends in smoke tests is harmless because tests are local.
-- same-file: three improve-search run tests could invoke `codex_exec` | decision: rewrite mutation backends to fixture before run | proof: sentinel PATH focused tests passed
-- cross-file: `run-review-variant.sh` only supported live backends | decision: add deterministic `fixture` backend | proof: wrapper fixture command wrote valid mutation JSON
-- on-demand sibling: scripts under `scripts/on-demand/` and self-dogfood adapters may still use live backends | decision: leave them unchanged because they are explicit on-demand surfaces | proof: no package script change moved them into `verify`
+- Mental model: every quality planner packet command is implemented by the consumer repo.
+- same-surface: `scripts/run-quality.sh` is absent | decision: classify packet unavailable for this closeout | proof: `test -e` exit code 1 and script inventory
+- cross-file: `package.json` already owns `verify` | decision: use existing standing gate | proof: prior `npm run verify` passed
 
 ## Seam Risk
 
-- Interrupt ID: verify-live-codex-exec
+- Interrupt ID: quality-planner-missing-run-quality
 - Risk Class: none
-- Seam: standing verify tests to live review backend wrapper
-- Disproving Observation: `npm run verify` spawned `codex exec` from an internal Go smoke test
-- What Local Reasoning Cannot Prove: whether every future test that prepares improve-search input will remember to override live mutation backends
+- Seam: portable quality planner to repo-owned gate inventory
+- Disproving Observation: advertised command is absent from repo scripts
+- What Local Reasoning Cannot Prove: whether other repos using this planner expect `run-quality.sh`
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
+- Resolution: resolved
 - Critique Required: no
-- Next Step: impl
+- Next Step: achieve-closeout
 - Handoff Artifact: none
 
 ## Prevention
 
-Keep live review backends in explicit on-demand workflows.
-When a standing test calls a command that can execute agent backends, either force a fixture backend in the input or add a sentinel proof that the live CLI is not reached.
+Closeout should cite unavailable optional quality packets explicitly instead of implying they ran.
+For this repo, keep `npm run verify`, `npm run hooks:check`, and claim freshness checks as the maintained broad closeout evidence unless a future slice adds a real read-only quality runner.
 
 ## Related Prior Incidents
 
-- `debug-2026-05-16-dev-repo-fixture-backend-results.md` — fixture-backed behavior needed explicit separation from live backend execution.
-- `debug-2026-05-01-release-smoke-required-channel.md` — release gates previously mixed standing release proof with a channel-specific smoke expectation.
+- none directly related

@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-- Release publish triggered a configured automatic session retro for `v0.17.1`. (source: `charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md`)
+- This retro reviews the SkillOpt absorption documentation goal closeout. (source: `charness-artifacts/retro/2026-07-08-session-retro.md`)
 - The improved retro adapter was rerun against the release hardening paths after adding `release-packaging` to `auto_session_trigger_surfaces`. (source: `charness-artifacts/retro/session-release-adapter-rerun.md`)
 
 ## Repeat Traps
@@ -14,10 +14,10 @@
 
 ## Next-Time Checklist
 
-- Release helper auto-persisted this bounded retro trigger closeout; no additional follow-up is needed for this trigger instance. (source: `charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md`)
+- applied: goal closeout now records claim refresh as a separate proof step and names generated packet freshness in final verification. (source: `charness-artifacts/retro/2026-07-08-session-retro.md`)
+- applied: the SkillOpt absorption contract now distinguishes local research context from public durable evidence. (source: `charness-artifacts/retro/2026-07-08-session-retro.md`)
+- applied: this retro captures the claim-refresh and local-evidence wording traps for future documentation-design goals. (source: `charness-artifacts/retro/2026-07-08-session-retro.md`)
 - Add parity tests when two audit surfaces claim to reject the same class of stale or mutable pointer. (source: `charness-artifacts/retro/session-release-verifier-critique-miss.md`)
-- For release hardening, inspect producer, preflight audit, and post-publish verifier as one contract before closing the slice. (source: `charness-artifacts/retro/session-release-verifier-critique-miss.md`)
-- Keep release-related trigger scope on the repo surface manifest instead of duplicating path lists in the retro adapter. (source: `charness-artifacts/retro/session-release-adapter-rerun.md`)
 
 ## Selection Policy
 
@@ -29,5 +29,6 @@
 
 - `charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md`
 - `charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md`
+- `charness-artifacts/retro/2026-07-08-session-retro.md`
 - `charness-artifacts/retro/session-release-adapter-rerun.md`
 - `charness-artifacts/retro/session-release-verifier-critique-miss.md`

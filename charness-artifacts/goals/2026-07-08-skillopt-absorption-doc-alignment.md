@@ -1,6 +1,6 @@
 # Achieve Goal: Align Cautilus Docs And Design SkillOpt Absorption
 
-Status: active
+Status: complete
 Created: 2026-07-08
 Activation: `/goal @charness-artifacts/goals/2026-07-08-skillopt-absorption-doc-alignment.md`
 
@@ -9,10 +9,10 @@ It is active for the current `/goal` pursuit.
 
 ## Active Operating Frame
 
-- Current slice: Slice 1/2 doc and contract alignment plus delegated critique remediation committed.
-- Current disposition: active; generated claim surfaces refreshed after critique fixes.
+- Current slice: Slice 4 closeout complete.
+- Current disposition: complete; final local verification, Auto-Retro, host probe, and disposition review evidence are bound in this artifact.
 - Current slice intent: align stale living docs with the current proof state, then design the Cautilus-native way to absorb useful SkillOpt and SkillOpt-Sleep patterns.
-- Next action: run final verification after the goal-log update, then decide whether closeout can proceed without a new runtime packet slice.
+- Next action: commit closeout artifacts and report the local-only proof boundary.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -86,21 +86,11 @@ Align Cautilus's living docs after the current proof-state drift, then design a 
 | 1 | Align Cautilus living docs with current proof state. | The SkillOpt absorption decision should not land on top of stale public claims. | README/master-plan/spec wording agrees on proven/debt state; `npm run lint:specs` or documented substitute. | implemented |
 | 2 | Write the SkillOpt absorption design contract. | The useful lessons need a Cautilus-native boundary before implementation. | Contract/design doc names accepted patterns, rejected imports, command-family landing zones, packet boundaries, and contamination/safety constraints. | implemented |
 | 3 | Implement the smallest normalizer/evidence slice if the design chooses one. | A goal should land one executable proof when it adds a new runtime surface. | Fixture/schema/test for session-derived proposal input or rejected-candidate evidence; no raw transcript reader in product. | not selected — design-only contract adds no runtime surface |
-| 4 | Final quality, critique, and closeout. | The user needs an auditable decision and next-step proof, not a private analysis. | `npm run verify`, `npm run hooks:check`, critique disposition, final verification, residual non-claims. | planned |
+| 4 | Final quality, critique, and closeout. | The user needs an auditable decision and next-step proof, not a private analysis. | `npm run verify`, `npm run hooks:check`, critique disposition, final verification, residual non-claims. | complete |
 
 ## Operator Decision Queue
 
-- Decision: whether to allow implementation beyond docs/contracts if Slice 2 identifies a very small packet/normalizer slice.
-- Owner: operator.
-- Why deferred: the design may be sufficient without code, but the repo rule says a new runtime surface needs executable proof if added.
-- Unblock action: answer during Slice 2 review or let the activated run apply the conservative default: implement only docs/contracts unless a minimal executable test is clearly required.
-- Revisit trigger: after Slice 2 contract draft is ready.
-
-- Decision: whether any remote publication, GitHub issue closeout, or release surface should be included.
-- Owner: operator.
-- Why deferred: current request only asks to create the goal; no push/release/issue instruction was given.
-- Unblock action: explicit operator approval.
-- Revisit trigger: final closeout or if local verification cannot prove the needed state.
+none — the conservative design-only default was applied, no runtime packet slice was selected, and no push, release, issue closeout, or live proof lane was requested.
 
 ## Coordination Cues
 
@@ -128,14 +118,10 @@ during the run:
   tracked issue appears in `## Context Sources` as context only, use
   `Issue closeout: n/a — <reason>`.
 
-Routing step line — record it on ONE physical line so the floor reads the whole
-value (a soft-wrapped value is tolerated now, but one line is clearest). Copy the
-form below and replace `<skill>` with the find-skills-recommended skill; the
-placeholder is intentionally non-satisfying (the Gather / Release / Issue
-closeout floors are presence-only, so no stub is seeded for them — add their line
-per the bullets above when that boundary is crossed):
-
-- `Routing: find-skills -> achieve + impl — active goal pursuit owns lifecycle; impl owns the doc/contract edit slice; cautilus tool recommendation was treated as validation-only trigger overlap, not the primary route`
+Routing: find-skills -> achieve + impl + critique + quality + debug + retro - achieve owned the goal lifecycle; impl owned doc/contract edits; critique owned delegated fresh-eye review; quality owned closeout gate posture; debug classified the unavailable generic quality packet; retro owned Auto-Retro evidence.
+Gather: n/a — no external URL or credentialed public source was used; SkillOpt inputs came from the operator's local checkout and are labeled local research context, not public Cautilus evidence.
+Release: n/a — this run touched no version, install manifest, release packet, or publication surface.
+Issue closeout: n/a — this goal resolved no tracked GitHub issue and carried no close-intended issue keyword.
 
 ## Discuss Before Activation
 
@@ -212,23 +198,33 @@ per the bullets above when that boundary is crossed):
 
 ## Final Verification
 
-Closeout evidence — replace each `TODO` with a bound `<path>` (a checked-in
-retro / host-log probe / disposition-review artifact) or an explicit
-`skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
-`TODO` / `<path>` / `TBD` until you do.
+Retro: charness-artifacts/retro/2026-07-08-session-retro.md
+Host log probe: charness-artifacts/probe/2026-07-08-skillopt-absorption-doc-alignment.json
+Disposition review: charness-artifacts/critique/2026-07-08-skillopt-absorption-disposition-review.md
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+- Final self-check against the goal: satisfied locally.
+  README, master-plan, contract index, and generated claim surfaces now present one proof-state story; `docs/contracts/skillopt-absorption.md` records accepted SkillOpt-derived patterns, rejected imports, command-family landing zones, and host-owned raw data boundaries.
+- Runtime proof scope: no new runtime packet, schema, normalizer, CLI command, or Cautilus Agent behavior was added.
+  Therefore the user-acceptance line requiring executable checks for new packet/schema/normalizer behavior is not triggered.
+- Quality gate results: `git diff --check` passed; `npm run lint:specs` passed; `npm run hooks:check` passed; `npm run claims:source-freshness:check`, `npm run claims:evidence-state:check`, and `npm run claims:status-report:check` passed; `npm run verify` passed after the closeout artifact updates.
+- Quality packet note: the portable `quality` planner advertised `./scripts/run-quality.sh --read-only`, but this repo does not implement that command.
+  Debug artifact `charness-artifacts/debug/latest.md` records the unavailable-packet classification; the maintained broad gate remains `npm run verify`.
+- High-cost / external proof not run: no remote CI, push, release publication, live provider roundtrip, app-agent smoke, or GitHub issue closeout ran because this goal is a local design/documentation slice.
+- Residual risks: the absorption contract is design-only and does not yet prove a session-derived scenario proposal packet, rejected-candidate packet, staged adoption packet, or replay/recall packet in code.
+  Those require a later explicit runtime slice with fixtures and tests.
+- Final non-claims: no SkillOpt optimizer, SkillOpt package, WebUI, SkillOpt-Sleep scheduler, raw transcript reader, plugin shell, memory store, nightly daemon, auto-apply loop, or multi-file skill/memory optimizer was imported into Cautilus.
+- Closeout state: `impl-local` only.
+  Carrier, pushed-CI, instance-synced, live, and issue-closed states are not claimed.
 
 ## User Verification Instructions
 
 - Open `charness-artifacts/goals/2026-07-08-skillopt-absorption-doc-alignment.md`.
-- Confirm the first slice resolves the README/spec proof-state conflict before new absorption wording lands.
-- Confirm the non-goals preserve Cautilus's current host-ownership and no-auto-apply boundaries.
-- Activate only if the scope is right: `/goal @charness-artifacts/goals/2026-07-08-skillopt-absorption-doc-alignment.md`.
+- Open `README.md`, `docs/master-plan.md`, `docs/specs/contracts/index.spec.md`, and `docs/contracts/skillopt-absorption.md`.
+- Confirm the public proof-state story says the apex promises are currently proven while the narrower SkillOpt absorption work remains design-only.
+- Confirm the SkillOpt absorption contract accepts only normalized packet concepts and rejects raw transcript readers, schedulers, plugin shells, auto-apply, and optimizer imports.
+- Confirm the final proof is local only: `npm run verify` and `npm run hooks:check` passed, but no push, remote CI, release, live app proof, or issue closeout is claimed.
 
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: this goal now records generated claim refresh as a separate proof step, labels local SkillOpt checkout reads as local research context rather than public evidence, and binds final verification to `npm run verify`, `npm run hooks:check`, claim freshness checks, retro evidence, host probe evidence, and disposition review.
+Structural follow-up: none — the retro names a local closeout/documentation trap with no transferable sibling outside this slice; the applied contract wording and goal verification notes are sufficient.

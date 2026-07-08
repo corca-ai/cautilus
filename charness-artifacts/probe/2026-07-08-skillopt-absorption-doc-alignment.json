@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "goal_slug": "skillopt-absorption-doc-alignment",
+  "goal_path": "charness-artifacts/goals/2026-07-08-skillopt-absorption-doc-alignment.md",
+  "produced_by": "python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/retro/scripts/probe_host_logs.py --repo-root . --goal-path charness-artifacts/goals/2026-07-08-skillopt-absorption-doc-alignment.md",
+  "goal_metric_window": {
+    "status": "absent",
+    "note": "No Host metric window line was present in the goal artifact, so all host signals are thread-wide pressure indicators rather than per-goal totals."
+  },
+  "codex_thread_wide": {
+    "token_count_snapshots": 80,
+    "function_calls": 176,
+    "custom_tool_calls": 7,
+    "patch_applications": 7,
+    "context_compactions": 2,
+    "subagent": {
+      "spawn": 4,
+      "wait": 4,
+      "close": 0
+    },
+    "repeated_vcs_commands": {
+      "git_add": 6,
+      "git_diff": 16,
+      "git_log": 4,
+      "git_status": 13
+    },
+    "window_filter": {
+      "status": "not_applied",
+      "included_records": 684,
+      "total_records": 684
+    }
+  },
+  "measured_vs_proxy_note": "Token snapshots and tool-call counts are measured thread-wide host signals. Repeated VCS commands are proxy activity-shape signals. No per-goal elapsed duration is claimed."
+}
