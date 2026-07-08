@@ -33,30 +33,57 @@ export const PHASES = [
 ];
 
 export function parseArgs(argv) {
-	let verbose = false;
-	let runtimeSignalPath = null;
+	const parsed = {
+		verbose: false,
+		help: false,
+		runtimeSignalPath: null,
+		runtimeProfile: null,
+	};
+	let pendingValue = null;
 	for (const arg of argv) {
-		if (runtimeSignalPath === "") {
-			runtimeSignalPath = arg;
+		if (pendingValue) {
+			applyPendingArgValue(parsed, pendingValue, arg);
+			pendingValue = null;
 			continue;
 		}
 		if (arg === "-h" || arg === "--help") {
-			return { verbose: false, help: true, runtimeSignalPath: null };
+			return { ...parsed, help: true };
 		}
 		if (arg === "--verbose") {
-			verbose = true;
+			parsed.verbose = true;
 			continue;
 		}
 		if (arg === "--runtime-signal") {
-			runtimeSignalPath = "";
+			pendingValue = "runtime-signal";
+			continue;
+		}
+		if (arg === "--runtime-profile") {
+			pendingValue = "runtime-profile";
 			continue;
 		}
 		throw new Error(`run-verify: unknown argument ${arg}`);
 	}
-	if (runtimeSignalPath === "") {
+	assertNoPendingArgValue(pendingValue);
+	return parsed;
+}
+
+function applyPendingArgValue(parsed, pendingValue, arg) {
+	if (pendingValue === "runtime-signal") {
+		parsed.runtimeSignalPath = arg;
+		return;
+	}
+	if (pendingValue === "runtime-profile") {
+		parsed.runtimeProfile = arg;
+	}
+}
+
+function assertNoPendingArgValue(pendingValue) {
+	if (pendingValue === "runtime-signal") {
 		throw new Error("run-verify: --runtime-signal requires a path");
 	}
-	return { verbose, help: false, runtimeSignalPath };
+	if (pendingValue === "runtime-profile") {
+		throw new Error("run-verify: --runtime-profile requires a profile id");
+	}
 }
 
 function formatDuration(ms) {
@@ -97,14 +124,21 @@ function completedPhaseResult(phase, script, elapsed, exitCode) {
 	};
 }
 
-function finishRun(runtimeSignalPath, result, totalStarted) {
-	writeRuntimeSignalIfRequested(runtimeSignalPath, result, totalStarted);
+function finishRun(runtimeSignalPath, result, totalStarted, runtimeProfile) {
+	writeRuntimeSignalIfRequested(runtimeSignalPath, result, totalStarted, runtimeProfile);
 	return result;
 }
 
 export function runPhases(
 	phases,
-	{ verbose = false, spawn = spawnSync, stdout, stderr, runtimeSignalPath } = {},
+	{
+		verbose = false,
+		spawn = spawnSync,
+		stdout,
+		stderr,
+		runtimeSignalPath,
+		runtimeProfile,
+	} = {},
 ) {
 	const out = stdout || process.stdout;
 	const err = stderr || process.stderr;
@@ -124,7 +158,7 @@ export function runPhases(
 				`✖ ${phase.label} failed to start: ${result.error.message}\n`,
 			);
 			const failedResult = { ok: false, status: 1, failedPhase: phase.id, phaseResults };
-			return finishRun(runtimeSignalPath, failedResult, totalStarted);
+			return finishRun(runtimeSignalPath, failedResult, totalStarted, runtimeProfile);
 		}
 		const status = result && typeof result.status === "number" ? result.status : 1;
 		phaseResults.push(completedPhaseResult(phase, script, elapsed, status));
@@ -133,7 +167,7 @@ export function runPhases(
 				`✖ ${phase.label} failed (exit ${status}) after ${formatDuration(elapsed)}\n`,
 			);
 			const failedResult = { ok: false, status, failedPhase: phase.id, phaseResults };
-			return finishRun(runtimeSignalPath, failedResult, totalStarted);
+			return finishRun(runtimeSignalPath, failedResult, totalStarted, runtimeProfile);
 		}
 		out.write(`✔ ${phase.label} (${formatDuration(elapsed)})\n`);
 	}
@@ -142,7 +176,7 @@ export function runPhases(
 		`\nverify · all phases passed (${formatDuration(totalElapsed)})\n`,
 	);
 	const passedResult = { ok: true, status: 0, totalElapsedMs: totalElapsed, phaseResults };
-	return finishRun(runtimeSignalPath, passedResult, totalStarted);
+	return finishRun(runtimeSignalPath, passedResult, totalStarted, runtimeProfile);
 }
 
 export function runtimeSignalPayload(result, totalStarted) {
@@ -278,7 +312,7 @@ export function withRuntimeSignalSamples(
 	};
 }
 
-function writeRuntimeSignalIfRequested(runtimeSignalPath, result, totalStarted) {
+function writeRuntimeSignalIfRequested(runtimeSignalPath, result, totalStarted, runtimeProfile) {
 	if (!runtimeSignalPath) {
 		return;
 	}
@@ -286,6 +320,7 @@ function writeRuntimeSignalIfRequested(runtimeSignalPath, result, totalStarted) 
 	const existingSignals = readExistingRuntimeSignals(outputPath);
 	const payload = withRuntimeSignalSamples(runtimeSignalPayload(result, totalStarted), {
 		existingSignals,
+		runtimeProfile: runtimeProfile || process.env.CHARNESS_RUNTIME_PROFILE || undefined,
 	});
 	mkdirSync(dirname(outputPath), { recursive: true });
 	writeFileSync(
@@ -306,12 +341,13 @@ function main() {
 		process.stdout.write(
 			[
 				"Usage: node scripts/run-verify.mjs [--verbose]",
-				"       node scripts/run-verify.mjs [--verbose] --runtime-signal <file>",
+				"       node scripts/run-verify.mjs [--verbose] --runtime-profile <id> --runtime-signal <file>",
 				"",
 				"Runs the repo's verify phases with labels so a failing sub-phase is",
 				"locatable without scrolling the log. --verbose swaps the dot reporter",
 				"for Node's spec reporter on test:node.",
 				"--runtime-signal writes a structured timing packet for quality review.",
+				"--runtime-profile names the runner class used for timing budgets.",
 			].join("\n") + "\n",
 		);
 		process.exit(0);
@@ -319,6 +355,7 @@ function main() {
 	const result = runPhases(PHASES, {
 		verbose: parsed.verbose,
 		runtimeSignalPath: parsed.runtimeSignalPath,
+		runtimeProfile: parsed.runtimeProfile,
 	});
 	process.exit(result.status);
 }

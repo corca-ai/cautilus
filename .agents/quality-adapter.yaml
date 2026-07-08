@@ -78,8 +78,19 @@ skill_ergonomics_gate_rules:
 skill_ergonomics_skill_paths:
   - skills/cautilus-agent/SKILL.md
   - plugins/cautilus/skills/cautilus-agent/SKILL.md
-runtime_profile_default: default
+runtime_profile_default: local-verify
 runtime_budgets:
+runtime_budget_profiles:
+  local-verify:
+    budgets:
+      lint · specs: 35000
+      security · secret scan: 12000
+      lint · claim evidence hashes: 9000
+      test · coverage: 10000
+      lint · eslint: 8000
+      lint · promise ledger: 4000
+      security · govulncheck: 3500
+      test · node: 3000
 startup_probes:
   - label: cautilus-version
     command:

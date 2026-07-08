@@ -3,75 +3,75 @@ Date: 2026-07-08
 
 ## Problem
 
-During a quality run, the planned broad gate command `./scripts/run-quality.sh --read-only` failed with `zsh:1: no such file or directory: ./scripts/run-quality.sh`.
+`npm run verify:runtime` failed immediately after adding `--runtime-profile` support to `scripts/run-verify.mjs`.
+ESLint reported `parseArgs` exceeded the `sonarjs/cognitive-complexity` limit: current 15, allowed 12.
 
 ## Correct Behavior
 
-Given Cautilus has a canonical standing quality gate, when a quality review needs broad deterministic evidence, then the run should use the repo-owned gate that exists and can emit runtime evidence.
-For this repo that gate is `npm run verify`, backed by `scripts/run-verify.mjs`.
+Given `verify:runtime` now needs a stable runtime profile, when the runner accepts `--runtime-profile`, then argument parsing should preserve the existing CLI contract and remain inside the repo's maintainability gate.
 
 ## Observed Facts
 
-- `./scripts/run-quality.sh --read-only` exited 127 because `scripts/run-quality.sh` does not exist.
-- `package.json` defines `verify` as `node scripts/run-verify.mjs`.
-- `scripts/run-verify.mjs` owns ordered phase labels and supports `--runtime-signal <file>`.
-- `.githooks/pre-push` already routes through `node scripts/guard-worktree-unchanged.mjs -- npm run verify`.
-- The quality planner also detected `scripts/run-verify.mjs` and the package `verify` script as final gates in its maintainer-local-enforcement brief.
-- Related prior incident `2026-06-22-verify-live-codex-exec.md` established `npm run verify` as the release/standing proof surface.
+- `npm run verify:runtime` failed in the first phase, `lint · eslint`.
+- The exact error was `scripts/run-verify.mjs 35:17 error Refactor this function to reduce its Cognitive Complexity from 15 to the 12 allowed`.
+- The failing function was `parseArgs`.
+- The new implementation added a second pending value path for `--runtime-profile` alongside `--runtime-signal`.
+- A related prior incident, `2026-07-08-scenario-provenance-js-validation-complexity.md`, recorded the same pattern: validation/control-flow additions in one JavaScript function tripped the lint complexity gate.
 
 ## Reproduction
 
-- Run `./scripts/run-quality.sh --read-only` from repo root.
-- Observe shell exit 127 and `no such file or directory`.
-- Run `sed -n '1,220p' package.json` and `sed -n '1,220p' scripts/run-verify.mjs` to confirm the actual standing gate.
+- Run `npm run verify:runtime` from repo root after the initial runtime-profile patch.
+- Observed result: `lint · eslint` exits 1 before runtime samples are collected.
+- Focused reproduction: run `npm run lint:eslint`.
 
 ## Candidate Causes
 
-- The quality gate packet names a portable/generic `run-quality.sh` command that this repo never adopted.
-- The repo renamed or consolidated quality execution into `scripts/run-verify.mjs` without preserving a compatibility wrapper.
-- The quality adapter's `gate_commands` still lists `npm run verify`, but the planner packet is generic and requires the operator to choose the equivalent existing gate.
+- The parser change added too many branches in `parseArgs`.
+- The lint threshold is too strict for CLI argument parsing.
+- The runtime-profile feature introduced an unsupported argument shape that eslint misreported as complexity.
 
 ## Hypothesis
 
-- If the review treats `npm run verify -- --runtime-signal .charness/quality/runtime-signals.json` as the equivalent standing quality gate, then broad deterministic evidence and runtime timing can be collected without adding an unowned command.
-  disconfirmer: if `package.json`, `.githooks/pre-push`, or `scripts/run-verify.mjs` do not point to `npm run verify` as the existing standing gate, then the hypothesis is false and a wrapper or adapter repair is required first.
+- Falsifiable claim: the failure is local structural complexity in `parseArgs`, not an invalid runtime-profile feature or an overly strict lint rule.
+- Disconfirmer: if extracting pending-value handling into helpers still fails `npm run lint:eslint` or focused runner tests, then the feature shape or lint threshold needs reconsideration.
 
 ## Verification
 
-- Confirmed current repo command surface from `package.json`, `.githooks/pre-push`, and `scripts/run-verify.mjs`.
-- Next verification in the quality run is to execute `npm run verify -- --runtime-signal .charness/quality/runtime-signals.json` instead of the missing generic script.
+- Result: confirmed.
+- `parseArgs` now keeps only the loop and option selection, while `applyPendingArgValue` and `assertNoPendingArgValue` own the pending-value branches.
+- `npm run lint:eslint` passed.
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/run-verify.test.mjs` passed.
 
 ## Root Cause
 
-The failure was a gate-name mismatch between a portable quality planner packet and Cautilus's actual repo-owned standing gate.
-Cautilus currently owns `verify` through `scripts/run-verify.mjs`, not a `scripts/run-quality.sh` wrapper.
+The root cause was adding a second value-taking option by extending one parser function directly.
+That concentrated option-state handling, value assignment, missing-value checks, and ordinary flag handling in `parseArgs`, exceeding the repo's cognitive-complexity gate.
 
 ## Invariant Proof
 
-- Invariant: quality review must use a repo-owned existing standing gate when the generic packet command is absent.
-- Producer Proof: `package.json` maps `verify` to `node scripts/run-verify.mjs`.
-- Final-Consumer Proof: `.githooks/pre-push` invokes `npm run verify` through the worktree guard.
-- Interface-Shape Sibling Scan: `scripts/run-verify.mjs` exposes `--runtime-signal`, which satisfies the runtime evidence need without a separate shell wrapper.
-- Non-Claims: this does not prove the full `npm run verify` result for this quality run; that belongs to the resumed quality gate execution.
+- Invariant: runner CLI parsing should keep value-pending state handling in helpers once more than one option consumes a following value.
+- Producer Proof: eslint caught the monolithic parser before the change could collect runtime samples.
+- Final-Consumer Proof: focused parser and runtime-signal tests still pass after helper extraction.
+- Interface-Shape Sibling Scan: `--runtime-signal` and `--runtime-profile` now share the same pending-value helper path.
+- Non-Claims: this debug note does not claim full `npm run verify:runtime` has passed; that belongs to the resumed quality verification.
 
 ## Detection Gap
 
-- quality planner packet | missing generic command was only discovered at execution time | record the repo-specific equivalent gate in the quality artifact and prefer the existing `verify` command for this run
-- repo command surface | no compatibility `scripts/run-quality.sh` wrapper exists | defer wrapper addition unless repeated operator runs need the alias
+- surface: `scripts/run-verify.mjs` parser maintainability | what did not fire: focused parser tests do not measure complexity | smallest change to fire it: existing `npm run lint:eslint` already fired in `verify:runtime`, so no new gate is needed.
 
 ## Sibling Search
 
-- Mental model: a planner-provided portable command is directly runnable in every consumer repo.
-- same-surface: `gate_commands` names `npm run verify` while packet command names `./scripts/run-quality.sh --read-only` | decision: use `npm run verify` as the equivalent gate | proof: package and hook surfaces point there
-- cross-file: `.githooks/pre-push` routes through `npm run verify`, not `run-quality.sh` | decision: no hook change in this debug slice | proof: hook content inspected
+- Mental model: adding one more CLI option can stay inline in the existing parser.
+- same-file axis: `--runtime-signal` and `--runtime-profile` | decision: route both through one pending-value helper | proof: focused tests pass and eslint passes.
+- cross-file: prior JS validation complexity incident | decision: preserve helper-extraction pattern for JavaScript control-flow growth | proof: prior debug memory identified the same maintainability failure mode.
 
 ## Seam Risk
 
-- Interrupt ID: quality-generic-gate-mismatch
+- Interrupt ID: run-verify-runtime-profile-parser-complexity-2026-07-08
 - Risk Class: none
-- Seam: installed quality planner packet to repo-local gate command naming
-- Disproving Observation: shell exit 127 for `./scripts/run-quality.sh --read-only`
-- What Local Reasoning Cannot Prove: whether the upstream quality planner should suppress this generic command when a repo-specific `gate_commands` field exists
+- Seam: runner CLI option parsing to maintainability gate
+- Disproving Observation: eslint failed deterministically before runtime collection continued.
+- What Local Reasoning Cannot Prove: n/a
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -83,5 +83,5 @@ Cautilus currently owns `verify` through `scripts/run-verify.mjs`, not a `script
 
 ## Prevention
 
-Continue the quality run through `npm run verify -- --runtime-signal .charness/quality/runtime-signals.json`.
-If future quality runs repeatedly trip on the same generic command, add a repo-owned wrapper or adjust the quality adapter/planner contract in a separate slice.
+Keep `scripts/run-verify.mjs` parser additions helper-oriented when adding value-taking flags.
+Do not weaken the eslint complexity gate for runner code; it caught a real maintainability regression early.

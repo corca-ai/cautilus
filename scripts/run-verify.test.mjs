@@ -6,7 +6,6 @@ import { join } from "node:path";
 
 import {
 	PHASES,
-	machineRuntimeProfile,
 	parseArgs,
 	resolveScript,
 	runtimeSignalPayload,
@@ -71,6 +70,7 @@ test("parseArgs defaults to non-verbose", () => {
 		verbose: false,
 		help: false,
 		runtimeSignalPath: null,
+		runtimeProfile: null,
 	});
 });
 
@@ -79,6 +79,7 @@ test("parseArgs recognizes --verbose", () => {
 		verbose: true,
 		help: false,
 		runtimeSignalPath: null,
+		runtimeProfile: null,
 	});
 });
 
@@ -87,6 +88,7 @@ test("parseArgs recognizes --help", () => {
 		verbose: false,
 		help: true,
 		runtimeSignalPath: null,
+		runtimeProfile: null,
 	});
 });
 
@@ -95,6 +97,16 @@ test("parseArgs recognizes runtime signal output", () => {
 		verbose: false,
 		help: false,
 		runtimeSignalPath: "out/runtime.json",
+		runtimeProfile: null,
+	});
+});
+
+test("parseArgs recognizes runtime profile", () => {
+	assert.deepEqual(parseArgs(["--runtime-profile", "local-verify"]), {
+		verbose: false,
+		help: false,
+		runtimeSignalPath: null,
+		runtimeProfile: "local-verify",
 	});
 });
 
@@ -102,6 +114,13 @@ test("parseArgs rejects missing runtime signal path", () => {
 	assert.throws(
 		() => parseArgs(["--runtime-signal"]),
 		/--runtime-signal requires a path/,
+	);
+});
+
+test("parseArgs rejects missing runtime profile id", () => {
+	assert.throws(
+		() => parseArgs(["--runtime-profile"]),
+		/--runtime-profile requires a profile id/,
 	);
 });
 
@@ -158,6 +177,7 @@ test("runPhases writes a quality runtime signal when requested", () => {
 		stdout: out.sink,
 		stderr: err.sink,
 		runtimeSignalPath: outputPath,
+		runtimeProfile: "local-verify",
 	});
 	assert.equal(result.ok, true);
 	const payload = JSON.parse(readFileSync(outputPath, "utf-8"));
@@ -170,10 +190,9 @@ test("runPhases writes a quality runtime signal when requested", () => {
 		"--silent",
 		"lint:a",
 	]);
-	assert.ok(payload.profiles[machineRuntimeProfile()]);
+	assert.ok(payload.profiles["local-verify"]);
 	assert.equal(
-		payload.profiles[machineRuntimeProfile()].commands["lint · a"].latest
-			.elapsed_ms,
+		payload.profiles["local-verify"].commands["lint · a"].latest.elapsed_ms,
 		payload.phases[0].durationMs,
 	);
 });

@@ -114,7 +114,7 @@
     "test": "npm run test:go && npm run test:node",
     "test:on-demand": "npm run test:node:on-demand",
     "verify": "node scripts/run-verify.mjs",
-    "verify:runtime": "node scripts/run-verify.mjs --runtime-signal .charness/quality/runtime-signals.json",
+    "verify:runtime": "node scripts/run-verify.mjs --runtime-profile local-verify --runtime-signal .charness/quality/runtime-signals.json",
     "verify:verbose": "node scripts/run-verify.mjs --verbose",
     "vet:go": "go vet ./cmd/... ./internal/...",
     "session:summarize": "node scripts/agent-runtime/summarize-codex-session-log.mjs"
