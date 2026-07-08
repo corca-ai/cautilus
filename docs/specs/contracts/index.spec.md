@@ -24,5 +24,6 @@ Each contract page names the aligned claims or rules, the implementation promise
 - [Live Invocation Runtime](live-invocation-runtime.spec.md)
 - [Reporting And Review Variants](reporting-review-variants.spec.md)
 - [Scenario History And Proposal Normalization](scenario-history-normalization.spec.md)
+- [SkillOpt Absorption Boundary](../../contracts/skillopt-absorption.md) — design-only boundary for selective pattern absorption; no implemented evidence route yet.
 
 Which promise each contract implements, and which rules each promise carries, is the [Promise Ledger](../generated/promise-ledger.spec.md) map generated from the `implemented-by::` / `governed-by::` trace edges.

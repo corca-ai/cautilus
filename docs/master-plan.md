@@ -69,6 +69,7 @@ Current `product-owned helper surface`:
 - bounded improvement input and proposal helpers
 - durable revision-artifact builder (`cautilus.revision_artifact.v1`) above improve proposals
 - GEPA-style bounded prompt-search helpers (`improve-search v2`) with multi-generation reflective mutation, optional bounded two- or three-parent merge synthesis, frontier-promotion review checkpoints, scenario-aware checkpoint feedback reinjection, severity-aware rejected-sibling merge tie-breaking, concern-level repair-first mutation prioritization, selection-cap reason codes, and final-only full-gate fallback
+- selective SkillOpt / SkillOpt-Sleep absorption is now a design boundary, not a runtime import: [skillopt-absorption.md](./contracts/skillopt-absorption.md) accepts normalized session-derived proposal inputs, rejected-candidate evidence, staged adoption evidence, and replay/recall inputs while rejecting raw transcript readers, plugin shells, schedulers, auto-apply, and a second optimizer
 
 Dogfood and migration evidence now lives separately from the product concept.
 Use [consumer-readiness.md](./maintainers/consumer-readiness.md) for checked-in host evidence instead of treating any one consumer repo as the product definition.
@@ -163,6 +164,7 @@ Still intentionally excluded:
 - multi-prompt or multi-component coupled updates
 - fine-tuning or trainer orchestration
 - consumer prompt auto-apply
+- SkillOpt-Sleep-style raw transcript harvesting, schedulers, plugin shells, and long-term-memory stores inside the Cautilus product boundary
 
 ### Phase 6: Consumer Repoint And External Consumers — in progress
 
@@ -190,7 +192,7 @@ What remains is below-apex hardening, in measured priority order:
    Engine-baseline overlap route-accuracy moved ~45% → ~61% across these slices, with zero new over-corrections. Remaining: the other deferred `cautilus-eval → deterministic` shapes (schema-field-persistence, static-taxonomy, CLI-flag-semantics, status-routing, extraction, command-absence, R6-ish boundary) and a gate↔router verb-coverage audit so a future router case cannot go structurally dead behind the gate. SOT: [charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md](../charness-artifacts/eval-trust/2026-06-21-fork-b-eval-overassignment-measurement.md).
 2. App-ship surface Proof Debt: `app/chat` liveness (its agent run is replayed from a production log, not re-run live) and `app/prompt` product-runner proof (`productProofReady=false`).
 
-1. Pick the next bounded improvement seam for the improvement layer: either close a specific richer merge heuristic that dogfood evidence asks for, or move to another roadmap slice rather than extending heuristics speculatively.
+1. Pick the next bounded improvement seam for the improvement layer: either close a specific richer merge heuristic that dogfood evidence asks for, implement a minimal packet slice from [skillopt-absorption.md](./contracts/skillopt-absorption.md), or move to another roadmap slice rather than extending heuristics speculatively.
 2. Expand typed multi-runner metadata from the shipped `runner_readiness.runners` base only when real consumer adapters need additional fields; source-code inference remains deferred.
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.

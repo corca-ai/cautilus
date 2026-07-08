@@ -1,18 +1,18 @@
 # Achieve Goal: Align Cautilus Docs And Design SkillOpt Absorption
 
-Status: draft
+Status: active
 Created: 2026-07-08
 Activation: `/goal @charness-artifacts/goals/2026-07-08-skillopt-absorption-doc-alignment.md`
 
-This file is the living goal scratchpad. It becomes active only when the user
-runs the activation command.
+This file is the living goal scratchpad.
+It is active for the current `/goal` pursuit.
 
 ## Active Operating Frame
 
-- Current slice: draft/backlog awaiting activation.
-- Current disposition: shaped draft; safe to pursue via `/goal` when the operator wants implementation to begin.
+- Current slice: Slice 1/2 combined doc and contract alignment implemented locally; fresh-eye critique is blocked by host delegation authorization.
+- Current disposition: active; deterministic checks passed, generated claim surfaces refreshed, committed in current HEAD.
 - Current slice intent: align stale living docs with the current proof state, then design the Cautilus-native way to absorb useful SkillOpt and SkillOpt-Sleep patterns.
-- Next action: activate with `/goal @charness-artifacts/goals/2026-07-08-skillopt-absorption-doc-alignment.md` after confirming the draft is still intended.
+- Next action: next resumed slice should either get explicit user authorization for delegated fresh-eye critique or continue without claiming critique satisfaction, then decide whether a minimal executable packet slice is warranted.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -83,8 +83,8 @@ Align Cautilus's living docs after the current proof-state drift, then design a 
 
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Align Cautilus living docs with current proof state. | The SkillOpt absorption decision should not land on top of stale public claims. | README/master-plan/spec wording agrees on proven/debt state; `npm run lint:specs` or documented substitute. | planned |
-| 2 | Write the SkillOpt absorption design contract. | The useful lessons need a Cautilus-native boundary before implementation. | Contract/design doc names accepted patterns, rejected imports, command-family landing zones, packet boundaries, and contamination/safety constraints. | planned |
+| 1 | Align Cautilus living docs with current proof state. | The SkillOpt absorption decision should not land on top of stale public claims. | README/master-plan/spec wording agrees on proven/debt state; `npm run lint:specs` or documented substitute. | implemented locally; critique blocked |
+| 2 | Write the SkillOpt absorption design contract. | The useful lessons need a Cautilus-native boundary before implementation. | Contract/design doc names accepted patterns, rejected imports, command-family landing zones, packet boundaries, and contamination/safety constraints. | implemented locally; critique blocked |
 | 3 | Implement the smallest normalizer/evidence slice if the design chooses one. | A goal should land one executable proof when it adds a new runtime surface. | Fixture/schema/test for session-derived proposal input or rejected-candidate evidence; no raw transcript reader in product. | conditional |
 | 4 | Final quality, critique, and closeout. | The user needs an auditable decision and next-step proof, not a private analysis. | `npm run verify`, `npm run hooks:check`, critique disposition, final verification, residual non-claims. | planned |
 
@@ -135,13 +135,27 @@ placeholder is intentionally non-satisfying (the Gather / Release / Issue
 closeout floors are presence-only, so no stub is seeded for them — add their line
 per the bullets above when that boundary is crossed):
 
-- `Routing: find-skills -> achieve — user explicitly requested an achieve goal artifact for doc alignment and SkillOpt absorption design`
+- `Routing: find-skills -> achieve + impl — active goal pursuit owns lifecycle; impl owns the doc/contract edit slice; cautilus tool recommendation was treated as validation-only trigger overlap, not the primary route`
 
 ## Discuss Before Activation
 
 - Discuss before activation: resolved — the draft intentionally does not authorize push, release, issue closeout, raw transcript ingestion, live app proof, or auto-apply; `/goal` activation starts local doc/design work first, and any external boundary must be separately approved.
 
 ## Slice Log
+
+### Slice 1: Align proof state and SkillOpt absorption boundary
+
+- Objective: Align README/master-plan/spec-facing contract surfaces with the current 7/7 proven audit state and add a Cautilus-native SkillOpt absorption design boundary.
+- Why this approach: The absorption decision needed to land on a consistent proof-state story and preserve Cautilus's host-owned raw data, packet-first, held-out, no-auto-apply boundaries.
+- Commits: pending commit
+- What changed: README proof-state prose now matches the apex audit; docs/contracts/skillopt-absorption.md defines accepted patterns, rejected imports, command-family landing zones, safety rules, and deferred packet questions; docs/master-plan.md and docs/specs/contracts/index.spec.md link the design boundary; claim generated surfaces were refreshed after README changed.
+- Alternatives rejected: Rejected lowering apex/spec status because .cautilus/audit/surface-audit.json and docs/specs/index.spec.md prove 7/7 current badge consistency; rejected importing SkillOpt/Sleep runtime surfaces because raw transcript readers, schedulers, plugin shells, and auto-apply violate Cautilus boundaries.
+- Targeted verification: git diff --check; npm run lint:specs; npm run claims:refresh:all; npm run lint:specs after refresh.
+- Test duplication pressure:
+- Critique: blocked host-signal: subagent tool exists but requires explicit user delegation authorization; repo-required fresh-eye critique was not run and same-agent review was not substituted.
+- Off-goal findings: none
+- Lessons carried forward: Generated claim surfaces need refresh when README proof-state prose changes; next slice should either get explicit delegation authorization for critique or avoid claiming fresh-eye satisfaction.
+- Metrics: not captured
 
 ## Context Sources
 

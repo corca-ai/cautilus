@@ -1,8 +1,8 @@
 {
-  "candidateCount": 549,
+  "candidateCount": 560,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 1,
+    "evidenceSupportIdRewriteCount": 0,
     "matchedClaimCount": 548,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
@@ -463,38 +463,8 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:7adc5894f34e184cbec2b91d4b910325d756c13bbbbc5f574a434dcd34869cea",
-      "claimId": "claim-readme-md-16",
-      "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:user",
-        "cautilus-eval",
-        "dev/repo",
-        "readme"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
-      "recommendedEvalSurface": "dev/repo",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery carry **proven** evidence; behavior evaluation remains **declared** overall because its dev surfaces are proven live but its app surfaces remain explicitly itemized in Proof Debt (`app/chat` has an anonymized external product-log replay plus a blind intent judge but not live app-agent liveness, and `app/prompt` has a fresh backend probe plus a blind intent judge over that probe but not product-runner proof).",
-          "line": 16,
-          "path": "README.md"
-        }
-      ],
-      "summary": "Cautilus proves its own promises with honest badges ([the apex spec](./docs/specs/index.spec.md)): readiness and claim discovery carry **proven** evidence; behavior evaluation remains **declared** overall because its dev surfaces are proven live but its app surfaces remain explicitly itemized in Proof Debt (`app/chat` has an anonymized external product-log replay plus a blind intent judge but not live app-agent liveness, and `app/prompt` has a fresh backend probe plus a blind intent judge over that probe but not product-runner proof).",
-      "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
-    },
-    {
-      "claimAudience": "user",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b336bef7e80020e946bc8e8491c15a3c56f9bb82f0373ccd924b443ca34747f9",
-      "claimId": "claim-readme-md-18",
+      "claimId": "claim-readme-md-19",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -512,7 +482,7 @@
       "sourceRefs": [
         {
           "excerpt": "For cross-repo adoption, the bounded evaluation loop is the most ready slice: host repos can use `cautilus evaluate fixture`, `cautilus evaluate observation`, and post-run `cautilus evaluate skill-experiment` with checked-in fixtures, host-owned adapters, preserved task packets, and the current evaluation and skill-experiment report packets.",
-          "line": 18,
+          "line": 19,
           "path": "README.md"
         }
       ],
@@ -524,7 +494,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:440dfe9ad14280d2cea20de7228484be57c3137e61f24d507988bd8d5a5220d9",
-      "claimId": "claim-readme-md-48",
+      "claimId": "claim-readme-md-49",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -542,7 +512,7 @@
       "sourceRefs": [
         {
           "excerpt": "You can also hand setup to an agent instead of running these steps yourself.",
-          "line": 48,
+          "line": 49,
           "path": "README.md"
         }
       ],
@@ -554,7 +524,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2351b132ae813dfb9df2fca5291372e65c4232b981aab4f685bfefa3b3f135aa",
-      "claimId": "claim-readme-md-60",
+      "claimId": "claim-readme-md-61",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -570,7 +540,7 @@
       "sourceRefs": [
         {
           "excerpt": "Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review.",
-          "line": 60,
+          "line": 61,
           "path": "README.md"
         }
       ],
@@ -582,7 +552,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:25f326356227fb2317af75db3dca0b6ac32161558c644ef0f1b1073bce3c175f",
-      "claimId": "claim-readme-md-62",
+      "claimId": "claim-readme-md-63",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -591,7 +561,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-readme-spec-report-renderer-independence-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-readme-md-62"
+            "claim-readme-md-63"
           ]
         }
       ],
@@ -609,7 +579,7 @@
       "sourceRefs": [
         {
           "excerpt": "The public website report is generated from the claim spec tree, but host repos do not need that renderer before Cautilus can inspect readiness, claims, evals, or improvement work.",
-          "line": 62,
+          "line": 63,
           "path": "README.md"
         }
       ],
@@ -622,7 +592,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:91cbf79ceebcfc46b8e7101cce4e13ff261e68a9e12c918beadb971da626b2a7",
-      "claimId": "claim-readme-md-70",
+      "claimId": "claim-readme-md-71",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -631,7 +601,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-readme-bounded-eval-loop-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-readme-md-70"
+            "claim-readme-md-71"
           ]
         }
       ],
@@ -649,7 +619,7 @@
       "sourceRefs": [
         {
           "excerpt": "This loop verifies a bounded behavior fixture and produces reopenable observed and summary packets.",
-          "line": 70,
+          "line": 71,
           "path": "README.md"
         }
       ],
@@ -662,7 +632,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e1d40b8af228eee85cfe4d1bf48eb7be58e13f6c5737038ab9c41ef1ac6eb0d2",
-      "claimId": "claim-readme-md-85",
+      "claimId": "claim-readme-md-86",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -680,7 +650,7 @@
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` turns the fixture run into durable eval packets that another agent or maintainer can reopen.",
-          "line": 85,
+          "line": 86,
           "path": "README.md"
         }
       ],
@@ -692,7 +662,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:fee6e2c9ba896bb38525850e1fe855de7d93cf287bc9948a54652f685ee3dce2",
-      "claimId": "claim-readme-md-96",
+      "claimId": "claim-readme-md-97",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -710,7 +680,7 @@
       "sourceRefs": [
         {
           "excerpt": "That turned \"did the agent read and follow the repo instructions?\" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.",
-          "line": 96,
+          "line": 97,
           "path": "README.md"
         }
       ],
@@ -722,7 +692,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:65187b465dfc13de75030ffd9b3d83f3c9201a67ce814fff0d55a0ad196a0dd0",
-      "claimId": "claim-readme-md-109",
+      "claimId": "claim-readme-md-110",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -740,7 +710,7 @@
       "sourceRefs": [
         {
           "excerpt": "Evaluation uses two top-level surfaces: `dev` for AI-assisted development work such as repo contracts, tools, and skills, and `app` for AI-powered product behavior such as chat, prompt, and service responses.",
-          "line": 109,
+          "line": 110,
           "path": "README.md"
         }
       ],
@@ -752,44 +722,42 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0e3e74a4c062fc12acdce7ccc934dac0e4b36fc30fe6bd96ae0ceaf413d96302",
-      "claimId": "claim-readme-md-122",
+      "claimId": "claim-readme-md-123",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
+          "contentHash": "sha256:97f1c86b6b037fd02df377681d62b71bded29bbdc78357e880b9f87027af6a8d",
           "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "possible",
-          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-claim-eval-plan-2026-05-01.json",
           "supportsClaimIds": [
-            "claim-readme-md-122"
+            "claim-readme-md-123"
           ]
         }
       ],
-      "evidenceStatus": "unknown",
-      "evidenceStatusReason": "A concrete scenario proposal exists, but the scenario has not yet been promoted to a checked-in fixture or evaluated.",
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked claim-eval-plan evidence bundle: after review, `claim plan-evals` emitted `cautilus.claim_eval_plan.v1`, included an app/prompt plan for this claim, and preserved the non-writer boundary.",
       "groupHints": [
-        "app/chat",
+        "app/prompt",
         "audience:user",
         "cautilus-eval",
         "needs-scenario",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Plan a protected app/chat eval fixture from the `context-recovery-protected-from-tuning` proposal, keeping it out of tuning inputs.",
-      "recommendedEvalSurface": "app/chat",
+      "nextAction": "Keep covered by a reviewed claim-plan smoke when claim eval planning or fixture-authoring guidance changes.",
+      "recommendedEvalSurface": "app/prompt",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
-          "line": 122,
+          "line": 123,
           "path": "README.md"
         }
       ],
       "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
-      "unresolvedQuestions": [
-        "Which accepted fixture path should own the protected context-recovery scenario?"
-      ],
+      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim describes app/chat behavior and protected-scenario separation; it needs a Cautilus eval, but the scenario proposal packet now gives it a concrete protected context-recovery scenario."
     },
@@ -797,7 +765,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c9942c56f6453d6c4c7a2d3a0f4b2c05d22ca5c2fd361cf207a4519ac65403e7",
-      "claimId": "claim-readme-md-140",
+      "claimId": "claim-readme-md-141",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -813,7 +781,7 @@
       "sourceRefs": [
         {
           "excerpt": "`Cautilus` also ships a GEPA-style bounded prompt search seam above the one-shot improver: multi-generation reflective mutation, protected reevaluation, frontier-promotion review reuse, checkpoint feedback reinjection, bounded merge synthesis, and Pareto-style frontier selection.",
-          "line": 140,
+          "line": 141,
           "path": "README.md"
         }
       ],
@@ -825,36 +793,50 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
-      "claimId": "claim-readme-md-143",
+      "claimId": "claim-readme-md-144",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
+      "evidenceRefs": [
+        {
+          "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
+          "kind": "cautilus-claim-evidence-bundle",
+          "matchKind": "verified",
+          "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
+          "supportsClaimIds": [
+            "claim-readme-md-144"
+          ]
+        }
+      ],
+      "evidenceStatus": "satisfied",
+      "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: the self-dogfood-eval-skill Codex run passed one trigger case and two execution cases after install and agent-surface doctor preflight.",
       "groupHints": [
         "audience:user",
         "blocked",
-        "human-auditable",
+        "cautilus-eval",
+        "dev/skill",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep this as human-auditable positioning or decompose it into concrete deterministic or Cautilus eval claims before proof planning.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
+      "nextAction": "Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
-          "line": 143,
+          "line": 144,
           "path": "README.md"
         }
       ],
       "summary": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
-      "verificationReadiness": "blocked",
+      "unresolvedQuestions": [],
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named."
     },
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9b65cef61eb4ef1f46e9e2d36eee961958d83aea45370a49787a9c5e27c1c18c",
-      "claimId": "claim-readme-md-149",
+      "claimId": "claim-readme-md-150",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -863,7 +845,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-readme-md-149",
+            "claim-readme-md-150",
             "claim-readme-md-160"
           ]
         }
@@ -882,7 +864,7 @@
       "sourceRefs": [
         {
           "excerpt": "Claude and Codex use the repo-local Cautilus Agent that `cautilus init` installs under `.agents/skills/cautilus-agent/`.",
-          "line": 149,
+          "line": 150,
           "path": "README.md"
         }
       ],
@@ -895,7 +877,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:cf790e9bd1101bbe3feb092c4744b6f771b4ef93f31941d1fc83d25cafe35f97",
-      "claimId": "claim-readme-md-152",
+      "claimId": "claim-readme-md-153",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -905,7 +887,7 @@
           "path": ".cautilus/claims/evidence-readme-core-flow-consumer-artifacts-2026-05-17.json",
           "supportsClaimIds": [
             "claim-readme-md-157",
-            "claim-readme-md-152"
+            "claim-readme-md-153"
           ]
         }
       ],
@@ -923,7 +905,7 @@
       "sourceRefs": [
         {
           "excerpt": "The result is not just a pass/fail bit: it is a set of machine-readable packets plus readable views that another maintainer or agent can reopen.",
-          "line": 152,
+          "line": 153,
           "path": "README.md"
         }
       ],
@@ -3588,7 +3570,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f2038595d88883381c1a4e025a4f60ffb70c089f56db944e569539b9294ed41e",
-      "claimId": "claim-docs-master-plan-md-78",
+      "claimId": "claim-docs-master-plan-md-79",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -3597,7 +3579,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-master-plan-md-78"
+            "claim-docs-master-plan-md-79"
           ]
         }
       ],
@@ -3616,7 +3598,7 @@
       "sourceRefs": [
         {
           "excerpt": "The first `claim` slice ships as deterministic `cautilus discover claims`, which emits a source-ref-backed proof plan rather than a verdict.",
-          "line": 78,
+          "line": 79,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3629,7 +3611,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:369242dab623a340040e48a7ba7b1b8e279514aaf0d83fc23ad2474c5509777b",
-      "claimId": "claim-docs-master-plan-md-79",
+      "claimId": "claim-docs-master-plan-md-80",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3647,7 +3629,7 @@
       "sourceRefs": [
         {
           "excerpt": "The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.",
-          "line": 79,
+          "line": 80,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3659,7 +3641,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:58187c8bd7feb4cf51b58f99bf6a1829c885a77931c673d36f6f61c471dc6fbe",
-      "claimId": "claim-docs-master-plan-md-80",
+      "claimId": "claim-docs-master-plan-md-81",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3677,7 +3659,7 @@
       "sourceRefs": [
         {
           "excerpt": "Direction decision (2026-06-10): claim extraction itself becomes agent-primary — the Cautilus Agent extracts claims against a product-owned template while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to git-diff-changed sources; the deterministic heuristic extractor remains an explicitly labeled baseline mode.",
-          "line": 80,
+          "line": 81,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3689,7 +3671,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4fcb36134cb7204ba0dc875a4fd2b554573bb1c70092e5302e7555fd035564af",
-      "claimId": "claim-docs-master-plan-md-85",
+      "claimId": "claim-docs-master-plan-md-86",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -3698,7 +3680,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-master-plan-md-85"
+            "claim-docs-master-plan-md-86"
           ]
         }
       ],
@@ -3717,7 +3699,7 @@
       "sourceRefs": [
         {
           "excerpt": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.",
-          "line": 85,
+          "line": 86,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3730,7 +3712,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:815dd0a63f977133f71cba4abf88a635f27ae1e6db6eee7884fc85f9acab52d4",
-      "claimId": "claim-docs-master-plan-md-91",
+      "claimId": "claim-docs-master-plan-md-92",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3749,7 +3731,7 @@
       "sourceRefs": [
         {
           "excerpt": "Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence.",
-          "line": 91,
+          "line": 92,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3762,7 +3744,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:98e0f85947834f4b4391910de08dc6f1c870af7b5e7cdd701f9f1bd98eee860a",
-      "claimId": "claim-docs-master-plan-md-154",
+      "claimId": "claim-docs-master-plan-md-155",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3779,7 +3761,7 @@
       "sourceRefs": [
         {
           "excerpt": "the risk-tier policy on top of the acceptance read ([acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories",
-          "line": 154,
+          "line": 155,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3791,7 +3773,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:862486870933c2f77a6e870f56ecd39d3d61d0e1dc05327473b89897e5897be2",
-      "claimId": "claim-docs-master-plan-md-186",
+      "claimId": "claim-docs-master-plan-md-188",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3808,7 +3790,7 @@
       "sourceRefs": [
         {
           "excerpt": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):",
-          "line": 186,
+          "line": 188,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3820,7 +3802,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1e1d3781f4946fb70586c315428377ac72b570373e576db85aa852ad118d001e",
-      "claimId": "claim-docs-master-plan-md-189",
+      "claimId": "claim-docs-master-plan-md-191",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3837,7 +3819,7 @@
       "sourceRefs": [
         {
           "excerpt": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21).",
-          "line": 189,
+          "line": 191,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3849,7 +3831,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-199",
+      "claimId": "claim-docs-master-plan-md-201",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3867,7 +3849,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 199,
+          "line": 201,
           "path": "docs/master-plan.md"
         }
       ],
@@ -11960,6 +11942,277 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:8c2191e0e55cef3ce80390d6957fac50c2681a978d9fc59034ebdb4f0810b7e7",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-6",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` should absorb only the SkillOpt and SkillOpt-Sleep patterns that strengthen its existing `claim`, `eval`, and `improve` command families while preserving host-owned raw data, packet-first proof, held-out safety, and no auto-apply.",
+          "line": 6,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "`Cautilus` should absorb only the SkillOpt and SkillOpt-Sleep patterns that strengthen its existing `claim`, `eval`, and `improve` command families while preserving host-owned raw data, packet-first proof, held-out safety, and no auto-apply.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:2c87705694153abf129856d9425f698dc96ba8c1c105c9da3d66452e552d4148",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-19",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/prompt",
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` already owns bounded prompt search, held-out evaluation, acceptance reads, and reviewable revision artifacts.",
+          "line": 19,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "`Cautilus` already owns bounded prompt search, held-out evaluation, acceptance reads, and reviewable revision artifacts.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:e50641758558dd627c85e968ff90da6abcac592b832b40141273d8e24e031e09",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-24",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/repo",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/repo fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A host repo can hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions.",
+          "line": 24,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "A host repo can hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:679a9490096c230817587fc1fea03f2f33a11899faf046f4488786c9dec80f23",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-69",
+      "claimSemanticGroup": "Documentation and contracts",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "every adoption decision remains human or host-policy owned",
+          "line": 69,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "every adoption decision remains human or host-policy owned",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:7533d16c3da76c4c52bcc38ed2fa500194727a5e6147f651a63eacfe477f7fb2",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-71",
+      "claimSemanticGroup": "Adapter and portability",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "risk-tier acceptance policy stays adapter-owned",
+          "line": 71,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "risk-tier acceptance policy stays adapter-owned",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:ce4dfb3f554b8b4bac288bd6edcb11f3b86b4dfa6c5326e557b274e1b4e89799",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-102",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It should not treat mined sessions as public product promises unless the host's source docs declare the promise or the Cautilus Agent explicitly raises it for review.",
+          "line": 102,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "It should not treat mined sessions as public product promises unless the host's source docs declare the promise or the Cautilus Agent explicitly raises it for review.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:12bc50759856fdf255ac6456a9332b735bd356dd5745b5cf4742448bfd8559aa",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-109",
+      "claimSemanticGroup": "Packets and reporting",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Attach at least one supporting evidence item, or split/defer the claim if no concrete evidence would make the human judgment honest.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "It must keep held-out as validation/selection evidence, keep acceptance as optimizer-untouchable final read evidence, and emit staged artifacts rather than applying changes.",
+          "line": 109,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "It must keep held-out as validation/selection evidence, keep acceptance as optimizer-untouchable final read evidence, and emit staged artifacts rather than applying changes.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim can be checked by reading current source, docs, or generated artifacts."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:4f473fa30ef638691fafda2da6883d7821d568758e15fd515360851b9fd1d0cb",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-128",
+      "claimSemanticGroup": "Improvement and improvement",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "app/prompt",
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned app/prompt fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "app/prompt",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The current `improve search` v1 target remains one consumer-owned prompt file.",
+          "line": 128,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "The current `improve search` v1 target remains one consumer-owned prompt file.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:096b146257aff8ede5edd0f821ae5bc66db8471d7e0df7e3cb59c605f026c77d",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-150",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "cautilus-eval",
+        "contract",
+        "dev/skill",
+        "linked-from:docs/master-plan.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Create a host-owned dev/skill fixture and run it through cautilus evaluate fixture.",
+      "recommendedEvalSurface": "dev/skill",
+      "recommendedProof": "cautilus-eval",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "A maintainer can identify which SkillOpt-derived patterns are accepted, rejected, and deferred without reading SkillOpt source code.",
+          "line": 150,
+          "path": "docs/contracts/skillopt-absorption.md"
+        }
+      ],
+      "summary": "A maintainer can identify which SkillOpt-derived patterns are accepted, rejected, and deferred without reading SkillOpt source code.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:9aa67d9d960873c3babfef7757cc09598c422c34c2ee669d1b412995289b98ca",
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-25",
       "claimSemanticGroup": "Adapter and portability",
@@ -16968,6 +17221,94 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:a76b368a1f678ba787626a7dfebae5913dff6d7cf9b4c14717d0b603afe7af2a",
+      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-89",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "human-auditable",
+        "linked-from:docs/contracts/skillopt-absorption.md",
+        "needs-alignment"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The product-owned merge step combines their evidence and keeps the newest evidence first.",
+          "line": 89,
+          "path": "docs/contracts/scenario-proposal-inputs.md"
+        }
+      ],
+      "summary": "The product-owned merge step combines their evidence and keeps the newest evidence first.",
+      "verificationReadiness": "needs-alignment",
+      "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:d64278466d975c5fe18dcaeeea09bc453900e83752a8b92c47c74cc96b14f7be",
+      "claimId": "claim-docs-contracts-scenario-proposal-normalization-md-5",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/skillopt-absorption.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic scenario command, packet, or render proof for this claim.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "`Cautilus` does not yet own those heuristics, but it should provide one bounded reference seam that proves how host-owned normalized sources become the input packet consumed by `cautilus discover scenarios propose`.",
+          "line": 5,
+          "path": "docs/contracts/scenario-proposal-normalization.md"
+        }
+      ],
+      "summary": "`Cautilus` does not yet own those heuristics, but it should provide one bounded reference seam that proves how host-owned normalized sources become the input packet consumed by `cautilus discover scenarios propose`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim documents scenario command or proposal-packet behavior rather than asking for a new behavior scenario."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "claimFingerprint": "sha256:51a62654098254263c0527698df9ab654d712b4685c8d71d5097b4394897b575",
+      "claimId": "claim-docs-contracts-scenario-proposal-normalization-md-41",
+      "claimSemanticGroup": "Agent and skill workflow",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
+      "groupHints": [
+        "audience:developer",
+        "contract",
+        "deterministic",
+        "linked-from:docs/contracts/skillopt-absorption.md"
+      ],
+      "lifecycle": "new",
+      "nextAction": "Keep or add deterministic packet-schema or golden-output proof for the named payload; route any behavior-quality subclaim to Cautilus eval separately.",
+      "recommendedProof": "deterministic",
+      "reviewStatus": "heuristic",
+      "sourceRefs": [
+        {
+          "excerpt": "The command emits a single `cautilus.scenario_proposal_inputs.v1` packet that can be passed directly to `cautilus discover scenarios propose`.",
+          "line": 41,
+          "path": "docs/contracts/scenario-proposal-normalization.md"
+        }
+      ],
+      "summary": "The command emits a single `cautilus.scenario_proposal_inputs.v1` packet that can be passed directly to `cautilus discover scenarios propose`.",
+      "verificationReadiness": "ready-for-proof",
+      "whyThisLayer": "The claim's dominant facet is emitting a named, versioned Cautilus packet (or explicitly not calling an LLM); that the packet exists with its documented shape is a schema/golden-checkable deterministic mechanism. Whether the downstream behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:77a8da5194b241cb6d76b536a1d670c2edb7bce6d432ce4e2acffde0831356fd",
       "claimId": "claim-docs-contracts-scenario-proposal-sources-md-28",
       "claimSemanticGroup": "Packets and reporting",
@@ -18541,43 +18882,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 419,
-      "user": 130
+      "developer": 431,
+      "user": 129
     },
     "byClaimSemanticGroup": {
-      "Adapter and portability": 80,
-      "Agent and skill workflow": 117,
-      "Claim discovery and review": 79,
-      "Documentation and contracts": 116,
+      "Adapter and portability": 82,
+      "Agent and skill workflow": 122,
+      "Claim discovery and review": 78,
+      "Documentation and contracts": 117,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
-      "Improvement and improvement": 56,
-      "Packets and reporting": 60,
+      "Improvement and improvement": 59,
+      "Packets and reporting": 61,
       "Quality gates": 37,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 142,
-      "unknown": 407
+      "satisfied": 144,
+      "unknown": 416
     },
     "byLifecycle": {
-      "new": 549
+      "new": 560
     },
     "byRecommendedProof": {
-      "cautilus-eval": 153,
-      "deterministic": 248,
-      "human-auditable": 148
+      "cautilus-eval": 157,
+      "deterministic": 251,
+      "human-auditable": 152
     },
     "byReviewStatus": {
-      "agent-reviewed": 192,
-      "heuristic": 356,
+      "agent-reviewed": 193,
+      "heuristic": 366,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
-      "blocked": 33,
-      "needs-alignment": 55,
+      "blocked": 32,
+      "needs-alignment": 58,
       "needs-scenario": 1,
-      "ready-for-proof": 460
+      "ready-for-proof": 469
     }
   },
   "discoveryEngine": {
@@ -18776,7 +19117,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "5578031ae58d22382105e1d1f061cf54aa1c7276",
+  "gitCommit": "344b3ea72d1b7bddaeff7cc16a2ffa62f3f156b7",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -18793,7 +19134,7 @@
           "groupHints",
           "unresolvedQuestions"
         ],
-        "claimId": "claim-docs-master-plan-md-91",
+        "claimId": "claim-docs-master-plan-md-92",
         "clusterId": "id-drift-replay-repair-2026-06-10"
       },
       {
@@ -18831,8 +19172,10 @@
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
     "aggregateReviewResultPaths": [
-      ".cautilus/claims/review-result-loop1-lane-a.json",
       ".cautilus/claims/review-result-loop2-lane-a.json",
+      ".cautilus/claims/review-result-loop2-lane-b.json",
+      ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
+      ".cautilus/claims/review-result-evidence-dev-skill-routing-install.json",
       ".cautilus/claims/review-result-llm-batch1.json",
       ".cautilus/claims/review-result-llm-batch3.json",
       ".cautilus/claims/review-result-llm-batch4.json",
@@ -18936,12 +19279,10 @@
       ".cautilus/claims/review-result-readiness-triage-replay-2026-06-10.json"
     ],
     "skippedReviewResultPaths": [
+      ".cautilus/claims/review-result-loop1-lane-a.json",
       ".cautilus/claims/review-result-loop1-lane-b.json",
-      ".cautilus/claims/review-result-loop2-lane-b.json",
       ".cautilus/claims/review-result-deterministic-gates-2026-05-01.json",
-      ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
       ".cautilus/claims/review-result-evidence-dev-skill-dogfood.json",
-      ".cautilus/claims/review-result-evidence-dev-skill-routing-install.json",
       ".cautilus/claims/review-result-positioning-boundary.json",
       ".cautilus/claims/review-result-evidence-review-to-eval-flow.json",
       ".cautilus/claims/review-result-action-boundary-skill-guidance.json",
@@ -18974,11 +19315,11 @@
       ".cautilus/claims/review-result-contract-review-clustering-curation-2026-05-17.json",
       ".cautilus/claims/review-result-contract-agent-review-ownership-2026-05-17.json"
     ],
-    "appliedResultCount": 103,
-    "skippedResultCount": 37,
-    "keptUpdateCount": 271,
-    "rewrittenUpdateCount": 140,
-    "droppedUpdateCount": 257,
+    "appliedResultCount": 105,
+    "skippedResultCount": 35,
+    "keptUpdateCount": 274,
+    "rewrittenUpdateCount": 143,
+    "droppedUpdateCount": 254,
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
@@ -19239,23 +19580,6 @@
         "assignedClusterIndexes": [
           0,
           1,
-          2,
-          3
-        ],
-        "createdAt": "2026-04-30T19:42:00+09:00",
-        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
-        "inputPath": ".cautilus/claims/review-input-loop1.json",
-        "lane": "lane-a",
-        "reviewer": "codex"
-      },
-      "schemaVersion": "cautilus.claim_review_result.v1"
-    },
-    {
-      "clusterCount": 2,
-      "reviewRun": {
-        "assignedClusterIndexes": [
-          0,
-          1,
           2
         ],
         "createdAt": "2026-04-30T20:20:11+09:00",
@@ -19306,7 +19630,7 @@
     }
   ],
   "schemaVersion": "cautilus.claim_proof_plan.v1",
-  "sourceCount": 72,
+  "sourceCount": 75,
   "sourceGraph": [
     {
       "depth": 1,
@@ -19540,6 +19864,12 @@
       "depth": 2,
       "from": "docs/master-plan.md",
       "kind": "markdown-link",
+      "to": "docs/contracts/skillopt-absorption.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/master-plan.md",
+      "kind": "markdown-link",
       "to": "docs/contracts/workbench-instance-discovery.md"
     },
     {
@@ -19565,6 +19895,12 @@
       "from": "docs/master-plan.md",
       "kind": "markdown-link",
       "to": "docs/specs/user/index.spec.md"
+    },
+    {
+      "depth": 2,
+      "from": "docs/specs/contracts/index.spec.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/skillopt-absorption.md"
     },
     {
       "depth": 2,
@@ -20003,6 +20339,30 @@
       "from": "docs/contracts/scenario-history.md",
       "kind": "markdown-link",
       "to": "skills/cautilus-agent/SKILL.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/skillopt-absorption.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/final-acceptance-set.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/skillopt-absorption.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/improvement-search.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/skillopt-absorption.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/scenario-proposal-inputs.md"
+    },
+    {
+      "depth": 3,
+      "from": "docs/contracts/skillopt-absorption.md",
+      "kind": "markdown-link",
+      "to": "docs/contracts/scenario-proposal-normalization.md"
     },
     {
       "depth": 3,
@@ -20708,7 +21068,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:23a8dcf60a190b24d073201861b2ce019d2b9d69d07209b19a93e8c52f2f1fcd",
+      "contentHash": "sha256:3909d10318ddc58d0144e79a28c923a0d992552d8cfac7b2c2ecd8451852fd17",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -20787,7 +21147,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a8c1d39d92480ef8d54792f49a9b0ca2856e5c734b80709d81423a6f5c9f14f1",
+      "contentHash": "sha256:17811dba7627484ef24437c79465de63557e79b01e7b2ea04f7d3ed74d454745",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20797,7 +21157,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:74f6a3d6d38a33d9aacb51b14535126a3217f79aa6f6e84608a9ba77b6e03acf",
+      "contentHash": "sha256:9d9fde198d6ad64e00dd0a06b7dddf225dea75fc45cd6165567af31b9647934d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -20962,6 +21322,16 @@
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
       "path": "docs/contracts/scenario-history.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:170b920617d752434aa19a4d75529a77d29a8eabe57236558423083aefcec670",
+      "depth": 2,
+      "discoveredFrom": "docs/master-plan.md",
+      "kind": "contract",
+      "path": "docs/contracts/skillopt-absorption.md",
       "status": "read"
     },
     {
@@ -21292,6 +21662,26 @@
       "discoveredFrom": "docs/contracts/reporting.md",
       "kind": "contract",
       "path": "docs/contracts/runtime-fingerprint-improvement.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:ea59e96bec0d320457487f42a0715c25209749e5bd2244cc51ed9b851a969aa8",
+      "depth": 3,
+      "discoveredFrom": "docs/contracts/skillopt-absorption.md",
+      "kind": "contract",
+      "path": "docs/contracts/scenario-proposal-inputs.md",
+      "status": "read"
+    },
+    {
+      "claimAudience": "developer",
+      "claimAudienceSource": "adapter-hint",
+      "contentHash": "sha256:36e95adec3e6a88bd69a7dd74c1a1713e52f3c2733f892e34e2c3d62b88ef7c6",
+      "depth": 3,
+      "discoveredFrom": "docs/contracts/skillopt-absorption.md",
+      "kind": "contract",
+      "path": "docs/contracts/scenario-proposal-normalization.md",
       "status": "read"
     },
     {

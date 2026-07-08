@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "artifact_kind": "find-skills-inventory",
-  "generated_at": "2026-06-22T10:31:07Z",
+  "generated_at": "2026-07-08T00:22:00Z",
   "repo": "cautilus",
   "inventory": {
     "adapter": {
@@ -34,6 +34,7 @@
           "shared/references/bootstrap-resolution.md",
           "skills/achieve/references/lifecycle.md",
           "skills/achieve/references/goal-artifact.md",
+          "skills/achieve/references/lifecycle-after.md",
           "shared/references/retro-issue-destination-split.md",
           "skills/achieve/references/coordination.md",
           "skills/achieve/references/index.md"
@@ -117,6 +118,8 @@
           "shared/references/bootstrap-resolution.md",
           "shared/references/external-capability-proof-ladder.md",
           "skills/create-skill/SKILL.md",
+          "shared/references/generative-sequence.md",
+          "shared/references/run-plan-envelope.md",
           "skills/create-skill/references/portable-authoring.md",
           "skills/create-skill/references/adapter-contract.md",
           "skills/create-skill/references/adapter-pattern.md",
@@ -150,7 +153,7 @@
         ],
         "referenced_paths": [
           "skills/critique/references/cadence.md",
-          "shared/references/fresh-eye-subagent-review.md",
+          "shared/references/disposition-reviewer-brief.md",
           "skills/critique/references/autonomous-trigger.md",
           "skills/critique/references/premortem-decision.md",
           "skills/critique/references/code-critique.md",
@@ -160,6 +163,7 @@
           "shared/references/bootstrap-resolution.md",
           "skills/critique/references/prepare-packet.md",
           "skills/critique/references/angle-selection.md",
+          "shared/references/fresh-eye-subagent-review.md",
           "skills/critique/references/counterweight-triage.md",
           "skills/critique/references/confirmed-input-over-anchoring.md",
           "skills/critique/references/adapter-contract.md",
@@ -192,11 +196,11 @@
           "skills/debug/references/detection-gap.md",
           "skills/debug/references/sibling-search.md",
           "shared/references/rca-ledger-append.md",
-          "skills/debug/references/anti-patterns.md",
           "skills/debug/references/adapter-contract.md",
           "skills/debug/references/five-steps.md",
           "skills/debug/references/debug-memory.md",
-          "skills/debug/references/document-seams.md"
+          "skills/debug/references/document-seams.md",
+          "skills/debug/scripts/plan_debug_run.py"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -218,10 +222,10 @@
         "referenced_paths": [
           "skills/find-skills/references/session-start-routing.md",
           "shared/references/bootstrap-resolution.md",
+          "skills/find-skills/references/support-consumption.md",
           "skills/find-skills/adapter.example.yaml",
           "skills/find-skills/references/adapter-contract.md",
           "skills/find-skills/references/discovery-order.md",
-          "skills/find-skills/references/support-consumption.md",
           "skills/ideation/references/decision-question-response.md",
           "skills/find-skills/scripts/list_capabilities.py",
           "skills/find-skills/scripts/list_capabilities_lib.py"
@@ -232,8 +236,8 @@
       {
         "id": "gather",
         "name": "gather",
-        "description": "Use when a Slack thread, Notion page, Google Docs or Drive file, GitHub content, arbitrary URL, or other external source should become a durable local knowledge asset instead of a transient answer. Prefer primary sources, refresh existing assets in place when the source identity matches, and keep the result scoped to the user’s actual request.",
-        "summary": "Use when a Slack thread, Notion page, Google Docs or Drive file, GitHub content, arbitrary URL, or other external source should become a durable local knowledge asset instead of a transient answer. Prefer primary sources, refresh existing assets in place when the source identity matches, and keep the result scoped to the user’s actual request.",
+        "description": "Use when a public web page, GitHub content, a published or exported document, an arbitrary URL, a local file, or other public source should become a durable local knowledge asset instead of a transient answer. Gather is public-source only: credentialed organizational data (Slack, Notion, private Google Workspace) is out of scope and belongs to the consuming runtime's own capability/connector. Prefer primary sources, refresh existing assets in place when the source identity matches, and keep the result scoped to the user's actual request.",
+        "summary": "Use when a public web page, GitHub content, a published or exported document, an arbitrary URL, a local file, or other public source should become a durable local knowledge asset instead of a transient answer. Gather is public-source only: credentialed organizational data (Slack, Notion, private Google Workspace) is out of scope and belongs to the consuming runtime's own capability/connector. Prefer primary sources, refresh existing assets in place when the source identity matches, and keep the result scoped to the user's actual request.",
         "path": "skills/gather/SKILL.md",
         "skill_dir": "skills/gather",
         "canonical_path": "skills/gather/SKILL.md",
@@ -245,15 +249,18 @@
         ],
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
-          "skills/gather/references/browser-mediated-private-sources.md",
-          "skills/gather/references/asset-refresh.md",
-          "shared/references/closeout-discipline.md",
           "skills/gather/references/adapter-contract.md",
           "skills/gather/references/gather-provider.md",
           "skills/gather/references/source-priority.md",
+          "skills/gather/references/asset-refresh.md",
           "skills/gather/references/document-seams.md",
           "skills/gather/references/capability-contract.md",
+          "skills/gather/references/browser-mediated-private-sources.md",
           "skills/gather/references/google-workspace-access.md",
+          "support/web-fetch/references/routing-table.md",
+          "shared/references/closeout-discipline.md",
+          "skills/gather/scripts/gather_plan.py",
+          "skills/gather/scripts/gather_public_url.py",
           "skills/gather/scripts/write_record.py"
         ],
         "source": "local-public",
@@ -276,14 +283,13 @@
         "referenced_paths": [
           "skills/handoff/references/continuation-sequence.md",
           "shared/references/bootstrap-resolution.md",
-          "skills/handoff/references/spill-targets.md",
           "skills/handoff/references/chunked-routing.md",
           "shared/references/closeout-discipline.md",
           "shared/references/fresh-eye-subagent-review.md",
           "skills/handoff/references/state-selection.md",
+          "skills/handoff/references/spill-targets.md",
           "skills/handoff/references/adapter-contract.md",
-          "skills/handoff/references/workflow-trigger.md",
-          "skills/handoff/references/document-seams.md"
+          "skills/handoff/references/workflow-trigger.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -360,15 +366,16 @@
           "charness:ideation"
         ],
         "referenced_paths": [
+          "shared/references/generative-sequence.md",
           "skills/ideation/references/sequence-discipline.md",
           "skills/ideation/references/effectuation.md",
           "skills/ideation/references/decision-question-response.md",
           "shared/references/bootstrap-resolution.md",
+          "skills/ideation/references/concept-architecture.md",
           "skills/ideation/references/structured-questions.md",
           "skills/ideation/references/truth-and-edge.md",
           "skills/ideation/references/world-modeling.md",
           "skills/ideation/references/agent-human-lens.md",
-          "skills/ideation/references/concept-architecture.md",
           "skills/ideation/references/spec-boundary.md",
           "skills/spec/references/taxonomy-axis-checkpoint.md",
           "shared/references/success-criteria-review.md"
@@ -400,6 +407,7 @@
           "shared/references/source-bound-records.md",
           "skills/impl/SKILL.md",
           "shared/references/active-goal-coordination.md",
+          "skills/quality/references/cautilus-on-demand.md",
           "shared/references/prescribed-path-self-test.md",
           "shared/references/external-capability-proof-ladder.md",
           "skills/impl/references/contract-consumption.md",
@@ -412,8 +420,8 @@
       {
         "id": "issue",
         "name": "issue",
-        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
-        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `ceal github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
+        "description": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `acme github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
+        "summary": "Use when filing a GitHub issue from current context or resolving GitHub issues end-to-end through the adapter-resolved backend (`gh` by default, or a host-mediated capability such as `acme github`). Issue creation reports the observed problem before suggesting solutions; issue resolution treats GitHub as the source of truth, classifies the issue, runs a causal review for bug-class issues before designing the fix, and runs a resolution critique so the same class of issue does not recur.",
         "path": "skills/issue/SKILL.md",
         "skill_dir": "skills/issue",
         "canonical_path": "skills/issue/SKILL.md",
@@ -424,22 +432,19 @@
           "charness:issue"
         ],
         "referenced_paths": [
-          "skills/issue/references/issue-backend.md",
-          "shared/references/external-capability-proof-ladder.md",
           "shared/references/bootstrap-resolution.md",
-          "skills/issue/references/closeout-discipline.md",
-          "skills/issue/references/issue-shaping.md",
-          "skills/issue/references/causal-review.md",
-          "skills/issue/references/resolution-brief.md",
-          "shared/references/rca-ledger-append.md",
-          "shared/references/fresh-eye-subagent-review.md",
+          "skills/issue/adapter.example.yaml",
           "skills/issue/references/resolve-flow.md",
+          "skills/issue/references/issue-shaping.md",
+          "skills/issue/references/resolution-brief.md",
+          "skills/issue/references/causal-review.md",
+          "skills/issue/references/issue-backend.md",
+          "skills/issue/references/closeout-discipline.md",
+          "shared/references/fresh-eye-subagent-review.md",
+          "shared/references/external-capability-proof-ladder.md",
+          "shared/references/rca-ledger-append.md",
           "shared/references/active-goal-coordination.md",
-          "skills/issue/scripts/issue_tool.py",
-          "skills/issue/scripts/issue_runtime.py",
-          "skills/issue/scripts/issue_create.py",
-          "skills/issue/scripts/resolve_adapter.py",
-          "skills/issue/scripts/init_adapter.py"
+          "skills/issue/scripts/issue_tool.py"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -463,10 +468,10 @@
           "skills/narrative/references/landing-rewrite-loop.md",
           "skills/narrative/references/cross-repo-issue-shaping.md",
           "skills/narrative/references/scenario-blocks.md",
+          "skills/narrative/references/brief-shape.md",
           "shared/references/closeout-discipline.md",
           "skills/narrative/references/adapter-contract.md",
           "skills/narrative/references/source-map.md",
-          "skills/narrative/references/brief-shape.md",
           "shared/references/agent-assessment-invariant.md",
           "shared/references/success-criteria-review.md"
         ],
@@ -476,8 +481,8 @@
       {
         "id": "quality",
         "name": "quality",
-        "description": "Use when the goal is to understand and improve the repo's current quality bar. Detect existing gates, run the available ones, inspect concept integrity, test confidence, and security posture, then propose concrete next gates instead of only complaining about what is missing.",
-        "summary": "Use when the goal is to understand and improve the repo's current quality bar. Detect existing gates, run the available ones, inspect concept integrity, test confidence, and security posture, then propose concrete next gates instead of only complaining about what is missing.",
+        "description": "Use when the goal is to understand and improve the repo's current quality bar. Detect existing gates, run the available ones, inspect concept integrity, test confidence, and security posture, then propose concrete quality moves instead of only complaining about what is missing.",
+        "summary": "Use when the goal is to understand and improve the repo's current quality bar. Detect existing gates, run the available ones, inspect concept integrity, test confidence, and security posture, then propose concrete quality moves instead of only complaining about what is missing.",
         "path": "skills/quality/SKILL.md",
         "skill_dir": "skills/quality",
         "canonical_path": "skills/quality/SKILL.md",
@@ -496,55 +501,11 @@
         ],
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
-          "skills/quality/references/bootstrap-escalations.md",
-          "skills/quality/references/inventory-dispatch.md",
-          "skills/quality/references/testability-and-selection.md",
-          "skills/quality/references/cautilus-on-demand.md",
-          "skills/quality/references/behavior-testing.md",
-          "skills/quality/references/quality-lenses.md",
-          "skills/quality/references/operability-signals.md",
+          "shared/references/binary-preflight.md",
           "shared/references/fresh-eye-subagent-review.md",
-          "skills/quality/references/maintainer-local-enforcement.md",
-          "skills/quality/references/ci-recoverable-gate-triage.md",
-          "skills/quality/references/proposal-flow.md",
-          "skills/quality/references/adapter-contract.md",
-          "skills/quality/references/adapter-gate-review.md",
-          "skills/quality/references/agent-production-runtime.md",
-          "skills/quality/references/attention-state-visibility.json",
-          "skills/quality/references/automation-promotion.md",
-          "skills/quality/references/bootstrap-posture.md",
-          "skills/quality/references/brittle-source-guards.md",
-          "skills/quality/references/boundary-bypass-ratchet.md",
-          "skills/quality/references/boundary-bypass-payload.example.json",
-          "skills/quality/references/cli-ergonomics-smells.md",
-          "skills/quality/references/coverage-floor-exemptions.txt",
-          "skills/quality/references/coverage_floor_inventory.py",
-          "skills/quality/references/coverage-floor-policy.md",
-          "skills/quality/references/dual-implementation-parity.md",
-          "skills/quality/references/dup-ratchet.md",
-          "skills/quality/references/entrypoint-docs-ergonomics.md",
-          "skills/quality/references/executable-spec-economics.md",
-          "skills/quality/references/find_inline_prompt_bulk.py",
-          "skills/quality/references/gate-classification.md",
-          "skills/quality/references/installable-cli-probes.md",
-          "skills/quality/references/inventory-consumer-fields.json",
-          "skills/quality/references/lint-ignore-discipline.md",
-          "skills/quality/references/mutation-testing.md",
+          "skills/quality/references/cautilus-on-demand.md",
           "skills/quality/references/prompt-asset-policy.md",
-          "skills/quality/references/public-spec-layering.md",
-          "skills/quality/references/quality-signal-scorecard.md",
-          "skills/quality/references/security-overview.md",
-          "skills/quality/references/security-npm.md",
-          "skills/quality/references/security-pnpm.md",
-          "skills/quality/references/security-uv.md",
-          "skills/quality/references/skill-quality.md",
-          "skills/quality/references/skill-ergonomics.md",
-          "skills/quality/references/standing-doc-provenance.md",
-          "skills/quality/references/standing-gate-verbosity.md",
-          "skills/quality/references/unit-test-quality.md",
-          "skills/quality/references/validate_spec_pytest_references.py",
-          "shared/references/agent-assessment-invariant.md",
-          "shared/references/external-capability-proof-ladder.md"
+          "skills/quality/references/index.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -565,13 +526,12 @@
         ],
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
-          "shared/references/fresh-eye-subagent-review.md",
-          "skills/release/references/install-surface.md",
+          "skills/release/references/critique-boundary.md",
+          "skills/release/references/publication-boundary.md",
           "skills/issue/references/closeout-discipline.md",
-          "skills/release/references/closeout-critique-gate.md",
-          "skills/release/references/adapter-contract.md",
-          "skills/release/references/version-policy.md",
-          "shared/references/closeout-discipline.md"
+          "shared/references/fresh-eye-subagent-review.md",
+          "shared/references/closeout-discipline.md",
+          "skills/release/references/index.md"
         ],
         "source": "local-public",
         "layer": "public skill"
@@ -592,13 +552,14 @@
         ],
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
+          "skills/retro/references/expert-lens.md",
           "skills/retro/references/adapter-contract.md",
           "skills/retro/references/phase-aware-efficiency.md",
+          "skills/retro/references/prepare-packet.md",
           "skills/retro/references/waste-sibling-scan.md",
           "shared/references/retro-issue-destination-split.md",
           "shared/references/rca-ledger-append.md",
           "skills/retro/references/trigger-and-persistence.md",
-          "skills/retro/references/expert-lens.md",
           "skills/retro/references/mode-guide.md",
           "skills/retro/references/section-guide.md",
           "skills/retro/references/weekly-trends.md",
@@ -655,23 +616,16 @@
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
           "skills/spec/references/public-executable-contracts.md",
-          "skills/spec/references/sequence-discipline.md",
           "skills/spec/references/design-lenses.md",
           "skills/spec/references/taxonomy-axis-checkpoint.md",
+          "shared/references/generative-sequence.md",
           "shared/references/source-bound-records.md",
           "skills/spec/references/evidence-durability.md",
           "shared/references/fresh-eye-subagent-review.md",
-          "skills/spec/references/contract-modes.md",
-          "skills/spec/references/fixed-probe-defer.md",
-          "skills/spec/references/ingest-and-refine.md",
-          "skills/spec/references/success-criteria.md",
           "skills/spec/references/acceptance-checks.md",
+          "skills/spec/references/fixed-probe-defer.md",
+          "skills/spec/references/success-criteria.md",
           "skills/spec/references/executable-spec-cost.md",
-          "skills/spec/references/rejected-alternatives.md",
-          "skills/spec/references/ambiguity-rules.md",
-          "skills/spec/references/impl-loop.md",
-          "skills/spec/references/ideation-boundary.md",
-          "skills/spec/references/document-seams.md",
           "shared/references/agent-assessment-invariant.md",
           "shared/references/success-criteria-review.md"
         ],
@@ -725,56 +679,6 @@
         "layer": "support skill"
       },
       {
-        "id": "gather-notion",
-        "name": "gather-notion",
-        "description": "Internal support capability for gathering published Notion pages into durable local markdown without requiring consumer repos to supply their own export helper.",
-        "summary": "Internal support capability for gathering published Notion pages into durable local markdown without requiring consumer repos to supply their own export helper.",
-        "path": "support/gather-notion/SKILL.md",
-        "skill_dir": "support/gather-notion",
-        "canonical_path": "support/gather-notion/SKILL.md",
-        "trigger_phrases": [
-          "gather-notion",
-          "gather-notion skill",
-          "gather-notion 스킬",
-          "charness:gather-notion",
-          "support/gather-notion",
-          "gather-notion support",
-          "gather-notion support skill",
-          "gather-notion helper"
-        ],
-        "referenced_paths": [
-          "support/gather-notion/references/runtime-contract.md",
-          "support/gather-notion/references/provenance.md"
-        ],
-        "source": "local-support",
-        "layer": "support skill"
-      },
-      {
-        "id": "gather-slack",
-        "name": "gather-slack",
-        "description": "Internal support capability for gathering Slack threads into durable local markdown without asking consumer repos to reimplement Slack export helpers.",
-        "summary": "Internal support capability for gathering Slack threads into durable local markdown without asking consumer repos to reimplement Slack export helpers.",
-        "path": "support/gather-slack/SKILL.md",
-        "skill_dir": "support/gather-slack",
-        "canonical_path": "support/gather-slack/SKILL.md",
-        "trigger_phrases": [
-          "gather-slack",
-          "gather-slack skill",
-          "gather-slack 스킬",
-          "charness:gather-slack",
-          "support/gather-slack",
-          "gather-slack support",
-          "gather-slack support skill",
-          "gather-slack helper"
-        ],
-        "referenced_paths": [
-          "support/gather-slack/references/runtime-contract.md",
-          "support/gather-slack/references/provenance.md"
-        ],
-        "source": "local-support",
-        "layer": "support skill"
-      },
-      {
         "id": "markdown-preview",
         "name": "markdown-preview",
         "description": "Internal support capability for rendering checked-in Markdown into durable preview artifacts so doc-facing workflows can review real terminal output instead of raw source alone.",
@@ -794,7 +698,8 @@
         ],
         "referenced_paths": [
           "shared/references/bootstrap-resolution.md",
-          "support/markdown-preview/references/runtime-contract.md"
+          "support/markdown-preview/references/runtime-contract.md",
+          "support/markdown-preview/scripts/render_markdown_preview.py"
         ],
         "source": "local-support",
         "layer": "support skill"
@@ -843,7 +748,8 @@
           "shared/references/bootstrap-resolution.md",
           "support/web-fetch/references/runtime-contract.md",
           "support/web-fetch/references/routing-table.md",
-          "support/web-fetch/references/provenance.md",
+          "support/web-fetch/scripts/route_public_fetch.py",
+          "support/web-fetch/scripts/classify_fetch_response.py",
           "support/web-fetch/scripts/acquire_public_url.py"
         ],
         "source": "local-support",
@@ -851,123 +757,6 @@
       }
     ],
     "support_capabilities": [
-      {
-        "id": "gather-notion",
-        "kind": "support_runtime",
-        "display_name": "Published Notion gather runtime",
-        "summary": "charness-owned published Notion gather runtime used by the public gather skill.",
-        "access_modes": [
-          "public",
-          "human-only",
-          "degraded"
-        ],
-        "capability_requirements": {},
-        "intent_triggers": [],
-        "trigger_phrases": [
-          "gather-notion",
-          "Published Notion gather runtime",
-          "gather-notion support",
-          "gather-notion support skill",
-          "support/gather-notion"
-        ],
-        "config_layers": [
-          {
-            "layer_id": "notion-publish-step",
-            "layer_type": "operator-step",
-            "summary": "The operator may need to publish the Notion page to the web first."
-          },
-          {
-            "layer_id": "notion-public-export",
-            "layer_type": "public-fallback",
-            "summary": "Use the published-page export helper for public Notion page URLs."
-          }
-        ],
-        "readiness_checks": [],
-        "path": "support/gather-notion/capability.json",
-        "support_skill_path": "support/gather-notion/SKILL.md",
-        "supports_public_skills": [
-          "gather"
-        ],
-        "source": "local-support-capability",
-        "layer": "support capability"
-      },
-      {
-        "id": "gather-slack",
-        "kind": "support_runtime",
-        "display_name": "Slack thread gather runtime",
-        "summary": "charness-owned Slack thread gather runtime used by the public gather skill.",
-        "access_modes": [
-          "grant",
-          "env",
-          "human-only",
-          "degraded"
-        ],
-        "capability_requirements": {
-          "grant_ids": [
-            "slack.conversations.history",
-            "slack.users.read",
-            "slack.files.read"
-          ],
-          "env_vars": [
-            "Slack credential grant"
-          ],
-          "permission_scopes": [
-            "channels:history",
-            "channels:join",
-            "users:read",
-            "files:read"
-          ]
-        },
-        "intent_triggers": [
-          "Slack thread",
-          "Slack URL",
-          "Slack gather",
-          "slack.com/archives",
-          "gather Slack"
-        ],
-        "trigger_phrases": [
-          "gather-slack",
-          "Slack thread gather runtime",
-          "gather-slack support",
-          "gather-slack support skill",
-          "support/gather-slack",
-          "Slack thread",
-          "Slack URL",
-          "Slack gather",
-          "slack.com/archives",
-          "gather Slack"
-        ],
-        "config_layers": [
-          {
-            "layer_id": "slack-runtime-grant",
-            "layer_type": "grant",
-            "summary": "Prefer a host-mediated Slack capability grant when available."
-          },
-          {
-            "layer_id": "slack-bot-env",
-            "layer_type": "env",
-            "summary": "Fall back to `Slack credential grant` in ordinary local operator setups."
-          },
-          {
-            "layer_id": "slack-channel-operator-step",
-            "layer_type": "operator-step",
-            "summary": "The operator may still need to add the bot to the workspace or target channel."
-          }
-        ],
-        "readiness_checks": [
-          {
-            "check_id": "slack-runtime-deps",
-            "summary": "Slack gather runtime shell dependencies are available."
-          }
-        ],
-        "path": "support/gather-slack/capability.json",
-        "support_skill_path": "support/gather-slack/SKILL.md",
-        "supports_public_skills": [
-          "gather"
-        ],
-        "source": "local-support-capability",
-        "layer": "support capability"
-      },
       {
         "id": "markdown-preview",
         "kind": "support_runtime",
@@ -1068,7 +857,7 @@
           {
             "layer_id": "web-fetch-authenticated-binaries",
             "layer_type": "authenticated-binary",
-            "summary": "Use host-mediated fetch helpers only when the selected route or fallback stage explicitly calls for them."
+            "summary": "Use authenticated or installed binaries/packages such as GitHub worker, `yt-dlp`, `curl_cffi`, `defuddle`, Patchright, or `agent-browser` only when the selected route or fallback stage explicitly calls for them."
           },
           {
             "layer_id": "web-fetch-operator-step",
@@ -1333,7 +1122,7 @@
       {
         "id": "nose",
         "kind": "external_binary",
-        "summary": "Required (>=0.14.0) clone scanner used by `quality`: advisory code clone families plus the Markdown near-duplicate engine that replaced the bespoke document near-copy gate. The code path runs `nose query` (`nose scan` was removed in 0.13.3); 0.14.0 emits schema v4 query JSON, and the committed dup-ratchet/clone id-baselines are seeded from 0.14.0's family ids.",
+        "summary": "Required (>=0.17.0) clone scanner used by `quality`: advisory code clone families plus the Markdown near-duplicate engine that replaced the bespoke document near-copy gate. The code path runs `nose query` (`nose scan` was removed in 0.13.3). The committed dup-ratchet/clone baselines are seeded on 0.17.0 (schema v7) and keyed by gate-computed offset/path-independent content fingerprints (slice 4), not nose family ids; the family SET nose groups is still scanner-version-scoped.",
         "access_modes": [
           "binary"
         ],
@@ -1554,6 +1343,7 @@
     "workflow_recommendations": [],
     "public_skill_recommendations": [],
     "public_recommendation_query": null,
-    "support_recommendation_note": null
+    "support_recommendation_note": null,
+    "next_step": null
   }
 }
