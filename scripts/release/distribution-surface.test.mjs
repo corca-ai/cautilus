@@ -107,6 +107,25 @@ test("release workflow attaches provenance attestations for the public binary ma
 	assert.doesNotMatch(workflow, /\brelease\/latest\.md\b/);
 });
 
+test("release adapter records repo-owned publisher and post-publish readback gates", () => {
+	const adapter = readFileSync(join(REPO_ROOT, ".agents", "release-adapter.yaml"), "utf-8");
+	assert.match(adapter, /requested_review_commands:\n(?:\s+- .+\n)+/);
+	assert.match(adapter, /npm run critique:surface-packet:check/);
+	assert.match(adapter, /npm run release:publisher-policy:check/);
+	assert.match(adapter, /post_publish_install_refresh: "npm run release:smoke-install:current -- --skip-update"/);
+	const pkg = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8"));
+	assert.equal(pkg.scripts["release:publisher-policy:check"], "node scripts/release/check-release-publisher-policy.mjs");
+	assert.equal(pkg.scripts["release:smoke-install:current"], "node scripts/release/run-install-smoke-current.mjs");
+});
+
+test("release boundary rejects the generic charness publisher in favor of repo-owned helpers", () => {
+	const releaseBoundary = readFileSync(join(REPO_ROOT, "docs", "maintainers", "release-boundary.md"), "utf-8");
+	assert.match(releaseBoundary, /Do not cut this repo's releases with the generic charness `release` skill publisher/);
+	assert.match(releaseBoundary, /repo-owned scripts above are the only supported path/);
+	assert.match(releaseBoundary, /requested review commands/);
+	assert.match(releaseBoundary, /post-publish install smoke readback/);
+});
+
 test("dead runtime compatibility shims stay deleted", () => {
 	assert.equal(existsSync(join(REPO_ROOT, "scripts", "install-skills.mjs")), false);
 	assert.equal(existsSync(join(REPO_ROOT, "scripts", "cli-registry.mjs")), false);

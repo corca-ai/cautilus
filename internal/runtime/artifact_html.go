@@ -541,6 +541,7 @@ func renderProposalsPanel(headingID string, title string, proposals []any, atten
 			</div>
 		</header>
 		%s
+		%s
 		<p class="variant-summary">%s</p>
 	</article>`,
 			escapeHTML(defaultString(proposal["proposalKey"], "")),
@@ -550,6 +551,7 @@ func renderProposalsPanel(headingID string, title string, proposals []any, atten
 			escapeHTML(defaultString(proposal["family"], "n/a")),
 			len(evidence),
 			renderReasonCodeChips(reasonCodes),
+			renderProvenanceSummaryChips(asMap(proposal["provenanceSummary"])),
 			escapeHTML(defaultString(proposal["rationale"], "")),
 		))
 	}
@@ -558,6 +560,38 @@ func renderProposalsPanel(headingID string, title string, proposals []any, atten
 	<h2 id="%s">%s</h2>
 	%s
 </section>`, escapeHTML(headingID), escapeHTML(headingID), escapeHTML(title), blocks.String())
+}
+
+func renderProvenanceSummaryChips(summary map[string]any) string {
+	if len(summary) == 0 {
+		return ""
+	}
+	originCounts := asMap(summary["originCounts"])
+	splitCounts := asMap(summary["splitCounts"])
+	chips := []string{}
+	for _, origin := range []string{"real", "synthetic", "replayed", "operator_authored"} {
+		if count := intValueOrDefault(originCounts[origin], 0); count > 0 {
+			chips = append(chips, fmt.Sprintf(`<span class="chip neutral">origin %s: %d</span>`, escapeHTML(origin), count))
+		}
+	}
+	for _, split := range []string{"proposal", "train", "review"} {
+		if count := intValueOrDefault(splitCounts[split], 0); count > 0 {
+			chips = append(chips, fmt.Sprintf(`<span class="chip neutral">split %s: %d</span>`, escapeHTML(split), count))
+		}
+	}
+	if count := intValueOrDefault(summary["replayEvidenceCount"], 0); count > 0 {
+		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">replay evidence: %d</span>`, count))
+	}
+	if count := intValueOrDefault(summary["scoredEvidenceCount"], 0); count > 0 {
+		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">scored evidence: %d</span>`, count))
+	}
+	if score, ok := toFloat(summary["maxScore"]); ok {
+		chips = append(chips, fmt.Sprintf(`<span class="chip neutral">max score: %.2f</span>`, score))
+	}
+	if len(chips) == 0 {
+		return ""
+	}
+	return fmt.Sprintf(`<div class="chip-row provenance-summary">%s</div>`, strings.Join(chips, " "))
 }
 
 func selectScenarioProposalAttentionSet(proposals []any, keys []string) []any {

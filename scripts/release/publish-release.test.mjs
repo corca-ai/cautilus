@@ -10,6 +10,7 @@ import {
 	detectReleaseSurfaceDrift,
 	publishPreparedRelease,
 	readReleaseSurfaceVersions,
+	runRequestedReviewCommands,
 } from "./publish-release.mjs";
 
 function writeFile(root, relativePath, content) {
@@ -32,6 +33,16 @@ function seedReleaseRepo(root, version = "0.5.1") {
 	);
 	writeFile(root, "plugins/cautilus/.claude-plugin/plugin.json", `{\n  "version": "${version}"\n}\n`);
 	writeFile(root, "plugins/cautilus/.codex-plugin/plugin.json", `{\n  "version": "${version}"\n}\n`);
+	writeFile(
+		root,
+		".agents/release-adapter.yaml",
+		[
+			"requested_review_commands:",
+			"  - \"true\"",
+			"post_publish_install_refresh: \"npm run release:smoke-install:current -- --skip-update\"",
+			"",
+		].join("\n"),
+	);
 	writeFile(
 		root,
 		"charness-artifacts/release/latest.md",
@@ -290,6 +301,58 @@ test("publishPreparedRelease rejects a dirty worktree", () => {
 	}
 });
 
+test("runRequestedReviewCommands rejects an empty release review gate", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-release-empty-review-gate-"));
+	try {
+		writeFile(root, ".agents/release-adapter.yaml", "requested_review_commands: []\n");
+		assert.throws(
+			() => runRequestedReviewCommands(root),
+			/requested_review_commands must not be empty/,
+		);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("publishPreparedRelease blocks before pushing when a requested review command fails", () => {
+	const tempRoot = mkdtempSync(join(tmpdir(), "cautilus-release-review-gate-fail-"));
+	const remoteRoot = join(tempRoot, "remote.git");
+	const workRoot = join(tempRoot, "work");
+	mkdirSync(workRoot, { recursive: true });
+	try {
+		git(tempRoot, ["init", "--bare", remoteRoot]);
+		seedReleaseRepo(workRoot, "0.5.1");
+		writeFile(
+			workRoot,
+			".agents/release-adapter.yaml",
+			[
+				"requested_review_commands:",
+				"  - \"node -e 'process.exit(7)'\"",
+				"post_publish_install_refresh: \"npm run release:smoke-install:current -- --skip-update\"",
+				"",
+			].join("\n"),
+		);
+		initGitRepo(workRoot);
+		git(workRoot, ["remote", "add", "origin", remoteRoot]);
+		git(workRoot, ["add", "."]);
+		git(workRoot, ["commit", "-m", "release-ready"]);
+		assert.throws(
+			() => publishPreparedRelease({ repoRoot: workRoot, version: "0.5.1", remote: "origin" }),
+			/error/iu,
+		);
+		assert.throws(
+			() => git(remoteRoot, ["rev-parse", "refs/heads/main"]),
+			/error/iu,
+		);
+		assert.throws(
+			() => git(remoteRoot, ["rev-parse", "refs/tags/v0.5.1"]),
+			/error/iu,
+		);
+	} finally {
+		rmSync(tempRoot, { recursive: true, force: true });
+	}
+});
+
 test("publishPreparedRelease pushes branch and tag in order", () => {
 	const tempRoot = mkdtempSync(join(tmpdir(), "cautilus-release-publish-"));
 	const remoteRoot = join(tempRoot, "remote.git");
@@ -308,10 +371,12 @@ test("publishPreparedRelease pushes branch and tag in order", () => {
 		assert.equal(result.headSha, expectedHead);
 		assert.equal(result.releaseState.localPrepared, "verified");
 		assert.equal(result.releaseState.auditNarrativeCommitted, "verified");
+		assert.equal(result.releaseState.requestedReviewCommands, "verified");
 		assert.equal(result.releaseState.branchPushed, "verified");
 		assert.equal(result.releaseState.tagPushed, "verified");
 		assert.equal(result.releaseState.workflowPublication, "pending-tag-workflow");
 		assert.equal(result.releaseState.publicReleaseVerification, "pending-tag-workflow");
+		assert.equal(result.releaseState.postPublishInstallReadback, "pending-public-release");
 		assert.equal(git(workRoot, ["rev-parse", "refs/tags/v0.5.1"]), expectedHead);
 		assert.equal(git(remoteRoot, ["rev-parse", "refs/tags/v0.5.1"]), expectedHead);
 		assert.equal(git(remoteRoot, ["rev-parse", "refs/heads/main"]), expectedHead);

@@ -23,7 +23,10 @@ real_host_required_surfaces: []
 real_host_required_path_globs: []
 real_host_checklist: []
 
-requested_review_commands: []
+requested_review_commands:
+  - "npm run critique:surface-packet:check"
+  - "npm run release:publisher-policy:check"
+post_publish_install_refresh: "npm run release:smoke-install:current -- --skip-update"
 
 product_surfaces:
   - installable_cli

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:96d3b16f76b4e3c46dd44306eb1b828a0d3684d30f5909549a5db5937b33c1d4"
+      "contentHash": "sha256:9276305d36aa38e9cb9553393d7741ba18f5e7aabf36db4e116f28100c1417ae"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:a6f61b85d4439fa76db8a8b35cfd5b0626d47614fc4611bcb4cea57827a31d91"
     }
   },
-  "claimsPacketGitCommit": "cbfee8a38c6c3d6e842da9308f3047d49b215957",
+  "claimsPacketGitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 565,
   "catalogs": {
@@ -266,19 +266,19 @@
       "claim-docs-guides-cli-md-192",
       "claim-docs-guides-cli-md-257",
       "claim-docs-guides-cli-md-260",
-      "claim-docs-guides-cli-md-262",
-      "claim-docs-guides-cli-md-270",
-      "claim-docs-guides-cli-md-274",
-      "claim-docs-guides-cli-md-313",
-      "claim-docs-guides-cli-md-470",
+      "claim-docs-guides-cli-md-263",
+      "claim-docs-guides-cli-md-271",
+      "claim-docs-guides-cli-md-275",
+      "claim-docs-guides-cli-md-314",
       "claim-docs-guides-cli-md-471",
-      "claim-docs-guides-cli-md-475",
+      "claim-docs-guides-cli-md-472",
       "claim-docs-guides-cli-md-476",
-      "claim-docs-guides-cli-md-484",
-      "claim-docs-guides-cli-md-507",
-      "claim-docs-guides-cli-md-567",
-      "claim-docs-guides-cli-md-584",
-      "claim-docs-guides-cli-md-602",
+      "claim-docs-guides-cli-md-477",
+      "claim-docs-guides-cli-md-485",
+      "claim-docs-guides-cli-md-508",
+      "claim-docs-guides-cli-md-568",
+      "claim-docs-guides-cli-md-585",
+      "claim-docs-guides-cli-md-603",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
       "claim-docs-guides-consumer-adoption-md-29",
@@ -417,19 +417,19 @@
       "claim-docs-guides-cli-md-192",
       "claim-docs-guides-cli-md-257",
       "claim-docs-guides-cli-md-260",
-      "claim-docs-guides-cli-md-262",
-      "claim-docs-guides-cli-md-270",
-      "claim-docs-guides-cli-md-274",
-      "claim-docs-guides-cli-md-313",
-      "claim-docs-guides-cli-md-470",
+      "claim-docs-guides-cli-md-263",
+      "claim-docs-guides-cli-md-271",
+      "claim-docs-guides-cli-md-275",
+      "claim-docs-guides-cli-md-314",
       "claim-docs-guides-cli-md-471",
-      "claim-docs-guides-cli-md-475",
+      "claim-docs-guides-cli-md-472",
       "claim-docs-guides-cli-md-476",
-      "claim-docs-guides-cli-md-484",
-      "claim-docs-guides-cli-md-507",
-      "claim-docs-guides-cli-md-567",
-      "claim-docs-guides-cli-md-584",
-      "claim-docs-guides-cli-md-602",
+      "claim-docs-guides-cli-md-477",
+      "claim-docs-guides-cli-md-485",
+      "claim-docs-guides-cli-md-508",
+      "claim-docs-guides-cli-md-568",
+      "claim-docs-guides-cli-md-585",
+      "claim-docs-guides-cli-md-603",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
       "claim-docs-guides-consumer-adoption-md-29",
@@ -684,14 +684,14 @@
       "claim-docs-contracts-skillopt-absorption-md-6",
       "claim-docs-contracts-skillopt-absorption-md-19",
       "claim-docs-contracts-skillopt-absorption-md-24",
-      "claim-docs-contracts-skillopt-absorption-md-77",
       "claim-docs-contracts-skillopt-absorption-md-79",
-      "claim-docs-contracts-skillopt-absorption-md-110",
-      "claim-docs-contracts-skillopt-absorption-md-117",
-      "claim-docs-contracts-skillopt-absorption-md-135",
+      "claim-docs-contracts-skillopt-absorption-md-81",
+      "claim-docs-contracts-skillopt-absorption-md-112",
+      "claim-docs-contracts-skillopt-absorption-md-119",
       "claim-docs-contracts-skillopt-absorption-md-137",
       "claim-docs-contracts-skillopt-absorption-md-139",
-      "claim-docs-contracts-skillopt-absorption-md-160",
+      "claim-docs-contracts-skillopt-absorption-md-141",
+      "claim-docs-contracts-skillopt-absorption-md-162",
       "claim-docs-contracts-workbench-instance-discovery-md-25",
       "claim-docs-contracts-workbench-instance-discovery-md-72",
       "claim-docs-contracts-workbench-instance-discovery-md-99",
@@ -808,16 +808,16 @@
       "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
       "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
       "claim-docs-contracts-runtime-fingerprint-improvement-md-261",
-      "claim-docs-contracts-scenario-proposal-inputs-md-103",
-      "claim-docs-contracts-scenario-proposal-inputs-md-104",
+      "claim-docs-contracts-scenario-proposal-inputs-md-106",
+      "claim-docs-contracts-scenario-proposal-inputs-md-107",
       "claim-docs-contracts-scenario-proposal-normalization-md-5",
       "claim-docs-contracts-scenario-proposal-normalization-md-41",
       "claim-docs-contracts-scenario-proposal-sources-md-28",
       "claim-docs-contracts-scenario-proposal-sources-md-40",
-      "claim-docs-contracts-scenario-proposal-sources-md-152",
-      "claim-docs-contracts-scenario-proposal-sources-md-216",
-      "claim-docs-contracts-scenario-proposal-sources-md-235",
-      "claim-docs-contracts-scenario-proposal-sources-md-236",
+      "claim-docs-contracts-scenario-proposal-sources-md-193",
+      "claim-docs-contracts-scenario-proposal-sources-md-257",
+      "claim-docs-contracts-scenario-proposal-sources-md-276",
+      "claim-docs-contracts-scenario-proposal-sources-md-277",
       "claim-docs-contracts-skill-surface-judge-convergence-md-16",
       "claim-docs-contracts-skill-surface-judge-convergence-md-52",
       "claim-docs-contracts-skill-surface-judge-convergence-md-69",
@@ -958,7 +958,7 @@
         "claim-docs-contracts-claim-extraction-template-md-39",
         "claim-docs-contracts-claim-extraction-template-md-306",
         "claim-docs-contracts-improvement-search-md-80",
-        "claim-docs-contracts-scenario-proposal-inputs-md-103",
+        "claim-docs-contracts-scenario-proposal-inputs-md-106",
         "claim-skills-cautilus-agent-skill-md-109",
         "claim-skills-cautilus-agent-skill-md-123"
       ],
@@ -1102,7 +1102,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-103",
+          "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-106",
           "claimFingerprint": "sha256:a76b368a1f678ba787626a7dfebae5913dff6d7cf9b4c14717d0b603afe7af2a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1207,8 +1207,8 @@
         "claim-docs-contracts-runner-verification-md-12",
         "claim-docs-contracts-scenario-history-md-255",
         "claim-docs-contracts-scenario-history-md-306",
-        "claim-docs-contracts-skillopt-absorption-md-110",
-        "claim-docs-contracts-skillopt-absorption-md-160",
+        "claim-docs-contracts-skillopt-absorption-md-112",
+        "claim-docs-contracts-skillopt-absorption-md-162",
         "claim-docs-specs-contracts-binary-skill-boundary-spec-md-17",
         "claim-docs-specs-contracts-binary-skill-boundary-spec-md-21",
         "claim-docs-specs-contracts-binary-skill-boundary-spec-md-22",
@@ -1230,7 +1230,7 @@
         "claim-docs-contracts-realsurface-judge-convergence-md-43",
         "claim-docs-contracts-realsurface-judge-convergence-md-98",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-50",
-        "claim-docs-contracts-scenario-proposal-inputs-md-104",
+        "claim-docs-contracts-scenario-proposal-inputs-md-107",
         "claim-docs-contracts-scenario-proposal-normalization-md-5",
         "claim-docs-contracts-scenario-proposal-normalization-md-41",
         "claim-docs-contracts-scenario-proposal-sources-md-28",
@@ -1636,13 +1636,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-110",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-112",
           "claimFingerprint": "sha256:ce4dfb3f554b8b4bac288bd6edcb11f3b86b4dfa6c5326e557b274e1b4e89799",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-160",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-162",
           "claimFingerprint": "sha256:096b146257aff8ede5edd0f821ae5bc66db8471d7e0df7e3cb59c605f026c77d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1774,7 +1774,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-104",
+          "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-107",
           "claimFingerprint": "sha256:635e6dfdd8c7f47e2d4bc242287d061a1852ccc159cc542ce17463df24173277",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1978,9 +1978,9 @@
         "claim-docs-contracts-runner-verification-md-24",
         "claim-docs-contracts-skillopt-absorption-md-6",
         "claim-docs-contracts-skillopt-absorption-md-24",
-        "claim-docs-contracts-skillopt-absorption-md-77",
         "claim-docs-contracts-skillopt-absorption-md-79",
-        "claim-docs-contracts-skillopt-absorption-md-137",
+        "claim-docs-contracts-skillopt-absorption-md-81",
+        "claim-docs-contracts-skillopt-absorption-md-139",
         "claim-docs-contracts-workbench-instance-discovery-md-25",
         "claim-docs-contracts-workbench-instance-discovery-md-72",
         "claim-docs-contracts-workbench-instance-discovery-md-101",
@@ -2003,7 +2003,7 @@
         "claim-docs-contracts-runtime-fingerprint-improvement-md-36",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-41",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-261",
-        "claim-docs-contracts-scenario-proposal-sources-md-152",
+        "claim-docs-contracts-scenario-proposal-sources-md-193",
         "claim-docs-contracts-skill-surface-judge-convergence-md-76",
         "claim-docs-contracts-skill-surface-judge-convergence-md-120",
         "claim-docs-specs-ledger-names-and-keys-spec-md-26",
@@ -2408,19 +2408,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-77",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-79",
           "claimFingerprint": "sha256:679a9490096c230817587fc1fea03f2f33a11899faf046f4488786c9dec80f23",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-79",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-81",
           "claimFingerprint": "sha256:7533d16c3da76c4c52bcc38ed2fa500194727a5e6147f651a63eacfe477f7fb2",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-137",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-139",
           "claimFingerprint": "sha256:4f473fa30ef638691fafda2da6883d7821d568758e15fd515360851b9fd1d0cb",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2558,7 +2558,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-193",
           "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3702,9 +3702,9 @@
         "claim-docs-contracts-runner-readiness-md-134",
         "claim-docs-contracts-runner-verification-md-5",
         "claim-docs-contracts-scenario-history-md-299",
-        "claim-docs-contracts-skillopt-absorption-md-117",
-        "claim-docs-contracts-skillopt-absorption-md-135",
-        "claim-docs-contracts-skillopt-absorption-md-139",
+        "claim-docs-contracts-skillopt-absorption-md-119",
+        "claim-docs-contracts-skillopt-absorption-md-137",
+        "claim-docs-contracts-skillopt-absorption-md-141",
         "claim-docs-contracts-workbench-instance-discovery-md-99",
         "claim-docs-specs-contracts-reporting-review-variants-spec-md-17",
         "claim-docs-specs-evidence-index-spec-md-8",
@@ -3716,7 +3716,7 @@
         "claim-docs-contracts-improvement-md-151",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-190",
         "claim-docs-contracts-scenario-proposal-sources-md-40",
-        "claim-docs-contracts-scenario-proposal-sources-md-216",
+        "claim-docs-contracts-scenario-proposal-sources-md-257",
         "claim-docs-contracts-skill-surface-judge-convergence-md-173",
         "claim-docs-specs-evidence-latest-selected-evidence-spec-md-11",
         "claim-docs-specs-rules-agent-human-resumability-spec-md-7",
@@ -3977,19 +3977,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-117",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-119",
           "claimFingerprint": "sha256:12bc50759856fdf255ac6456a9332b735bd356dd5745b5cf4742448bfd8559aa",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-135",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-137",
           "claimFingerprint": "sha256:19d7b052075ecdda45a02a40d15aef5bc23b23ca96890a10b7ec6cbf1257aa56",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-skillopt-absorption-md-139",
+          "claimId": "claim-docs-contracts-skillopt-absorption-md-141",
           "claimFingerprint": "sha256:07880c4d258d5723bda86dd876f2e8ab9daa41a58fc0913ad15400a8a9e05ab8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -4061,7 +4061,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-216",
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-257",
           "claimFingerprint": "sha256:ed69f1c31fe54fb67614a2f39b18a38ebe425fa0672cdb81c3e41510d2ba7594",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -4129,8 +4129,8 @@
         "claim-docs-specs-contracts-scenario-history-normalization-spec-md-30",
         "claim-docs-contracts-improvement-search-md-45",
         "claim-docs-contracts-runtime-fingerprint-improvement-md-161",
-        "claim-docs-contracts-scenario-proposal-sources-md-235",
-        "claim-docs-contracts-scenario-proposal-sources-md-236",
+        "claim-docs-contracts-scenario-proposal-sources-md-276",
+        "claim-docs-contracts-scenario-proposal-sources-md-277",
         "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
         "claim-skills-cautilus-agent-skill-md-118"
       ],
@@ -4184,13 +4184,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-276",
           "claimFingerprint": "sha256:f7e8c40841a9218e0671478c7e2ff6a948e90e42cfca3f8198a63485e854ab96",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+          "claimId": "claim-docs-contracts-scenario-proposal-sources-md-277",
           "claimFingerprint": "sha256:81c2f41f61c908940a6f17d086646de7edd84a7804d9db95d3c115425177c78d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -6106,12 +6106,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-262",
+      "claimId": "claim-docs-guides-cli-md-263",
       "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 262,
+          "line": 263,
           "excerpt": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn."
         }
       ],
@@ -6134,12 +6134,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-270",
+      "claimId": "claim-docs-guides-cli-md-271",
       "summary": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 270,
+          "line": 271,
           "excerpt": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet."
         }
       ],
@@ -6162,12 +6162,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-274",
+      "claimId": "claim-docs-guides-cli-md-275",
       "summary": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 274,
+          "line": 275,
           "excerpt": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again."
         }
       ],
@@ -6190,12 +6190,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-313",
+      "claimId": "claim-docs-guides-cli-md-314",
       "summary": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 313,
+          "line": 314,
           "excerpt": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation."
         }
       ],
@@ -6218,12 +6218,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-470",
+      "claimId": "claim-docs-guides-cli-md-471",
       "summary": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 470,
+          "line": 471,
           "excerpt": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file."
         }
       ],
@@ -6246,12 +6246,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-471",
+      "claimId": "claim-docs-guides-cli-md-472",
       "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 471,
+          "line": 472,
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text."
         }
       ],
@@ -6274,12 +6274,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-475",
+      "claimId": "claim-docs-guides-cli-md-476",
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 475,
+          "line": 476,
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
         }
       ],
@@ -6302,12 +6302,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-476",
+      "claimId": "claim-docs-guides-cli-md-477",
       "summary": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 476,
+          "line": 477,
           "excerpt": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`."
         }
       ],
@@ -6330,12 +6330,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-484",
+      "claimId": "claim-docs-guides-cli-md-485",
       "summary": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 484,
+          "line": 485,
           "excerpt": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`."
         }
       ],
@@ -6358,12 +6358,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-507",
+      "claimId": "claim-docs-guides-cli-md-508",
       "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 507,
+          "line": 508,
           "excerpt": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\""
         }
       ],
@@ -6386,12 +6386,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-567",
+      "claimId": "claim-docs-guides-cli-md-568",
       "summary": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 567,
+          "line": 568,
           "excerpt": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface."
         }
       ],
@@ -6414,12 +6414,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-584",
+      "claimId": "claim-docs-guides-cli-md-585",
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 584,
+          "line": 585,
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\""
         }
       ],
@@ -6442,12 +6442,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-602",
+      "claimId": "claim-docs-guides-cli-md-603",
       "summary": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 602,
+          "line": 603,
           "excerpt": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths."
         }
       ],
@@ -17109,12 +17109,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-77",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-79",
       "summary": "every adoption decision remains human or host-policy owned",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 77,
+          "line": 79,
           "excerpt": "every adoption decision remains human or host-policy owned"
         }
       ],
@@ -17143,12 +17143,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-79",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-81",
       "summary": "risk-tier acceptance policy stays adapter-owned",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 79,
+          "line": 81,
           "excerpt": "risk-tier acceptance policy stays adapter-owned"
         }
       ],
@@ -17177,12 +17177,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-110",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-112",
       "summary": "It should not treat mined sessions as public product promises unless the host's source docs declare the promise or the Cautilus Agent explicitly raises it for review.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 110,
+          "line": 112,
           "excerpt": "It should not treat mined sessions as public product promises unless the host's source docs declare the promise or the Cautilus Agent explicitly raises it for review."
         }
       ],
@@ -17218,12 +17218,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-117",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-119",
       "summary": "It must keep held-out as validation/selection evidence, keep acceptance as optimizer-untouchable final read evidence, and emit staged artifacts rather than applying changes.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 117,
+          "line": 119,
           "excerpt": "It must keep held-out as validation/selection evidence, keep acceptance as optimizer-untouchable final read evidence, and emit staged artifacts rather than applying changes."
         }
       ],
@@ -17256,12 +17256,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-135",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-137",
       "summary": "Proposal output preserves provenance on emitted top-ranked evidence entries, while the input packet remains the complete evidence audit trail.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 135,
+          "line": 137,
           "excerpt": "Proposal output preserves provenance on emitted top-ranked evidence entries, while the input packet remains the complete evidence audit trail."
         }
       ],
@@ -17294,12 +17294,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-137",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-139",
       "summary": "The current `improve search` v1 target remains one consumer-owned prompt file.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 137,
+          "line": 139,
           "excerpt": "The current `improve search` v1 target remains one consumer-owned prompt file."
         }
       ],
@@ -17330,12 +17330,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-139",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-141",
       "summary": "Scenario proposal evidence provenance remains optional in v1 for backwards compatibility with existing candidate callers.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 139,
+          "line": 141,
           "excerpt": "Scenario proposal evidence provenance remains optional in v1 for backwards compatibility with existing candidate callers."
         }
       ],
@@ -17368,12 +17368,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-160",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-162",
       "summary": "A maintainer can identify which SkillOpt-derived patterns are accepted, rejected, and deferred without reading SkillOpt source code.",
       "sourceRefs": [
         {
           "path": "docs/contracts/skillopt-absorption.md",
-          "line": 160,
+          "line": 162,
           "excerpt": "A maintainer can identify which SkillOpt-derived patterns are accepted, rejected, and deferred without reading SkillOpt source code."
         }
       ],
@@ -22863,12 +22863,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-103",
+      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-106",
       "summary": "The product-owned merge step combines their evidence and keeps the newest evidence first.",
       "sourceRefs": [
         {
           "path": "docs/contracts/scenario-proposal-inputs.md",
-          "line": 103,
+          "line": 106,
           "excerpt": "The product-owned merge step combines their evidence and keeps the newest evidence first."
         }
       ],
@@ -22899,12 +22899,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-104",
+      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-107",
       "summary": "Proposal output keeps the top-ranked evidence entries for review; lower-ranked evidence can be omitted from `cautilus.scenario_proposals.v1`, so hosts should keep the original input packet when they need a complete audit trail.",
       "sourceRefs": [
         {
           "path": "docs/contracts/scenario-proposal-inputs.md",
-          "line": 104,
+          "line": 107,
           "excerpt": "Proposal output keeps the top-ranked evidence entries for review; lower-ranked evidence can be omitted from `cautilus.scenario_proposals.v1`, so hosts should keep the original input packet when they need a complete audit trail."
         }
       ],
@@ -23096,12 +23096,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-193",
       "summary": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.",
       "sourceRefs": [
         {
           "path": "docs/contracts/scenario-proposal-sources.md",
-          "line": 152,
+          "line": 193,
           "excerpt": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product."
         }
       ],
@@ -23136,12 +23136,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-216",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-257",
       "summary": "The draft scenario embedded in each proposal should be normalized enough for a human to accept, edit, or reject it without re-deriving the context.",
       "sourceRefs": [
         {
           "path": "docs/contracts/scenario-proposal-sources.md",
-          "line": 216,
+          "line": 257,
           "excerpt": "The draft scenario embedded in each proposal should be normalized enough for a human to accept, edit, or reject it without re-deriving the context."
         }
       ],
@@ -23172,12 +23172,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-276",
       "summary": "The canonical machine-readable output should preserve the full ranked proposal list.",
       "sourceRefs": [
         {
           "path": "docs/contracts/scenario-proposal-sources.md",
-          "line": 235,
+          "line": 276,
           "excerpt": "The canonical machine-readable output should preserve the full ranked proposal list."
         }
       ],
@@ -23208,12 +23208,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-277",
       "summary": "Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.",
       "sourceRefs": [
         {
           "path": "docs/contracts/scenario-proposal-sources.md",
-          "line": 236,
+          "line": 277,
           "excerpt": "Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents."
         }
       ],

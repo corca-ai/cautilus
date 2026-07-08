@@ -487,6 +487,60 @@ func TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance(t *testing
 			want: "proposalCandidates[0].evidence[0].activityProvenance.score must be a number",
 		},
 		{
+			name: "score below range",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "invalid low score",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"replayId": "replay-1", "score": -0.1},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.score must be between 0 and 1",
+		},
+		{
+			name: "score above range",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "invalid high score",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"replayId": "replay-1", "score": 1.1},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.score must be between 0 and 1",
+		},
+		{
+			name: "replayed origin without replay id",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "missing replay id",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"split": "review"},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.replayId is required when origin is replayed",
+		},
+		{
+			name: "replay id without replayed origin",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "real",
+				"title":              "mismatched replay id",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"replayId": "replay-1"},
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be replayed when activityProvenance.replayId is present",
+		},
+		{
+			name: "replayed origin without activity provenance",
+			evidence: map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     "replayed",
+				"title":      "missing provenance",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.replayId is required when origin is replayed",
+		},
+		{
 			name: "unsupported provenance field",
 			evidence: map[string]any{
 				"sourceKind":         "agent_run",
@@ -505,6 +559,129 @@ func TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance(t *testing
 				t.Fatalf("GenerateScenarioProposals error: got %v, want containing %q", err, tc.want)
 			}
 		})
+	}
+}
+
+func TestGenerateScenarioProposalsSummarizesEvidenceProvenance(t *testing.T) {
+	candidate := map[string]any{
+		"proposalKey": "review-after-retro",
+		"title":       "Refresh review-after-retro scenario from recent activity",
+		"family":      "fast_regression",
+		"name":        "Review After Retro",
+		"description": "The user pivots from retro back to review in one thread.",
+		"brief":       "Recent activity shows a retro turn followed by a review turn.",
+		"evidence": []any{
+			map[string]any{
+				"sourceKind": "human_conversation",
+				"origin":     "real",
+				"title":      "real conversation",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"activityId": "session-1",
+					"split":      "proposal",
+				},
+			},
+			map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     "replayed",
+				"title":      "replay",
+				"observedAt": "2026-04-10T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"replayId": "replay-1",
+					"split":    "review",
+					"score":    0.82,
+				},
+			},
+		},
+	}
+	packet, err := GenerateScenarioProposals([]any{candidate}, nil, nil, nil, 14, time.Now())
+	if err != nil {
+		t.Fatalf("GenerateScenarioProposals returned error: %v", err)
+	}
+	proposal := asMap(arrayOrEmpty(packet["proposals"])[0])
+	summary := asMap(proposal["provenanceSummary"])
+	originCounts := asMap(summary["originCounts"])
+	splitCounts := asMap(summary["splitCounts"])
+	if originCounts["real"] != 1 || originCounts["replayed"] != 1 {
+		t.Fatalf("unexpected origin counts: %#v", originCounts)
+	}
+	if splitCounts["proposal"] != 1 || splitCounts["review"] != 1 {
+		t.Fatalf("unexpected split counts: %#v", splitCounts)
+	}
+	if summary["replayEvidenceCount"] != 1 || summary["scoredEvidenceCount"] != 1 || summary["maxScore"] != 0.82 {
+		t.Fatalf("unexpected provenance summary: %#v", summary)
+	}
+}
+
+func TestGenerateScenarioProposalsSummarizesFullEvidenceWhenOutputEvidenceIsTruncated(t *testing.T) {
+	candidate := map[string]any{
+		"proposalKey": "review-after-retro",
+		"title":       "Refresh review-after-retro scenario from recent activity",
+		"family":      "fast_regression",
+		"name":        "Review After Retro",
+		"description": "The user pivots from retro back to review in one thread.",
+		"brief":       "Recent activity shows a retro turn followed by a review turn.",
+		"evidence": []any{
+			map[string]any{
+				"sourceKind": "human_conversation",
+				"origin":     "real",
+				"title":      "newest real",
+				"observedAt": "2026-04-12T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"split": "proposal",
+				},
+			},
+			map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     "replayed",
+				"title":      "review replay",
+				"observedAt": "2026-04-11T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"replayId": "replay-1",
+					"split":    "review",
+					"score":    0.7,
+				},
+			},
+			map[string]any{
+				"sourceKind": "skill_evaluation",
+				"origin":     "synthetic",
+				"title":      "train synthetic",
+				"observedAt": "2026-04-10T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"split": "train",
+					"score": 0.9,
+				},
+			},
+			map[string]any{
+				"sourceKind": "workflow_run",
+				"origin":     "operator_authored",
+				"title":      "old operator authored",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"split": "review",
+				},
+			},
+		},
+	}
+	packet, err := GenerateScenarioProposals([]any{candidate}, nil, nil, nil, 14, time.Now())
+	if err != nil {
+		t.Fatalf("GenerateScenarioProposals returned error: %v", err)
+	}
+	proposal := asMap(arrayOrEmpty(packet["proposals"])[0])
+	if got := len(arrayOrEmpty(proposal["evidence"])); got != 3 {
+		t.Fatalf("output evidence length = %d, want 3", got)
+	}
+	summary := asMap(proposal["provenanceSummary"])
+	originCounts := asMap(summary["originCounts"])
+	splitCounts := asMap(summary["splitCounts"])
+	if originCounts["real"] != 1 || originCounts["replayed"] != 1 || originCounts["synthetic"] != 1 || originCounts["operator_authored"] != 1 {
+		t.Fatalf("unexpected full-evidence origin counts: %#v", originCounts)
+	}
+	if splitCounts["proposal"] != 1 || splitCounts["review"] != 2 || splitCounts["train"] != 1 {
+		t.Fatalf("unexpected full-evidence split counts: %#v", splitCounts)
+	}
+	if summary["maxScore"] != 0.9 {
+		t.Fatalf("unexpected maxScore: %#v", summary)
 	}
 }
 

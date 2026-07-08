@@ -81,6 +81,15 @@ Each entry in `proposalCandidates` must provide:
 - draftable `name`, `description`, and `brief`
 - `evidence` array with at least one operator-reviewable signal
 
+Each evidence item must provide `sourceKind`, `title`, and `observedAt`.
+Evidence may also carry `origin` and `activityProvenance` when it is derived from session, replay, synthetic, or operator-authored activity.
+`origin` is bounded to `real`, `synthetic`, `replayed`, or `operator_authored`.
+`activityProvenance` supports `activityId`, `taskKey`, `recurrenceKey`, `replayId`, `split`, and `score`.
+`split` is bounded to `proposal`, `train`, or `review`.
+When `origin` is `replayed`, `activityProvenance.replayId` is required.
+When `activityProvenance.replayId` is present, `origin` must be `replayed`.
+`score` must be a number from `0` to `1`.
+
 Optional fields currently supported by the product-owned draft builder:
 
 - `intentProfile` using `cautilus.behavior_intent.v1`
@@ -94,6 +103,9 @@ Optional fields currently supported by the product-owned draft builder:
 `Cautilus` may accept multiple candidates with the same `proposalKey`.
 The product-owned merge step combines their evidence and keeps the newest
 evidence first.
+Proposal output keeps the top-ranked evidence entries for review and includes
+`provenanceSummary` with origin counts, split counts, replay evidence count,
+scored evidence count, and max score when scored evidence exists.
 
 ## Registry And Coverage Shape
 
@@ -121,6 +133,7 @@ The product-owned `discover scenarios propose` command then:
 - merges duplicate `proposalKey` entries
 - ranks proposals
 - emits `cautilus.scenario_proposals.v1`
+- emits a review-facing `provenanceSummary` on each proposal
 - preserves `intentProfile` when the candidate already carries one
   and normalizes it against the shared behavior-intent catalog
 
@@ -133,6 +146,10 @@ The product-owned `discover scenarios propose` command then:
 - Registry presence and recent coverage remain separate inputs.
 - `intentProfile` stays optional so non-intent-aware candidate miners do not
   have to invent fake dimensions.
+- replay provenance is semantically bounded: `origin: replayed` requires a
+  `replayId`, and `replayId` requires `origin: replayed`.
+- proposal output includes `provenanceSummary` so JSON and HTML review surfaces
+  reveal evidence origin and split without forcing full evidence inspection.
 
 ## Probe Questions
 
@@ -145,6 +162,10 @@ The product-owned `discover scenarios propose` command then:
 ## Deferred Decisions
 
 - generic helpers, if any, for host-side normalization before the packet exists
+- whether a later v2 should require `origin` for all evidence instead of
+  preserving v1 compatibility
+- whether a later v2 should add richer split/origin compatibility rules beyond
+  replay identity and score bounds
 
 ## Source References
 

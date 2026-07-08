@@ -60,6 +60,7 @@ function validateNonEmptyString(value, field) {
 	if (typeof value !== "string" || !value.trim()) {
 		throw new Error(`${field} must be a non-empty string`);
 	}
+	return value.trim();
 }
 
 function validateEnumValue(value, allowed, field) {
@@ -68,25 +69,57 @@ function validateEnumValue(value, allowed, field) {
 	}
 }
 
-function validateActivityProvenance(provenance, field) {
+function validateOptionalEnumValue(value, allowed, field) {
+	validateNonEmptyString(value, field);
+	validateEnumValue(value, allowed, field);
+	return value;
+}
+
+function validateActivityProvenanceObject(provenance, field) {
 	if (!provenance || typeof provenance !== "object" || Array.isArray(provenance)) {
 		throw new Error(`${field} must be an object`);
 	}
+}
+
+function validateActivityProvenanceFields(provenance, field) {
 	for (const key of Object.keys(provenance)) {
 		if (!ACTIVITY_PROVENANCE_FIELDS.has(key)) {
 			throw new Error(`${field}.${key} is not supported`);
 		}
 	}
+}
+
+function validateActivityProvenanceScore(score, field) {
+	if (typeof score !== "number" || !Number.isFinite(score)) {
+		throw new Error(`${field}.score must be a number`);
+	}
+	if (score < 0 || score > 1) {
+		throw new Error(`${field}.score must be between 0 and 1`);
+	}
+}
+
+function validateActivityProvenance(provenance, field) {
+	validateActivityProvenanceObject(provenance, field);
+	validateActivityProvenanceFields(provenance, field);
 	for (const key of ACTIVITY_PROVENANCE_STRING_FIELDS) {
 		if (provenance[key] !== undefined) {
 			validateNonEmptyString(provenance[key], `${field}.${key}`);
 		}
 	}
 	if (provenance.split !== undefined) {
-		validateEnumValue(provenance.split, EVIDENCE_SPLITS, `${field}.split`);
+		validateOptionalEnumValue(provenance.split, EVIDENCE_SPLITS, `${field}.split`);
 	}
-	if (provenance.score !== undefined && (typeof provenance.score !== "number" || !Number.isFinite(provenance.score))) {
-		throw new Error(`${field}.score must be a number`);
+	if (provenance.score !== undefined) {
+		validateActivityProvenanceScore(provenance.score, field);
+	}
+}
+
+function validateReplayIdentity(origin, replayId, field) {
+	if (origin === "replayed" && !replayId) {
+		throw new Error(`${field}.activityProvenance.replayId is required when origin is replayed`);
+	}
+	if (replayId && origin !== "replayed") {
+		throw new Error(`${field}.origin must be replayed when activityProvenance.replayId is present`);
 	}
 }
 
@@ -98,12 +131,14 @@ function validateEvidenceItem(evidence, field) {
 		validateNonEmptyString(evidence[key], `${field}.${key}`);
 	}
 	validateEnumValue(evidence.sourceKind, EVIDENCE_SOURCE_KINDS, `${field}.sourceKind`);
+	let origin;
 	if (evidence.origin !== undefined) {
-		validateEnumValue(evidence.origin, EVIDENCE_ORIGINS, `${field}.origin`);
+		origin = validateOptionalEnumValue(evidence.origin, EVIDENCE_ORIGINS, `${field}.origin`);
 	}
 	if (evidence.activityProvenance !== undefined) {
 		validateActivityProvenance(evidence.activityProvenance, `${field}.activityProvenance`);
 	}
+	validateReplayIdentity(origin, evidence.activityProvenance?.replayId, field);
 }
 
 function validateCandidate(candidate, index = 0) {
@@ -169,6 +204,7 @@ export function buildDraftScenario(candidate, existingScenarioKeys = new Set()) 
 
 export function buildScenarioProposal(candidate, existingScenarioKeys, recentCoverage) {
 	const scenarioKeyExists = existingScenarioKeys.has(candidate.proposalKey);
+	const evidence = sortEvidenceNewestFirst(candidate.evidence);
 	return {
 		proposalKey: candidate.proposalKey,
 		title: candidate.title,
@@ -181,8 +217,43 @@ export function buildScenarioProposal(candidate, existingScenarioKeys, recentCov
 			recentResultCount: recentCoverage.get(candidate.proposalKey) || 0,
 		},
 		rationale: `${candidate.evidence.length} recent log match(es) suggested this pattern.`,
-		evidence: sortEvidenceNewestFirst(candidate.evidence).slice(0, 3),
+		evidence: evidence.slice(0, 3),
+		provenanceSummary: buildProvenanceSummary(evidence),
 		draftScenario: buildDraftScenario(candidate, existingScenarioKeys),
+	};
+}
+
+function incrementCount(counts, key) {
+	if (!key) {
+		return;
+	}
+	counts[key] = (counts[key] || 0) + 1;
+}
+
+function buildProvenanceSummary(evidence) {
+	const originCounts = {};
+	const splitCounts = {};
+	let replayEvidenceCount = 0;
+	let scoredEvidenceCount = 0;
+	let maxScore = Number.NEGATIVE_INFINITY;
+	for (const item of evidence) {
+		incrementCount(originCounts, item.origin);
+		const provenance = item.activityProvenance || {};
+		incrementCount(splitCounts, provenance.split);
+		if (provenance.replayId) {
+			replayEvidenceCount += 1;
+		}
+		if (typeof provenance.score === "number" && Number.isFinite(provenance.score)) {
+			scoredEvidenceCount += 1;
+			maxScore = Math.max(maxScore, provenance.score);
+		}
+	}
+	return {
+		originCounts,
+		splitCounts,
+		replayEvidenceCount,
+		scoredEvidenceCount,
+		...(scoredEvidenceCount > 0 ? { maxScore } : {}),
 	};
 }
 

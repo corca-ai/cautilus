@@ -106,18 +106,18 @@ test("generateScenarioProposals validates optional evidence provenance enums", (
 	);
 	assert.throws(
 		() => generateScenarioProposals({
-				proposalCandidates: [createCandidate({
-					evidence: [
-						{
-							sourceKind: "human_conversation",
-							origin: 12,
-							title: "invalid origin type",
-							observedAt: "2026-04-09T21:00:00.000Z",
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "human_conversation",
+						origin: 12,
+						title: "invalid origin type",
+						observedAt: "2026-04-09T21:00:00.000Z",
 					},
 				],
 			})],
 		}),
-		/proposalCandidates\[0\]\.evidence\[0\]\.origin must be one of/,
+		/proposalCandidates\[0\]\.evidence\[0\]\.origin must be a non-empty string/,
 	);
 	assert.throws(
 		() => generateScenarioProposals({
@@ -132,7 +132,7 @@ test("generateScenarioProposals validates optional evidence provenance enums", (
 				],
 			})],
 		}),
-		/proposalCandidates\[0\]\.evidence\[0\]\.origin must be one of/,
+		/proposalCandidates\[0\]\.evidence\[0\]\.origin must be a non-empty string/,
 	);
 	assert.throws(
 		() => generateScenarioProposals({
@@ -180,7 +180,7 @@ test("generateScenarioProposals validates optional evidence provenance enums", (
 				],
 			})],
 		}),
-		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.split must be one of/,
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.split must be one of proposal, train, review/,
 	);
 	assert.throws(
 		() => generateScenarioProposals({
@@ -196,7 +196,7 @@ test("generateScenarioProposals validates optional evidence provenance enums", (
 				],
 			})],
 		}),
-		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.split must be one of/,
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.split must be a non-empty string/,
 	);
 	assert.throws(
 		() => generateScenarioProposals({
@@ -212,7 +212,7 @@ test("generateScenarioProposals validates optional evidence provenance enums", (
 				],
 			})],
 		}),
-		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.split must be one of/,
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.split must be a non-empty string/,
 	);
 	assert.throws(
 		() => generateScenarioProposals({
@@ -237,6 +237,54 @@ test("generateScenarioProposals validates optional evidence provenance enums", (
 					{
 						sourceKind: "agent_run",
 						origin: "replayed",
+						title: "score above range",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: { replayId: "replay-1", score: 1.1 },
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.score must be between 0 and 1/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "replayed",
+						title: "missing replay id",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: { split: "review" },
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.replayId is required when origin is replayed/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "real",
+						title: "mismatched replay id",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: { replayId: "replay-1" },
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.origin must be replayed when activityProvenance\.replayId is present/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "replayed",
 						title: "unsupported field",
 						observedAt: "2026-04-09T21:00:00.000Z",
 						activityProvenance: { logPath: "/tmp/raw.log" },
@@ -246,6 +294,80 @@ test("generateScenarioProposals validates optional evidence provenance enums", (
 		}),
 		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.logPath is not supported/,
 	);
+});
+
+test("generateScenarioProposals summarizes evidence provenance for review", () => {
+	const result = generateScenarioProposals({
+		proposalCandidates: [createCandidate({
+			evidence: [
+				{
+					sourceKind: "human_conversation",
+					origin: "real",
+					title: "real conversation",
+					observedAt: "2026-04-09T21:00:00.000Z",
+					activityProvenance: { activityId: "session-1", split: "proposal" },
+				},
+				{
+					sourceKind: "agent_run",
+					origin: "replayed",
+					title: "replay",
+					observedAt: "2026-04-10T21:00:00.000Z",
+					activityProvenance: { replayId: "replay-1", split: "review", score: 0.82 },
+				},
+			],
+		})],
+	});
+	assert.deepEqual(result.proposals[0].provenanceSummary.originCounts, { real: 1, replayed: 1 });
+	assert.deepEqual(result.proposals[0].provenanceSummary.splitCounts, { proposal: 1, review: 1 });
+	assert.equal(result.proposals[0].provenanceSummary.replayEvidenceCount, 1);
+	assert.equal(result.proposals[0].provenanceSummary.scoredEvidenceCount, 1);
+	assert.equal(result.proposals[0].provenanceSummary.maxScore, 0.82);
+});
+
+test("generateScenarioProposals summarizes full evidence even when output evidence is truncated", () => {
+	const result = generateScenarioProposals({
+		proposalCandidates: [createCandidate({
+			evidence: [
+				{
+					sourceKind: "human_conversation",
+					origin: "real",
+					title: "newest real",
+					observedAt: "2026-04-12T21:00:00.000Z",
+					activityProvenance: { split: "proposal" },
+				},
+				{
+					sourceKind: "agent_run",
+					origin: "replayed",
+					title: "review replay",
+					observedAt: "2026-04-11T21:00:00.000Z",
+					activityProvenance: { replayId: "replay-1", split: "review", score: 0.7 },
+				},
+				{
+					sourceKind: "skill_evaluation",
+					origin: "synthetic",
+					title: "train synthetic",
+					observedAt: "2026-04-10T21:00:00.000Z",
+					activityProvenance: { split: "train", score: 0.9 },
+				},
+				{
+					sourceKind: "workflow_run",
+					origin: "operator_authored",
+					title: "old operator authored",
+					observedAt: "2026-04-09T21:00:00.000Z",
+					activityProvenance: { split: "review" },
+				},
+			],
+		})],
+	});
+	assert.equal(result.proposals[0].evidence.length, 3);
+	assert.deepEqual(result.proposals[0].provenanceSummary.originCounts, {
+		real: 1,
+		replayed: 1,
+		synthetic: 1,
+		operator_authored: 1,
+	});
+	assert.deepEqual(result.proposals[0].provenanceSummary.splitCounts, { proposal: 1, review: 2, train: 1 });
+	assert.equal(result.proposals[0].provenanceSummary.maxScore, 0.9);
 });
 
 test("generateScenarioProposals rejects candidates without evidence signals", () => {

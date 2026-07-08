@@ -88,6 +88,9 @@ For SkillOpt-derived or other host-mined activity, evidence may also carry `orig
 `origin` is bounded to `real`, `synthetic`, `replayed`, or `operator_authored`.
 `activityProvenance` is a portable normalized object for activity identity and replay context; supported fields are `activityId`, `taskKey`, `recurrenceKey`, `replayId`, `split`, and `score`.
 `split` is bounded to `proposal`, `train`, or `review` so proposal-time evidence does not imply held-out or acceptance mutation rights.
+When `origin` is `replayed`, `activityProvenance.replayId` is required.
+When `activityProvenance.replayId` is present, `origin` must be `replayed`.
+`score` is a normalized numeric confidence or replay score from `0` to `1`.
 The fields are optional in v1 for backwards compatibility, but host miners should include them when the candidate is derived from session, replay, synthetic, or operator-authored activity.
 
 Optional fields currently supported by the product-owned draft builder:
@@ -102,6 +105,7 @@ Optional fields currently supported by the product-owned draft builder:
 `Cautilus` may accept multiple candidates with the same `proposalKey`.
 The product-owned merge step combines their evidence and keeps the newest evidence first.
 Proposal output keeps the top-ranked evidence entries for review; lower-ranked evidence can be omitted from `cautilus.scenario_proposals.v1`, so hosts should keep the original input packet when they need a complete audit trail.
+Each emitted proposal also includes `provenanceSummary`, a compact review-facing rollup of origin counts, split counts, replay evidence count, scored evidence count, and max score when scored evidence exists.
 
 ## Registry And Coverage Shape
 
@@ -140,6 +144,8 @@ The product-owned `discover scenarios propose` command then:
 - `origin` and `activityProvenance` are optional v1 evidence fields, not a separate SkillOpt packet.
 - `discover scenarios prepare-input` preserves those fields from normalized input.
 - `discover scenarios propose` validates those fields when present and preserves them on the top-ranked evidence entries it emits.
+- replay provenance is semantically bounded: `origin: replayed` requires a `replayId`, and `replayId` requires `origin: replayed`.
+- proposal output includes a reviewable `provenanceSummary` so the HTML and JSON surfaces reveal evidence origin and split without forcing operators to inspect every evidence item first.
 
 ## Probe Questions
 
@@ -151,6 +157,7 @@ The product-owned `discover scenarios propose` command then:
 
 - generic helpers, if any, for host-side normalization before the packet exists
 - whether a later v2 should require `origin` for all evidence instead of preserving v1 compatibility
+- whether a later v2 should add richer split/origin compatibility rules beyond replay identity and score bounds
 
 ## Source References
 

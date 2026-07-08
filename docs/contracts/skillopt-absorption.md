@@ -28,6 +28,7 @@ Implemented first route: host-owned scenario candidate miners can now attach `or
 The existing `discover scenarios prepare-input` path preserves those fields from normalized input, and `discover scenarios propose` preserves them on the top-ranked evidence entries it emits for review.
 The implemented `origin` labels are `real`, `synthetic`, `replayed`, and `operator_authored`.
 The implemented `activityProvenance` fields are `activityId`, `taskKey`, `recurrenceKey`, `replayId`, `split`, and `score`.
+The implemented semantic guardrails require replay evidence to carry a `replayId`, require `replayId` evidence to declare `origin: replayed`, and bound `score` to `0..1`.
 This is not a raw transcript reader, miner, replay runner, scheduler, optimizer, or adoption engine.
 
 ## Accepted Patterns
@@ -47,6 +48,7 @@ Required boundary:
 - normalized candidates must carry operator-reviewable evidence, not opaque storage IDs only
 - session-derived, replayed, synthetic, and operator-authored evidence can be labeled with `origin`
 - replay and activity identity can be carried in `activityProvenance`
+- replay identity is validated instead of treated as a decorative field
 - generated proposals remain draft scenarios until a maintainer adopts them
 
 ### Rejected-Candidate Evidence
@@ -168,7 +170,7 @@ Accepted absorption depends on these invariants:
 - Documentation check: README proof-state prose agrees with the apex surface audit.
 - Documentation check: the master plan links to this contract when mentioning SkillOpt absorption.
 - Spec index check: the maintainer contract index identifies this contract as a boundary with one implemented scenario-proposal provenance route.
-- Runtime check: `fixtures/scenario-proposals/candidates.json` includes `real`, `replayed`, `synthetic`, and `operator_authored` evidence, and the schema/helper tests prove runtime validation plus preservation on emitted top-ranked proposal evidence.
+- Runtime check: `fixtures/scenario-proposals/candidates.json` includes `real`, `replayed`, `synthetic`, and `operator_authored` evidence, and the schema/helper tests prove runtime validation, replay identity compatibility, score bounds, provenance summary rendering, and preservation on emitted top-ranked proposal evidence.
 - Runtime check: no raw transcript reader, scheduler, optimizer import, or auto-apply surface is added.
 
 ## Source References

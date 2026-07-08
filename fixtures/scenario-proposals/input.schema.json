@@ -147,11 +147,63 @@
                       ]
                     },
                     "score": {
-                      "type": "number"
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
                     }
                   }
                 }
-              }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "required": [
+                      "origin"
+                    ],
+                    "properties": {
+                      "origin": {
+                        "const": "replayed"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "activityProvenance"
+                    ],
+                    "properties": {
+                      "activityProvenance": {
+                        "required": [
+                          "replayId"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "required": [
+                      "activityProvenance"
+                    ],
+                    "properties": {
+                      "activityProvenance": {
+                        "required": [
+                          "replayId"
+                        ]
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "origin"
+                    ],
+                    "properties": {
+                      "origin": {
+                        "const": "replayed"
+                      }
+                    }
+                  }
+                }
+              ]
             }
           }
         }

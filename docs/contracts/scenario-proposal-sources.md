@@ -140,8 +140,49 @@ The proposal engine should emit an operator-reviewable payload like this:
         "recentResultCount": 2
       },
       "rationale": "2 recent log match(es) suggested this pattern.",
-      "evidence": [],
-      "draftScenario": {}
+      "evidence": [
+        {
+          "sourceKind": "human_conversation",
+          "origin": "real",
+          "title": "review after retro",
+          "observedAt": "2026-04-09T21:00:00.000Z",
+          "activityProvenance": {
+            "split": "proposal"
+          }
+        }
+      ],
+      "provenanceSummary": {
+        "originCounts": {
+          "real": 1
+        },
+        "splitCounts": {
+          "proposal": 1
+        },
+        "replayEvidenceCount": 0,
+        "scoredEvidenceCount": 0
+      },
+      "draftScenario": {
+        "schemaVersion": "cautilus.scenario.v1",
+        "scenarioId": "review-after-retro--ops-log-refresh",
+        "name": "Review After Retro",
+        "description": "The user pivots from retro back to review in one thread.",
+        "brief": "Recent activity shows a retro turn followed by a review turn.",
+        "benchmark": {
+          "family": "fast_regression",
+          "scenarioKey": "review-after-retro",
+          "backend": "scripted",
+          "tags": []
+        },
+        "maxTurns": 3,
+        "runner": {
+          "mode": "live"
+        },
+        "sideEffectsMode": "shadow",
+        "simulator": {
+          "kind": "scripted",
+          "turns": []
+        }
+      }
     }
   ]
 }

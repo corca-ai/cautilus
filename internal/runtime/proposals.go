@@ -373,11 +373,15 @@ func validateProposalEvidence(rawEvidence any, field string) error {
 	if !containsString(scenarioProposalEvidenceSourceKinds, stringOrEmpty(evidence["sourceKind"])) {
 		return fmt.Errorf("%s.sourceKind must be one of %s", field, strings.Join(scenarioProposalEvidenceSourceKinds, ", "))
 	}
-	if err := validateOptionalEnumString(evidence, "origin", scenarioProposalEvidenceOrigins, field+".origin"); err != nil {
+	origin, originPresent, err := optionalEnumStringValue(evidence, "origin", scenarioProposalEvidenceOrigins, field+".origin")
+	if err != nil {
 		return err
 	}
 	rawProvenance, ok := evidence["activityProvenance"]
 	if !ok || rawProvenance == nil {
+		if originPresent && origin == "replayed" {
+			return fmt.Errorf("%s.activityProvenance.replayId is required when origin is replayed", field)
+		}
 		return nil
 	}
 	provenance, ok := rawProvenance.(map[string]any)
@@ -404,23 +408,41 @@ func validateProposalEvidence(rawEvidence any, field string) error {
 		if !ok || math.IsNaN(number) || math.IsInf(number, 0) {
 			return fmt.Errorf("%s.activityProvenance.score must be a number", field)
 		}
+		if number < 0 || number > 1 {
+			return fmt.Errorf("%s.activityProvenance.score must be between 0 and 1", field)
+		}
+	}
+	if _, hasReplayID := provenance["replayId"]; hasReplayID {
+		if !originPresent || origin != "replayed" {
+			return fmt.Errorf("%s.origin must be replayed when activityProvenance.replayId is present", field)
+		}
+	}
+	if originPresent && origin == "replayed" {
+		if _, hasReplayID := provenance["replayId"]; !hasReplayID {
+			return fmt.Errorf("%s.activityProvenance.replayId is required when origin is replayed", field)
+		}
 	}
 	return nil
 }
 
 func validateOptionalEnumString(record map[string]any, key string, allowed []string, field string) error {
+	_, _, err := optionalEnumStringValue(record, key, allowed, field)
+	return err
+}
+
+func optionalEnumStringValue(record map[string]any, key string, allowed []string, field string) (string, bool, error) {
 	rawValue, ok := record[key]
 	if !ok {
-		return nil
+		return "", false, nil
 	}
 	value, err := normalizeNonEmptyString(rawValue, field)
 	if err != nil {
-		return err
+		return "", true, err
 	}
 	if !containsString(allowed, value) {
-		return fmt.Errorf("%s must be one of %s", field, strings.Join(allowed, ", "))
+		return "", true, fmt.Errorf("%s must be one of %s", field, strings.Join(allowed, ", "))
 	}
-	return nil
+	return value, true, nil
 }
 
 func mergeProposalRecord(current map[string]any, candidate map[string]any) map[string]any {
@@ -459,10 +481,48 @@ func buildScenarioProposal(candidate map[string]any, existingScenarioKeys map[st
 			"scenarioKeyExists": exists,
 			"recentResultCount": recentCoverage[proposalKey],
 		},
-		"rationale":     fmt.Sprintf("%d recent log match(es) suggested this pattern.", len(evidence)),
-		"evidence":      takeAny(evidence, 3),
-		"draftScenario": buildDraftScenario(candidate, existingScenarioKeys),
+		"rationale":         fmt.Sprintf("%d recent log match(es) suggested this pattern.", len(evidence)),
+		"evidence":          takeAny(evidence, 3),
+		"provenanceSummary": buildProposalProvenanceSummary(evidence),
+		"draftScenario":     buildDraftScenario(candidate, existingScenarioKeys),
 	}
+}
+
+func buildProposalProvenanceSummary(evidence []any) map[string]any {
+	originCounts := map[string]any{}
+	splitCounts := map[string]any{}
+	replayEvidenceCount := 0
+	scoredEvidenceCount := 0
+	maxScore := math.Inf(-1)
+	for _, raw := range evidence {
+		item := asMap(raw)
+		if origin := stringOrEmpty(item["origin"]); origin != "" {
+			originCounts[origin] = intValueOrDefault(originCounts[origin], 0) + 1
+		}
+		provenance := asMap(item["activityProvenance"])
+		if split := stringOrEmpty(provenance["split"]); split != "" {
+			splitCounts[split] = intValueOrDefault(splitCounts[split], 0) + 1
+		}
+		if stringOrEmpty(provenance["replayId"]) != "" {
+			replayEvidenceCount++
+		}
+		if score, ok := toFloat(provenance["score"]); ok {
+			scoredEvidenceCount++
+			if score > maxScore {
+				maxScore = score
+			}
+		}
+	}
+	summary := map[string]any{
+		"originCounts":        originCounts,
+		"splitCounts":         splitCounts,
+		"replayEvidenceCount": replayEvidenceCount,
+		"scoredEvidenceCount": scoredEvidenceCount,
+	}
+	if scoredEvidenceCount > 0 {
+		summary["maxScore"] = maxScore
+	}
+	return summary
 }
 
 func buildDraftScenario(candidate map[string]any, existingScenarioKeys map[string]struct{}) map[string]any {

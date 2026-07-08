@@ -9,7 +9,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Status packet: .cautilus/claims/status-summary.json
 - Candidate count: 565
 - Source count: 75
-- Packet source commit: cbfee8a38c6c3d6e842da9308f3047d49b215957
+- Packet source commit: ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827
 - Snapshot notice: gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.
 - Git state snapshot: fresh; stale=no
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
@@ -171,7 +171,7 @@ Full bucket detail is shown because this bucket is not ready for proof.
 | claim-docs-contracts-runner-verification-md-5 | docs/contracts/runner-verification.md:5 | human-auditable | needs-alignment | heuristic | unknown | This contract keeps that judgment packet-shaped and repo-owned instead of teaching the binary to reverse-engineer arbitrary app code. |
 | claim-docs-contracts-runner-verification-md-24 | docs/contracts/runner-verification.md:24 | human-auditable | needs-alignment | agent-reviewed | unknown | external substitution: nondeterministic or costly external dependencies can be replaced with deterministic substitutes at the same boundary the product uses |
 | claim-docs-contracts-skillopt-absorption-md-6 | docs/contracts/skillopt-absorption.md:6 | human-auditable | needs-alignment | heuristic | unknown | `Cautilus` should absorb only the SkillOpt and SkillOpt-Sleep patterns that strengthen its existing `claim`, `eval`, and `improve` command families while preserving host-owned raw data, packet-first proof, held-out safety, and no auto-apply. |
-| claim-docs-contracts-skillopt-absorption-md-79 | docs/contracts/skillopt-absorption.md:79 | human-auditable | needs-alignment | heuristic | unknown | risk-tier acceptance policy stays adapter-owned |
+| claim-docs-contracts-skillopt-absorption-md-81 | docs/contracts/skillopt-absorption.md:81 | human-auditable | needs-alignment | heuristic | unknown | risk-tier acceptance policy stays adapter-owned |
 | claim-docs-contracts-workbench-instance-discovery-md-99 | docs/contracts/workbench-instance-discovery.md:99 | deterministic | needs-alignment | agent-reviewed | unknown | A future live app eval flow can refer to one selected instance by stable id. |
 | claim-docs-specs-contracts-adapter-host-ownership-spec-md-17 | docs/specs/contracts/adapter-host-ownership.spec.md:17 | human-auditable | needs-alignment | heuristic | unknown | Cautilus owns generic workflow contracts, packet shapes, readiness semantics, behavior-surface vocabulary, and normalization helpers, while host repos own prompts, runners, credentials, model or backend selection, fixtures, and policy. |
 | claim-docs-specs-contracts-binary-skill-boundary-spec-md-17 | docs/specs/contracts/binary-skill-boundary.spec.md:17 | human-auditable | needs-alignment | heuristic | unknown | The binary owns deterministic command execution, packet schemas, help text, and reusable artifacts; the Cautilus Agent owns sequencing, decision boundaries, review-budget explanation, and agent-driven claim curation, and the binary never calls an LLM provider directly for claim discovery or claim review. |
@@ -188,7 +188,7 @@ Full bucket detail is shown because this bucket is not ready for proof.
 | claim-docs-contracts-claim-extraction-template-md-306 | docs/contracts/claim-extraction-template.md:306 | human-auditable | needs-alignment | heuristic | unknown | (`--allow-stale-sources` can apply a packet whose excerpts no longer anchor against drifted current content; the drift is recorded in `extractionAudit` and surfaces as stale-anchor findings in `validate`.) |
 | claim-docs-contracts-improvement-search-md-126 | docs/contracts/improvement-search.md:126 | human-auditable | needs-alignment | heuristic | unknown | This keeps the useful GEPA shape while staying honest about `Cautilus`'s different product boundary. |
 | claim-docs-contracts-realsurface-judge-convergence-md-45 | docs/contracts/realsurface-judge-convergence.md:45 | human-auditable | needs-alignment | heuristic | unknown | FD4 — attach via adapter-owned enrichment; the generic runtime runner stays pure. |
-| claim-docs-contracts-scenario-proposal-inputs-md-103 | docs/contracts/scenario-proposal-inputs.md:103 | human-auditable | needs-alignment | heuristic | unknown | The product-owned merge step combines their evidence and keeps the newest evidence first. |
+| claim-docs-contracts-scenario-proposal-inputs-md-106 | docs/contracts/scenario-proposal-inputs.md:106 | human-auditable | needs-alignment | heuristic | unknown | The product-owned merge step combines their evidence and keeps the newest evidence first. |
 | claim-docs-contracts-skill-surface-judge-convergence-md-70 | docs/contracts/skill-surface-judge-convergence.md:70 | human-auditable | needs-alignment | heuristic | unknown | This preserves the code/intelligence boundary the contract pins: the engine only reads and composites a structured verdict (symmetric with the instruction surface), it never computes the judge verdict or a repo-specific facet — the judge logic stays in the adapter-owned enricher. |
 | claim-docs-contracts-skill-surface-judge-convergence-md-120 | docs/contracts/skill-surface-judge-convergence.md:120 | human-auditable | needs-alignment | heuristic | unknown | The generic Go engine extension must stay generic verdict-compositing symmetric with the instruction surface; no repo-specific judge or facet logic enters the engine or the generic runtime runner, and the judge half stays in adapter-owned `scripts/`. |
 | claim-docs-contracts-skill-surface-judge-convergence-md-156 | docs/contracts/skill-surface-judge-convergence.md:156 | human-auditable | needs-alignment | heuristic | unknown | The critique confirmed FD5's boundary-honesty claim (the reused Go helpers only read and count a structured verdict; all facet computation stays in the `.mjs` harness) and the no-manufacturing/sequencing discipline. |
@@ -203,7 +203,7 @@ Confirm, decompose, or accept a human-auditable claim before treating it as prov
 | Claim | Source | Proof | Readiness | Review | Evidence | Summary |
 | --- | --- | --- | --- | --- | --- | --- |
 | claim-readme-md-61 | README.md:61 | human-auditable | ready-for-proof | heuristic | unknown | Raw `discover claims` packets remain the high-recall, source-ref-backed proof-planning input, not the primary document a user should review. |
-| claim-docs-guides-cli-md-567 | docs/guides/cli.md:567 | human-auditable | ready-for-proof | heuristic | unknown | `doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface. |
+| claim-docs-guides-cli-md-568 | docs/guides/cli.md:568 | human-auditable | ready-for-proof | heuristic | unknown | `doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface. |
 | claim-docs-master-plan-md-156 | docs/master-plan.md:156 | human-auditable | ready-for-proof | heuristic | unknown | the risk-tier policy on top of the acceptance read (acceptance-risk-tier.md (./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories |
 | claim-docs-specs-index-spec-md-101 | docs/specs/index.spec.md:101 | human-auditable | ready-for-proof | heuristic | unknown | Surface Honesty Audit (generated/audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree. |
 | claim-docs-specs-index-spec-md-102 | docs/specs/index.spec.md:102 | human-auditable | ready-for-proof | heuristic | unknown | The binding is semantic, not just structural: for every badge that declares evidence, each evidence file must actually be read by a `cautilus-json-file` check in its leaf spec, so a route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on. |
@@ -255,7 +255,7 @@ Active updates still match the current claim packet; superseded updates are hist
 
 | Packet | Mode | Reviewer | Clusters | Active | Superseded | Proof | Readiness |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| .cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json | parallel-agent-review | - | 1 | 1 | 2 | deterministic: 1 | needs-alignment: 1 |
+| .cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json | parallel-agent-review | - | 1 | 1 | 0 | deterministic: 1 | needs-alignment: 1 |
 | .cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
@@ -296,7 +296,7 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-evidence-runner-readiness-schema-fields-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json | - | - | 1 | 1 | 0 | cautilus-eval: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-final-deterministic-proof-debt-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
-| .cautilus/claims/review-result-final-deterministic-queue-2026-05-17.json | - | - | 1 | 7 | 0 | deterministic: 7 | ready-for-proof: 7 |
+| .cautilus/claims/review-result-final-deterministic-queue-2026-05-17.json | - | - | 1 | 6 | 0 | deterministic: 6 | ready-for-proof: 6 |
 | .cautilus/claims/review-result-hitl-claim-review-boundary-2026-05-02.json | hitl-decision-cards | human-maintainer | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json | hitl-decision-cards | human-maintainer | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-human-align-action-bucket.json | action-bucket-focused-review | codex-current-agent | 2 | 3 | 3 | human-auditable: 3 | needs-alignment: 3 |
@@ -311,11 +311,10 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-loop2-lane-b.json | clusters 3-5 only | codex-lane-b | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-ownership-evidence-gaps-improvement-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
-| .cautilus/claims/review-result-readiness-triage-2026-05-10.json | action-bucket-readiness-triage | codex-current-agent | 1 | 1 | 10 | human-auditable: 1 | blocked: 1 |
+| .cautilus/claims/review-result-readiness-triage-2026-05-10.json | action-bucket-readiness-triage | codex-current-agent | 1 | 1 | 9 | human-auditable: 1 | blocked: 1 |
 | .cautilus/claims/review-result-readiness-triage-replay-2026-06-10.json | id-drift-replay-repair | claude-current-agent | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
-| .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 2 | 5 | 3 | deterministic: 4, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 4 |
+| .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 2 | 4 | 3 | deterministic: 3, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 3 |
 | .cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json | - | - | 1 | 1 | 0 | unchanged: 1 | unchanged: 1 |
-| .cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json | - | - | 1 | 2 | 1 | deterministic: 2 | ready-for-proof: 2 |
 
 ### .cautilus/claims/review-result-human-align-action-bucket.json
@@ -339,11 +338,11 @@ Active updates still match the current claim packet; superseded updates are hist
 | claim-docs-contracts-workbench-instance-discovery-md-25 | deterministic | ready-for-proof | satisfied | Keep adapter validation and catalog schema tests current when changing instance discovery fields. |
 | claim-docs-contracts-workbench-instance-discovery-md-101 | deterministic | ready-for-proof | satisfied | Keep typed path normalization and catalog schema tests current when adding scenario-adjacent path keys. |
 
-### .cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json
+### .cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json
 
 | Claim | Proof | Readiness | Evidence | Next action |
 | --- | --- | --- | --- | --- |
-| claim-docs-contracts-scenario-proposal-sources-md-152 | deterministic | ready-for-proof | satisfied | Keep scenario proposal evidence sourceKind enum and host-storage non-requirement tests in place when changing proposal schemas. |
+| claim-docs-contracts-reporting-md-144 | - | - | satisfied | - |
 
 ## Validation
 

@@ -95,6 +95,10 @@ func TestRenderScenarioProposalsHTMLRendersProposals(t *testing.T) {
 		`low_recent_coverage`,
 		`action: add_new_scenario`,
 		`family: chatbot`,
+		`origin real: 1`,
+		`split proposal: 1`,
+		`replay evidence: 1`,
+		`max score: 0.82`,
 	} {
 		if !strings.Contains(rendered, pattern) {
 			t.Fatalf("expected %q in proposals html", pattern)
@@ -283,6 +287,13 @@ func sampleScenarioProposals() map[string]any {
 				"family":      "chatbot",
 				"rationale":   "3 recent log match(es) suggested this pattern.",
 				"evidence":    []any{map[string]any{"conversationId": "c-1"}},
+				"provenanceSummary": map[string]any{
+					"originCounts":        map[string]any{"real": float64(1)},
+					"splitCounts":         map[string]any{"proposal": float64(1)},
+					"replayEvidenceCount": float64(1),
+					"scoredEvidenceCount": float64(1),
+					"maxScore":            float64(0.82),
+				},
 			},
 		},
 	}

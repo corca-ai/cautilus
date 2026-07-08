@@ -89,6 +89,14 @@ function runGit(repoRoot, args, { allowFailure = false } = {}) {
 	return result;
 }
 
+function runShellCommand(repoRoot, command) {
+	return spawnSync(command, {
+		cwd: repoRoot,
+		encoding: "utf-8",
+		shell: true,
+	});
+}
+
 function gitStatus(repoRoot) {
 	return runGit(repoRoot, ["status", "--short"]).stdout.split(/\r?\n/).filter(Boolean);
 }
@@ -151,6 +159,29 @@ function readText(repoRoot, relativePath) {
 			}`,
 		);
 	}
+}
+
+function collectYamlListValues(text, key) {
+	const lines = text.split(/\r?\n/);
+	const values = [];
+	let inList = false;
+	for (const line of lines) {
+		if (line.startsWith(`${key}:`)) {
+			inList = true;
+			continue;
+		}
+		if (!inList) {
+			continue;
+		}
+		if (/^\S/.test(line)) {
+			break;
+		}
+		const match = line.match(/^\s*-\s*["']?(.+?)["']?\s*$/);
+		if (match) {
+			values.push(match[1]);
+		}
+	}
+	return values;
 }
 
 export class ReleasePublishError extends Error {
@@ -226,6 +257,44 @@ function assertTagAvailable(repoRoot, remote, tagName) {
 	}
 }
 
+export function readRequestedReviewCommands(repoRoot) {
+	const adapter = readText(repoRoot, ".agents/release-adapter.yaml");
+	return collectYamlListValues(adapter, "requested_review_commands");
+}
+
+function normalizeCommandResult(command, result) {
+	return {
+		command,
+		exitCode: result.status ?? result.exitCode ?? 1,
+		stdout: result.stdout ?? "",
+		stderr: result.stderr ?? "",
+	};
+}
+
+function assertCommandResultSucceeded(commandResult) {
+	if (commandResult.exitCode === 0) {
+		return;
+	}
+	const detail = (commandResult.stderr || commandResult.stdout || "").trim();
+	throw new Error(`requested release review command failed: ${commandResult.command}${detail ? `\n${detail}` : ""}`);
+}
+
+export function runRequestedReviewCommands(repoRoot, dependencies = {}) {
+	const commands = readRequestedReviewCommands(repoRoot);
+	if (commands.length === 0) {
+		throw new Error(".agents/release-adapter.yaml requested_review_commands must not be empty");
+	}
+	const runner = dependencies.runCommand || runShellCommand;
+	const results = [];
+	for (const command of commands) {
+		const result = runner(repoRoot, command);
+		const commandResult = normalizeCommandResult(command, result);
+		results.push(commandResult);
+		assertCommandResultSucceeded(commandResult);
+	}
+	return results;
+}
+
 function throwReleasePublishError(error, payload) {
 	throw new ReleasePublishError(error instanceof Error ? error.message : String(error), payload, { cause: error });
 }
@@ -278,10 +347,12 @@ export function publishPreparedRelease({ repoRoot, version, remote = "origin", t
 	const releaseState = {
 		localPrepared: "verified",
 		auditNarrativeCommitted: "verified",
+		requestedReviewCommands: "pending",
 		branchPushed: dryRun ? "not-started" : "pending",
 		tagPushed: dryRun ? "not-started" : "pending",
 		workflowPublication: dryRun ? "not-started" : "pending-tag-workflow",
 		publicReleaseVerification: dryRun ? "not-started" : "pending-tag-workflow",
+		postPublishInstallReadback: dryRun ? "not-started" : "pending-public-release",
 	};
 	const payload = {
 		version: expectedVersion,
@@ -295,7 +366,15 @@ export function publishPreparedRelease({ repoRoot, version, remote = "origin", t
 		dryRun,
 		releaseState,
 		narrativeAudit,
+		requestedReviewCommands: [],
 	};
+	try {
+		payload.requestedReviewCommands = runRequestedReviewCommands(repoRoot);
+		releaseState.requestedReviewCommands = "verified";
+	} catch (error) {
+		releaseState.requestedReviewCommands = "failed";
+		throwReleasePublishError(error, payload);
+	}
 	if (dryRun) {
 		return payload;
 	}
@@ -340,10 +419,12 @@ function renderStateLines(result) {
 		`- head: ${result.headSha}`,
 		`- local prepared: ${result.releaseState.localPrepared}`,
 		`- audit narrative committed: ${result.releaseState.auditNarrativeCommitted}`,
+		`- requested review commands: ${result.releaseState.requestedReviewCommands}`,
 		`- branch pushed: ${result.releaseState.branchPushed}`,
 		`- tag pushed: ${result.releaseState.tagPushed}`,
 		`- workflow publication: ${result.releaseState.workflowPublication}`,
 		`- public release verification: ${result.releaseState.publicReleaseVerification}`,
+		`- post-publish install readback: ${result.releaseState.postPublishInstallReadback}`,
 	];
 }
 

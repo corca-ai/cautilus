@@ -2,8 +2,8 @@
   "candidateCount": 565,
   "carryForward": {
     "changedEvidenceRefCount": 0,
-    "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 564,
+    "evidenceSupportIdRewriteCount": 2,
+    "matchedClaimCount": 565,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -2065,7 +2065,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:c92e1512edd768678bfa8a2047aed48205fdc5b1b4eac23b5affe38b4f8a68c3",
-      "claimId": "claim-docs-guides-cli-md-262",
+      "claimId": "claim-docs-guides-cli-md-263",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -2075,7 +2075,7 @@
           "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
           "supportsClaimIds": [
             "claim-docs-cli-reference-md-259",
-            "claim-docs-guides-cli-md-262"
+            "claim-docs-guides-cli-md-263"
           ]
         }
       ],
@@ -2094,7 +2094,7 @@
       "sourceRefs": [
         {
           "excerpt": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
-          "line": 262,
+          "line": 263,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2107,7 +2107,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:10543cfa7fe683eed032d52bbb2f2fabd74cd3e14f1e0c5ae0d56077713f9569",
-      "claimId": "claim-docs-guides-cli-md-270",
+      "claimId": "claim-docs-guides-cli-md-271",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
@@ -2116,7 +2116,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-docs-guides-cli-md-270"
+            "claim-docs-guides-cli-md-271"
           ]
         }
       ],
@@ -2135,7 +2135,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
-          "line": 270,
+          "line": 271,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2148,7 +2148,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:403dc2c5a7bb481b04a09127224a7bfc782fba56048029af5e7ddb02f2b2088f",
-      "claimId": "claim-docs-guides-cli-md-274",
+      "claimId": "claim-docs-guides-cli-md-275",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -2157,7 +2157,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
           "supportsClaimIds": [
-            "claim-docs-guides-cli-md-274"
+            "claim-docs-guides-cli-md-275"
           ]
         }
       ],
@@ -2176,7 +2176,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
-          "line": 274,
+          "line": 275,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2189,7 +2189,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b28f7d01f52d258ce498f0d4c910a6dd3d7d8d2a7d7efa4b5501e7acda656369",
-      "claimId": "claim-docs-guides-cli-md-313",
+      "claimId": "claim-docs-guides-cli-md-314",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2206,7 +2206,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
-          "line": 313,
+          "line": 314,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2218,7 +2218,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad85bc0dec9bb21b315a41c6d68ef1a302f9bf0edbb170a9d63c40141b99bbe0",
-      "claimId": "claim-docs-guides-cli-md-470",
+      "claimId": "claim-docs-guides-cli-md-471",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2235,7 +2235,7 @@
       "sourceRefs": [
         {
           "excerpt": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.",
-          "line": 470,
+          "line": 471,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2247,7 +2247,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:83c81805880b9762061d7ae0e99d4469f41a78b6e801d6b775db03151fe12d8d",
-      "claimId": "claim-docs-guides-cli-md-471",
+      "claimId": "claim-docs-guides-cli-md-472",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -2256,7 +2256,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-guides-cli-md-471",
+            "claim-docs-guides-cli-md-472",
             "claim-docs-guides-cli-md-510",
             "claim-docs-guides-cli-md-546"
           ]
@@ -2277,7 +2277,7 @@
       "sourceRefs": [
         {
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
-          "line": 471,
+          "line": 472,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2290,7 +2290,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:84f315418d5b081d4b95da8d83048ba5c06db7fc31de2ab8b4105677a087e315",
-      "claimId": "claim-docs-guides-cli-md-475",
+      "claimId": "claim-docs-guides-cli-md-476",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -2300,7 +2300,7 @@
           "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
           "supportsClaimIds": [
             "claim-docs-cli-reference-md-458",
-            "claim-docs-guides-cli-md-475"
+            "claim-docs-guides-cli-md-476"
           ]
         }
       ],
@@ -2319,7 +2319,7 @@
       "sourceRefs": [
         {
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
-          "line": 475,
+          "line": 476,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2332,7 +2332,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:125956faadf4aa9e860d43fadd4b735a384d513e89000347577962118f605bab",
-      "claimId": "claim-docs-guides-cli-md-476",
+      "claimId": "claim-docs-guides-cli-md-477",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2349,7 +2349,7 @@
       "sourceRefs": [
         {
           "excerpt": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`.",
-          "line": 476,
+          "line": 477,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2361,7 +2361,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7e0a0010770812118cccb8288301f99c01da5d0ebdda533211abc11fd0db7b0a",
-      "claimId": "claim-docs-guides-cli-md-484",
+      "claimId": "claim-docs-guides-cli-md-485",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2378,7 +2378,7 @@
       "sourceRefs": [
         {
           "excerpt": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`.",
-          "line": 484,
+          "line": 485,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2390,7 +2390,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:003038663b54c623858fe0d30f37af8e7554c1f8f79b8750306cdff272f893a5",
-      "claimId": "claim-docs-guides-cli-md-507",
+      "claimId": "claim-docs-guides-cli-md-508",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -2400,7 +2400,7 @@
           "path": ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
           "supportsClaimIds": [
             "claim-docs-guides-cli-md-474",
-            "claim-docs-guides-cli-md-507",
+            "claim-docs-guides-cli-md-508",
             "claim-docs-guides-cli-md-546"
           ]
         }
@@ -2420,7 +2420,7 @@
       "sourceRefs": [
         {
           "excerpt": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
-          "line": 507,
+          "line": 508,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2433,7 +2433,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:13e144bf1954d17283e86f7bfc48312749134b69ff6d4ec5e553cc026201ed94",
-      "claimId": "claim-docs-guides-cli-md-567",
+      "claimId": "claim-docs-guides-cli-md-568",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2450,7 +2450,7 @@
       "sourceRefs": [
         {
           "excerpt": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface.",
-          "line": 567,
+          "line": 568,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2462,7 +2462,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4e71a63710e91c116f1577d1c862f0a10316bb0d32592a8caf8703b79ad2f4ce",
-      "claimId": "claim-docs-guides-cli-md-584",
+      "claimId": "claim-docs-guides-cli-md-585",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -2473,7 +2473,7 @@
           "supportsClaimIds": [
             "claim-docs-guides-cli-md-474",
             "claim-docs-guides-cli-md-510",
-            "claim-docs-guides-cli-md-584"
+            "claim-docs-guides-cli-md-585"
           ]
         }
       ],
@@ -2492,7 +2492,7 @@
       "sourceRefs": [
         {
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
-          "line": 584,
+          "line": 585,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -2505,7 +2505,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7c2d49633a39b3338744e1406b13dabbce1d42e37fbaf1c8984e8cfd06317f12",
-      "claimId": "claim-docs-guides-cli-md-602",
+      "claimId": "claim-docs-guides-cli-md-603",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -2514,7 +2514,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-guides-cli-md-602"
+            "claim-docs-guides-cli-md-603"
           ]
         }
       ],
@@ -2533,7 +2533,7 @@
       "sourceRefs": [
         {
           "excerpt": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
-          "line": 602,
+          "line": 603,
           "path": "docs/guides/cli.md"
         }
       ],
@@ -12105,7 +12105,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:679a9490096c230817587fc1fea03f2f33a11899faf046f4488786c9dec80f23",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-77",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-79",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12122,7 +12122,7 @@
       "sourceRefs": [
         {
           "excerpt": "every adoption decision remains human or host-policy owned",
-          "line": 77,
+          "line": 79,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -12134,7 +12134,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7533d16c3da76c4c52bcc38ed2fa500194727a5e6147f651a63eacfe477f7fb2",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-79",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-81",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12152,7 +12152,7 @@
       "sourceRefs": [
         {
           "excerpt": "risk-tier acceptance policy stays adapter-owned",
-          "line": 79,
+          "line": 81,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -12164,7 +12164,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ce4dfb3f554b8b4bac288bd6edcb11f3b86b4dfa6c5326e557b274e1b4e89799",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-110",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-112",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12181,7 +12181,7 @@
       "sourceRefs": [
         {
           "excerpt": "It should not treat mined sessions as public product promises unless the host's source docs declare the promise or the Cautilus Agent explicitly raises it for review.",
-          "line": 110,
+          "line": 112,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -12193,7 +12193,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:12bc50759856fdf255ac6456a9332b735bd356dd5745b5cf4742448bfd8559aa",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-117",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-119",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12210,7 +12210,7 @@
       "sourceRefs": [
         {
           "excerpt": "It must keep held-out as validation/selection evidence, keep acceptance as optimizer-untouchable final read evidence, and emit staged artifacts rather than applying changes.",
-          "line": 117,
+          "line": 119,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -12222,7 +12222,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:19d7b052075ecdda45a02a40d15aef5bc23b23ca96890a10b7ec6cbf1257aa56",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-135",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-137",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12239,7 +12239,7 @@
       "sourceRefs": [
         {
           "excerpt": "Proposal output preserves provenance on emitted top-ranked evidence entries, while the input packet remains the complete evidence audit trail.",
-          "line": 135,
+          "line": 137,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -12251,7 +12251,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4f473fa30ef638691fafda2da6883d7821d568758e15fd515360851b9fd1d0cb",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-137",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-139",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12270,7 +12270,7 @@
       "sourceRefs": [
         {
           "excerpt": "The current `improve search` v1 target remains one consumer-owned prompt file.",
-          "line": 137,
+          "line": 139,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -12282,7 +12282,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:07880c4d258d5723bda86dd876f2e8ab9daa41a58fc0913ad15400a8a9e05ab8",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-139",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-141",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12299,7 +12299,7 @@
       "sourceRefs": [
         {
           "excerpt": "Scenario proposal evidence provenance remains optional in v1 for backwards compatibility with existing candidate callers.",
-          "line": 139,
+          "line": 141,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -12311,7 +12311,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:096b146257aff8ede5edd0f821ae5bc66db8471d7e0df7e3cb59c605f026c77d",
-      "claimId": "claim-docs-contracts-skillopt-absorption-md-160",
+      "claimId": "claim-docs-contracts-skillopt-absorption-md-162",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -12330,7 +12330,7 @@
       "sourceRefs": [
         {
           "excerpt": "A maintainer can identify which SkillOpt-derived patterns are accepted, rejected, and deferred without reading SkillOpt source code.",
-          "line": 160,
+          "line": 162,
           "path": "docs/contracts/skillopt-absorption.md"
         }
       ],
@@ -17350,7 +17350,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a76b368a1f678ba787626a7dfebae5913dff6d7cf9b4c14717d0b603afe7af2a",
-      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-103",
+      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-106",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -17368,7 +17368,7 @@
       "sourceRefs": [
         {
           "excerpt": "The product-owned merge step combines their evidence and keeps the newest evidence first.",
-          "line": 103,
+          "line": 106,
           "path": "docs/contracts/scenario-proposal-inputs.md"
         }
       ],
@@ -17380,7 +17380,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:635e6dfdd8c7f47e2d4bc242287d061a1852ccc159cc542ce17463df24173277",
-      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-104",
+      "claimId": "claim-docs-contracts-scenario-proposal-inputs-md-107",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -17397,7 +17397,7 @@
       "sourceRefs": [
         {
           "excerpt": "Proposal output keeps the top-ranked evidence entries for review; lower-ranked evidence can be omitted from `cautilus.scenario_proposals.v1`, so hosts should keep the original input packet when they need a complete audit trail.",
-          "line": 104,
+          "line": 107,
           "path": "docs/contracts/scenario-proposal-inputs.md"
         }
       ],
@@ -17537,7 +17537,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:16f88f4564c52531f8082d5bf96244f70ef8c7f96002ca5f2affbfddacea06ea",
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-193",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [
         {
@@ -17546,7 +17546,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-scenario-proposal-portable-provenance-2026-05-04.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-scenario-proposal-sources-md-152"
+            "claim-docs-contracts-scenario-proposal-sources-md-193"
           ]
         }
       ],
@@ -17565,7 +17565,7 @@
       "sourceRefs": [
         {
           "excerpt": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product.",
-          "line": 152,
+          "line": 193,
           "path": "docs/contracts/scenario-proposal-sources.md"
         }
       ],
@@ -17578,7 +17578,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ed69f1c31fe54fb67614a2f39b18a38ebe425fa0672cdb81c3e41510d2ba7594",
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-216",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-257",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -17595,7 +17595,7 @@
       "sourceRefs": [
         {
           "excerpt": "The draft scenario embedded in each proposal should be normalized enough for a human to accept, edit, or reject it without re-deriving the context.",
-          "line": 216,
+          "line": 257,
           "path": "docs/contracts/scenario-proposal-sources.md"
         }
       ],
@@ -17607,7 +17607,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f7e8c40841a9218e0671478c7e2ff6a948e90e42cfca3f8198a63485e854ab96",
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-276",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
@@ -17616,7 +17616,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-scenario-proposal-sources-md-235"
+            "claim-docs-contracts-scenario-proposal-sources-md-276"
           ]
         }
       ],
@@ -17635,7 +17635,7 @@
       "sourceRefs": [
         {
           "excerpt": "The canonical machine-readable output should preserve the full ranked proposal list.",
-          "line": 235,
+          "line": 276,
           "path": "docs/contracts/scenario-proposal-sources.md"
         }
       ],
@@ -17648,7 +17648,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:81c2f41f61c908940a6f17d086646de7edd84a7804d9db95d3c115425177c78d",
-      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+      "claimId": "claim-docs-contracts-scenario-proposal-sources-md-277",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -17660,7 +17660,7 @@
             "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
             "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
             "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
-            "claim-docs-contracts-scenario-proposal-sources-md-236",
+            "claim-docs-contracts-scenario-proposal-sources-md-277",
             "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
             "claim-docs-specs-ledger-claim-discovery-spec-md-16",
             "claim-skills-cautilus-agent-skill-md-13",
@@ -17683,7 +17683,7 @@
       "sourceRefs": [
         {
           "excerpt": "Human-facing views may derive a smaller attention set, but they should not hide the full ranked result from agents.",
-          "line": 236,
+          "line": 277,
           "path": "docs/contracts/scenario-proposal-sources.md"
         }
       ],
@@ -19274,7 +19274,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "cbfee8a38c6c3d6e842da9308f3047d49b215957",
+  "gitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19474,9 +19474,9 @@
     ],
     "appliedResultCount": 106,
     "skippedResultCount": 34,
-    "keptUpdateCount": 275,
-    "rewrittenUpdateCount": 143,
-    "droppedUpdateCount": 253,
+    "keptUpdateCount": 274,
+    "rewrittenUpdateCount": 148,
+    "droppedUpdateCount": 254,
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
@@ -21254,7 +21254,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:4f792979141ec52eb5eb1014906b5c4b60e94071539c5d19c5d32978fb4abe7d",
+      "contentHash": "sha256:0f2c58c579ac07fb20a553d85f39a0af28e39b98a25c36b85f7f825f6dabf839",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -21484,7 +21484,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:7bbe5e497cee41fdc35fe4b8903e4b5fff48fa6e176af4b4ad8a2d03cc52b2b3",
+      "contentHash": "sha256:22f49070a6607bb84ca19a829b50ea61db04aa299e54a77143fe814b415edba5",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",
@@ -21824,7 +21824,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:ef13ac47322e4472ea31c21676fbe7221a1c2e86feef80fb1dcc919f8ec9d644",
+      "contentHash": "sha256:31c889538a9f2e1b13bd87493f67e4af7f6df636ef8e388f85385a3a61f6f766",
       "depth": 3,
       "discoveredFrom": "docs/contracts/skillopt-absorption.md",
       "kind": "contract",
@@ -21844,7 +21844,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:4dae2dca7a2b601b996dcd3845d3519f5a445228a4bc17de705e4f62383730bc",
+      "contentHash": "sha256:2d70e8dbb6e366287e745d5a85b57aff5970c3bd509ccf2caa5a684846f95bb4",
       "depth": 3,
       "discoveredFrom": "docs/contracts/scenario-history.md",
       "kind": "contract",

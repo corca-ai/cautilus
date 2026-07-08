@@ -258,6 +258,7 @@ Every normalize command plus `cautilus evaluate observation` and `cautilus evalu
 `cautilus discover scenarios --json` now exposes those same inspect commands under `normalizationFamilies[*].exampleInputCli`.
 `cautilus discover scenarios propose` now preserves the full ranked `proposals` list in the canonical JSON output.
 The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
+Each emitted proposal includes `provenanceSummary`, which rolls up origin and split counts plus replay and scored evidence counts for the review and HTML surfaces.
 `cautilus discover scenarios review-conversations` stays intentionally narrower than a generic audit UI.
 It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.
 

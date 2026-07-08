@@ -129,7 +129,7 @@
         "recommendedActor": "human",
         "sampleClaimIds": [
           "claim-readme-md-61",
-          "claim-docs-guides-cli-md-567",
+          "claim-docs-guides-cli-md-568",
           "claim-docs-master-plan-md-156",
           "claim-docs-specs-index-spec-md-101",
           "claim-docs-specs-index-spec-md-102"
@@ -970,7 +970,7 @@
         "summary": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
       },
       {
-        "claimId": "claim-docs-guides-cli-md-262",
+        "claimId": "claim-docs-guides-cli-md-263",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -980,7 +980,7 @@
             "path": ".cautilus/claims/evidence-scenario-attention-and-conversation-review-2026-05-11.json",
             "supportsClaimIds": [
               "claim-docs-cli-reference-md-259",
-              "claim-docs-guides-cli-md-262"
+              "claim-docs-guides-cli-md-263"
             ]
           }
         ],
@@ -990,7 +990,7 @@
         "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn."
       },
       {
-        "claimId": "claim-docs-guides-cli-md-270",
+        "claimId": "claim-docs-guides-cli-md-271",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -999,7 +999,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-guides-cli-evaluate-fixture-path-2026-05-16.json",
             "supportsClaimIds": [
-              "claim-docs-guides-cli-md-270"
+              "claim-docs-guides-cli-md-271"
             ]
           }
         ],
@@ -1009,7 +1009,7 @@
         "summary": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet."
       },
       {
-        "claimId": "claim-docs-guides-cli-md-274",
+        "claimId": "claim-docs-guides-cli-md-275",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1018,7 +1018,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json",
             "supportsClaimIds": [
-              "claim-docs-guides-cli-md-274"
+              "claim-docs-guides-cli-md-275"
             ]
           }
         ],
@@ -1028,7 +1028,7 @@
         "summary": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again."
       },
       {
-        "claimId": "claim-docs-guides-cli-md-471",
+        "claimId": "claim-docs-guides-cli-md-472",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1037,7 +1037,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-guides-cli-md-471",
+              "claim-docs-guides-cli-md-472",
               "claim-docs-guides-cli-md-510",
               "claim-docs-guides-cli-md-546"
             ]
@@ -1049,7 +1049,7 @@
         "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text."
       },
       {
-        "claimId": "claim-docs-guides-cli-md-475",
+        "claimId": "claim-docs-guides-cli-md-476",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1059,7 +1059,7 @@
             "path": ".cautilus/claims/evidence-review-output-text-key-2026-05-11.json",
             "supportsClaimIds": [
               "claim-docs-cli-reference-md-458",
-              "claim-docs-guides-cli-md-475"
+              "claim-docs-guides-cli-md-476"
             ]
           }
         ],
@@ -1069,7 +1069,7 @@
         "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
       },
       {
-        "claimId": "claim-docs-guides-cli-md-507",
+        "claimId": "claim-docs-guides-cli-md-508",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1079,7 +1079,7 @@
             "path": ".cautilus/claims/evidence-guides-cli-decision-packet-projections-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-guides-cli-md-474",
-              "claim-docs-guides-cli-md-507",
+              "claim-docs-guides-cli-md-508",
               "claim-docs-guides-cli-md-546"
             ]
           }
@@ -1090,7 +1090,7 @@
         "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\""
       },
       {
-        "claimId": "claim-docs-guides-cli-md-584",
+        "claimId": "claim-docs-guides-cli-md-585",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1101,7 +1101,7 @@
             "supportsClaimIds": [
               "claim-docs-guides-cli-md-474",
               "claim-docs-guides-cli-md-510",
-              "claim-docs-guides-cli-md-584"
+              "claim-docs-guides-cli-md-585"
             ]
           }
         ],
@@ -1111,7 +1111,7 @@
         "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\""
       },
       {
-        "claimId": "claim-docs-guides-cli-md-602",
+        "claimId": "claim-docs-guides-cli-md-603",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1120,7 +1120,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-cli-live-runtime-go-owned-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-guides-cli-md-602"
+              "claim-docs-guides-cli-md-603"
             ]
           }
         ],
@@ -3269,7 +3269,7 @@
         "summary": "Those helpers should sit between source-port ingestion and proposal packet generation."
       },
       {
-        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-152",
+        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-193",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -3278,7 +3278,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-scenario-proposal-portable-provenance-2026-05-04.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-scenario-proposal-sources-md-152"
+              "claim-docs-contracts-scenario-proposal-sources-md-193"
             ]
           }
         ],
@@ -3288,7 +3288,7 @@
         "summary": "Evidence should preserve where the suggestion came from without forcing one host repo's storage model on the product."
       },
       {
-        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-235",
+        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-276",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -3297,7 +3297,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-remaining-deterministic-claims-2026-05-03.json",
             "supportsClaimIds": [
-              "claim-docs-contracts-scenario-proposal-sources-md-235"
+              "claim-docs-contracts-scenario-proposal-sources-md-276"
             ]
           }
         ],
@@ -3307,7 +3307,7 @@
         "summary": "The canonical machine-readable output should preserve the full ranked proposal list."
       },
       {
-        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-236",
+        "claimId": "claim-docs-contracts-scenario-proposal-sources-md-277",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -3319,7 +3319,7 @@
               "claim-docs-contracts-runtime-fingerprint-improvement-md-154",
               "claim-docs-contracts-runtime-fingerprint-improvement-md-184",
               "claim-docs-contracts-runtime-fingerprint-improvement-md-188",
-              "claim-docs-contracts-scenario-proposal-sources-md-236",
+              "claim-docs-contracts-scenario-proposal-sources-md-277",
               "claim-docs-specs-evidence-latest-selected-evidence-spec-md-9",
               "claim-docs-specs-ledger-claim-discovery-spec-md-16",
               "claim-skills-cautilus-agent-skill-md-13",
@@ -3473,7 +3473,7 @@
       }
     ]
   },
-  "gitCommit": "cbfee8a38c6c3d6e842da9308f3047d49b215957",
+  "gitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3485,10 +3485,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "cbfee8a38c6c3d6e842da9308f3047d49b215957",
+    "currentGitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "cbfee8a38c6c3d6e842da9308f3047d49b215957",
+    "packetGitCommit": "ffd82e7016d43bd6c8b96bc5b5d6c5aeb3d88827",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

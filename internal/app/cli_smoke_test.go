@@ -2067,6 +2067,10 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 	if activityProvenance["replayId"] != "replay-1" || activityProvenance["taskKey"] != "review-after-retro" {
 		t.Fatalf("expected activity provenance to survive propose, got %#v", activityProvenance)
 	}
+	provenanceSummary := proposal["provenanceSummary"].(map[string]any)
+	if provenanceSummary["replayEvidenceCount"] != float64(1) || provenanceSummary["scoredEvidenceCount"] != float64(1) {
+		t.Fatalf("expected readable provenance summary, got %#v", provenanceSummary)
+	}
 	draftScenario := proposal["draftScenario"].(map[string]any)
 	if draftScenario["schemaVersion"] != contracts.DraftScenarioSchema {
 		t.Fatalf("unexpected draft scenario schema: %#v", draftScenario["schemaVersion"])
@@ -2111,6 +2115,46 @@ func TestCLIScenarioProposeRejectsMalformedProvenance(t *testing.T) {
 				},
 			},
 			want: "proposalCandidates[0].evidence[0].activityProvenance.split must be a non-empty string",
+		},
+		{
+			name: "replayed without replay id",
+			evidence: map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     "replayed",
+				"title":      "missing replay id",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"split": "review",
+				},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.replayId is required when origin is replayed",
+		},
+		{
+			name: "replay id without replayed origin",
+			evidence: map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     "real",
+				"title":      "mismatched replay id",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"replayId": "replay-1",
+				},
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be replayed when activityProvenance.replayId is present",
+		},
+		{
+			name: "score above range",
+			evidence: map[string]any{
+				"sourceKind": "agent_run",
+				"origin":     "replayed",
+				"title":      "bad score",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{
+					"replayId": "replay-1",
+					"score":    1.1,
+				},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.score must be between 0 and 1",
 		},
 	}
 	for _, tc := range cases {

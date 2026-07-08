@@ -99,6 +99,7 @@
           "existingCoverage",
           "rationale",
           "evidence",
+          "provenanceSummary",
           "draftScenario"
         ],
         "properties": {
@@ -211,10 +212,126 @@
                       ]
                     },
                     "score": {
-                      "type": "number"
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
                     }
                   }
                 }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "required": [
+                      "origin"
+                    ],
+                    "properties": {
+                      "origin": {
+                        "const": "replayed"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "activityProvenance"
+                    ],
+                    "properties": {
+                      "activityProvenance": {
+                        "required": [
+                          "replayId"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "required": [
+                      "activityProvenance"
+                    ],
+                    "properties": {
+                      "activityProvenance": {
+                        "required": [
+                          "replayId"
+                        ]
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "origin"
+                    ],
+                    "properties": {
+                      "origin": {
+                        "const": "replayed"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "provenanceSummary": {
+            "type": "object",
+            "required": [
+              "originCounts",
+              "splitCounts",
+              "replayEvidenceCount",
+              "scoredEvidenceCount"
+            ],
+            "properties": {
+              "originCounts": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "real": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "synthetic": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "replayed": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "operator_authored": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              },
+              "splitCounts": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "proposal": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "train": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "review": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              },
+              "replayEvidenceCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scoredEvidenceCount": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "maxScore": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
               }
             }
           },
