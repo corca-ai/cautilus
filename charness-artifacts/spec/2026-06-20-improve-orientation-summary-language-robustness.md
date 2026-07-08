@@ -9,7 +9,7 @@ Decision route: the maintainer chose the reasoning-judge direction over a biling
 The bounded-improvement held-out fixture `fixtures/eval/dev/skill/improve/skill-orientation-improve.fixture.json` grades the Cautilus Agent's no-input orientation summary with `requiredSummaryFragments: ["adapter", "claim", "branch"]`.
 Those are English-literal string matchers over a summary this repo's CLAUDE.md requires to be Korean, so the matcher is language-brittle — the same class of bug the skill surface fix just removed.
 
-Three facts from tracing the live improve loop and the 2026-06-20 spoon-feeding debug note (`charness-artifacts/debug/2026-06-20-improve-live-case-prompt-spoonfeeds-orientation.md`) set the slice size.
+Three facts from tracing the live improve loop and the 2026-06-20 spoon-feeding debug note, later removed during artifact cleanup, set the slice size.
 
 First, the seed-FAIL is already carried redundantly by the language-independent command guards.
 The checked-in seed capture `fixtures/eval/dev/skill/improve/live/improve-live-seed-eval-summary.json` fails with `summary missing required fragment: branch; command log included forbidden fragment: doctor --repo-root . --next-action; command log included forbidden fragment: --next-action`.

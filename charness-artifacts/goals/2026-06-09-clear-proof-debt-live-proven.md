@@ -9,7 +9,7 @@ runs the activation command.
 
 ## Active Operating Frame
 
-- Current slice: Slice 3 — operator agreed A/B/C ("추천대로"); swap APPLIED (`dd3f5e6`: real capture replaces hand-authored stand-in, namespaced expected, deterministic replay passes accept-now). BUT applying it honestly surfaced a structural gap: a LIVE dev/repo run fails because the runner isolates CODEX_HOME and excludes `.agents/skills/`, so `find-skills` is unavailable to the agent under test. Behavior Evaluation badge therefore NOT flipped to clean `proven`. Live-gap RCA: `charness-artifacts/debug/debug-2026-06-09-dev-repo-runner-cannot-provision-find-skills.md`.
+- Current slice: Slice 3 — operator agreed A/B/C ("추천대로"); swap APPLIED (`dd3f5e6`: real capture replaces hand-authored stand-in, namespaced expected, deterministic replay passes accept-now). BUT applying it honestly surfaced a structural gap: a LIVE dev/repo run fails because the runner isolates CODEX_HOME and excludes `.agents/skills/`, so `find-skills` is unavailable to the agent under test. Behavior Evaluation badge therefore NOT flipped to clean `proven`. Live-gap RCA was recorded in a legacy debug note later removed during artifact cleanup.
 - Slice 3 RESOLVED via HITL (maintainer personally verified the anchor): (a) runner fixed to provision the installed charness surface (`426c421`, find-skills now available live); (b) HITL walkthrough of WHAT/HOW corrected my namespace claim (scorer already leaf-normalizes — no scorer change needed) and confirmed the only real instability is the handoff-dependent work skill; (c) fixture made robust — dropped the workSkill pin, asserts only the stable invariant (AGENTS.md -> find-skills bootstrap); (d) maintainer chose to HOLD the apex Behavior Evaluation badge at `declared`, NOT flip to a thin-proxy "proven". HITL record: `charness-artifacts/hitl/latest.md`.
 - KEY DIRECTIONAL FINDING (DF-2, promoted): the whole eval is skewed all-deterministic; the `cautilus-eval` (evaluator/intelligence) tier collapsed into code. Badge stays `declared` until code+intelligence harmony is designed. Finding: `charness-artifacts/findings/2026-06-09-determinism-intelligence-eval-skew.md`. This reshapes the discover-driven eval design and likely supersedes simple badge-flipping as the goal's center of gravity.
 - Runner assessment (`dev-repo-self-dogfood.assessment.json`) is now stale (hashed fixture files changed) and intentionally NOT re-stamped — left honest until the design direction settles.
@@ -154,7 +154,7 @@ the originating context by following them in order.
 
 - `docs/specs/index.spec.md` — the apex with the Proof Debt table this goal clears.
 - `charness-artifacts/findings/2026-06-08-canonicalization-precision-root-finding.md` — why the proof felt hollow (the upstream finding).
-- `charness-artifacts/debug/debug-2026-06-08-doctor-readiness-adapter-yaml-render.md` — slice 1 parked debug lead.
+- Legacy debug note for the doctor-readiness adapter YAML render issue — slice 1 parked debug lead; removed during artifact cleanup.
 - `docs/specs/user/{doctor-readiness,claim-discovery,evaluation,improvement,reviewable-artifacts,evidence-gaps,ownership}.spec.md` — the per-promise specs.
 - Audit facts (this session): only `doctor-readiness` (28 live markers) and `claim-discovery` (mixed) run live; `evaluation/improvement/reviewable-artifacts/evidence-gaps/ownership` project saved 2026-05-03 bundles; the eval bundle's proof is `proofClass: declared-eval-runner`.
 - Issue: corca-ai/charness#340 (specdown support-skill discoverability) — context only, out of scope.

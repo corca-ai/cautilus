@@ -44,5 +44,5 @@ The packet's deterministic sections were findings-free and generic to the regist
 ## Valid But Defer
 
 - The adjacent `evaluate observation` no-runner assertion remains `claim-docs-guides-cli-md-277` and should get a separate bundle.
-- The direct `dev/repo` checked-in fixture run under `--runtime fixture` failed because the adapter runner requires `--fixture-results-file`; this is recorded in `charness-artifacts/debug/debug-2026-05-16-dev-repo-fixture-backend-results.md` and does not block this claim.
+- The direct `dev/repo` checked-in fixture run under `--runtime fixture` failed because the adapter runner requires `--fixture-results-file`; a legacy debug note recorded that requirement and was later removed during artifact cleanup, so this does not block this claim.
 - Future critique packet work could add claim-specific evidence sections so reviewers do not receive only generic surface packets for claim-proof slices.

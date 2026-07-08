@@ -1,6 +1,6 @@
 # Slice 3 Proposal: a trusted dev/repo routing fixture (co-creation, awaiting operator agreement)
 
-Status: APPLIED 2026-06-09 (operator agreed "추천대로", commit `dd3f5e6`). Applying it then surfaced a live-reproducibility gap — see `charness-artifacts/debug/debug-2026-06-09-dev-repo-runner-cannot-provision-find-skills.md`. The Behavior Evaluation badge was NOT flipped: a live dev/repo run fails because the runner does not provision `find-skills`. The swap is an honesty improvement (real capture over fabrication) only.
+Status: APPLIED 2026-06-09 (operator agreed "추천대로", commit `dd3f5e6`). Applying it then surfaced a live-reproducibility gap recorded in a legacy debug note later removed during artifact cleanup. The Behavior Evaluation badge was NOT flipped: a live dev/repo run fails because the runner does not provision `find-skills`. The swap is an honesty improvement (real capture over fabrication) only.
 Goal: charness-artifacts/goals/2026-06-09-clear-proof-debt-live-proven.md (slice 3).
 Date: 2026-06-09.
 

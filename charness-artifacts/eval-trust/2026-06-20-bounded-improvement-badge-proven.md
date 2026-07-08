@@ -32,7 +32,7 @@ Operator-witnessed live capture (replayed deterministically by `scripts/on-deman
 
 ## Bugs this proof surfaced and fixed (load-bearing)
 
-The proof was unprovable until these real product/runner bugs were fixed (all routed through `charness:debug`, recorded in `charness-artifacts/debug/2026-06-20-improve-live-case-prompt-spoonfeeds-orientation.md`):
+The proof was unprovable until these real product/runner bugs were fixed (all routed through `charness:debug`; the legacy debug note was later removed during artifact cleanup):
 
 1. The claude eval backend never applied the deterministic expectation matchers (`applyObservationExpectations`) — it self-graded execution outcomes. Switched to `--output-format stream-json` to capture the tool_use command log and apply the same matchers codex already applies (`scripts/agent-runtime/skill-test-claude-backend.mjs`, `skill-test-telemetry.mjs`).
 2. `improveSearchScenarioSignalMap` accumulated buckets/feedback into in-memory `[]string` then read them back through `stringSliceOrEmptyRuntime`, which only matched `[]any` — so the reflection batch silently dropped every per-scenario feedback message and mutations ran blind (`internal/runtime/improve_search.go`).
