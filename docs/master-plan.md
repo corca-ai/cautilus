@@ -38,7 +38,7 @@ Current `core validated surface`:
 
 - generic workflow, adapter, and reporting contracts
 - `cautilus.behavior_intent.v1` contract scoring operator-facing behavior surfaces (`operator_behavior`, `operator_workflow_recovery`, `operator_guidance_clarity`, `repair_explicit_regressions_first`)
-- Go CLI entrypoint (`toolchain go1.26.3`) with checked-in `golangci-lint`, `govulncheck`, and an attestation-backed release artifact workflow
+- Go CLI entrypoint (`toolchain go1.26.5`) with checked-in `golangci-lint`, `govulncheck`, and an attestation-backed release artifact workflow
 - registry-backed command discovery (`cautilus doctor commands`, `cautilus doctor binary`) for safe probing and wrapper tooling
 - Node adapter bootstrap scripts
 - a minimal CLI plus a Cautilus Agent entrypoint embedded through `skills/bundled.go`

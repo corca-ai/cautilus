@@ -36,6 +36,28 @@ function repoRelative(repoRoot, filePath) {
 	return relative(repoRoot, resolve(repoRoot, filePath)).replaceAll("\\", "/");
 }
 
+function formatDuration(ms) {
+	if (ms < 1000) {
+		return `${ms}ms`;
+	}
+	return `${(ms / 1000).toFixed(2)}s`;
+}
+
+function timeStep(timings, label, action) {
+	const start = Date.now();
+	try {
+		return action();
+	} finally {
+		timings.push({ label, durationMs: Date.now() - start });
+	}
+}
+
+function printTimingSummary(timings) {
+	const totalMs = timings.reduce((sum, timing) => sum + timing.durationMs, 0);
+	const phases = timings.map((timing) => `${timing.label}=${formatDuration(timing.durationMs)}`).join(", ");
+	process.stdout.write(`lint-specs timing: ${phases}, total=${formatDuration(totalMs)}\n`);
+}
+
 function runCommand(command, args, options = {}) {
 	const result = spawnSync(command, args, {
 		cwd: options.cwd,
@@ -131,20 +153,23 @@ export function main(argv = process.argv.slice(2)) {
 			return;
 		}
 
-		const result = checkSpecs({ repoRoot, targets: options.targets });
+		const timings = [];
+		const result = timeStep(timings, "check", () => checkSpecs({ repoRoot, targets: options.targets }));
 		const suffix = result.selected ? " selected spec(s)" : " specs";
 		process.stdout.write(`spec checks passed (${result.specCount}${suffix})\n`);
 
 		if (options.targets.length === 0) {
-			runFullSpecdown(repoRoot);
-			const graph = runTraceStrict(repoRoot);
-			checkGeneratedLedger(repoRoot, graph);
+			timeStep(timings, "specdown", () => runFullSpecdown(repoRoot));
+			const graph = timeStep(timings, "trace", () => runTraceStrict(repoRoot));
+			timeStep(timings, "ledger", () => checkGeneratedLedger(repoRoot, graph));
+			printTimingSummary(timings);
 			return;
 		}
 
-		options.targets.forEach((target, index) => {
+		timeStep(timings, "focused", () => options.targets.forEach((target, index) => {
 			runFocusedSpecdown(repoRoot, target, index);
-		});
+		}));
+		printTimingSummary(timings);
 	} catch (error) {
 		process.stderr.write(`${error.message}\n`);
 		process.exit(1);

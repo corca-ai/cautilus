@@ -1,96 +1,99 @@
 # Quality Review
-Date: 2026-07-08
+Date: 2026-07-09
 
 ## Scope
 
-Target boundary: repo-wide quality and test-speed economics for Cautilus as an installable CLI plus Cautilus Agent surface, focused on spec-related standing verify overlap.
+Target boundary: repo-wide quality and test-speed economics for Cautilus as an installable CLI plus Cautilus Agent surface, focused on making the merged `lint:specs` standing gate observable without reducing proof depth.
 
-Ambient repo findings: `lint · specs` remains the largest standing hotspot; `security · secret scan` remains second and still scans full git history.
+Ambient repo findings: `lint · specs` remains the largest standing hotspot; the next useful work is inside `specdown run`, not the already-cheap promise-ledger drift check.
 
 ## Current Gates
 
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs scripts/agent-runtime/render-promise-ledger.test.mjs scripts/run-verify.test.mjs`
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/*.test.mjs scripts/agent-runtime/*.test.mjs`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs`
 - `npm run --silent lint:eslint`
 - `npm run --silent lint:specs`
-- `npm run verify:runtime`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/render_runtime_summary.py --repo-root . --json`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/check_runtime_budget.py --repo-root .`
+- `npm run claims:refresh:all`
+- `npm run verify`
+- `npm run hooks:check`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/scripts/validate_debug_artifact.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/scripts/validate_quality_artifact.py --repo-root .`
 
 ## Runtime Signals
 
-- runtime source: structured metrics from `.charness/quality/runtime-signals.json` rendered by `render_runtime_summary.py`; profile `local-verify`.
-- runtime hot spots: after the change, `lint · specs` 16.0s latest / 16.1s median, budget 35.0s; `security · secret scan` 7.0s latest / 6.8s median, budget 12.0s; `test · coverage` 3.8s latest / 3.8s median, budget 10.0s; `lint · eslint` 3.5s latest / 3.5s median, budget 8.0s; `security · govulncheck` 1.8s latest / 1.9s median, budget 3.5s.
-- removed overlap: standalone `lint · promise ledger` no longer runs as a separate `verify` phase; its drift check is executed inside `lint:specs` using the strict trace graph already produced there.
-- runtime signal hygiene: full passing runtime samples now drop command labels that did not run, so removed phases do not remain current hot spots; partial failing samples still preserve unobserved phase history.
-- coverage gate: `npm run verify:runtime` ran the standing `test · coverage` phase, including Go coverage and the c8-wrapped Node test run.
-- evaluator depth: deterministic local gates only; this slice changed spec and runtime-signal orchestration, not agent behavior or live evaluator prompts.
+- runtime source: direct `npm run --silent lint:specs` and final `npm run verify` measurements from this slice plus the existing `.charness/quality/runtime-signals.json` local-verify profile rendered by `render_runtime_summary.py`.
+- runtime hot spots: final `npm run verify` passed in 77.67s and `lint:specs` printed `lint-specs timing: check=11ms, specdown=13.52s, trace=2.33s, ledger=24ms, total=15.89s`; the current internal hot spot remains the public `specdown run` phase, followed by strict trace generation, while the broader profile remains renderable by `render_runtime_summary.py`.
+- coverage gate: final `npm run verify` ran the standing `test · coverage` phase, wrote Go/Node/combined coverage JSON, and passed `coverage:floor:check`.
+- evaluator depth: deterministic local gates only; this slice changed standing-gate observability, not Cautilus Agent behavior, live evaluator prompts, or acceptance scope.
 
 ## Healthy
 
-- `lint:specs` now reuses the `specdown trace -strict` JSON graph to check generated promise-ledger drift instead of asking `specdown:ledger:check` to spawn a second trace process.
-- `specdown:ledger:check` remains available as a standalone manual/regeneration guard; only the standing `verify` overlap was removed.
-- The generated promise-ledger renderer now emits a prose empty state when no cross-cutting rule coverage edges exist, avoiding specdown-invalid header-only tables.
-- Runtime signal merging now prunes stale phase labels after full passing runs, so quality summaries reflect the current verify phase surface.
-- Documentation now says `npm run lint:specs` covers typed trace and promise-ledger drift.
+- `lint:specs` now emits one compact success timing line after the existing proof steps have completed.
+- Full mode still runs spec index/link checks, the full public specdown suite, strict typed trace validation, and generated promise-ledger drift checking.
+- Target mode still validates the selected linked specs and runs each selected file as a focused temporary specdown entry.
+- Tests now assert the timing line in both target and full modes without coupling to exact elapsed values.
+- Maintainer docs now say `lint:specs` reports check/specdown/trace/ledger timing so future slow-gate work starts from measured phases.
+- A discovered `govulncheck` failure was resolved by aligning Go toolchain, GitHub workflows, and maintainer docs on Go 1.26.5.
+- Claim-source freshness was restored with `npm run claims:refresh:all` after touching `docs/master-plan.md`.
 
 ## Weak
 
-- `lint · specs` remains the top standing hotspot at about 16s latest on this local profile.
-- The ledger fold saves a separate roughly 2.1-2.4s phase from `verify`, but it does not reduce the underlying `specdown run` cost inside `lint:specs`.
-- Runtime medians for removed phases disappear from the current signal after a passing run; historical comparison for deleted labels must come from git history or prior artifacts.
-- Debug artifact validation for all historical debug files still exits 1 because legacy records use older `Risk Class` / `Generalization Pressure` values; the current `latest.md` was validated in the command output before the historical failures.
+- The timing line is process-local and advisory; it is not yet merged into `.charness/quality/runtime-signals.json`.
+- Focused mode reports all selected specdown entries as one `focused` timing bucket, which is enough for standing-gate shape but not per-spec profiling.
+- The measured `specdown run` phase remains the dominant cost at 13.54s in this local run.
+- Go patch-level security advisories can still force same-day toolchain bumps; the guard now passes, but the process remains reactive to govulncheck.
 
 ## Missing
 
-- No deeper specdown suite profiling exists yet to separate `specdown run` block execution cost from trace and check-specs overhead.
+- No per-spec or per-block specdown runtime report exists yet to identify which executable spec blocks dominate the 13.54s `specdown` phase.
 - No policy decision exists yet for whether the history-wide `security:secrets` scan should stay in every standing verify run or split into local/current-tree plus on-demand history proof.
 
 ## Deferred
 
-- Folding `specdown:project:check` and `specdown:claim-state:check` is deferred; they are only about 0.15-0.19s each and still provide a clear producer/consumer boundary.
+- Feeding `lint-specs timing` into the structured runtime signal store is deferred until the output proves stable across a few local runs.
+- Changing `specdown run` coverage or scope is deferred because the timing result first needs per-spec evidence, not proof deletion.
 - Changing secret-scan scope is deferred because it is a security coverage tradeoff, not just a runtime cleanup.
-- Further `lint · specs` optimization should profile specdown execution before changing proof depth.
 
 ## Advisory
 
-- structural review result: command `sed -n '1,280p' scripts/lint-specs.mjs` and `sed -n '1,260p' scripts/agent-runtime/render-promise-ledger.mjs` showed `lint:specs` and `specdown:ledger:check` both ran `specdown trace`; the new path keeps one strict trace and reuses its graph for ledger drift.
-- runtime result: command `/usr/bin/time -p npm run --silent specdown:ledger:check` measured about 2.09s before folding; command `npm run verify:runtime` passed in 37.73s with no separate promise-ledger phase.
-- renderer robustness result: command `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs scripts/agent-runtime/render-promise-ledger.test.mjs scripts/run-verify.test.mjs` covers zero-rule generated ledger output so a header-only Markdown table cannot recur.
-- runtime hygiene result: command `node -e '...'` over `.charness/quality/runtime-signals.json` reported `ledger-absent`, and focused tests cover partial-run preservation plus full-run stale-label pruning.
-- delegated review result: subagent `McClintock` confirmed the ledger folding is the safest immediate overlap removal and recommended preserving standalone `specdown:ledger:check`.
+- implementation result: `scripts/lint-specs.mjs` wraps existing success-path phases in timing helpers and prints the summary only after the same proof steps pass.
+- test result: `scripts/lint-specs.test.mjs` covers timing output for focused target mode and full typed-trace mode.
+- runtime result: `npm run --silent lint:specs` passed and the final `npm run verify` reported `specdown=13.52s`, `trace=2.33s`, and `ledger=24ms` inside the standing gate.
+- debug result: `npm run verify` first failed on `GO-2026-5856` in `crypto/tls@go1.26.4`; after bumping `go.mod`, workflows, and maintainer docs to Go 1.26.5, `npm run --silent security:govulncheck` and final `npm run verify` passed.
+- delegated review result: subagent `Nash` confirmed proof depth and success-path coverage, and found a blocker where tests accepted only `ms` even though implementation can print `s`; the regex was widened and a failure-path negative assertion was added.
 
 ## Delegated Review
 
-- Delegated Review: executed by explorer subagent `McClintock`; status `completed`; scope `read-only review of spec-related verify overlap`.
+- Delegated Review: executed by explorer subagent `Nash`; status `completed`; scope `read-only review of lint-specs timing summary diff`.
 - Slow-gate lenses applied: fixture-economics, parallel-critical-path, duplicated-proof, executable-spec economics, operator signal.
-- Reviewer verdict: ledger check folding is safe if it reuses the strict trace graph and leaves the standalone script available.
-- Reviewer follow-up: projection folding is possible later, but must still check both inventory drift and projected page drift.
+- Reviewer verdict: proof depth and failure behavior were preserved, but test regexes needed to accept both `ms` and `s` duration formats before commit.
 
 ## Commands Run
 
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/resolve_quality_artifact.py --repo-root . --intent current`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/plan_quality_run.py --repo-root . --json`
-- `/usr/bin/time -p npm run --silent lint:specs`
-- `/usr/bin/time -p npm run --silent specdown:ledger:check`
-- `/usr/bin/time -p npm run --silent specdown:project:check`
-- `/usr/bin/time -p npm run --silent specdown:claim-state:check`
-- `/usr/bin/time -p npm run --silent security:secrets`
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs scripts/agent-runtime/render-promise-ledger.test.mjs scripts/run-verify.test.mjs`
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/*.test.mjs scripts/agent-runtime/*.test.mjs`
+- `sed -n '1,260p' scripts/lint-specs.mjs`
+- `sed -n '1,320p' scripts/lint-specs.test.mjs`
+- `sed -n '1,220p' docs/maintainers/development.md`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/lint-specs.test.mjs`
 - `npm run --silent lint:eslint`
 - `npm run --silent lint:specs`
-- `npm run verify:runtime`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/render_runtime_summary.py --repo-root . --json`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/check_runtime_budget.py --repo-root .`
-- delegated read-only review by subagent `McClintock`
+- `go env GOTOOLCHAIN GOVERSION GOROOT GOPATH`
+- `npm run --silent security:govulncheck`
+- `npm run claims:refresh:all`
+- `npm run verify`
+- `npm run hooks:check`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/scripts/validate_debug_artifact.py --repo-root .`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/scripts/validate_quality_artifact.py --repo-root .`
+- `git diff --check`
+- `sed -n '1,260p' /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/references/standing-gate-verbosity.md`
+- `sed -n '1,260p' /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/references/executable-spec-economics.md`
+- `sed -n '1,260p' /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/references/testability-and-selection.md`
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/scripts/validate_quality_artifact.py --help`
+- delegated read-only review by subagent `Nash`
 
 ## Recommended Next Quality Moves
 
-- active profile `lint · specs` internals before changing proof scope — capability_needed=specdown runtime economics; next_center=scripts/lint-specs.mjs and specdown report/runtime output; transformation=separate `checkSpecs`, `specdown run`, and trace costs with low-noise timings; proof_boundary=runtime sample plus unchanged spec proof; enforcement_posture=advisory.
+- active profile `specdown run` internals before changing proof scope — capability_needed=specdown runtime economics; next_center=docs/specs executable blocks and specdown adapter output; transformation=produce per-spec or per-block timing for the 13.54s phase; proof_boundary=unchanged full spec proof plus measured hot-spot report; enforcement_posture=advisory.
 - active evaluate secret-scan split only with an explicit security coverage decision — capability_needed=security/runtime policy; next_center=package scripts and CI workflow; transformation=decide whether current-tree local scan plus on-demand/full-history scan preserves the desired guard; proof_boundary=gitleaks current-tree and history commands; enforcement_posture=needs maintainer decision.
-- passive consider projection folding later because the two remaining phases are only about 0.15-0.19s each — capability_needed=small verify cleanup; next_center=build-goldset-projection.mjs and render-projected-claim-state.mjs; transformation=check inventory and page drift in one process; proof_boundary=stale inventory, stale page, both stale, and invalid projection tests; enforcement_posture=no urgency.
+- passive integrate `lint-specs timing` into runtime-signal capture later because the printed contract should stabilize before structured ingestion — capability_needed=runtime observability; next_center=scripts/run-verify.mjs and runtime summary rendering; transformation=parse compact phase timings into structured samples; proof_boundary=runtime sample fixture plus unchanged green output; enforcement_posture=advisory.
 
 ## History
 

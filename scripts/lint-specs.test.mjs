@@ -7,6 +7,7 @@ import test from "node:test";
 
 const SCRIPT_PATH = join(process.cwd(), "scripts", "lint-specs.mjs");
 const LEDGER_SCRIPT_PATH = join(process.cwd(), "scripts", "agent-runtime", "render-promise-ledger.mjs");
+const DURATION_PATTERN = String.raw`\d+(?:ms|\.\d{2}s)`;
 
 function writeFile(root, relativePath, content) {
 	const fullPath = join(root, relativePath);
@@ -56,6 +57,7 @@ test("lint-specs target mode runs specdown with the selected file as entry", () 
 		assert.equal(result.status, 0, result.stderr);
 		assert.match(result.stdout, /spec checks passed \(1 selected spec\(s\)\)/);
 		assert.match(result.stdout, /specdown focused run: docs\/specs\/user\/product\.spec\.md/);
+		assert.match(result.stdout, new RegExp(`lint-specs timing: check=${DURATION_PATTERN}, focused=${DURATION_PATTERN}, total=${DURATION_PATTERN}`));
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -115,6 +117,12 @@ test("lint-specs full mode runs specdown and validates the typed trace graph", (
 		assert.match(result.stdout, /spec checks passed \(3 specs\)/);
 		assert.match(result.stdout, /specdown trace -strict: 2 typed doc\(s\), 1 edge\(s\), graph valid/);
 		assert.match(result.stdout, /promise ledger check: promise ledger rendered: 1 promise\(s\), 0 governed-by\/implemented-by edge\(s\)/);
+		assert.match(
+			result.stdout,
+			new RegExp(
+				`lint-specs timing: check=${DURATION_PATTERN}, specdown=${DURATION_PATTERN}, trace=${DURATION_PATTERN}, ledger=${DURATION_PATTERN}, total=${DURATION_PATTERN}`,
+			),
+		);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
@@ -129,6 +137,7 @@ test("lint-specs full mode fails when the generated promise ledger is stale", ()
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /promise-ledger\.spec\.md is stale/);
 		assert.match(result.stdout, /specdown trace -strict: 2 typed doc\(s\), 1 edge\(s\), graph valid/);
+		assert.doesNotMatch(result.stdout, /lint-specs timing:/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}

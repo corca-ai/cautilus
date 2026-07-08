@@ -5,7 +5,7 @@ For consumer installation and use, see the [README](../../README.md).
 
 ## Tooling
 
-Install the local Node tooling, and make sure Go `1.26.3+`, `golangci-lint`, and `govulncheck` are available on `PATH` (or under `$(go env GOPATH)/bin`):
+Install the local Node tooling, and make sure Go `1.26.5+`, `golangci-lint`, and `govulncheck` are available on `PATH` (or under `$(go env GOPATH)/bin`):
 
 ```bash
 npm install
@@ -36,6 +36,7 @@ Use `npm run lint` or `npm run test` directly only when iterating on one seam.
 `npm run verify` runs the same standing lint phases, then adds `go test -race` before the standing Node test suite.
 Do not require all three in sequence before stopping.
 `npm run lint:specs` validates the spec index, checks relative spec links, runs the full public spec suite with `specdown run -quiet`, validates the typed trace graph, and checks generated promise-ledger drift from that same trace.
+On success it prints a compact timing line for the check, specdown, trace, and ledger phases so future slow-gate work can start from measured hot spots.
 Pass one or more spec files after `--` to validate only those linked files and run each one as a focused temporary specdown entry:
 
 ```bash

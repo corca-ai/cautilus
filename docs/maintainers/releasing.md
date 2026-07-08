@@ -10,7 +10,7 @@ In this repo today that resolves to:
 ## Preconditions
 
 - [LICENSE](../../LICENSE) stays in sync with the public repo
-- Go `1.26.3+`, `golangci-lint`, and `govulncheck` are installed in the maintainer clone
+- Go `1.26.5+`, `golangci-lint`, and `govulncheck` are installed in the maintainer clone
 - `npm run hooks:check` passes in the maintainer clone
 - `npm run verify` passes on `main`
 - `npm run release:claim-freshness` passes before the tag is prepared
