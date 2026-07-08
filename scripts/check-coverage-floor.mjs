@@ -4,7 +4,8 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const COVERAGE_PATH = resolve(REPO_ROOT, "coverage/coverage.json");
+const COVERAGE_DIR = resolve(REPO_ROOT, process.env.COVERAGE_DIR || "coverage");
+const COVERAGE_PATH = resolve(COVERAGE_DIR, "coverage.json");
 const FLOOR_PATH = resolve(REPO_ROOT, "scripts/coverage-floor.json");
 const EXEMPTIONS_PATH = resolve(REPO_ROOT, "scripts/coverage-floor-exemptions.txt");
 

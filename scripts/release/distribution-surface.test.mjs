@@ -111,6 +111,7 @@ test("release adapter records repo-owned publisher and post-publish readback gat
 	const adapter = readFileSync(join(REPO_ROOT, ".agents", "release-adapter.yaml"), "utf-8");
 	assert.match(adapter, /requested_review_commands:\n(?:\s+- .+\n)+/);
 	assert.match(adapter, /npm run critique:surface-packet:check/);
+	assert.match(adapter, /npm run security:secrets:history/);
 	assert.match(adapter, /npm run release:publisher-policy:check/);
 	assert.match(adapter, /post_publish_install_refresh: "npm run release:smoke-install:current -- --skip-update"/);
 	const pkg = JSON.parse(readFileSync(join(REPO_ROOT, "package.json"), "utf-8"));

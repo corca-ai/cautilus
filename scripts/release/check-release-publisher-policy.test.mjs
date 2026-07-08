@@ -30,6 +30,7 @@ function writeFixtureRepo({ omitReviewCommand = false, omitPostPublishReadback =
 		[
 			"requested_review_commands:",
 			"  - \"npm run critique:surface-packet:check\"",
+			"  - \"npm run security:secrets:history\"",
 			omitReviewCommand ? "" : "  - \"npm run release:publisher-policy:check\"",
 			omitPostPublishReadback ? "" : "post_publish_install_refresh: \"npm run release:smoke-install:current -- --skip-update\"",
 			"",
@@ -50,6 +51,7 @@ function writeFixtureRepo({ omitReviewCommand = false, omitPostPublishReadback =
 	writeFileSync(
 		join(root, "docs", "maintainers", "releasing.md"),
 		[
+			"npm run security:secrets:history",
 			"npm run release:publisher-policy:check",
 			"npm run release:publish -- --version <next-version>",
 			"npm run release:smoke-install:current -- --skip-update",

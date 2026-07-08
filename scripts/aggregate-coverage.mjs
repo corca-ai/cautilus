@@ -4,11 +4,12 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const COVERAGE_DIR = resolve(REPO_ROOT, process.env.COVERAGE_DIR || "coverage");
 const INPUT_PATHS = [
-  resolve(REPO_ROOT, "coverage/go.json"),
-  resolve(REPO_ROOT, "coverage/node.json"),
+  resolve(COVERAGE_DIR, "go.json"),
+  resolve(COVERAGE_DIR, "node.json"),
 ];
-const OUTPUT_PATH = resolve(REPO_ROOT, "coverage/coverage.json");
+const OUTPUT_PATH = resolve(COVERAGE_DIR, "coverage.json");
 
 const files = {};
 const languages = [];

@@ -32,3 +32,10 @@ paths = ['''^charness-artifacts/debug/.*\.md$''']
 regexTarget = "line"
 regexes = ['''"[A-Za-z]*[Gg]it[Cc]ommit"\s*:\s*"[0-9a-f]{40}''']
 condition = "AND"
+
+[[allowlists]]
+description = "Allow rendered claim status packet source commit metadata (40-hex git SHA)"
+paths = ['''^\.cautilus/claims/claim-status-report\.md$''']
+regexTarget = "line"
+regexes = ['''^- Packet source commit: [0-9a-f]{40}$''']
+condition = "AND"

@@ -5,8 +5,9 @@ import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const GO_MODULE = "github.com/corca-ai/cautilus/";
-const PROFILE_PATH = resolve(REPO_ROOT, "coverage/go.out");
-const OUTPUT_PATH = resolve(REPO_ROOT, "coverage/go.json");
+const COVERAGE_DIR = resolve(REPO_ROOT, process.env.COVERAGE_DIR || "coverage");
+const PROFILE_PATH = resolve(COVERAGE_DIR, "go.out");
+const OUTPUT_PATH = resolve(COVERAGE_DIR, "go.json");
 
 const raw = readFileSync(PROFILE_PATH, "utf8");
 const files = new Map();

@@ -3,104 +3,110 @@ Date: 2026-07-09
 
 ## Scope
 
-Target boundary: repo-wide quality and test-speed economics for Cautilus as an installable CLI plus Cautilus Agent surface, focused on making stored `lint:specs` subphase timings directly inspectable without reducing proof depth.
-
-Ambient repo findings: `lint · specs` remains the largest standing hotspot, and `specdown` still dominates that phase.
-The repo now has both machine-readable subphase samples and a repo-owned human-readable reporter for them.
+Target boundary: repo-wide quality and test-speed economics for Cautilus as an installable CLI plus Cautilus Agent surface.
+This slice acted on the three recommended next moves from the previous quality pass: per-spec `specdown` profiling, current-tree versus history secret scan separation, and coverage output isolation for concurrent broad gates.
 
 ## Current Gates
 
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/report-lint-specs-runtime.test.mjs`
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/report-lint-specs-runtime.test.mjs scripts/run-verify.test.mjs scripts/lint-specs.test.mjs`
-- `npm run --silent verify:lint-specs:subphases`
-- `npm run --silent verify:lint-specs:subphases -- --json`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/profile-specdown.test.mjs scripts/coverage-dir.test.mjs scripts/run-gitleaks-tracked.test.mjs scripts/release/check-release-publisher-policy.test.mjs scripts/release/distribution-surface.test.mjs`
+- `npm run --silent specdown:profile -- --top 10`
+- `npm run --silent security:secrets`
+- `npm run --silent security:secrets:history`
+- `COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent test:coverage && COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent coverage:floor:check`
+- `npm run --silent release:publisher-policy:check`
 - `npm run --silent lint:eslint`
 - `npm run --silent lint:specs`
 - `npm run --silent test:node`
 - `npm run verify`
 - `npm run verify:runtime`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/scripts/validate_debug_artifact.py --repo-root .`
+- `npm run hooks:check`
 
 ## Runtime Signals
 
-- runtime source: structured metrics from `.charness/quality/runtime-signals.json` rendered by `render_runtime_summary.py`; profile `local-verify`; subphase detail rendered by `npm run --silent verify:lint-specs:subphases`.
-- runtime hot spots: `lint · specs` 15.9s latest / 16.0s median, budget 35.0s; `security · secret scan` 6.9s latest / 6.8s median, budget 12.0s; `test · coverage` 3.9s latest / 3.9s median, budget 10.0s; `lint · eslint` 3.5s latest / 3.5s median, budget 8.0s; `security · govulncheck` 1.8s latest / 1.9s median, budget 3.5s.
-- coverage gate: final broad runs executed `test · coverage` and `coverage:floor:check`; `scripts/report-lint-specs-runtime.mjs` entered the warn band at 84.69% statement coverage, not a floor regression.
-- evaluator depth: deterministic local gates only; this slice changed runtime observability, not Cautilus Agent behavior, live evaluator prompts, or acceptance scope.
-- broad gate status: `npm run verify` passed in 37.63s, and serial `npm run verify:runtime` passed in 37.78s.
+- prior runtime source: structured metrics from `.charness/quality/runtime-signals.json` rendered by `render_runtime_summary.py`; profile `local-verify`.
+- prior hot spot: `lint · specs` 15.9s latest / 16.0s median, budget 35.0s; its `specdown` subphase dominates the phase.
+- new profiling signal: `npm run --silent specdown:profile -- --top 10` ran 39 focused `specdown` entries in 111.50s.
+- slowest focused specs in that run: `docs/specs/index.spec.md` 13.26s; `docs/specs/promises/reviewable-artifacts.spec.md` 5.82s; `docs/specs/promises/claim-discovery.spec.md` 5.24s; `docs/specs/promises/doctor-readiness.spec.md` 4.17s; `docs/specs/promises/a-testable-agent.spec.md` 3.44s.
+- secret-scan signal: standing `security:secrets` now scans 1746 tracked files in about 0.9s locally; `security:secrets:history` scanned 1459 commits and passed as an explicit heavier proof.
+- coverage-isolation signal: `COVERAGE_DIR=/tmp/cautilus-coverage-isolated` produced isolated `go.json`, `node.json`, and `coverage.json`, then passed the coverage floor.
+- broad gate status: `npm run verify` passed in 43.44s, and serial `npm run verify:runtime` passed in 32.26s.
 
 ## Healthy
 
-- `verify:lint-specs:subphases` now renders the stored `lint · specs` subphase samples without requiring operators to inspect raw JSON.
-- The reporter exposes source signal status, failed phase, generated time, command latest elapsed time, command latest timestamp, per-subphase timestamps, and warnings.
-- The reporter warns when a failed runtime signal may be showing preserved previous subphase samples.
-- The reporter warns when subphase sample timestamps are older than the command latest timestamp.
-- Text output stays compact for operator use; `--json` provides a stable schema for future tooling.
-- The existing `lint:specs` proof depth is unchanged: spec index/link checks, full public specdown suite, strict typed trace validation, and promise-ledger drift checking still run.
-- Maintainer docs now point from `verify:runtime` to the new subphase reporter.
-- Focused tests cover argument parsing, missing-signal errors, sorted output, text output, JSON CLI output, and stale preserved subphase warnings.
+- `scripts/profile-specdown.mjs` gives maintainers an advisory per-spec timing view without reducing `lint:specs` proof depth.
+- The profiler defaults to all active specs under `docs/specs`, excludes `old` and `archive`, validates explicit targets with `checkSpecs`, supports `--json`, `--top`, and `--limit`, and cleans temporary specdown configs.
+- `security:secrets` now means tracked current tree, so standing verify avoids ignored/generated checkout artifacts while still preserving gitleaks allowlist semantics.
+- `security:secrets:history` keeps the full git-history proof available and is now part of the release requested-review command set.
+- Release docs and release publisher policy now require the full history scan before release branch/tag push.
+- Coverage-producing commands honor `COVERAGE_DIR`, allowing broad gates to run in isolated output directories when needed.
+- Focused tests cover profiler argument handling and CLI JSON, coverage output isolation, coverage-floor branch behavior, tracked gitleaks wrapper cwd/args/file selection, and release policy wiring.
 
 ## Weak
 
-- `specdown` remains the dominant measured cost inside `lint:specs`; this slice improves observability rather than reducing runtime.
-- Broad coverage-producing gates share the `coverage/` output directory; running `npm run verify` and `npm run verify:runtime` concurrently produced a false coverage-floor failure in one process.
-  Treat these as serial gates until coverage output isolation exists.
-- Focused mode still reports all selected specdown entries as one `focused` timing bucket.
-- The shared Charness runtime summary renderer still reports phase-level hot spots only; the repo-owned reporter covers `lint:specs` specifically.
+- `specdown:profile` is intentionally advisory and slower than a normal `lint:specs` run because it invokes specdown once per selected spec.
+- The current profiler reports per-spec entry cost, not per-block cost inside a slow spec.
+- Standing `security:secrets` no longer scans untracked working files; this is a deliberate current-tree definition, not a substitute for release or incident-response history proof.
+- Full-history gitleaks remains heavier and depends on a clone with enough history to scan.
+- Coverage output isolation depends on callers setting `COVERAGE_DIR`; the default remains `coverage/` for normal serial maintainer and CI operation.
 
 ## Missing
 
-- No per-spec or per-block specdown runtime report exists yet to identify which executable spec blocks dominate the 13.35s `specdown` subphase.
-- No policy decision exists yet for whether the history-wide `security:secrets` scan should stay in every standing verify run or split into local/current-tree plus on-demand history proof.
+- No per-block timing exists inside the slowest specdown entries.
+- No CI matrix currently proves two coverage-producing broad gates running concurrently with distinct `COVERAGE_DIR` values.
+- The gitleaks allowlist still has no dedicated static allowlist-shape test for markdown claim status report packet metadata.
 
 ## Deferred
 
-- Changing `specdown run` coverage or scope is deferred until per-spec evidence identifies duplicated or low-signal executable blocks.
-- Changing secret-scan scope is deferred because it is a security coverage tradeoff, not just a runtime cleanup.
-- Isolating coverage output for concurrent broad gates is deferred; the local operating rule is to run coverage-producing broad gates serially.
+- Changing `specdown run` proof scope is deferred until the new per-spec profile identifies a specific duplicated or low-signal executable block.
+- Adding per-block specdown instrumentation is deferred because the per-spec profile already identifies the next inspection targets.
+- Moving full-history secret scan back into every standing `verify` run is deferred; release proof now carries the heavier history scan.
+- Defaulting every coverage-producing script to a unique temp directory is deferred because stable `coverage/` remains useful for local inspection and current CI runs gates serially.
 
 ## Advisory
 
-- implementation result: `scripts/report-lint-specs-runtime.mjs` reads `.charness/quality/runtime-signals.json` and reports stored `lint · specs` subphase samples.
-- implementation result: `package.json` exposes the reporter as `verify:lint-specs:subphases`; evidence command `npm run --silent verify:lint-specs:subphases` printed the current text report.
-- implementation result: the reporter includes stale-sample warnings so preserved subphase history is not mistaken for the latest failed run; evidence test `scripts/report-lint-specs-runtime.test.mjs` covers a failed signal with older subphase timestamps.
-- debug result: `charness-artifacts/debug/latest.md` records the ESLint complexity failure and stale-sample ambiguity; evidence command `python3 .../validate_debug_artifact.py --repo-root .` passed.
-- delegated review result: subagent `Popper` found the stale preserved-sample ambiguity, and the reporter now exposes signal status plus timestamp-based warnings; evidence test `scripts/report-lint-specs-runtime.test.mjs` passed after the fix.
-- operator result: concurrent `npm run verify` and `npm run verify:runtime` produced a false coverage-floor failure because both write `coverage/`; serial `npm run verify:runtime` then passed in 37.78s.
+- implementation result: `package.json` now exposes `specdown:profile`, `security:secrets:history`, and `COVERAGE_DIR`-aware coverage commands.
+- implementation result: `scripts/run-gitleaks-tracked.mjs` scans a temp copy of `git ls-files` output from cwd `.` so tracked current-tree scanning keeps relative `.gitleaks.toml` allowlists working.
+- implementation result: `.gitleaks.toml` narrowly allows `.cautilus/claims/claim-status-report.md` packet source commit metadata.
+- implementation result: `.agents/release-adapter.yaml`, `docs/maintainers/releasing.md`, and release publisher policy checks require `npm run security:secrets:history` for release.
+- debug result: `charness-artifacts/debug/latest.md` records the ESLint complexity failure, gitleaks current-tree false positives, allowlist path mismatch, claim-status metadata allowlist, and coverage-floor test-depth gap.
+- operator result: use `COVERAGE_DIR=/tmp/<unique-dir>` when intentionally running coverage-producing broad gates concurrently.
 
 ## Delegated Review
 
-- Delegated Review: executed by explorer subagent `Popper`; status `completed`; scope `read-only review of lint-specs runtime reporter diff`.
-- Slow-gate lenses applied: fixture-economics, parallel-critical-path, duplicated-proof, and operator signal.
-- Reviewer verdict: no package wiring or CLI parsing issues found, but the first report shape hid whether subphase samples were preserved from a previous successful run.
-- Disposition: fixed before commit with source status fields, command/subphase timestamps, stale-sample warnings, and focused tests.
+- Delegated Review: executed by explorer subagent `Averroes`; status `completed`; scope `read-only review of per-spec profiling, secret-scan split, and coverage-dir isolation diff`.
+- Reviewer finding: release path did not require the new full-history secret proof because `verify` now carries only the tracked current-tree scan.
+- Disposition: fixed by adding `npm run security:secrets:history` to `.agents/release-adapter.yaml` requested-review commands, maintainer release docs, and release publisher policy tests.
+- Reviewer finding: gitleaks wrapper core behavior lacked direct tests.
+- Disposition: fixed with `scripts/run-gitleaks-tracked.test.mjs`, using fake `git` and `gitleaks` binaries to pin tracked-file selection, cwd-relative `gitleaks dir .` execution, arg forwarding, symlink preservation, and temp cleanup.
 
 ## Commands Run
 
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/find-skills/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/find-skills/scripts/list_capabilities.py --repo-root . --recommend-for-task "continue autonomous quality improvement for Cautilus runtime-test economics" --summary`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/plan_quality_run.py --repo-root . --json`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/impl/scripts/resolve_adapter.py --repo-root .`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/impl/scripts/survey_verification.py --repo-root .`
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/report-lint-specs-runtime.test.mjs`
-- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/report-lint-specs-runtime.test.mjs scripts/run-verify.test.mjs scripts/lint-specs.test.mjs`
-- `npm run --silent verify:lint-specs:subphases`
-- `npm run --silent verify:lint-specs:subphases -- --json`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/profile-specdown.test.mjs scripts/coverage-dir.test.mjs`
+- `npm run --silent lint:eslint`
+- `npm run --silent specdown:profile -- --limit 3 --top 3`
+- `npm run --silent specdown:profile -- --limit 5 --top 5`
+- `npm run --silent specdown:profile -- --top 10`
+- `npm run --silent security:secrets`
+- `npm run --silent security:secrets:history`
+- `COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent test:coverage`
+- `COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent coverage:floor:check`
+- `node --test --test-reporter=dot --test-reporter-destination=stdout scripts/profile-specdown.test.mjs scripts/coverage-dir.test.mjs scripts/run-gitleaks-tracked.test.mjs scripts/release/check-release-publisher-policy.test.mjs scripts/release/distribution-surface.test.mjs`
+- `npm run --silent release:publisher-policy:check`
 - `npm run --silent lint:eslint`
 - `npm run --silent lint:specs`
 - `npm run --silent test:node`
-- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/render_runtime_summary.py --repo-root . --json`
+- `git diff --check`
 - `npm run verify`
 - `npm run verify:runtime`
+- `npm run hooks:check`
 - `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/scripts/validate_debug_artifact.py --repo-root .`
-- delegated read-only review by subagent `Popper`
+- delegated read-only review by subagent `Averroes`
 
 ## Recommended Next Quality Moves
 
-- active profile `specdown run` internals before changing proof scope — capability_needed=specdown runtime economics; next_center=docs/specs executable blocks and specdown adapter output; transformation=produce per-spec or per-block timing inside the 13.35s `specdown` subphase; proof_boundary=unchanged full spec proof plus measured hot-spot report; enforcement_posture=advisory.
-- active evaluate secret-scan split only with an explicit security coverage decision — capability_needed=security/runtime policy; next_center=package scripts and CI workflow; transformation=decide whether current-tree local scan plus on-demand/full-history scan preserves the desired guard; proof_boundary=gitleaks current-tree and history commands; enforcement_posture=needs maintainer decision.
-- passive isolate coverage output before running broad coverage-producing gates concurrently because normal maintainer operation runs these gates serially, and this slice already records the serial rule without changing coverage infrastructure — capability_needed=operator runtime reliability; next_center=coverage output paths and `run-verify` runtime-signal mode; transformation=separate coverage directories per invocation or keep a documented serial rule; proof_boundary=two concurrent broad runs no longer cross-contaminate coverage floor; enforcement_posture=advisory.
+- active inspect slowest specdown entries — capability_needed=specdown runtime economics; next_center=`docs/specs/index.spec.md`, `docs/specs/promises/reviewable-artifacts.spec.md`, and `docs/specs/promises/claim-discovery.spec.md`; transformation=identify duplicated setup, overly broad examples, or candidates for shared fixture proof; proof_boundary=full `lint:specs` remains unchanged; enforcement_posture=advisory.
+- active add static gitleaks allowlist-shape coverage — capability_needed=security policy guardrail; next_center=`.gitleaks.toml` and packet metadata examples; transformation=pin path+line scoped allowlists so future packet metadata additions do not silently widen secret exemptions; proof_boundary=current tracked scan plus history scan; enforcement_posture=standing test candidate.
+- passive consider concurrent coverage smoke — capability_needed=operator runtime reliability; next_center=coverage scripts and `run-verify` profiles; transformation=prove two distinct `COVERAGE_DIR` runs cannot contaminate each other; proof_boundary=focused smoke rather than full duplicate broad gates; enforcement_posture=advisory.
 
 ## History
 

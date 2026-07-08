@@ -25,6 +25,7 @@ real_host_checklist: []
 
 requested_review_commands:
   - "npm run critique:surface-packet:check"
+  - "npm run security:secrets:history"
   - "npm run release:publisher-policy:check"
 post_publish_install_refresh: "npm run release:smoke-install:current -- --skip-update"
 

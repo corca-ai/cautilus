@@ -13,6 +13,7 @@ In this repo today that resolves to:
 - Go `1.26.5+`, `golangci-lint`, and `govulncheck` are installed in the maintainer clone
 - `npm run hooks:check` passes in the maintainer clone
 - `npm run verify` passes on `main`
+- `npm run security:secrets:history` passes in the maintainer clone before the tag is prepared
 - `npm run release:claim-freshness` passes before the tag is prepared
 - `npm run release:publisher-policy:check` passes before the tag is prepared
 - [release-boundary.md](./release-boundary.md) still matches the product-owned surface
@@ -41,6 +42,7 @@ The repo-local Codex marketplace at [.agents/plugins/marketplace.json](../../.ag
 ```bash
 npm run hooks:check
 npm run verify
+npm run security:secrets:history
 npm run release:publisher-policy:check
 npm run test:on-demand
 cautilus --version
@@ -66,7 +68,7 @@ Its JSON and text output separate release states: `localPrepared`, `auditNarrati
 If a later publish step fails after an earlier step was verified, the helper reports the same release-state ledger on failure so the operator can see whether the branch, tag, workflow, or public release boundary is still open.
 Do not replace it with ad-hoc parallel `git commit` / `git tag` / `git push --tags` invocations.
 Use `--target-branch main` when publishing from a prepared release branch or detached release worktree that should update `main`.
-The release adapter's requested review commands are part of the release gate; if they fail, fix the deterministic surface before tagging.
+The release adapter's requested review commands are part of the release gate and include the full git-history secret scan; if they fail, fix the deterministic surface before tagging.
 The publish helper runs those requested review commands before pushing the branch or tag.
 
 The checked-in release workflow at [release-artifacts.yml](../../.github/workflows/release-artifacts.yml) will re-run `verify`, build the tagged binary assets, compute checksums, generate GitHub artifact attestations from the checksum manifest, and attach those artifacts to the GitHub release.

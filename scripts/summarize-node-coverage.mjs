@@ -4,8 +4,9 @@ import { resolve, dirname, relative, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const LCOV_PATH = resolve(REPO_ROOT, "coverage/lcov.info");
-const OUTPUT_PATH = resolve(REPO_ROOT, "coverage/node.json");
+const COVERAGE_DIR = resolve(REPO_ROOT, process.env.COVERAGE_DIR || "coverage");
+const LCOV_PATH = resolve(COVERAGE_DIR, "lcov.info");
+const OUTPUT_PATH = resolve(COVERAGE_DIR, "node.json");
 
 const raw = readFileSync(LCOV_PATH, "utf8");
 const files = new Map();

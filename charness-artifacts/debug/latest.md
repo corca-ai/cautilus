@@ -3,83 +3,96 @@ Date: 2026-07-09
 
 ## Problem
 
-The new `verify:lint-specs:subphases` reporter had two quality defects before closeout.
-First, `npm run --silent lint:eslint` failed on `lintSpecsSubphaseReport` complexity.
-Second, delegated review found the text/JSON report could show preserved previous subphase samples after a failed runtime signal without warning the operator.
+The quality slice hit three gate failures while adding per-spec profiling, current-tree secret scanning, and isolated coverage output.
+`npm run --silent lint:eslint` failed on `scripts/profile-specdown.mjs`, the first current-tree secret scan failed with gitleaks findings, and an isolated coverage-floor check failed after the first coverage-dir implementation.
 
 ## Correct Behavior
 
-Given the repo adds a small advisory runtime reporter, when ESLint runs and when a failed runtime signal preserves previous subphase samples, then the reporter should stay within the repo maintainability threshold and disclose whether reported subphase samples are stale.
+Given the repo adds advisory runtime tooling and splits secret scanning, helper code should stay within ESLint complexity limits, the standing secret scan should check commit-relevant current content without tripping known packet metadata false positives, and coverage output isolation should still satisfy the existing coverage floor.
 
 ## Observed Facts
 
-- Focused reporter tests passed before lint.
-- `npm run --silent verify:lint-specs:subphases` printed the expected stored `lint · specs` subphase report.
-- `npm run --silent lint:eslint` failed with `Function 'lintSpecsSubphaseReport' has a complexity of 14. Maximum allowed is 12`.
-- Prior debug memory records the same class of issue for helper-heavy JavaScript surfaces: behavior tests pass, but a coordinator function crosses the ESLint complexity budget.
-- Subagent `Popper` observed that `run-verify` intentionally preserves previous subphase samples when a failing `lint:specs` run has no timing line, so a reporter that omits status and timestamps can present stale samples as current.
+- ESLint reported `profile-specdown.mjs` had an unused `dirname` import and `parseArgs` cognitive complexity 13 over the limit 12.
+- `gitleaks dir .` scanned ignored generated artifact trees and reported 40 `sourcegraph-access-token` findings, all on packet commit metadata.
+- A tracked-file temp-tree wrapper reduced the surface, but `gitleaks dir <absolute-temp-path>` still reported 15 findings because `.gitleaks.toml` path allowlists are relative.
+- Running `gitleaks` with cwd set to the temp tree and target `.` left one finding: `.cautilus/claims/claim-status-report.md` line `Packet source commit: <40-hex>`.
+- `npm run --silent security:secrets:history` passed with the existing full-history scan.
+- `COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent coverage:floor:check` failed because the modified `scripts/check-coverage-floor.mjs` was newly unfloored at 58.82% statement coverage.
 
 ## Reproduction
 
-- Run `npm run --silent lint:eslint` after the first reporter implementation.
-- Observed result: ESLint exits 1 with a complexity error in `scripts/report-lint-specs-runtime.mjs`.
-- Construct a failed runtime signal whose command latest timestamp is newer than its preserved subphase timestamps.
-- Observed result before the fix: the report had no warning field and text output did not disclose stale samples.
+- Run `npm run --silent lint:eslint` after the first `profile-specdown` implementation.
+- Run `gitleaks dir . --no-banner --redact` after changing the standing scan from history to current tree.
+- Run the tracked temp-tree wrapper with an absolute target path to reproduce allowlist path mismatch.
+- Run `COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent test:coverage` followed by `COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent coverage:floor:check` after adding only the happy-path coverage-dir test.
 
 ## Candidate Causes
 
-- The reporter function combined command lookup, subphase shape validation, entry projection, sorting, and empty-entry handling.
-- The complexity threshold is too strict for JSON-shape validation helpers.
-- The script should not be a new repo-owned surface; the existing runtime JSON could be read manually.
-- The reporter treated preserved subphase samples as self-evidently current because it did not carry runtime status, command latest timestamp, or per-subphase timestamps into the output.
+- The profiler argument parser combined option dispatch, pending-value handling, target collection, and error handling in one function.
+- Current-tree scanning should scan tracked files only, not ignored artifact output.
+- Copying tracked files to a temp tree broke `.gitleaks.toml` relative path allowlists because the wrapper passed an absolute target path.
+- The claim status markdown report had a legitimate packet source commit line shape not covered by the existing JSON/debug-record allowlists.
+- The first `coverage-dir` test only proved `check-coverage-floor.mjs` could read `COVERAGE_DIR`; it did not exercise warn-band, unfloored-fail, declared-floor-regression, or promotion-candidate paths.
 
 ## Hypothesis
 
-- Falsifiable claim: the failure is structural complexity in one coordinator, not an excessive product surface.
-- Disconfirmer: if extracting lookup, subphase validation, and sorted-entry construction still fails ESLint or changes focused reporter tests, the surface or validation behavior needs narrowing.
-- Falsifiable claim: if the report includes runtime status plus command/subphase timestamps, then a failed signal with preserved subphases can emit an explicit stale-sample warning.
-- Disconfirmer: a fixture with failed status and older subphase timestamps still exits 0 without a warning.
+- Falsifiable claim: if option dispatch is split from `parseArgs`, ESLint will pass without changing profiler behavior.
+- disconfirmer: `npm run --silent lint:eslint` still reports `scripts/profile-specdown.mjs` after the parser split.
+- Falsifiable claim: if the gitleaks wrapper runs from the temp tree with target `.`, existing relative allowlists will apply.
+- disconfirmer: `npm run --silent security:secrets` still reports findings already covered by existing path-scoped allowlists.
+- Falsifiable claim: if `.gitleaks.toml` narrowly allows the claim-status markdown `Packet source commit` line, both current tracked and history scans will pass without disabling the default rule.
+- disconfirmer: `npm run --silent security:secrets` or `npm run --silent security:secrets:history` still reports `.cautilus/claims/claim-status-report.md` packet source commit metadata after the narrow allowlist.
+- Falsifiable claim: if `coverage-dir` tests exercise the main floor-check branches, the modified `check-coverage-floor.mjs` will clear the repo coverage floor.
+- disconfirmer: isolated `test:coverage` followed by isolated `coverage:floor:check` still fails on `scripts/check-coverage-floor.mjs`.
 
 ## Verification
 
-- Result: confirmed pending final broad verify.
-- The implementation now delegates command lookup, subphase-shape validation, and sorted-entry construction to helpers.
-- The implementation now emits runtime status, failed phase, generated time, command latest elapsed/timestamp, subphase timestamps, and warnings.
-- Focused reporter tests, stale-sample warning tests, and ESLint are rerun before closeout.
+- Confirmed.
+- `npm run --silent lint:eslint` passed after helper extraction and removing the unused import.
+- `npm run --silent security:secrets` passed after the tracked-file wrapper, cwd fix, and narrow claim-status allowlist.
+- `npm run --silent security:secrets:history` passed after the allowlist change.
+- `COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent test:coverage && COVERAGE_DIR=/tmp/cautilus-coverage-isolated npm run --silent coverage:floor:check` passed after expanding `scripts/coverage-dir.test.mjs`.
 
 ## Root Cause
 
-The root cause was placing several independent runtime-signal shape checks and report-building branches in one exported function.
-The stale-sample ambiguity came from not carrying provenance fields from the source runtime signal into the report, even though runtime-signal merge semantics intentionally preserve prior subphase samples on failed runs.
-The repo's existing ESLint complexity gate correctly caught the maintainability regression before commit.
+The profiler failure was the recurring helper-heavy JavaScript pattern: behavior tests passed, but option parsing accumulated enough control flow to cross the lint threshold.
+The secret-scan failure came from treating "current tree" as the entire checkout directory rather than the tracked commit-relevant file set, then from running gitleaks against an absolute temp path that made existing relative allowlists ineffective.
+The remaining finding was a legitimate packet metadata false positive in a markdown status report with no existing allowlist line shape.
+The coverage-floor failure was a test-depth miss: the new environment-variable support touched a branch-heavy CLI script, but the first test only covered the successful no-warning path.
 
 ## Invariant Proof
 
-- Invariant: JSON-shape reporters should keep lookup, validation, and projection branches in small helpers, and should expose source provenance when stored samples may be preserved across failed runs.
-- Producer Proof: ESLint identified the overloaded coordinator; Popper identified the stale-sample provenance gap.
-- Final-Consumer Proof: focused reporter tests cover text output, JSON output, sorting, missing-signal errors, and stale-sample warnings after the helper split.
-- Interface-Shape Sibling Scan: `scripts/run-verify.mjs` already separates timing parsing, runtime-signal merge, and write behavior into helpers.
-- Non-Claims: this debug note does not claim final `npm run verify` has passed; that is recorded in the quality closeout.
+- Invariant: advisory operator scripts keep option dispatch helper-oriented and below the repo's lint complexity budget.
+- Producer Proof: ESLint now passes on `scripts/profile-specdown.mjs`.
+- Final-Consumer Proof: profiler tests cover option parsing, selected targets, archived-spec exclusion, text output, and JSON output.
+- Interface-Shape Sibling Scan: `scripts/run-gitleaks-tracked.mjs` preserves the standing `security:secrets` command while `security:secrets:history` keeps full-history proof available.
+- Release Proof: `.agents/release-adapter.yaml`, `docs/maintainers/releasing.md`, and `scripts/release/check-release-publisher-policy.mjs` now require full-history secret proof before release branch/tag push.
+- Coverage Proof: isolated `test:coverage` plus `coverage:floor:check` passed under `COVERAGE_DIR=/tmp/cautilus-coverage-isolated`.
+- Non-Claims: this does not claim current-tree scanning replaces full-history proof for release or incident response.
 
 ## Detection Gap
 
-- surface: advisory runtime reporter maintainability | what did not fire: focused reporter tests do not enforce maintainability complexity | smallest change to fire it: existing `lint:eslint` already fires, no new gate needed.
-- surface: advisory runtime reporter provenance | what did not fire: first tests did not model failed signals with preserved subphases | smallest change to fire it: add a failed-signal fixture with stale subphase timestamps.
+- surface: profiler option parsing | what did not fire: behavior tests do not enforce complexity | smallest change to fire it: existing `lint:eslint` already fires.
+- surface: current-tree secret scan | what did not fire: first command choice scanned ignored checkout output and broke relative allowlists | smallest change to fire it: run `npm run security:secrets` before treating `gitleaks dir` as equivalent to history scan.
+- surface: packet metadata allowlist coverage | what did not fire: no static coverage test for markdown packet source commit lines | smallest change to fire it: future allowlist-coverage test should include `.cautilus/claims/claim-status-report.md`.
+- surface: coverage floor CLI | what did not fire: happy-path-only environment-variable test | smallest change to fire it: include warn, unfloored fail, declared floor fail, and promotion-candidate fixtures.
 
 ## Sibling Search
 
-- Mental model: a small read-only report can keep all validation and formatting control flow in one function.
-- helper-extraction axis: `scripts/report-lint-specs-runtime.mjs` | decision: split lookup, validation, and projection helpers | proof: focused ESLint rerun after repair.
-- provenance axis: `scripts/report-lint-specs-runtime.mjs` | decision: include runtime status and timestamp warnings | proof: stale-sample fixture test.
-- cross-file: `scripts/run-verify.mjs` owns the sibling runtime-signal shape and already uses helper-oriented structure.
+- Mental model: "current tree" means repository directory.
+- scope axis: ignored artifact trees | decision: exclude from standing current scan by scanning tracked files only | proof: tracked wrapper reports 1746 copied files and passes.
+- path axis: temp-tree target path | decision: run gitleaks from temp cwd against `.` | proof: existing JSON allowlists apply again.
+- allowlist axis: claim-status markdown packet source commit | decision: add one path+line scoped allowlist | proof: current and history scans pass.
+- release axis: current-tree scan in `verify` | decision: keep full history scan in release requested-review commands | proof: release publisher policy check now requires it.
+- cross-file: `.gitleaks.toml`, `scripts/run-gitleaks-tracked.mjs`, `package.json`, `.agents/release-adapter.yaml`, and `docs/maintainers/releasing.md` jointly own the secret-scan contract.
 
 ## Seam Risk
 
-- Interrupt ID: lint-specs-runtime-reporter-complexity-2026-07-09
+- Interrupt ID: current-tree-gitleaks-wrapper-2026-07-09
 - Risk Class: none
-- Seam: none
-- Disproving Observation: none
-- What Local Reasoning Cannot Prove: none
+- Seam: gitleaks path matching versus temp-tree current-scan wrapper
+- Disproving Observation: current tracked scan and history scan both pass after the cwd and allowlist fix.
+- What Local Reasoning Cannot Prove: n/a
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -91,6 +104,7 @@ The repo's existing ESLint complexity gate correctly caught the maintainability 
 
 ## Prevention
 
-Keep runtime-signal reporters helper-oriented when they validate nested JSON.
-When a reporter reads merged sample history, carry enough source provenance to tell fresh samples from preserved samples.
-Run focused ESLint after adding a new operator-facing script, even when focused behavior tests pass.
+When converting a history-aware security scanner to a current-tree mode, define the scanned file set explicitly.
+For gitleaks, preserve relative path allowlist semantics by running from the scan root instead of passing an absolute source path.
+Keep packet commit metadata allowlists path+line scoped, and extend the future allowlist-coverage test to markdown claim status reports.
+When touching branch-heavy CLI quality gates, add focused fixtures for both success and failure paths before relying on broad coverage to catch the gap.

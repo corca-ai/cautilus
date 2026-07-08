@@ -12,6 +12,7 @@ const REQUIRED_PACKAGE_SCRIPTS = {
 
 const REQUIRED_REVIEW_COMMANDS = [
 	"npm run critique:surface-packet:check",
+	"npm run security:secrets:history",
 	"npm run release:publisher-policy:check",
 ];
 
@@ -23,6 +24,7 @@ const REQUIRED_RELEASE_BOUNDARY_TEXT = [
 ];
 
 const REQUIRED_RELEASING_TEXT = [
+	"npm run security:secrets:history",
 	"npm run release:publisher-policy:check",
 	"npm run release:publish -- --version <next-version>",
 	"npm run release:smoke-install:current -- --skip-update",

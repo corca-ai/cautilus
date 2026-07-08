@@ -45,6 +45,10 @@ npm run lint:specs -- docs/specs/promises/claim-discovery.spec.md
 ```
 
 Use `npm run specdown` when you want the full reporter output instead of the quiet standing gate.
+Use `npm run specdown:profile` when you need per-spec timing for the `specdown` portion of `lint:specs`; it is advisory and not part of the standing gate.
+
+The coverage commands write to `coverage/` by default.
+Set `COVERAGE_DIR` when running broad coverage-producing gates concurrently so one run cannot overwrite another run's `go.json`, `node.json`, or `coverage.json`.
 
 ## Rendered Markdown Preview
 
@@ -102,6 +106,8 @@ npm run test:on-demand
 Not part of the standing gate.
 Owns the heavier self-dogfood workflow script tests that prove operator-facing quality record behavior without paying that cost on every `pre-push` and CI `verify` run.
 Run it when changing release-prep flow, self-dogfood workflow scripts, or operator-facing quality record behavior.
+`npm run security:secrets` scans the tracked current tree through `scripts/run-gitleaks-tracked.mjs`, which copies tracked files to a temporary tree and runs `gitleaks dir` there.
+Use `npm run security:secrets:history` for the full git-history scan when release, incident response, or explicit security review needs historical proof.
 
 ## Self-dogfood workflow
 
