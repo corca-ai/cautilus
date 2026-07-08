@@ -9,7 +9,7 @@ import process from "node:process";
 export const PHASES = [
 	{ id: "lint:eslint", label: "lint · eslint" },
 	{ id: "audit:surface:check", label: "lint · surface honesty audit" },
-	{ id: "lint:specs", label: "lint · specs" },
+	{ id: "lint:specs", label: "lint · specs", captureStdout: true },
 	{ id: "specdown:project:check", label: "lint · specdown gold-set projection" },
 	{ id: "specdown:claim-state:check", label: "lint · projected claim state" },
 	{ id: "lint:scenario-normalizers", label: "lint · scenario normalizers" },
@@ -97,6 +97,28 @@ function phaseCommand(script) {
 	return ["npm", "run", "--silent", script];
 }
 
+function parseDurationMs(value) {
+	const match = /^(\d+)(?:ms|\.(\d{2})s)$/.exec(value);
+	if (!match) return null;
+	if (!match[2]) return Number.parseInt(match[1], 10);
+	return (Number.parseInt(match[1], 10) * 1000) + (Number.parseInt(match[2], 10) * 10);
+}
+
+export function parseLintSpecsTiming(output) {
+	const line = String(output || "").split(/\r?\n/).find((candidate) => candidate.startsWith("lint-specs timing: "));
+	if (!line) return [];
+	const rawParts = line.replace("lint-specs timing: ", "").split(", ");
+	const timings = [];
+	for (const rawPart of rawParts) {
+		const [label, rawDuration] = rawPart.split("=");
+		if (!label || !rawDuration || label === "total") continue;
+		const durationMs = parseDurationMs(rawDuration);
+		if (durationMs === null) continue;
+		timings.push({ label, durationMs });
+	}
+	return timings;
+}
+
 function failedStartPhaseResult(phase, script, elapsed, error) {
 	return {
 		id: phase.id,
@@ -110,8 +132,8 @@ function failedStartPhaseResult(phase, script, elapsed, error) {
 	};
 }
 
-function completedPhaseResult(phase, script, elapsed, exitCode) {
-	return {
+function completedPhaseResult(phase, script, elapsed, exitCode, spawnResult) {
+	const result = {
 		id: phase.id,
 		label: phase.label,
 		script,
@@ -120,6 +142,31 @@ function completedPhaseResult(phase, script, elapsed, exitCode) {
 		exitCode,
 		durationMs: elapsed,
 	};
+	if (phase.id === "lint:specs") {
+		const subphases = parseLintSpecsTiming(spawnResult?.stdout);
+		if (subphases.length) {
+			result.subphases = subphases;
+		}
+	}
+	return result;
+}
+
+function spawnOptionsForPhase(phase) {
+	if (phase.captureStdout) {
+		return {
+			stdio: ["inherit", "pipe", "inherit"],
+			encoding: "utf-8",
+			maxBuffer: 20 * 1024 * 1024,
+		};
+	}
+	return { stdio: "inherit" };
+}
+
+function replayCapturedStdout(phase, result, out) {
+	if (!phase.captureStdout || typeof result?.stdout !== "string" || result.stdout.length === 0) {
+		return;
+	}
+	out.write(result.stdout);
 }
 
 function finishRun(runtimeSignalPath, result, totalStarted, runtimeProfile) {
@@ -147,9 +194,10 @@ export function runPhases(
 		const started = Date.now();
 		out.write(`\n▶ ${phase.label} (npm run ${script})\n`);
 		const result = spawn("npm", ["run", "--silent", script], {
-			stdio: "inherit",
+			...spawnOptionsForPhase(phase),
 		});
 		const elapsed = Date.now() - started;
+		replayCapturedStdout(phase, result, out);
 		if (result && result.error) {
 			phaseResults.push(failedStartPhaseResult(phase, script, elapsed, result.error));
 			err.write(
@@ -159,7 +207,7 @@ export function runPhases(
 			return finishRun(runtimeSignalPath, failedResult, totalStarted, runtimeProfile);
 		}
 		const status = result && typeof result.status === "number" ? result.status : 1;
-		phaseResults.push(completedPhaseResult(phase, script, elapsed, status));
+		phaseResults.push(completedPhaseResult(phase, script, elapsed, status, result));
 		if (status !== 0) {
 			err.write(
 				`✖ ${phase.label} failed (exit ${status}) after ${formatDuration(elapsed)}\n`,
@@ -251,8 +299,7 @@ function previousRecentDurations(entry) {
 		: [];
 }
 
-function commandRuntimeSummary(phase, generatedAt, previousEntry) {
-	const elapsed = Number.isInteger(phase.durationMs) ? phase.durationMs : null;
+function elapsedRuntimeSummary(elapsed, generatedAt, previousEntry) {
 	if (elapsed === null || elapsed < 0) return null;
 	const previousRecent = previousRecentDurations(previousEntry);
 	const recent = [...previousRecent, elapsed].slice(-10);
@@ -269,6 +316,37 @@ function commandRuntimeSummary(phase, generatedAt, previousEntry) {
 		recent_elapsed_ms: recent,
 		samples: previousSamples + 1,
 	};
+}
+
+function subphaseRuntimeSummaries(phase, generatedAt, previousEntry) {
+	if (!Array.isArray(phase.subphases)) return {};
+	const previousSubphases =
+		previousEntry.subphases && typeof previousEntry.subphases === "object" && !Array.isArray(previousEntry.subphases)
+			? previousEntry.subphases
+			: {};
+	const subphases = {};
+	for (const subphase of phase.subphases) {
+		if (!subphase || typeof subphase.label !== "string" || !subphase.label) continue;
+		const elapsed = Number.isInteger(subphase.durationMs) ? subphase.durationMs : null;
+		const summary = elapsedRuntimeSummary(elapsed, generatedAt, previousSubphases[subphase.label] || {});
+		if (summary) {
+			subphases[subphase.label] = summary;
+		}
+	}
+	return subphases;
+}
+
+function commandRuntimeSummary(phase, generatedAt, previousEntry) {
+	const elapsed = Number.isInteger(phase.durationMs) ? phase.durationMs : null;
+	const summary = elapsedRuntimeSummary(elapsed, generatedAt, previousEntry);
+	if (!summary) return null;
+	const subphases = subphaseRuntimeSummaries(phase, generatedAt, previousEntry);
+	if (Object.keys(subphases).length) {
+		summary.subphases = subphases;
+	} else if (previousEntry.subphases && typeof previousEntry.subphases === "object" && !Array.isArray(previousEntry.subphases)) {
+		summary.subphases = previousEntry.subphases;
+	}
+	return summary;
 }
 
 function readExistingRuntimeSignals(runtimeSignalPath) {

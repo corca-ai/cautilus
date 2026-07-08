@@ -7,6 +7,7 @@ import { join } from "node:path";
 import {
 	PHASES,
 	parseArgs,
+	parseLintSpecsTiming,
 	resolveScript,
 	runtimeSignalPayload,
 	runPhases,
@@ -152,6 +153,19 @@ test("resolveScript keeps phase id when no verbose id declared", () => {
 	assert.equal(resolveScript(eslint, { verbose: true }), "lint:eslint");
 });
 
+test("parseLintSpecsTiming extracts ms and second duration formats", () => {
+	assert.deepEqual(
+		parseLintSpecsTiming("lint-specs timing: check=11ms, specdown=13.52s, trace=2.33s, ledger=24ms, total=15.89s\n"),
+		[
+			{ label: "check", durationMs: 11 },
+			{ label: "specdown", durationMs: 13520 },
+			{ label: "trace", durationMs: 2330 },
+			{ label: "ledger", durationMs: 24 },
+		],
+	);
+	assert.deepEqual(parseLintSpecsTiming("spec checks passed\n"), []);
+});
+
 test("runPhases emits one ▶ label per phase and ✔ on success", () => {
 	const out = makeSink();
 	const err = makeSink();
@@ -176,6 +190,39 @@ test("runPhases emits one ▶ label per phase and ✔ on success", () => {
 	assert.match(text, /✔ lint · a/);
 	assert.match(text, /✔ lint · b/);
 	assert.match(text, /verify · all phases passed/);
+});
+
+test("runPhases records lint-specs subphase timings in the runtime signal", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-quality-runtime-subphase-"));
+	const outputPath = join(root, "runtime", "verify.json");
+	const out = makeSink();
+	const err = makeSink();
+	const { spawn } = makeSpawn([
+		{
+			status: 0,
+			stdout: "spec checks passed (39 specs)\nlint-specs timing: check=11ms, specdown=13.52s, trace=2.33s, ledger=24ms, total=15.89s\n",
+		},
+	]);
+	const result = runPhases([{ id: "lint:specs", label: "lint · specs", captureStdout: true }], {
+		spawn,
+		stdout: out.sink,
+		stderr: err.sink,
+		runtimeSignalPath: outputPath,
+		runtimeProfile: "local-verify",
+	});
+	assert.equal(result.ok, true);
+	assert.match(out.text(), /lint-specs timing:/);
+	assert.deepEqual(result.phaseResults[0].subphases, [
+		{ label: "check", durationMs: 11 },
+		{ label: "specdown", durationMs: 13520 },
+		{ label: "trace", durationMs: 2330 },
+		{ label: "ledger", durationMs: 24 },
+	]);
+	const payload = JSON.parse(readFileSync(outputPath, "utf-8"));
+	assert.equal(
+		payload.profiles["local-verify"].commands["lint · specs"].subphases.specdown.latest.elapsed_ms,
+		13520,
+	);
 });
 
 test("runPhases writes a quality runtime signal when requested", () => {
@@ -313,6 +360,62 @@ test("withRuntimeSignalSamples preserves unobserved phase samples on partial run
 	assert.deepEqual(
 		merged.profiles["local-test"].commands["lint · b"],
 		existingSignals.profiles["local-test"].commands["lint · b"],
+	);
+});
+
+test("withRuntimeSignalSamples preserves lint-specs subphase samples when a failing run has no timing line", () => {
+	const existingSignals = {
+		profiles: {
+			"local-test": {
+				commands: {
+					"lint · specs": {
+						latest: { timestamp: "2026-07-08T00:00:00.000Z", elapsed_ms: 16000 },
+						recent_elapsed_ms: [16000],
+						median_recent_elapsed_ms: 16000,
+						max_recent_elapsed_ms: 16000,
+						samples: 1,
+						subphases: {
+							specdown: {
+								latest: { timestamp: "2026-07-08T00:00:00.000Z", elapsed_ms: 13520 },
+								recent_elapsed_ms: [13520],
+								median_recent_elapsed_ms: 13520,
+								max_recent_elapsed_ms: 13520,
+								samples: 1,
+							},
+						},
+					},
+				},
+			},
+		},
+	};
+	const payload = {
+		...runtimeSignalPayload(
+			{
+				ok: false,
+				status: 1,
+				failedPhase: "lint:specs",
+				phaseResults: [
+					{
+						id: "lint:specs",
+						label: "lint · specs",
+						durationMs: 5000,
+						status: "failed",
+						exitCode: 1,
+					},
+				],
+			},
+			0,
+		),
+		generatedAt: "2026-07-08T04:00:00.000Z",
+	};
+
+	const merged = withRuntimeSignalSamples(payload, {
+		existingSignals,
+		runtimeProfile: "local-test",
+	});
+	assert.deepEqual(
+		merged.profiles["local-test"].commands["lint · specs"].subphases,
+		existingSignals.profiles["local-test"].commands["lint · specs"].subphases,
 	);
 });
 
