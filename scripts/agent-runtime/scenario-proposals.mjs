@@ -2,6 +2,12 @@ import { DRAFT_SCENARIO_SCHEMA, SCENARIO_PROPOSALS_SCHEMA } from "./contract-ver
 
 export { DRAFT_SCENARIO_SCHEMA, SCENARIO_PROPOSALS_SCHEMA } from "./contract-versions.mjs";
 
+const EVIDENCE_SOURCE_KINDS = new Set(["human_conversation", "agent_run", "skill_evaluation", "workflow_run"]);
+const EVIDENCE_ORIGINS = new Set(["real", "synthetic", "replayed", "operator_authored"]);
+const EVIDENCE_SPLITS = new Set(["proposal", "train", "review"]);
+const ACTIVITY_PROVENANCE_FIELDS = new Set(["activityId", "taskKey", "recurrenceKey", "replayId", "split", "score"]);
+const ACTIVITY_PROVENANCE_STRING_FIELDS = ["activityId", "taskKey", "recurrenceKey", "replayId"];
+
 function parseIsoTime(value) {
 	const millis = Date.parse(String(value || ""));
 	return Number.isFinite(millis) ? millis : 0;
@@ -50,6 +56,56 @@ function buildSimulator(candidate) {
 	};
 }
 
+function validateNonEmptyString(value, field) {
+	if (typeof value !== "string" || !value.trim()) {
+		throw new Error(`${field} must be a non-empty string`);
+	}
+}
+
+function validateEnumValue(value, allowed, field) {
+	if (!allowed.has(value)) {
+		throw new Error(`${field} must be one of ${[...allowed].join(", ")}`);
+	}
+}
+
+function validateActivityProvenance(provenance, field) {
+	if (!provenance || typeof provenance !== "object" || Array.isArray(provenance)) {
+		throw new Error(`${field} must be an object`);
+	}
+	for (const key of Object.keys(provenance)) {
+		if (!ACTIVITY_PROVENANCE_FIELDS.has(key)) {
+			throw new Error(`${field}.${key} is not supported`);
+		}
+	}
+	for (const key of ACTIVITY_PROVENANCE_STRING_FIELDS) {
+		if (provenance[key] !== undefined) {
+			validateNonEmptyString(provenance[key], `${field}.${key}`);
+		}
+	}
+	if (provenance.split !== undefined) {
+		validateEnumValue(provenance.split, EVIDENCE_SPLITS, `${field}.split`);
+	}
+	if (provenance.score !== undefined && (typeof provenance.score !== "number" || !Number.isFinite(provenance.score))) {
+		throw new Error(`${field}.score must be a number`);
+	}
+}
+
+function validateEvidenceItem(evidence, field) {
+	if (!evidence || typeof evidence !== "object" || Array.isArray(evidence)) {
+		throw new Error(`${field} must be an object`);
+	}
+	for (const key of ["sourceKind", "title", "observedAt"]) {
+		validateNonEmptyString(evidence[key], `${field}.${key}`);
+	}
+	validateEnumValue(evidence.sourceKind, EVIDENCE_SOURCE_KINDS, `${field}.sourceKind`);
+	if (evidence.origin !== undefined) {
+		validateEnumValue(evidence.origin, EVIDENCE_ORIGINS, `${field}.origin`);
+	}
+	if (evidence.activityProvenance !== undefined) {
+		validateActivityProvenance(evidence.activityProvenance, `${field}.activityProvenance`);
+	}
+}
+
 function validateCandidate(candidate, index = 0) {
 	if (!candidate || typeof candidate !== "object") {
 		throw new Error(`proposalCandidates[${index}] must be an object`);
@@ -61,6 +117,9 @@ function validateCandidate(candidate, index = 0) {
 	}
 	if (!Array.isArray(candidate.evidence)) {
 		throw new Error(`proposalCandidates[${index}].evidence must be an array`);
+	}
+	for (const [evidenceIndex, evidence] of candidate.evidence.entries()) {
+		validateEvidenceItem(evidence, `proposalCandidates[${index}].evidence[${evidenceIndex}]`);
 	}
 }
 

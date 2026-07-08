@@ -20,6 +20,7 @@ package runtime
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"sort"
 	"strings"
@@ -80,6 +81,14 @@ var (
 const (
 	scenarioProposalAttentionCap           = 5
 	scenarioProposalAttentionFallbackCount = 3
+)
+
+var (
+	scenarioProposalEvidenceSourceKinds = []string{"human_conversation", "agent_run", "skill_evaluation", "workflow_run"}
+	scenarioProposalEvidenceOrigins     = []string{"real", "synthetic", "replayed", "operator_authored"}
+	scenarioProposalEvidenceSplits      = []string{"proposal", "train", "review"}
+	scenarioProposalProvenanceFields    = []string{"activityId", "taskKey", "recurrenceKey", "replayId", "split", "score"}
+	scenarioProposalProvenanceStrings   = []string{"activityId", "taskKey", "recurrenceKey", "replayId"}
 )
 
 func BuildScenarioProposalInput(proposalCandidates []any, existingScenarioRegistry []any, scenarioCoverage []any, families []string, windowDays int, now *time.Time) (map[string]any, error) {
@@ -336,8 +345,62 @@ func validateProposalCandidate(candidate map[string]any, index int) error {
 			return err
 		}
 	}
-	if _, err := assertArray(candidate["evidence"], fmt.Sprintf("proposalCandidates[%d].evidence", index)); err != nil {
+	evidence, err := assertArray(candidate["evidence"], fmt.Sprintf("proposalCandidates[%d].evidence", index))
+	if err != nil {
 		return err
+	}
+	for evidenceIndex, rawEvidence := range evidence {
+		if err := validateProposalEvidence(rawEvidence, fmt.Sprintf("proposalCandidates[%d].evidence[%d]", index, evidenceIndex)); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateProposalEvidence(rawEvidence any, field string) error {
+	evidence, ok := rawEvidence.(map[string]any)
+	if !ok || evidence == nil {
+		return fmt.Errorf("%s must be an object", field)
+	}
+	for _, key := range []string{"sourceKind", "title", "observedAt"} {
+		if _, err := normalizeNonEmptyString(evidence[key], field+"."+key); err != nil {
+			return err
+		}
+	}
+	if !containsString(scenarioProposalEvidenceSourceKinds, stringOrEmpty(evidence["sourceKind"])) {
+		return fmt.Errorf("%s.sourceKind must be one of %s", field, strings.Join(scenarioProposalEvidenceSourceKinds, ", "))
+	}
+	if origin := stringOrEmpty(evidence["origin"]); origin != "" && !containsString(scenarioProposalEvidenceOrigins, origin) {
+		return fmt.Errorf("%s.origin must be one of %s", field, strings.Join(scenarioProposalEvidenceOrigins, ", "))
+	}
+	rawProvenance, ok := evidence["activityProvenance"]
+	if !ok || rawProvenance == nil {
+		return nil
+	}
+	provenance, ok := rawProvenance.(map[string]any)
+	if !ok {
+		return fmt.Errorf("%s.activityProvenance must be an object", field)
+	}
+	for key := range provenance {
+		if !containsString(scenarioProposalProvenanceFields, key) {
+			return fmt.Errorf("%s.activityProvenance.%s is not supported", field, key)
+		}
+	}
+	for _, key := range scenarioProposalProvenanceStrings {
+		if _, ok := provenance[key]; ok {
+			if _, err := normalizeNonEmptyString(provenance[key], field+".activityProvenance."+key); err != nil {
+				return err
+			}
+		}
+	}
+	if split := stringOrEmpty(provenance["split"]); split != "" && !containsString(scenarioProposalEvidenceSplits, split) {
+		return fmt.Errorf("%s.activityProvenance.split must be one of %s", field, strings.Join(scenarioProposalEvidenceSplits, ", "))
+	}
+	if score, ok := provenance["score"]; ok {
+		number, ok := toFloat(score)
+		if !ok || math.IsNaN(number) || math.IsInf(number, 0) {
+			return fmt.Errorf("%s.activityProvenance.score must be a number", field)
+		}
 	}
 	return nil
 }
@@ -550,6 +613,7 @@ func isEventTriggered(conversation map[string]any) bool {
 func buildHumanEvidence(conversation map[string]any, title string, matchedTurns []string) map[string]any {
 	return map[string]any{
 		"sourceKind": "human_conversation",
+		"origin":     "real",
 		"title":      title,
 		"threadKey":  conversation["threadKey"],
 		"observedAt": conversation["lastObservedAt"],
@@ -560,6 +624,7 @@ func buildHumanEvidence(conversation map[string]any, title string, matchedTurns 
 func buildRunEvidence(summary map[string]any, title string) map[string]any {
 	return map[string]any{
 		"sourceKind":    "agent_run",
+		"origin":        "real",
 		"title":         title,
 		"runId":         summary["runId"],
 		"threadKey":     summary["threadKey"],
@@ -773,6 +838,7 @@ func buildWorkflowRecoveryCandidate(run map[string]any) map[string]any {
 func buildSkillEvaluationEvidence(run map[string]any, title string) map[string]any {
 	evidence := map[string]any{
 		"sourceKind": "skill_evaluation",
+		"origin":     "real",
 		"title":      title,
 		"targetKind": run["targetKind"],
 		"targetId":   run["targetId"],

@@ -65,6 +65,126 @@ test("mergeProposalRecord combines evidence and sorts newest first", () => {
 	assert.equal(merged.evidence[0].observedAt, "2026-04-10T21:00:00.000Z");
 });
 
+test("generateScenarioProposals validates optional evidence provenance enums", () => {
+	const valid = generateScenarioProposals({
+		proposalCandidates: [createCandidate({
+			evidence: [
+				{
+					sourceKind: "agent_run",
+					origin: "replayed",
+					title: "valid replay provenance",
+					observedAt: "2026-04-09T21:00:00.000Z",
+					activityProvenance: {
+						activityId: "session-1",
+						taskKey: "review-after-retro",
+						recurrenceKey: "review-after-retro",
+						replayId: "replay-1",
+						split: "review",
+						score: 0.8,
+					},
+				},
+			],
+		})],
+		now: new Date("2026-04-11T00:00:00.000Z"),
+	});
+	assert.equal(valid.proposals[0].evidence[0].activityProvenance.replayId, "replay-1");
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "human_conversation",
+						origin: "dreamed",
+						title: "invalid origin",
+						observedAt: "2026-04-09T21:00:00.000Z",
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.origin must be one of/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "replayed",
+						title: "bad provenance object",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: null,
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance must be an object/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "replayed",
+						title: "invalid task key",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: { taskKey: 12 },
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.taskKey must be a non-empty string/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "replayed",
+						title: "invalid split",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: { split: "acceptance" },
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.split must be one of/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "replayed",
+						title: "invalid score",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: { score: "0.8" },
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.score must be a number/,
+	);
+	assert.throws(
+		() => generateScenarioProposals({
+			proposalCandidates: [createCandidate({
+				evidence: [
+					{
+						sourceKind: "agent_run",
+						origin: "replayed",
+						title: "unsupported field",
+						observedAt: "2026-04-09T21:00:00.000Z",
+						activityProvenance: { logPath: "/tmp/raw.log" },
+					},
+				],
+			})],
+		}),
+		/proposalCandidates\[0\]\.evidence\[0\]\.activityProvenance\.logPath is not supported/,
+	);
+});
+
 test("buildDraftScenario emits a product-owned normalized draft scenario", () => {
 	const scenario = buildDraftScenario(createCandidate(), new Set(["review-after-retro"]));
 	assert.equal(scenario.schemaVersion, DRAFT_SCENARIO_SCHEMA);

@@ -1,6 +1,6 @@
 # Achieve Goal: Implement Minimal SkillOpt Absorption Slice
 
-Status: draft
+Status: complete
 Created: 2026-07-08
 Activation: `/goal @charness-artifacts/goals/2026-07-08-skillopt-runtime-absorption.md`
 
@@ -9,11 +9,10 @@ runs the activation command.
 
 ## Active Operating Frame
 
-- Current slice: draft/backlog awaiting activation.
-- Current disposition: draft is shaped and activation-ready; no implementation has started.
-- Current slice intent: implement the first minimal Cautilus-native SkillOpt absorption runtime seam by extending scenario proposal input handling with explicit normalized activity-origin / replay provenance evidence, without importing raw readers or optimizer loops.
-- Next action: activate with `/goal @charness-artifacts/goals/2026-07-08-skillopt-runtime-absorption.md` after confirming the draft is
-  still intended.
+- Current slice: complete; runtime provenance implementation verified and ready for commit closeout.
+- Current disposition: schema, fixture, Node runtime, Go runtime, CLI smoke assertions, contract docs, generated claim artifacts, critique artifacts, debug artifacts, and quality record have been updated.
+- Current slice intent: implemented the first minimal Cautilus-native SkillOpt absorption runtime seam by extending scenario proposal input handling with explicit normalized activity-origin / replay provenance evidence, without importing raw readers or optimizer loops.
+- Next action: commit the completed slice and mark the host goal complete.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -96,25 +95,22 @@ If activation-time code inspection proves that this exact packet already carries
 
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Confirm the exact minimal runtime seam. | The previous goal stopped at design-only; activation must choose one real absorption path before editing. | Code/schema inspection of scenario proposal input, prepare-input, propose, fixtures, and current contract deferred decisions; updated slice note naming the selected field/packet. | planned |
-| 2 | Implement the packet/schema/helper fixture change. | Actual absorption requires one tested product-owned runtime boundary, not more prose. | Schema or helper change plus fixture covering normalized activity origin / replay provenance; no raw reader. | planned |
-| 3 | Propagate through CLI/proposal behavior as needed. | Host-owned normalized evidence must survive the agent-facing command path. | Focused CLI/helper test proving prepare/propose validates or preserves the absorbed evidence. | planned |
-| 4 | Realign docs/specs and claim surfaces. | Public docs must say what is implemented and what remains deferred. | Updated contracts/spec index/generated claim state if required; no overclaim beyond the implemented seam. | planned |
-| 5 | Final critique, quality, and closeout. | The user needs proof that actual absorption happened and that product boundaries held. | `npm run verify`, `npm run hooks:check`, fresh-eye disposition, final non-claims. | planned |
+| 1 | Confirm the exact minimal runtime seam. | The previous goal stopped at design-only; activation must choose one real absorption path before editing. | Code/schema inspection of scenario proposal input, prepare-input, propose, fixtures, and current contract deferred decisions; updated slice note naming the selected field/packet. | complete |
+| 2 | Implement the packet/schema/helper fixture change. | Actual absorption requires one tested product-owned runtime boundary, not more prose. | Schema or helper change plus fixture covering normalized activity origin / replay provenance; no raw reader. | complete |
+| 3 | Propagate through CLI/proposal behavior as needed. | Host-owned normalized evidence must survive the agent-facing command path. | Focused CLI/helper test proving prepare/propose validates or preserves the absorbed evidence. | complete |
+| 4 | Realign docs/specs and claim surfaces. | Public docs must say what is implemented and what remains deferred. | Updated contracts/spec index/generated claim state if required; no overclaim beyond the implemented seam. | complete |
+| 5 | Final critique, quality, and closeout. | The user needs proof that actual absorption happened and that product boundaries held. | `npm run verify`, `npm run hooks:check`, fresh-eye disposition, final non-claims. | complete |
 
 ## Operator Decision Queue
 
 - Decision: whether activation should implement the scenario-proposal origin/provenance seam as the first absorption slice or choose a different minimal seam from `docs/contracts/skillopt-absorption.md`.
-- Owner: operator.
-- Why deferred: the user's correction establishes that a goal was wanted, not immediate implementation in this turn.
-- Unblock action: activate the draft as-is, or edit the goal before activation if a different first seam is preferred.
-- Revisit trigger: before running `/goal @charness-artifacts/goals/2026-07-08-skillopt-runtime-absorption.md`.
+- Disposition: closed by implementation; scenario-proposal origin/provenance was selected and shipped as the first minimal seam.
 
 - Decision: whether any push, remote CI, release, or live proof lane should be included after local implementation proof.
 - Owner: operator.
-- Why deferred: implementation can be proven locally first, and no external lane was requested.
-- Unblock action: explicit approval naming the lane and bundle.
-- Revisit trigger: final closeout or before publication.
+- Why deferred: implementation was proven locally, and no external lane was requested.
+- Unblock action: explicit future approval naming the lane and bundle.
+- Revisit trigger: before publication, release, remote CI, or live proof.
 
 ## Coordination Cues
 
@@ -156,6 +152,23 @@ per the bullets above when that boundary is crossed):
 - Discuss before activation: confirmed by user correction — this artifact is the requested implementation goal for actual SkillOpt absorption; it is inert until `/goal`, and activation means implementing one minimal runtime seam rather than only closing design docs.
 
 ## Slice Log
+
+- 2026-07-08 Slice 1 selected the existing scenario proposal packet seam rather than a duplicate packet.
+  `cautilus.scenario_proposal_inputs.v1` already preserves unknown evidence fields through prepare/propose, so the minimal missing product-owned absorption surface is explicit schema/fixture/test support for evidence `origin` and `activityProvenance`.
+- 2026-07-08 Slice 2 drafted optional v1 evidence fields:
+  `origin` is bounded to `real`, `synthetic`, `replayed`, and `operator_authored`;
+  `activityProvenance` carries portable `activityId`, `taskKey`, `recurrenceKey`, `replayId`, `split`, and `score`.
+  The fields remain optional to preserve existing v1 callers.
+- 2026-07-08 Slice 3 drafted runtime proof:
+  fixture evidence covers all four origins, schema/helper tests assert runtime validation plus prepare/propose preservation on emitted top-ranked evidence, Go CLI smoke asserts host-provided replay provenance survives `discover scenarios propose`, and built-in chatbot normalization emits `origin: real`.
+- 2026-07-08 Slice 4 drafted contract realignment:
+  `scenario-proposal-inputs.md`, `skillopt-absorption.md`, `docs/specs/contracts/index.spec.md`, and `docs/master-plan.md` now distinguish the implemented scenario-proposal provenance route from still-deferred rejected-candidate, staged-adoption, replay/recall, and optimizer-adjacent work.
+- 2026-07-08 Fresh-eye review found that the first draft overclaimed runtime validation and full evidence preservation.
+  The follow-up implementation added Go/Node validation for optional provenance fields and narrowed docs to the actual proposal-output behavior: emitted top-ranked evidence preserves provenance while the input packet remains the complete audit trail.
+- 2026-07-08 Final quality pass verified command discovery, scenario discovery, agent-surface readiness, focused Node/Go tests, lint/spec/normalizer checks, coverage gates, claim refresh, `npm run verify`, and `npm run hooks:check`.
+  The quality record is `charness-artifacts/quality/latest.md`.
+- 2026-07-08 Delegated review closeout: Michael/Jackson, Weinberg, Gawande, and counterweight passes all returned Act Before Ship findings, and each was addressed before final verification.
+  The consumed packet is `charness-artifacts/critique/2026-07-08-013231-packet.md`.
 
 ## Context Sources
 
@@ -200,12 +213,35 @@ none yet — draft only.
 
 ## Final Verification
 
-Pending until activated and implemented.
+- `./bin/cautilus doctor commands --json` passed.
+- `./bin/cautilus discover scenarios --json` passed.
+- `./bin/cautilus doctor --repo-root . --scope agent-surface` passed.
+- `node --test scripts/agent-runtime/scenario-proposals.test.mjs scripts/agent-runtime/scenario-proposal-schemas.test.mjs` passed.
+- `go test ./internal/runtime -run TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance` passed.
+- `go test ./internal/app -run 'TestCLIScenario(ProposeGeneratesStandaloneProposalPacket|NormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose)$'` passed.
+- `npm run lint:eslint` passed.
+- `npm run lint:specs` passed.
+- `npm run lint:scenario-normalizers` passed.
+- `npm run test:coverage` passed.
+- `npm run coverage:floor:check` passed.
+- `npm run claims:refresh:all` refreshed generated claim state after claim-source edits.
+- `npm run verify` passed all phases in 95.32s.
+- `npm run hooks:check` passed.
+
+## Final Non-Claims
+
+- This slice does not import SkillOpt's optimizer, benchmark runner, package, WebUI, or training CLI.
+- This slice does not import SkillOpt-Sleep's scheduler, raw transcript harvesters, long-term-memory store, plugin shells, or sleep daemon.
+- This slice does not read raw Claude, Codex, Slack, product log, browser log, filesystem transcript, or private host archive data.
+- This slice does not auto-apply prompt, memory, skill, adapter, policy, or plugin edits.
+- This slice does not implement rejected-candidate, staged-adoption, replay/recall, held-out mutation, or optimizer-adjacent routes.
+- Proposal output preserves provenance only on emitted top-ranked evidence entries; the complete normalized evidence audit trail remains in `cautilus.scenario_proposal_inputs.v1`.
 
 ## User Verification Instructions
 
-- Review this draft goal file.
-- Confirm the activation line if this is the intended first real absorption slice: `/goal @charness-artifacts/goals/2026-07-08-skillopt-runtime-absorption.md`.
+- Inspect `fixtures/scenario-proposals/candidates.json` for all four evidence origins.
+- Inspect `docs/contracts/scenario-proposal-inputs.md` and `docs/contracts/skillopt-absorption.md` for the implemented-route boundary and deferred routes.
+- Run `npm run verify` and `npm run hooks:check` to repeat the final local proof.
 - Before activation, adjust the first seam if you want rejected-candidate evidence or staged-adoption evidence instead of scenario proposal origin/provenance.
 
 ## Auto-Retro

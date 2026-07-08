@@ -3,97 +3,85 @@ Date: 2026-07-08
 
 ## Problem
 
-`./scripts/run-quality.sh --read-only` returned `zsh:1: no such file or directory: ./scripts/run-quality.sh` during closeout quality planning.
+During the SkillOpt runtime absorption quality pass, I ran `./scripts/run-quality.sh --read-only` and got `zsh:1: no such file or directory: ./scripts/run-quality.sh`.
+This needed classification before treating quality proof as complete.
 
 ## Correct Behavior
 
-Given the quality planner emits a gate packet, when the command is not present in this repo, then the run should classify the packet as unavailable and fall back to the repo-owned canonical gates rather than inventing a replacement.
-The closeout should keep `npm run verify`, `npm run hooks:check`, and claim freshness checks as the authoritative local evidence for this documentation-design slice.
+Given the quality planner emits a conditional gate packet, when the repo does not expose that exact command, the operator should use the repo's equivalent standing gates and record the missing conditional command as not applicable rather than as a product regression.
 
 ## Observed Facts
 
-The attempted command failed exactly as:
-
-```text
-zsh:1: no such file or directory: ./scripts/run-quality.sh
-```
-
-`test -e scripts/run-quality.sh` returned exit code 1.
-`rg --files scripts | rg 'quality|verify|hooks'` found `scripts/coverage-floor-quality-gate.sh`, `scripts/run-verify.mjs`, and hook scripts, but no `scripts/run-quality.sh`.
-`package.json` exposes the standing `verify` and coverage-floor gates instead.
+- `plan_quality_run.py --repo-root . --json` listed `./scripts/run-quality.sh --read-only` with `run_when: repo exposes this repo-native command or an equivalent standing quality gate`.
+- `./scripts/run-quality.sh --read-only` exited 127 because the file does not exist.
+- `rg -n "run-quality|quality.*read-only|read-only" scripts package.json .agents/quality-adapter.yaml` found no `run-quality.sh` script.
+- The quality adapter's standing gates are `npm run verify` and `npm run dogfood:self`, and this slice already ran `npm run verify`.
+- `npm run verify` and `npm run hooks:check` passed after the runtime absorption changes and claim refresh.
 
 ## Reproduction
 
-Run:
-
-```bash
-./scripts/run-quality.sh --read-only
-```
-
-The shell returns exit 127 because the file is absent.
+- From repo root, run `./scripts/run-quality.sh --read-only`.
+- Observed result: shell exits 127 with `no such file or directory`.
 
 ## Candidate Causes
 
-- The portable quality planner includes a generic read-only quality command that this repo does not implement.
-- The repo intentionally centralizes the broad gate in `npm run verify` and hook readiness in `npm run hooks:check`.
-- The adapter's `gate_script_pattern: "*-quality-gate.sh"` covers focused quality-gate scripts such as coverage floor, not a monolithic `run-quality.sh`.
+- The repo used to have `scripts/run-quality.sh` and accidentally deleted it.
+- The quality adapter is stale and should name a repo-owned quality command that no longer exists.
+- The planner emits a portable conditional packet, and I executed it without first checking whether the repo exposes the named command.
 
 ## Hypothesis
 
-If `scripts/run-quality.sh` is absent and the repo's package scripts name `verify` as the canonical broad gate, then the correct closeout action is to record the quality packet as unavailable and cite the successfully run repo-owned gates.
-Disconfirmer: `test -e scripts/run-quality.sh` returning 0, or `rg --files scripts | rg '^scripts/run-quality\\.sh$'` finding the command, would refute the missing-command hypothesis.
+- Falsifiable claim: this is an operator misuse of a conditional planner packet, not a missing required repo gate.
+- Disconfirmer: if `.agents/quality-adapter.yaml`, `package.json`, or docs declare `scripts/run-quality.sh` as a required Cautilus gate, then the repo is missing a required command.
 
 ## Verification
 
-Confirmed.
-The file does not exist, and repo search found the actual quality-related gate surfaces under `scripts/run-verify.mjs`, `scripts/coverage-floor-quality-gate.sh`, and `package.json`.
-No product code change is required for the SkillOpt absorption documentation goal.
+- Result: confirmed.
+- The planner text itself scopes the command to repos that expose it or an equivalent standing quality gate.
+- The Cautilus repo exposes and passed the equivalent standing gate `npm run verify`.
+- No checked-in command reference found that makes `scripts/run-quality.sh` a required Cautilus command.
 
 ## Root Cause
 
-The portable quality skill planner advertised a generic gate packet that is not implemented by this repo.
-This is an unavailable optional quality packet for this closeout, not a failure of the Cautilus product surface being changed.
+The root cause was applying a conditional portable quality gate as if it were unconditionally repo-owned.
+The repo did not regress; the applicable standing quality proof for this slice is `npm run verify` plus the focused CLI/schema tests and `npm run hooks:check`.
 
 ## Invariant Proof
 
-- Invariant: closeout quality evidence must come from commands that exist in the repo or from an explicit unavailable-gate note.
-- Producer Proof: `test -e scripts/run-quality.sh` returned exit code 1.
-- Final-Consumer Proof: `npm run verify` and `npm run hooks:check` are recorded as the actual broad closeout gates in the goal artifact.
-- Interface-Shape Sibling Scan: the existing `coverage-floor-quality-gate.sh` is focused coverage policy, not a substitute for a missing monolithic read-only quality runner.
-- Non-Claims: this does not fix or change the portable quality planner's generic packet list.
+- Invariant: conditional planner gate packets must be checked against the resolved repo adapter before execution is treated as required proof.
+- Producer Proof: `plan_quality_run.py` marks the read-only quality command with a `run_when` condition.
+- Final-Consumer Proof: `npm run verify` and `npm run hooks:check` passed as the actual Cautilus standing gates.
+- Interface-Shape Sibling Scan: quality gate packets that name optional repo commands need applicability judgment before execution.
+- Non-Claims: this does not prove `npm run dogfood:self`; that broader dogfood gate was not required for this local runtime absorption slice.
 
 ## Detection Gap
 
-- quality planner packet | command availability was discovered only when the command was executed | smallest change to fire it: record unavailable packet in closeout and rely on repo-owned gates
-- repo scripts | no monolithic `run-quality.sh` exists | smallest change to fire it: no change in this goal because the standing command is `npm run verify`
+- surface: operator quality workflow | what did not fire: no automatic guard prevented me from executing an inapplicable conditional gate | smallest change to fire it: not worth adding; the planner already labels `run_when`, and the correct response is operator judgment.
 
 ## Sibling Search
 
-- Mental model: every quality planner packet command is implemented by the consumer repo.
-- same-surface: `scripts/run-quality.sh` is absent | decision: classify packet unavailable for this closeout | proof: `test -e` exit code 1 and script inventory
-- cross-file: `package.json` already owns `verify` | decision: use existing standing gate | proof: prior `npm run verify` passed
+- Mental model: every gate packet command is mandatory.
+- gate-applicability axis: `run_when` field | decision: read and apply the condition before running | proof: planner JSON includes the condition.
+- standing-gate axis: repo-owned equivalent gate | decision: use `npm run verify` for this slice | proof: verify passed.
+- cross-file: `.agents/quality-adapter.yaml` and `package.json` define actual Cautilus gates, not `scripts/run-quality.sh`.
 
 ## Seam Risk
 
-- Interrupt ID: quality-planner-missing-run-quality
+- Interrupt ID: quality-conditional-gate-misread-2026-07-08
 - Risk Class: none
-- Seam: portable quality planner to repo-owned gate inventory
-- Disproving Observation: advertised command is absent from repo scripts
-- What Local Reasoning Cannot Prove: whether other repos using this planner expect `run-quality.sh`
+- Seam: quality planner packet to repo-specific gate execution
+- Disproving Observation: planner explicitly labels the command conditional and the repo equivalent gate passed
+- What Local Reasoning Cannot Prove: n/a
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
 - Resolution: resolved
 - Critique Required: no
-- Next Step: achieve-closeout
+- Next Step: impl
 - Handoff Artifact: none
 
 ## Prevention
 
-Closeout should cite unavailable optional quality packets explicitly instead of implying they ran.
-For this repo, keep `npm run verify`, `npm run hooks:check`, and claim freshness checks as the maintained broad closeout evidence unless a future slice adds a real read-only quality runner.
-
-## Related Prior Incidents
-
-- none directly related
+For this goal closeout, record `./scripts/run-quality.sh --read-only` as not applicable because the repo does not expose it.
+Use the passing `npm run verify`, focused tests, CLI discovery probes, and `npm run hooks:check` as the quality evidence.

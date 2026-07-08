@@ -32,12 +32,66 @@
       "evidence": [
         {
           "sourceKind": "human_conversation",
+          "origin": "real",
           "title": "review after retro",
           "threadKey": "thread-1",
           "observedAt": "2026-04-09T21:00:00.000Z",
+          "activityProvenance": {
+            "activityId": "session-thread-1",
+            "taskKey": "review-after-retro",
+            "recurrenceKey": "review-after-retro",
+            "split": "proposal"
+          },
           "messages": [
             "retro 먼저 해주세요",
             "이제 review로 돌아가죠"
+          ]
+        },
+        {
+          "sourceKind": "agent_run",
+          "origin": "replayed",
+          "title": "review-after-retro replay passed",
+          "runId": "replay-run-1",
+          "threadKey": "thread-1",
+          "observedAt": "2026-04-10T21:00:00.000Z",
+          "activityProvenance": {
+            "activityId": "session-thread-1",
+            "taskKey": "review-after-retro",
+            "recurrenceKey": "review-after-retro",
+            "replayId": "replay-1",
+            "split": "review",
+            "score": 0.82
+          },
+          "textPreview": "Replay confirmed the retro-to-review pivot remains relevant."
+        },
+        {
+          "sourceKind": "skill_evaluation",
+          "origin": "synthetic",
+          "title": "synthetic review pivot seed",
+          "targetKind": "public_skill",
+          "targetId": "cautilus-agent",
+          "surface": "proposal_seed",
+          "observedAt": "2026-04-08T21:00:00.000Z",
+          "activityProvenance": {
+            "activityId": "synthetic-review-after-retro-1",
+            "taskKey": "review-after-retro",
+            "split": "train"
+          },
+          "summary": "Synthetic seed covers the same operator pivot without entering held-out or acceptance evidence."
+        },
+        {
+          "sourceKind": "human_conversation",
+          "origin": "operator_authored",
+          "title": "operator-authored review pivot note",
+          "threadKey": "operator-note-1",
+          "observedAt": "2026-04-07T21:00:00.000Z",
+          "activityProvenance": {
+            "activityId": "operator-note-1",
+            "taskKey": "review-after-retro",
+            "split": "proposal"
+          },
+          "messages": [
+            "Operators expect retro-to-review context to survive in one thread."
           ]
         }
       ]

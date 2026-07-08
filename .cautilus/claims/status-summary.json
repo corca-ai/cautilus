@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 366
+          "unknown": 370
         },
         "byReviewStatus": {
-          "heuristic": 366
+          "heuristic": 370
         },
-        "count": 366,
+        "count": 370,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 144
+          "satisfied": 145
         },
         "byReviewStatus": {
-          "agent-reviewed": 144
+          "agent-reviewed": 145
         },
-        "count": 144,
+        "count": 145,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 111
+          "unknown": 116
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 108,
+          "heuristic": 113,
           "human-reviewed": 1
         },
-        "count": 111,
+        "count": 116,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -99,13 +99,13 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 58
+          "unknown": 57
         },
         "byReviewStatus": {
           "agent-reviewed": 15,
-          "heuristic": 43
+          "heuristic": 42
         },
-        "count": 58,
+        "count": 57,
         "id": "human-align-surfaces",
         "recommendedActor": "human",
         "sampleClaimIds": [
@@ -130,7 +130,7 @@
         "sampleClaimIds": [
           "claim-readme-md-61",
           "claim-docs-guides-cli-md-567",
-          "claim-docs-master-plan-md-155",
+          "claim-docs-master-plan-md-156",
           "claim-docs-specs-index-spec-md-101",
           "claim-docs-specs-index-spec-md-102"
         ],
@@ -158,7 +158,7 @@
       }
     ]
   },
-  "candidateCount": 560,
+  "candidateCount": 565,
   "claimState": {
     "path": ".cautilus/claims/latest.json",
     "pathSource": "adapter",
@@ -175,43 +175,43 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 431,
+      "developer": 436,
       "user": 129
     },
     "byClaimSemanticGroup": {
       "Adapter and portability": 82,
-      "Agent and skill workflow": 122,
+      "Agent and skill workflow": 124,
       "Claim discovery and review": 78,
-      "Documentation and contracts": 117,
+      "Documentation and contracts": 119,
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 59,
-      "Packets and reporting": 61,
+      "Packets and reporting": 62,
       "Quality gates": 37,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 144,
-      "unknown": 416
+      "satisfied": 145,
+      "unknown": 420
     },
     "byLifecycle": {
-      "new": 560
+      "new": 565
     },
     "byRecommendedProof": {
       "cautilus-eval": 157,
-      "deterministic": 251,
-      "human-auditable": 152
+      "deterministic": 257,
+      "human-auditable": 151
     },
     "byReviewStatus": {
-      "agent-reviewed": 193,
-      "heuristic": 366,
+      "agent-reviewed": 194,
+      "heuristic": 370,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
       "blocked": 32,
-      "needs-alignment": 58,
+      "needs-alignment": 57,
       "needs-scenario": 1,
-      "ready-for-proof": 469
+      "ready-for-proof": 475
     }
   },
   "discoveryBoundary": {
@@ -423,7 +423,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 144,
+    "satisfiedClaimCount": 145,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-142",
@@ -1400,7 +1400,7 @@
         "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`"
       },
       {
-        "claimId": "claim-docs-master-plan-md-79",
+        "claimId": "claim-docs-master-plan-md-80",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1409,7 +1409,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-master-plan-md-79"
+              "claim-docs-master-plan-md-80"
             ]
           }
         ],
@@ -1419,7 +1419,26 @@
         "summary": "The first `claim` slice ships as deterministic `cautilus discover claims`, which emits a source-ref-backed proof plan rather than a verdict."
       },
       {
-        "claimId": "claim-docs-master-plan-md-86",
+        "claimId": "claim-docs-master-plan-md-82",
+        "evidenceRefCount": 1,
+        "evidenceRefs": [
+          {
+            "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
+            "kind": "cautilus-claim-evidence-bundle",
+            "matchKind": "verified",
+            "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
+            "supportsClaimIds": [
+              "claim-docs-master-plan-md-82"
+            ]
+          }
+        ],
+        "recommendedEvalSurface": null,
+        "recommendedProof": "deterministic",
+        "reviewStatus": "agent-reviewed",
+        "summary": "Direction decision (2026-06-10): claim extraction itself becomes agent-primary — the Cautilus Agent extracts claims against a product-owned template while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to git-diff-changed sources; the deterministic heuristic extractor remains an explicitly labeled baseline mode."
+      },
+      {
+        "claimId": "claim-docs-master-plan-md-87",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1428,7 +1447,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-master-plan-md-86"
+              "claim-docs-master-plan-md-87"
             ]
           }
         ],
@@ -3454,7 +3473,7 @@
       }
     ]
   },
-  "gitCommit": "03cfac60c33a572455046becc91b3f46d0f8a17f",
+  "gitCommit": "4e4eac2ad5c2e90e2e0314075a87fa918e594368",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3466,10 +3485,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "03cfac60c33a572455046becc91b3f46d0f8a17f",
+    "currentGitCommit": "4e4eac2ad5c2e90e2e0314075a87fa918e594368",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "03cfac60c33a572455046becc91b3f46d0f8a17f",
+    "packetGitCommit": "4e4eac2ad5c2e90e2e0314075a87fa918e594368",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3493,8 +3512,8 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 323,
-    "needsAlignment": 58,
+    "heuristicClaimsReadyForReview": 328,
+    "needsAlignment": 57,
     "needsScenario": 1
   },
   "sampleClaims": [

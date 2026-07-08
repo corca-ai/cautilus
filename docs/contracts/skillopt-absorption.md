@@ -1,7 +1,7 @@
 # SkillOpt Absorption Boundary
 
-Status: Design contract.
-No runtime surface is added by this document.
+Status: Boundary contract with one implemented runtime absorption route.
+The implemented route is limited to scenario proposal evidence provenance in `cautilus.scenario_proposal_inputs.v1`.
 
 `Cautilus` should absorb only the SkillOpt and SkillOpt-Sleep patterns that strengthen its existing `claim`, `eval`, and `improve` command families while preserving host-owned raw data, packet-first proof, held-out safety, and no auto-apply.
 
@@ -24,6 +24,12 @@ Absorption should strengthen those seams, not add an always-on nightly optimizer
 Design target: a host repo should be able to hand `Cautilus` normalized evidence from recent agent activity, rejected candidates, replay results, and staged adoption decisions once the relevant packet seam exists.
 `Cautilus` should then turn that evidence into scenario proposals, evaluation packets, improvement inputs, acceptance/readiness checks, and reviewable artifacts without reading raw transcripts or applying edits by itself.
 
+Implemented first route: host-owned scenario candidate miners can now attach `origin` and `activityProvenance` to each proposal evidence item.
+The existing `discover scenarios prepare-input` path preserves those fields from normalized input, and `discover scenarios propose` preserves them on the top-ranked evidence entries it emits for review.
+The implemented `origin` labels are `real`, `synthetic`, `replayed`, and `operator_authored`.
+The implemented `activityProvenance` fields are `activityId`, `taskKey`, `recurrenceKey`, `replayId`, `split`, and `score`.
+This is not a raw transcript reader, miner, replay runner, scheduler, optimizer, or adoption engine.
+
 ## Accepted Patterns
 
 ### Session-Derived Scenario Proposal Inputs
@@ -39,6 +45,8 @@ Required boundary:
 - raw transcript readers stay host-owned
 - source-specific grouping and privacy redaction stay host-owned
 - normalized candidates must carry operator-reviewable evidence, not opaque storage IDs only
+- session-derived, replayed, synthetic, and operator-authored evidence can be labeled with `origin`
+- replay and activity identity can be carried in `activityProvenance`
 - generated proposals remain draft scenarios until a maintainer adopts them
 
 ### Rejected-Candidate Evidence
@@ -122,17 +130,19 @@ Accepted absorption depends on these invariants:
 ## Fixed Decisions
 
 - Absorption is selective and Cautilus-native.
-- The first durable landing surface is this contract plus existing scenario-proposal, improve-search, revision-artifact, and final-acceptance contracts.
-- No new runtime command is added until a later slice identifies a minimal packet or normalizer that is worth testing.
+- The first implemented runtime landing surface is the scenario-proposal evidence provenance route in `cautilus.scenario_proposal_inputs.v1` and `cautilus.scenario_proposals.v1`.
+- Existing scenario proposal commands validate host-provided `origin` and `activityProvenance`; no new runtime command is required for the first route.
+- Proposal output preserves provenance on emitted top-ranked evidence entries, while the input packet remains the complete evidence audit trail.
 - Raw transcript harvesting remains out of product scope.
 - The current `improve search` v1 target remains one consumer-owned prompt file.
 - `Cautilus` may accept normalized session-derived candidate inputs, but it does not own the host miner that creates them.
+- Scenario proposal evidence provenance remains optional in v1 for backwards compatibility with existing candidate callers.
 
 ## Deferred Decisions
 
 - whether to add a generic `source_port` or `session_digest` packet that host miners can emit before scenario proposal input
 - whether rejected-candidate evidence needs its own normalized packet or should stay embedded in existing search/revision artifacts
-- whether scenario proposal inputs should formally distinguish `origin: real | synthetic | replayed | operator_authored`
+- whether a future v2 should require `origin: real | synthetic | replayed | operator_authored` for every scenario proposal evidence item
 - whether a future agent workflow should help a host author its own transcript miner without shipping one in the binary
 - whether richer multi-target improvement belongs in a future `improve` contract after real consumer evidence asks for it
 
@@ -150,14 +160,16 @@ Accepted absorption depends on these invariants:
 - A maintainer can identify which SkillOpt-derived patterns are accepted, rejected, and deferred without reading SkillOpt source code.
 - Every accepted pattern names the `Cautilus` command family and contract surface where it belongs.
 - The contract preserves host-owned raw data, packet-first artifacts, held-out discipline, acceptance contamination safety, and no auto-apply.
+- The implemented scenario proposal route shows normalized activity origin and replay provenance entering the proposal packet path and leaving on emitted top-ranked evidence.
 - The roadmap points here instead of re-explaining the boundary in prose.
 
 ## Acceptance Checks
 
 - Documentation check: README proof-state prose agrees with the apex surface audit.
 - Documentation check: the master plan links to this contract when mentioning SkillOpt absorption.
-- Spec index check: the maintainer contract index includes this contract as a design boundary, not an implemented evidence route.
-- Runtime check: no new binary, schema, or command behavior is implied by this design-only slice.
+- Spec index check: the maintainer contract index identifies this contract as a boundary with one implemented scenario-proposal provenance route.
+- Runtime check: `fixtures/scenario-proposals/candidates.json` includes `real`, `replayed`, `synthetic`, and `operator_authored` evidence, and the schema/helper tests prove runtime validation plus preservation on emitted top-ranked proposal evidence.
+- Runtime check: no raw transcript reader, scheduler, optimizer import, or auto-apply surface is added.
 
 ## Source References
 

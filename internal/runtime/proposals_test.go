@@ -3,6 +3,7 @@ package runtime
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
@@ -359,6 +360,88 @@ func TestMergeCandidatesByProposalKeyPreservesInsertionOrder(t *testing.T) {
 					iteration, index, want, candidate["proposalKey"])
 			}
 		}
+	}
+}
+
+func TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance(t *testing.T) {
+	baseCandidate := func(evidence map[string]any) map[string]any {
+		return map[string]any{
+			"proposalKey": "review-after-retro",
+			"title":       "Refresh review-after-retro scenario from recent activity",
+			"family":      "fast_regression",
+			"name":        "Review After Retro",
+			"description": "The user pivots from retro back to review in one thread.",
+			"brief":       "Recent activity shows a retro turn followed by a review turn.",
+			"evidence":    []any{evidence},
+		}
+	}
+	cases := []struct {
+		name     string
+		evidence map[string]any
+		want     string
+	}{
+		{
+			name: "invalid origin",
+			evidence: map[string]any{
+				"sourceKind": "human_conversation",
+				"origin":     "dreamed",
+				"title":      "invalid origin",
+				"observedAt": "2026-04-09T21:00:00.000Z",
+			},
+			want: "proposalCandidates[0].evidence[0].origin must be one of",
+		},
+		{
+			name: "invalid split",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "invalid split",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"split": "acceptance"},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.split must be one of",
+		},
+		{
+			name: "invalid task key type",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "invalid task key",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"taskKey": 12},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.taskKey must be a non-empty string",
+		},
+		{
+			name: "invalid score type",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "invalid score",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"score": "0.8"},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.score must be a number",
+		},
+		{
+			name: "unsupported provenance field",
+			evidence: map[string]any{
+				"sourceKind":         "agent_run",
+				"origin":             "replayed",
+				"title":              "unsupported field",
+				"observedAt":         "2026-04-09T21:00:00.000Z",
+				"activityProvenance": map[string]any{"logPath": "/tmp/raw.log"},
+			},
+			want: "proposalCandidates[0].evidence[0].activityProvenance.logPath is not supported",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			_, err := GenerateScenarioProposals([]any{baseCandidate(tc.evidence)}, nil, nil, nil, 14, time.Now())
+			if err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("GenerateScenarioProposals error: got %v, want containing %q", err, tc.want)
+			}
+		})
 	}
 }
 

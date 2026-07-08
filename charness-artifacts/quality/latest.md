@@ -1,100 +1,107 @@
 # Quality Review
-Date: 2026-05-19
+Date: 2026-07-08
 
 ## Scope
 
-Repo-wide setup and quality refresh.
-The slice re-ran the meaningful local gates, seeded the missing `.agents/worktree-adapter.yaml` after surfacing it from `setup` inspection, and filed three charness improvement issues discovered during the run.
+Minimal SkillOpt runtime absorption slice for Cautilus scenario proposal evidence provenance.
+The review covered schema, Node runtime, Go runtime, CLI smoke, contract docs, claim refresh, and delegated fresh-eye critique disposition.
 
 ## Current Gates
 
-- `npm run verify -- --runtime-signal charness-artifacts/quality/runtime-latest.json`
+- `./bin/cautilus doctor commands --json`
+- `./bin/cautilus discover scenarios --json`
+- `./bin/cautilus doctor --repo-root . --scope agent-surface`
+- `node --test scripts/agent-runtime/scenario-proposals.test.mjs scripts/agent-runtime/scenario-proposal-schemas.test.mjs`
+- `go test ./internal/runtime -run TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance`
+- `go test ./internal/app -run 'TestCLIScenario(ProposeGeneratesStandaloneProposalPacket|NormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose)$'`
+- `npm run lint:eslint`
+- `npm run lint:specs`
+- `npm run lint:scenario-normalizers`
+- `npm run test:coverage`
+- `npm run coverage:floor:check`
+- `npm run claims:refresh:all`
+- `npm run verify`
 - `npm run hooks:check`
-- `npm run dogfood:self`
-- `npm run critique:surface-packet:check`
-- `./bin/cautilus doctor adapter --repo-root .`
-- `charness worktree doctor --repo-root . --json`
 
 ## Runtime Signals
 
-- runtime source: `charness-artifacts/quality/runtime-latest.json` from `npm run verify -- --runtime-signal …`.
-- runtime status: passed (`verify · all phases passed (174.54s)`).
-- runtime hot spots: `test:coverage` (~73.6s), with `test:node` and `lint:specs` next.
-- dogfood: `npm run dogfood:self` passed with `recommendation=accept-now` in ~15s.
-- worktree doctor: `pass` against the newly seeded cautilus adapter (canonical + manifest `hooks_check`).
+- runtime source: direct command output from the local quality and verification gates listed in `## Commands Run`; structured timing capture is missing.
+- runtime hot spots: unavailable because structured timing capture is missing.
+- coverage gate: `npm run test:coverage` and `npm run coverage:floor:check` passed.
+- evaluator depth: deterministic local gates only, because this slice changed packet/schema/runtime preservation and did not require live provider or on-demand evaluator proof.
+- command discovery: `./bin/cautilus doctor commands --json` passed.
+- scenario discovery: `./bin/cautilus discover scenarios --json` passed.
+- agent surface readiness: `./bin/cautilus doctor --repo-root . --scope agent-surface` passed with ready status.
+- final verification: `npm run verify` passed all phases in 95.32s.
+- hook verification: `npm run hooks:check` passed.
 
 ## Healthy
 
-- `npm run verify` passes (lint, tests, coverage, claims evidence-state, drift checks).
-- `npm run hooks:check` reports `ready` with all five hook checks green.
-- `npm run critique:surface-packet:check` reports `findings: []` for both `release-packaging` and `cli-agent-product` sections.
-- Self-dogfood evaluation continues to select `find-skills` for bootstrap and `charness:impl` for implementation tasks.
-- Setup inspection still reports `repo_mode=NORMALIZE`, `missing_surfaces=[]`, `findings=[]`, `recommendations=[]`.
+- Scenario proposal evidence now has bounded optional `origin` values for `real`, `synthetic`, `replayed`, and `operator_authored`.
+- `activityProvenance` is a portable object with allowed keys only, bounded `split`, numeric `score`, and string identity fields.
+- Go and Node runtimes reject malformed optional provenance instead of only relying on fixture schemas.
+- CLI smoke now proves replay provenance through standalone propose and proves built-in normalized `origin: real` through normalize, prepare-input, and propose.
+- Contract docs now distinguish complete input audit trail preservation from top-ranked emitted proposal evidence preservation.
+- Final claim artifacts were refreshed after claim-source doc edits, and `npm run verify` reported claim freshness as current.
 
 ## Fixed In This Slice
 
-- Seeded `.agents/worktree-adapter.yaml` customized for cautilus (`npm install` + `npm run hooks:install`, manifest-defined `hooks_check` doctor). `charness worktree doctor` now reports `pass`.
+- Added schema, fixture, runtime, and CLI proof for scenario proposal evidence provenance as the first implemented SkillOpt absorption route.
+- Narrowed public wording that previously could read as if rejected-candidate, staged-adoption, replay/recall, or optimizer-adjacent routes were already implemented.
+- Addressed delegated review findings about weak runtime validation, overbroad preservation claims, and untracked critique packets.
 
 ## Weak
 
-- CI/local gate parity status is unchanged from the prior review: release artifact build, attestation, publish, and `spec-report.yml` Pages generation remain CI-only surfaces without canonical local gates.
-- Cautilus Agent core line pressure unchanged.
-- Public spec quality inventory still reports source-guard pressure and the 13 smoke-test paths flagged in the prior review.
-- Runtime budget profiles still empty even though `verify` now emits structured samples.
+- Proposal output intentionally keeps only top-ranked evidence entries, so lower-ranked evidence remains available in the input packet rather than every emitted proposal.
+- HTML proposal rendering still summarizes evidence count and does not expose provenance details.
+- `origin` remains optional in v1 for backwards compatibility.
 
 ## Missing
 
-- None new in this slice.
+- No raw transcript reader, scheduler, optimizer loop, recall index, long-term memory store, or auto-apply route was added.
+- No external CI, release, live-provider proof, or GitHub issue closeout was run for this local slice.
 
 ## Deferred
 
-- Do not introduce duplicate setup surfaces (`docs/roadmap.md`, root-level `docs/operator-acceptance.md`); cautilus already owns those as `docs/master-plan.md` and `docs/maintainers/operator-acceptance.md`.
-- Do not convert CI release publish and Pages generation into a standing local gate in this non-release refresh.
+- A future v2 may make `origin` required or add semantic requirements such as `origin: replayed` requiring `replayId`.
+- Rejected-candidate, staged-adoption, replay/recall, and optimizer-adjacent absorption routes remain contract targets rather than shipped runtime surfaces.
+- Auditor-facing rendered provenance details can be added later if JSON packet inspection is not enough.
 
 ## Advisory
 
-- The untracked editor swap file `docs/specs/.index.spec.md.swp` was excluded from the work.
-- `seed_worktree_adapter.py` exited 1 with a `ValueError` on the closing print even though the file was written; tracked upstream in `corca-ai/charness#181`.
-- Default worktree adapter template was pnpm+lefthook biased; tracked upstream in `corca-ai/charness#182`.
-
-## Charness Improvement Issues Filed
-
-- `corca-ai/charness#180` — setup should surface missing worktree-adapter as a recommendation when the repo actively uses worktrees, regardless of Node hook manager detection.
-- `corca-ai/charness#181` — `seed_worktree_adapter.py` crashes with `ValueError` on documented `--repo-root .` invocation after writing the file.
-- `corca-ai/charness#182` — Worktree adapter seeded template hardcoded to pnpm+lefthook, misleading for npm or custom-hook repos.
+- `./scripts/run-quality.sh --read-only` was listed only as a conditional adapter gate and does not exist in this repo.
+- The attempted invocation failed with `zsh: no such file or directory`; this was recorded as operator misuse of a conditional recommendation, not a Cautilus regression.
 
 ## Delegated Review
 
-executed: parent-delegated fresh-eye reviewer scoped to this slice's worktree adapter seed and charness issue closeout.
-Recorded under `Bounded Review` below.
+executed: parent-delegated fresh-eye review and counterweight review scoped to the SkillOpt runtime absorption packet/schema/helper slice.
+Recorded critique packet: `charness-artifacts/critique/2026-07-08-013231-packet.md`.
+Disposition: all Act Before Ship findings were addressed before final verification.
 
 ## Commands Run
 
-- `python3 $SKILL_DIR/setup/scripts/resolve_adapter.py --repo-root .`
-- `python3 $SKILL_DIR/setup/scripts/inspect_repo.py --repo-root .`
-- `python3 $SKILL_DIR/setup/scripts/render_skill_routing.py --repo-root . --json`
-- `python3 $SKILL_DIR/setup/scripts/seed_worktree_adapter.py --repo-root .`
-- `python3 $SKILL_DIR/find-skills/scripts/resolve_adapter.py --repo-root .`
-- `python3 $SKILL_DIR/find-skills/scripts/list_capabilities.py --repo-root .`
-- `python3 $SKILL_DIR/quality/scripts/resolve_adapter.py --repo-root .`
-- `python3 $SKILL_DIR/quality/scripts/bootstrap_adapter.py --repo-root .`
-- `python3 $SKILL_DIR/quality/scripts/resolve_quality_artifact.py --repo-root . --intent current`
-- `python3 $SKILL_DIR/issue/scripts/issue_tool.py preflight --repo-root . --json`
-- `npm run critique:surface-packet:check`
+- `./bin/cautilus doctor commands --json`
+- `./bin/cautilus discover scenarios --json`
+- `./bin/cautilus doctor --repo-root . --scope agent-surface`
+- `node --test scripts/agent-runtime/scenario-proposals.test.mjs scripts/agent-runtime/scenario-proposal-schemas.test.mjs`
+- `go test ./internal/runtime -run TestGenerateScenarioProposalsValidatesOptionalEvidenceProvenance`
+- `go test ./internal/app -run 'TestCLIScenario(ProposeGeneratesStandaloneProposalPacket|NormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPropose)$'`
+- `npm run lint:eslint`
+- `npm run lint:specs`
+- `npm run lint:scenario-normalizers`
+- `npm run test:coverage`
+- `npm run coverage:floor:check`
+- `npm run claims:refresh:all`
+- `npm run verify`
 - `npm run hooks:check`
-- `npm run verify -- --runtime-signal charness-artifacts/quality/runtime-latest.json`
-- `npm run dogfood:self`
-- `./bin/cautilus doctor adapter --repo-root .`
-- `charness worktree doctor --repo-root . --json`
-- `gh issue create --repo corca-ai/charness ...` (×3, issues #180, #181, #182)
 
-## Recommended Next Gates
+## Recommended Next Quality Moves
 
-- Release-surface parity: either add explicit local operation gates for release artifact build, attestation, publish, and spec-report Pages generation, or document adapter-level waivers for those CI-only surfaces. Carried over from prior review.
-- Agent progressive disclosure: when the Cautilus Agent surface is next edited, extract durable detail into references before adding more core prose.
-- Public spec proof layering: review the 13 smoke-test paths case by case and keep only smoke tests that prove cross-command, repo mutation, or artifact boundary behavior.
-- Runtime budgets: add phase budgets now that `verify` emits structured runtime signals.
+- active repeat broad verification when claim-source files change — capability_needed=claim freshness; next_center=claim refresh; transformation=rerun `npm run claims:refresh:all` and `npm run verify`; proof_boundary=local deterministic gates; enforcement_posture=existing gate.
+- passive rendered provenance details until auditor-facing HTML proof is claimed — capability_needed=proposal review UX; next_center=HTML renderer; transformation=show origin/provenance from emitted evidence; proof_boundary=focused renderer and proposal packet tests; enforcement_posture=no-gate because JSON packet proof is sufficient for this slice.
+- passive additional SkillOpt absorption routes until a separate goal selects one — capability_needed=product boundary design; next_center=rejected-candidate, staged-adoption, replay/recall, or optimizer-adjacent route; transformation=implement one bounded route with tests; proof_boundary=goal-specific local verification; enforcement_posture=no-gate because these routes are explicitly deferred.
 
 ## History
 
+- [2026-05-10 quality review](2026-05-10-quality-review.md)
 - [2026-04-22 quality review](history/2026-04-22.md)

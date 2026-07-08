@@ -1991,11 +1991,20 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 				"simulatorTurns": []string{"retro 먼저 해주세요", "이제 review로 돌아가죠"},
 				"evidence": []map[string]any{
 					{
-						"sourceKind": "human_conversation",
+						"sourceKind": "agent_run",
+						"origin":     "replayed",
 						"title":      "review after retro",
 						"threadKey":  "thread-1",
 						"observedAt": "2026-04-09T21:00:00.000Z",
-						"messages":   []string{"retro 먼저 해주세요", "이제 review로 돌아가죠"},
+						"activityProvenance": map[string]any{
+							"activityId":    "session-thread-1",
+							"taskKey":       "review-after-retro",
+							"recurrenceKey": "review-after-retro",
+							"replayId":      "replay-1",
+							"split":         "review",
+							"score":         0.82,
+						},
+						"messages": []string{"retro 먼저 해주세요", "이제 review로 돌아가죠"},
 					},
 				},
 			},
@@ -2045,6 +2054,18 @@ func TestCLIScenarioProposeGeneratesStandaloneProposalPacket(t *testing.T) {
 	proposal := proposals[0].(map[string]any)
 	if proposal["action"] != "refresh_existing_scenario" {
 		t.Fatalf("expected refresh_existing_scenario, got %#v", proposal["action"])
+	}
+	evidence := proposal["evidence"].([]any)
+	if len(evidence) != 1 {
+		t.Fatalf("expected one evidence item, got %#v", evidence)
+	}
+	firstEvidence := evidence[0].(map[string]any)
+	if firstEvidence["origin"] != "replayed" {
+		t.Fatalf("expected replayed origin to survive propose, got %#v", firstEvidence)
+	}
+	activityProvenance := firstEvidence["activityProvenance"].(map[string]any)
+	if activityProvenance["replayId"] != "replay-1" || activityProvenance["taskKey"] != "review-after-retro" {
+		t.Fatalf("expected activity provenance to survive propose, got %#v", activityProvenance)
 	}
 	draftScenario := proposal["draftScenario"].(map[string]any)
 	if draftScenario["schemaVersion"] != contracts.DraftScenarioSchema {
@@ -4307,10 +4328,23 @@ func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPro
 	if candidates[0].(map[string]any)["intentProfile"].(map[string]any)["schemaVersion"] != contracts.BehaviorIntentSchema {
 		t.Fatalf("unexpected intent profile: %#v", candidates[0])
 	}
+	for index, rawCandidate := range candidates {
+		candidate := rawCandidate.(map[string]any)
+		evidence := candidate["evidence"].([]any)
+		if len(evidence) == 0 || evidence[0].(map[string]any)["origin"] != "real" {
+			t.Fatalf("candidate %d should carry real origin evidence, got %#v", index, candidate)
+		}
+	}
 
 	_, stderr, exitCode = runCLI(t, root, "discover", "scenarios", "prepare-input", "--candidates", candidatesPath, "--registry", registryPath, "--coverage", coveragePath, "--family", "fast_regression", "--window-days", "14", "--now", "2026-04-11T00:00:00.000Z", "--output", proposalInputPath)
 	if exitCode != 0 {
 		t.Fatalf("discover scenarios prepare-input failed: %s", stderr)
+	}
+	preparedInput := readJSONObjectFile(t, proposalInputPath)
+	preparedCandidate := preparedInput["proposalCandidates"].([]any)[0].(map[string]any)
+	preparedEvidence := preparedCandidate["evidence"].([]any)[0].(map[string]any)
+	if preparedEvidence["origin"] != "real" {
+		t.Fatalf("prepare-input should preserve origin evidence, got %#v", preparedEvidence)
 	}
 	_, stderr, exitCode = runCLI(t, root, "discover", "scenarios", "propose", "--input", proposalInputPath, "--output", proposalOutputPath)
 	if exitCode != 0 {
@@ -4327,6 +4361,10 @@ func TestCLIScenarioNormalizeChatbotProducesCandidatesThatChainIntoPrepareAndPro
 	}
 	if firstProposal["family"] != "fast_regression" {
 		t.Fatalf("unexpected proposal family: %#v", firstProposal)
+	}
+	firstEvidence := firstProposal["evidence"].([]any)[0].(map[string]any)
+	if firstEvidence["origin"] != "real" {
+		t.Fatalf("propose should preserve origin evidence, got %#v", firstEvidence)
 	}
 }
 

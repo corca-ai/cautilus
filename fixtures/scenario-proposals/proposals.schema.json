@@ -166,11 +166,49 @@
                     "workflow_run"
                   ]
                 },
+                "origin": {
+                  "type": "string",
+                  "enum": [
+                    "real",
+                    "synthetic",
+                    "replayed",
+                    "operator_authored"
+                  ]
+                },
                 "title": {
                   "type": "string"
                 },
                 "observedAt": {
                   "type": "string"
+                },
+                "activityProvenance": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "activityId": {
+                      "type": "string"
+                    },
+                    "taskKey": {
+                      "type": "string"
+                    },
+                    "recurrenceKey": {
+                      "type": "string"
+                    },
+                    "replayId": {
+                      "type": "string"
+                    },
+                    "split": {
+                      "type": "string",
+                      "enum": [
+                        "proposal",
+                        "train",
+                        "review"
+                      ]
+                    },
+                    "score": {
+                      "type": "number"
+                    }
+                  }
                 }
               }
             }

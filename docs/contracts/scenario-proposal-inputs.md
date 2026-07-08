@@ -41,9 +41,16 @@ Minimum shape:
       "evidence": [
         {
           "sourceKind": "human_conversation",
+          "origin": "real",
           "title": "review after retro",
           "threadKey": "thread-1",
           "observedAt": "2026-04-09T21:00:00.000Z",
+          "activityProvenance": {
+            "activityId": "session-thread-1",
+            "taskKey": "review-after-retro",
+            "recurrenceKey": "review-after-retro",
+            "split": "proposal"
+          },
           "messages": ["retro 먼저 해주세요", "이제 review로 돌아가죠"]
         }
       ]
@@ -76,6 +83,13 @@ Each entry in `proposalCandidates` must provide:
 - draftable `name`, `description`, and `brief`
 - `evidence` array with at least one operator-reviewable signal
 
+Each evidence item must provide `sourceKind`, `title`, and `observedAt`.
+For SkillOpt-derived or other host-mined activity, evidence may also carry `origin` and `activityProvenance`.
+`origin` is bounded to `real`, `synthetic`, `replayed`, or `operator_authored`.
+`activityProvenance` is a portable normalized object for activity identity and replay context; supported fields are `activityId`, `taskKey`, `recurrenceKey`, `replayId`, `split`, and `score`.
+`split` is bounded to `proposal`, `train`, or `review` so proposal-time evidence does not imply held-out or acceptance mutation rights.
+The fields are optional in v1 for backwards compatibility, but host miners should include them when the candidate is derived from session, replay, synthetic, or operator-authored activity.
+
 Optional fields currently supported by the product-owned draft builder:
 
 - `intentProfile` using `cautilus.behavior_intent.v1` with product-owned `behaviorSurface` and dimension IDs
@@ -87,6 +101,7 @@ Optional fields currently supported by the product-owned draft builder:
 
 `Cautilus` may accept multiple candidates with the same `proposalKey`.
 The product-owned merge step combines their evidence and keeps the newest evidence first.
+Proposal output keeps the top-ranked evidence entries for review; lower-ranked evidence can be omitted from `cautilus.scenario_proposals.v1`, so hosts should keep the original input packet when they need a complete audit trail.
 
 ## Registry And Coverage Shape
 
@@ -122,6 +137,8 @@ The product-owned `discover scenarios propose` command then:
 - Product-owned proposal generation starts at candidate merge and ranking.
 - Registry presence and recent coverage remain separate inputs.
 - `intentProfile` stays optional so non-intent-aware candidate miners do not have to invent fake dimensions.
+- `origin` and `activityProvenance` are optional v1 evidence fields, not a separate SkillOpt packet.
+- Cautilus validates those fields when present and preserves them through `discover scenarios prepare-input`; `discover scenarios propose` preserves them on the top-ranked evidence entries it emits.
 
 ## Probe Questions
 
@@ -132,6 +149,7 @@ The product-owned `discover scenarios propose` command then:
 ## Deferred Decisions
 
 - generic helpers, if any, for host-side normalization before the packet exists
+- whether a later v2 should require `origin` for all evidence instead of preserving v1 compatibility
 
 ## Source References
 

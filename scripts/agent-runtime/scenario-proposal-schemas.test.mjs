@@ -13,6 +13,12 @@ const PORTABLE_EVIDENCE_SOURCE_KINDS = [
 	"skill_evaluation",
 	"workflow_run",
 ];
+const PORTABLE_EVIDENCE_ORIGINS = [
+	"real",
+	"synthetic",
+	"replayed",
+	"operator_authored",
+];
 
 function readJson(name) {
 	return JSON.parse(readFileSync(join(FIXTURE_ROOT, name), "utf-8"));
@@ -55,6 +61,13 @@ function validateAgainstSchema(schema, value, path = "root") {
 	if (schema.type === "integer") {
 		assert.equal(typeof value, "number", `${path} must be a number`);
 		assert.ok(Number.isInteger(value), `${path} must be an integer`);
+		if (schema.minimum !== undefined) {
+			assert.ok(value >= schema.minimum, `${path} must be >= ${schema.minimum}`);
+		}
+		return;
+	}
+	if (schema.type === "number") {
+		assert.equal(typeof value, "number", `${path} must be a number`);
 		if (schema.minimum !== undefined) {
 			assert.ok(value >= schema.minimum, `${path} must be >= ${schema.minimum}`);
 		}
@@ -111,10 +124,34 @@ test("scenario proposal evidence schema preserves portable provenance without ho
 	const inputEvidence = inputSchema.properties.proposalCandidates.items.properties.evidence.items;
 	const outputEvidence = outputSchema.properties.proposals.items.properties.evidence.items;
 	for (const [label, schema] of Object.entries({ inputEvidence, outputEvidence })) {
-		assert.deepEqual(schema.required, ["sourceKind", "title", "observedAt"], `${label} should require only portable provenance keys`);
+		assert.deepEqual(schema.required, ["sourceKind", "title", "observedAt"], `${label} should keep v1 evidence compatibility`);
 		assert.deepEqual(schema.properties.sourceKind.enum, PORTABLE_EVIDENCE_SOURCE_KINDS, `${label} should bound sourceKind to portable source ports`);
+		assert.deepEqual(schema.properties.origin.enum, PORTABLE_EVIDENCE_ORIGINS, `${label} should bound origin to portable activity labels`);
+		assert.deepEqual(schema.properties.activityProvenance.properties.split.enum, ["proposal", "train", "review"], `${label} should keep mutable/proposal splits explicit`);
+		assert.equal(schema.properties.activityProvenance.additionalProperties, false, `${label} should reject raw host storage fields inside activityProvenance`);
 		for (const hostField of ["path", "filePath", "storagePath", "sourcePath", "logPath", "repoPath"]) {
 			assert.equal(schema.required.includes(hostField), false, `${label} must not require host-specific ${hostField}`);
 		}
 	}
+});
+
+test("scenario proposal provenance survives prepare-input and propose", () => {
+	const packet = buildScenarioProposalInput({
+		proposalCandidates: readJson("candidates.json"),
+		existingScenarioRegistry: readJson("registry.json"),
+		scenarioCoverage: readJson("coverage.json"),
+		families: ["fast_regression"],
+		windowDays: 14,
+		now: "2026-04-11T00:00:00.000Z",
+	});
+	const inputOrigins = packet.proposalCandidates[0].evidence.map((entry) => entry.origin).sort();
+	assert.deepEqual(inputOrigins, [...PORTABLE_EVIDENCE_ORIGINS].sort());
+
+	const proposalPacket = buildScenarioProposalPacket(packet);
+	const proposal = proposalPacket.proposals.find((entry) => entry.proposalKey === "review-after-retro");
+	assert.ok(proposal, "review-after-retro proposal should be emitted");
+	assert.deepEqual(proposal.evidence.map((entry) => entry.origin), ["replayed", "real", "synthetic"]);
+	assert.equal(proposal.evidence[0].activityProvenance.replayId, "replay-1");
+	assert.equal(proposal.evidence[0].activityProvenance.taskKey, "review-after-retro");
+	assert.equal(proposal.evidence.length, 3, "proposal output keeps the top-ranked evidence entries");
 });
