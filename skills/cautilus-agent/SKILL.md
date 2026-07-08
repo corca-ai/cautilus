@@ -37,7 +37,7 @@ if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi
 ```
 
 Let the binary print command families and packet examples.
-Use `"$CAUTILUS_BIN" commands --json`, `"$CAUTILUS_BIN" --help`, portable `cautilus doctor commands --json` / `cautilus --help`, or a command's `--example-input` / `--example-output` surface instead of copying broad command lists into the answer.
+Use `"$CAUTILUS_BIN" doctor commands --json`, `"$CAUTILUS_BIN" --help`, portable `cautilus doctor commands --json` / `cautilus --help`, or a command's `--example-input` / `--example-output` surface instead of copying broad command lists into the answer.
 Use [command-cookbook.md](references/command-cookbook.md) only after the binary has identified the relevant command family and a concrete multi-step invocation is needed.
 
 ## No-Input Orientation

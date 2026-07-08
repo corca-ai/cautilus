@@ -101,7 +101,8 @@ startup_probes:
   - label: cautilus-healthcheck
     command:
       - ./bin/cautilus
-      - healthcheck
+      - doctor
+      - binary
       - "--json"
     class: standing
     startup_mode: warm
@@ -110,6 +111,7 @@ startup_probes:
   - label: cautilus-command-registry
     command:
       - ./bin/cautilus
+      - doctor
       - commands
       - "--json"
     class: release
@@ -119,6 +121,7 @@ startup_probes:
   - label: cautilus-scenario-catalog
     command:
       - ./bin/cautilus
+      - discover
       - scenarios
       - "--json"
     class: release
