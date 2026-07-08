@@ -9,10 +9,10 @@ It is active for the current `/goal` pursuit.
 
 ## Active Operating Frame
 
-- Current slice: Slice 1/2 combined doc and contract alignment under delegated fresh-eye critique remediation.
-- Current disposition: active; deterministic checks passed, generated claim surfaces need refresh after critique fixes.
+- Current slice: Slice 1/2 doc and contract alignment plus delegated critique remediation committed.
+- Current disposition: active; generated claim surfaces refreshed after critique fixes.
 - Current slice intent: align stale living docs with the current proof state, then design the Cautilus-native way to absorb useful SkillOpt and SkillOpt-Sleep patterns.
-- Next action: commit critique-driven doc/goal fixes, refresh claim surfaces against that committed HEAD, then decide whether closeout can proceed without a new runtime packet slice.
+- Next action: run final verification after the goal-log update, then decide whether closeout can proceed without a new runtime packet slice.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -83,9 +83,9 @@ Align Cautilus's living docs after the current proof-state drift, then design a 
 
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Align Cautilus living docs with current proof state. | The SkillOpt absorption decision should not land on top of stale public claims. | README/master-plan/spec wording agrees on proven/debt state; `npm run lint:specs` or documented substitute. | implemented; critique remediating |
-| 2 | Write the SkillOpt absorption design contract. | The useful lessons need a Cautilus-native boundary before implementation. | Contract/design doc names accepted patterns, rejected imports, command-family landing zones, packet boundaries, and contamination/safety constraints. | implemented; critique remediating |
-| 3 | Implement the smallest normalizer/evidence slice if the design chooses one. | A goal should land one executable proof when it adds a new runtime surface. | Fixture/schema/test for session-derived proposal input or rejected-candidate evidence; no raw transcript reader in product. | conditional |
+| 1 | Align Cautilus living docs with current proof state. | The SkillOpt absorption decision should not land on top of stale public claims. | README/master-plan/spec wording agrees on proven/debt state; `npm run lint:specs` or documented substitute. | implemented |
+| 2 | Write the SkillOpt absorption design contract. | The useful lessons need a Cautilus-native boundary before implementation. | Contract/design doc names accepted patterns, rejected imports, command-family landing zones, packet boundaries, and contamination/safety constraints. | implemented |
+| 3 | Implement the smallest normalizer/evidence slice if the design chooses one. | A goal should land one executable proof when it adds a new runtime surface. | Fixture/schema/test for session-derived proposal input or rejected-candidate evidence; no raw transcript reader in product. | not selected — design-only contract adds no runtime surface |
 | 4 | Final quality, critique, and closeout. | The user needs an auditable decision and next-step proof, not a private analysis. | `npm run verify`, `npm run hooks:check`, critique disposition, final verification, residual non-claims. | planned |
 
 ## Operator Decision Queue
@@ -147,7 +147,7 @@ per the bullets above when that boundary is crossed):
 
 - Objective: Align README/master-plan/spec-facing contract surfaces with the current 7/7 proven audit state and add a Cautilus-native SkillOpt absorption design boundary.
 - Why this approach: The absorption decision needed to land on a consistent proof-state story and preserve Cautilus's host-owned raw data, packet-first, held-out, no-auto-apply boundaries.
-- Commits: `bcb7cf5d` plus follow-up critique remediation commit pending.
+- Commits: `bcb7cf5d` initial alignment, `03cfac60` critique remediation, `6c01c6ca` claim refresh.
 - What changed: README proof-state prose now matches the apex audit; docs/contracts/skillopt-absorption.md defines accepted patterns, rejected imports, command-family landing zones, safety rules, and deferred packet questions; docs/master-plan.md and docs/specs/contracts/index.spec.md link the design boundary; claim generated surfaces were refreshed after README changed.
 - Alternatives rejected: Rejected lowering apex/spec status because .cautilus/audit/surface-audit.json and docs/specs/index.spec.md prove 7/7 current badge consistency; rejected importing SkillOpt/Sleep runtime surfaces because raw transcript readers, schedulers, plugin shells, and auto-apply violate Cautilus boundaries.
 - Targeted verification: git diff --check; npm run lint:specs; npm run claims:refresh:all; npm run lint:specs after refresh; npm run hooks:check; npm run verify.
@@ -155,6 +155,20 @@ per the bullets above when that boundary is crossed):
 - Critique: parent-delegated fresh-eye review consumed `charness-artifacts/critique/2026-07-08-003218-packet.md`; angle reviewers found absolute local SkillOpt refs, stale slice log, current-HEAD claim refresh drift, and capability wording risk; counterweight triaged absolute refs, stale slice log, and claim refresh drift as Act Before Ship, capability wording and verification evidence as Bundle Anyway, and master-plan packet-slice wording as Over-Worry.
 - Off-goal findings: none
 - Lessons carried forward: Generated claim surfaces need a post-fix refresh commit because claim packets record the commit they inspected; local research paths in product contracts should be labeled as local context or gathered into durable artifacts before becoming public evidence.
+- Metrics: not captured
+
+### Slice 2: Remediate delegated critique findings
+
+- Objective: Consume parent-delegated fresh-eye critique, fix design-contract ambiguity and provenance issues, and refresh generated claim state against the committed remediation.
+- Why this approach: Fresh-eye reviewers found current-HEAD claim drift, absolute local SkillOpt paths in durable product surfaces, stale goal log entries, and capability wording that could imply current runtime support.
+- Commits: 03cfac60 Record SkillOpt absorption critique remediation; 6c01c6ca Refresh claims after SkillOpt critique fixes
+- What changed: docs/contracts/skillopt-absorption.md now labels local SkillOpt checkout reads as local research context rather than public evidence and weakens the capability wording to a future design target; the goal artifact records parent-delegated critique evidence and updated verification; claim packets and generated claim-evidence projection now point at 03cfac60 and source freshness is clean.
+- Alternatives rejected: Did not change master-plan packet-slice wording because counterweight classified it as Over-Worry: it presents one option among alternatives and does not mandate implementation.
+- Targeted verification: git diff --check; npm run lint:specs; npm run hooks:check; npm run claims:source-freshness:check; npm run claims:evidence-state:check; npm run claims:status-report:check.
+- Test duplication pressure:
+- Critique: Fresh-Eye Satisfaction: parent-delegated; Packet Consumed: charness-artifacts/critique/2026-07-08-003218-packet.md; Reviewer Tier Evidence: requested tier high-leverage, requested spawn fields none, host exposure state parent-spawned, applied evidence four agents completed.
+- Off-goal findings: none
+- Lessons carried forward: When a claim-source doc and generated claim packets land together, use a follow-up generated-only refresh commit after the source commit so packetGitCommit remains auditable against HEAD.
 - Metrics: not captured
 
 ## Context Sources
