@@ -211,6 +211,7 @@ export function buildReviewDropSummary({ claimsPacket, claimsPath = DEFAULT_CLAI
 	const sourceSamplePolicy = asObject(reviewApplication.droppedUpdateSamplePolicy);
 	validateSourceSamplePolicy({
 		droppedUpdateCount: reviewApplication.droppedUpdateCount ?? 0,
+		reasonCounts,
 		rawSamples,
 		sourceSamplePolicy,
 	});
@@ -250,13 +251,18 @@ export function buildReviewDropSummary({ claimsPacket, claimsPath = DEFAULT_CLAI
 	};
 }
 
-function validateSourceSamplePolicy({ droppedUpdateCount, rawSamples, sourceSamplePolicy }) {
+function validateSourceSamplePolicy({ droppedUpdateCount, reasonCounts, rawSamples, sourceSamplePolicy }) {
 	const hasPolicy = Object.keys(sourceSamplePolicy).length > 0;
 	if (droppedUpdateCount > 0 && !hasPolicy) {
 		throw new Error("reviewApplication.droppedUpdateSamplePolicy is required when droppedUpdateCount is greater than zero");
 	}
 	if (!hasPolicy) {
 		return;
+	}
+	if (sourceSamplePolicy.selection !== "bounded-reason-representation") {
+		throw new Error(
+			`reviewApplication.droppedUpdateSamplePolicy.selection ${sourceSamplePolicy.selection} is unsupported; expected bounded-reason-representation`,
+		);
 	}
 	const sourceDroppedUpdateCount = sourceSamplePolicy.sourceDroppedUpdateCount;
 	if (sourceDroppedUpdateCount !== droppedUpdateCount) {
@@ -271,10 +277,32 @@ function validateSourceSamplePolicy({ droppedUpdateCount, rawSamples, sourceSamp
 		);
 	}
 	const maxRecordedSamples = sourceSamplePolicy.maxRecordedSamples;
-	if (typeof maxRecordedSamples !== "number" || maxRecordedSamples < rawSamples.length) {
+	if (!Number.isInteger(maxRecordedSamples) || maxRecordedSamples < rawSamples.length) {
 		throw new Error(
-			`reviewApplication.droppedUpdateSamplePolicy.maxRecordedSamples ${maxRecordedSamples} is lower than droppedUpdateSamples length ${rawSamples.length}`,
+			`reviewApplication.droppedUpdateSamplePolicy.maxRecordedSamples ${maxRecordedSamples} must be an integer at least droppedUpdateSamples length ${rawSamples.length}`,
 		);
+	}
+	if (sourceSamplePolicy.preservesDroppedReasonRepresentationWhenCapAllows !== true) {
+		throw new Error("reviewApplication.droppedUpdateSamplePolicy.preservesDroppedReasonRepresentationWhenCapAllows must be true");
+	}
+	if (sourceSamplePolicy.proportionalSampling !== false) {
+		throw new Error("reviewApplication.droppedUpdateSamplePolicy.proportionalSampling must be false");
+	}
+	validateSourceReasonRepresentation({ reasonCounts, rawSamples, maxRecordedSamples });
+}
+
+function validateSourceReasonRepresentation({ reasonCounts, rawSamples, maxRecordedSamples }) {
+	const requiredReasons = countEntries(reasonCounts)
+		.filter(([, count]) => count > 0)
+		.map(([reason]) => reason);
+	if (maxRecordedSamples >= requiredReasons.length) {
+		const representedReasons = new Set(rawSamples.map((sample) => sample.reason || "unknown"));
+		const missingReasons = requiredReasons.filter((reason) => !representedReasons.has(reason));
+		if (missingReasons.length > 0) {
+			throw new Error(
+				`reviewApplication.droppedUpdateSamplePolicy missing represented sample reason(s): ${missingReasons.join(", ")}`,
+			);
+		}
 	}
 }
 

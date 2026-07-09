@@ -98,6 +98,7 @@ test("buildReviewDropSummary treats unsampled reasons as count-level debt", () =
 	packet.reviewApplication.droppedUpdateSamples = packet.reviewApplication.droppedUpdateSamples.filter(
 		(sample) => sample.reason === "missing-fingerprint",
 	);
+	packet.reviewApplication.droppedUpdateSamplePolicy.maxRecordedSamples = 1;
 	packet.reviewApplication.droppedUpdateSamplePolicy.selectedSampleCount = 1;
 
 	const summary = buildReviewDropSummary({
@@ -239,6 +240,79 @@ test("buildReviewDropSummary rejects source dropped count drift", () => {
 				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
 			}),
 		/sourceDroppedUpdateCount 2 does not match droppedUpdateCount 3/,
+	);
+});
+
+test("buildReviewDropSummary rejects missing reason representation when source cap allows it", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamples = packet.reviewApplication.droppedUpdateSamples.filter(
+		(sample) => sample.reason === "missing-fingerprint",
+	);
+	packet.reviewApplication.droppedUpdateSamplePolicy.selectedSampleCount = 1;
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/missing represented sample reason\(s\): missing-live-fingerprint/,
+	);
+});
+
+test("buildReviewDropSummary rejects non-integer source sample cap", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamplePolicy.maxRecordedSamples = 20.5;
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/maxRecordedSamples 20.5 must be an integer/,
+	);
+});
+
+test("buildReviewDropSummary rejects unsupported source sample policy shape", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamplePolicy.selection = "proportional";
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/selection proportional is unsupported/,
+	);
+});
+
+test("buildReviewDropSummary rejects proportional source sample policy", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamplePolicy.proportionalSampling = true;
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/proportionalSampling must be false/,
+	);
+});
+
+test("buildReviewDropSummary rejects source policy without reason representation guarantee", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamplePolicy.preservesDroppedReasonRepresentationWhenCapAllows = false;
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/preservesDroppedReasonRepresentationWhenCapAllows must be true/,
 	);
 });
 
