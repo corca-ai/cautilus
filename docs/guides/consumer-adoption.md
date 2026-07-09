@@ -45,7 +45,7 @@ What each step proves:
 3. `doctor --next-action` narrows that full state down to one current action plus the exact doctor command to continue with.
 4. Follow that loop until `doctor` returns `ready`.
 5. `doctor` then proves the repo is ready against the checked-in runtime contract.
-   The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples.
+   The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios` catalog nearby only for proposal-input examples.
    If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.
 6. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
    Use `first_bounded_run.decisionLoopCommands[*]` for the generic packet loop, and use `first_bounded_run.normalizationFamilies[*].exampleInputCli` only when you want a minimal scenario-normalization packet before reaching for repo-local fixtures.

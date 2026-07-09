@@ -679,7 +679,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 		"",
 		"`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
 		"",
-		"The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples.",
+		"The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios` catalog nearby only for proposal-input examples.",
 		"",
 		"Cautilus leaves evidence that another person or agent can reopen instead of relying on terminal scrollback or memory.",
 		"",
@@ -911,7 +911,7 @@ func TestDiscoverClaimProofPlanAvoidsExampleAndBroadRouting(t *testing.T) {
 	if evaluateObserved == nil || evaluateObserved["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected no-launch evaluate observation packet claim to be deterministic, got %#v", evaluateObserved)
 	}
-	readyPayload := bySummary["The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios --json` catalog nearby only for proposal-input examples."]
+	readyPayload := bySummary["The ready payload now includes `first_bounded_run`, which adds a starter `evaluate fixture -> evaluate observation` packet loop and keeps the `cautilus discover scenarios` catalog nearby only for proposal-input examples."]
 	if readyPayload == nil || readyPayload["recommendedProof"] != "deterministic" {
 		t.Fatalf("expected ready payload claim to be deterministic, got %#v", readyPayload)
 	}
@@ -4207,7 +4207,7 @@ func TestClaimClassificationForkBCLIFlagSemanticsRoutingIsFrozen(t *testing.T) {
 		{"negative-judge-grades-behavior", "With `--rubric-strict`, the judge grades the agent's behavior harder and the run keeps only the failing transcripts.", "cautilus-eval", ""},
 		// Agent-behavior non-flip control: a flag claim whose verb is outside the tight set
 		// (gives/choose) is genuine agent behavior and stays cautilus-eval.
-		{"agent-behavior-doctor-json", "`doctor status --json` gives the Cautilus Agent a packet so it can choose a next branch.", "cautilus-eval", ""},
+		{"agent-behavior-doctor-format-json", "`doctor status --format json` gives the Cautilus Agent a packet so it can choose a next branch.", "cautilus-eval", ""},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {

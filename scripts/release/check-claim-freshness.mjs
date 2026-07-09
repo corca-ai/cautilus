@@ -91,6 +91,7 @@ export function repairCommands(options = {}) {
 			"--input",
 			shellQuote(claims),
 			"--sample-claims 1",
+			"--format json",
 			">",
 			shellQuote(status),
 		].join(" "),
@@ -139,10 +140,14 @@ function runGit(repoRoot, args) {
 }
 
 function runClaimStatus(repoRoot, claims, cautilusBin = "./bin/cautilus") {
-	return spawnSync(cautilusBin, ["discover", "claims", "status", "--input", claims, "--sample-claims", "1"], {
-		cwd: repoRoot,
-		encoding: "utf-8",
-	});
+	return spawnSync(
+		cautilusBin,
+		["discover", "claims", "status", "--input", claims, "--sample-claims", "1", "--format", "json"],
+		{
+			cwd: repoRoot,
+			encoding: "utf-8",
+		},
+	);
 }
 
 function canonicalValue(value) {

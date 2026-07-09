@@ -12,9 +12,9 @@ const MAX_NONEMPTY_LINES = 185;
 const REQUIRED_FRAGMENTS = [
 	"## CLI First",
 	"cautilus --help",
-	"cautilus doctor commands --json",
+	"cautilus doctor commands --format json",
 	"cautilus discover claims --repo-root .",
-	"cautilus discover scenarios --json",
+	"cautilus discover scenarios --format json",
 	"--example-input",
 	"## Declared Claim Discovery",
 	"`claim`, `eval`, and `improve`",

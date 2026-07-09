@@ -285,4 +285,4 @@ Follow-up slices proceed in this order:
 6. ~~C4 `expected.snapshot` composition primitive.~~ Shipped 2026-05-01 for app `finalText` snapshots.
 7. ~~Rescope `scenario normalize` proposal-input lineage.~~ Shipped 2026-05-01.
    The `archetype-boundary.spec.md` retirement was absorbed into the `mode evaluate` cut slice (2026-04-26): the spec was removed, the runtime-completeness check for surviving `scenario normalize` plumbing was later renamed to `lint:scenario-normalizers`, and AGENTS.md / CLAUDE.md / README.md / master-plan.md were realigned to point at this spec instead.
-   This slice completes the vocabulary cut: `cautilus discover scenarios --json` emits `cautilus.scenario_normalization_catalog.v1` with `normalizationFamilies`, `first_bounded_run` uses the same field, and the lint command is now `lint:scenario-normalizers`.
+   This slice completes the vocabulary cut: `cautilus discover scenarios` emits `cautilus.scenario_normalization_catalog.v1` with `normalizationFamilies`, `first_bounded_run` uses the same field, and the lint command is now `lint:scenario-normalizers`.

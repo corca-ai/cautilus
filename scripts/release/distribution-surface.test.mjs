@@ -48,7 +48,7 @@ test("package metadata does not claim an npm bin install surface", () => {
 });
 
 test("repo root exposes an official self-consumer adapter and doctor returns ready", () => {
-	const result = spawnSync(join(REPO_ROOT, "bin", "cautilus"), ["doctor", "--repo-root", REPO_ROOT], {
+	const result = spawnSync(join(REPO_ROOT, "bin", "cautilus"), ["doctor", "--repo-root", REPO_ROOT, "--format", "json"], {
 		cwd: REPO_ROOT,
 		encoding: "utf-8",
 	});

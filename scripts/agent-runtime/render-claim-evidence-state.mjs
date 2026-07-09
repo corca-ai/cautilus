@@ -405,9 +405,13 @@ export function renderMarkdown(projection) {
 }
 
 function refreshedStatus(args) {
-	const result = spawnSync(args.cautilusBin, ["discover", "claims", "status", "--input", args.claims, "--sample-claims", "1"], {
-		encoding: "utf8",
-	});
+	const result = spawnSync(
+		args.cautilusBin,
+		["discover", "claims", "status", "--input", args.claims, "--sample-claims", "1", "--format", "json"],
+		{
+			encoding: "utf8",
+		},
+	);
 	if (result.status !== 0) {
 		throw new Error(`failed to refresh claim status with ${args.cautilusBin}: ${result.stderr || result.stdout}`);
 	}

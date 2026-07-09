@@ -23,15 +23,15 @@ jq -r '.inputPath' .cautilus/claims/status-summary.json
 
 ```run:shell
 # Show the four packet surfaces emitted fresh from the current repo and canonical packet.
-./bin/cautilus doctor status --repo-root . --json | jq '{schemaVersion, mode}'
-./bin/cautilus discover claims status --input "${canon}" | jq '{schemaVersion, candidateCount}'
-./bin/cautilus discover claims validate --claims "${canon}" | jq '{schemaVersion, valid}'
-./bin/cautilus evaluate claims plan --claims "${canon}" --allow-stale-claims | jq '{schemaVersion}'
+./bin/cautilus doctor status --repo-root . --format json | jq '{schemaVersion, mode}'
+./bin/cautilus discover claims status --input "${canon}" --format json | jq '{schemaVersion, candidateCount}'
+./bin/cautilus discover claims validate --claims "${canon}" --format json | jq '{schemaVersion, valid}'
+./bin/cautilus evaluate claims plan --claims "${canon}" --allow-stale-claims --format json | jq '{schemaVersion}'
 ```
 
 ### Agent orientation packet: next branches and git/claim state
 
-> check:cautilus-json-command(command=cautilus doctor status --repo-root . --json)
+> check:cautilus-json-command(command=cautilus doctor status --repo-root . --format json)
 | path | equals | includes | min_number |
 | --- | --- | --- | --- |
 | schemaVersion | cautilus.agent_status.v1 | | |
@@ -41,7 +41,7 @@ jq -r '.inputPath' .cautilus/claims/status-summary.json
 
 ### Claim status summary: state summary and git state
 
-> check:cautilus-json-command(command=cautilus discover claims status --input ${canon})
+> check:cautilus-json-command(command=cautilus discover claims status --input ${canon} --format json)
 | path | equals | includes | min_number |
 | --- | --- | --- | --- |
 | schemaVersion | cautilus.claim_status_summary.v1 | | |
@@ -51,7 +51,7 @@ jq -r '.inputPath' .cautilus/claims/status-summary.json
 
 ### Claim validation report: validation state
 
-> check:cautilus-json-command(command=cautilus discover claims validate --claims ${canon})
+> check:cautilus-json-command(command=cautilus discover claims validate --claims ${canon} --format json)
 | path | equals |
 | --- | --- |
 | schemaVersion | cautilus.claim_validation_report.v1 |
@@ -59,7 +59,7 @@ jq -r '.inputPath' .cautilus/claims/status-summary.json
 
 ### Claim eval plan: eval planning state
 
-> check:cautilus-json-command(command=cautilus evaluate claims plan --claims ${canon} --allow-stale-claims)
+> check:cautilus-json-command(command=cautilus evaluate claims plan --claims ${canon} --allow-stale-claims --format json)
 | path | equals | includes |
 | --- | --- | --- |
 | schemaVersion | cautilus.claim_eval_plan.v1 | |
@@ -110,7 +110,7 @@ report-shows-stale
 
 The status summary packet behind that view buckets all three gap states together.
 
-> check:cautilus-json-command(command=cautilus discover claims status --input ${stale_packet})
+> check:cautilus-json-command(command=cautilus discover claims status --input ${stale_packet} --format json)
 | path | equals |
 | --- | --- |
 | schemaVersion | cautilus.claim_status_summary.v1 |

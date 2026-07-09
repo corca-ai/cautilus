@@ -39,10 +39,10 @@ func TestRenderUsageIncludesLifecycleCommands(t *testing.T) {
 	if err != nil {
 		t.Fatalf("RenderUsage returned error: %v", err)
 	}
-	if !strings.Contains(usage, "cautilus doctor commands [--json]") {
+	if !strings.Contains(usage, "cautilus doctor commands [--format yaml|json] [--json]") {
 		t.Fatalf("usage missing commands line:\n%s", usage)
 	}
-	if !strings.Contains(usage, "cautilus doctor binary [--json]") {
+	if !strings.Contains(usage, "cautilus doctor binary [--format yaml|json] [--json]") {
 		t.Fatalf("usage missing healthcheck line:\n%s", usage)
 	}
 	if !strings.Contains(usage, "cautilus init [--repo-root <path>] [--overwrite] [--json]") {

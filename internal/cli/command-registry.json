@@ -41,11 +41,12 @@
         "status"
       ],
       "group": "lifecycle",
-      "usage": "cautilus doctor status --repo-root <path> [--json]",
-      "example": "cautilus doctor status --repo-root . --json",
+      "usage": "cautilus doctor status --repo-root <path> [--format yaml|json] [--json]",
+      "example": "cautilus doctor status --repo-root . --format json",
       "notes": [
         "Emits the no-input orientation packet for Cautilus Agent.",
-        "The packet reads binary, agent-surface, adapter, and claim-state availability before a branch is selected."
+        "The packet reads binary, agent-surface, adapter, and claim-state availability before a branch is selected.",
+        "Structured stdout defaults to YAML for agent readability; use `--format json` or the compatibility alias `--json` when a parser needs JSON."
       ]
     },
     {
@@ -70,13 +71,14 @@
         "status"
       ],
       "group": "workflow",
-      "usage": "cautilus discover claims status --input <claims.json> [--sample-claims <n>] [--output <summary.json>]",
+      "usage": "cautilus discover claims status --input <claims.json> [--sample-claims <n>] [--format yaml|json] [--json] [--output <summary.json>]",
       "example": "cautilus discover claims status --input /tmp/cautilus-claims.json --sample-claims 10",
       "notes": [
         "Summarizes an existing `cautilus.claim_proof_plan.v1` packet without rescanning.",
         "`--sample-claims` includes a bounded set of stable claim fields for agents that need examples before choosing the next branch.",
         "Includes `evidenceSatisfaction` so satisfied claims and their evidence refs are visible from the status summary.",
-        "This command emits `cautilus.claim_status_summary.v1` for agents that need current status before choosing review, test, scenario, or alignment work."
+        "This command emits `cautilus.claim_status_summary.v1` for agents that need current status before choosing review, test, scenario, or alignment work.",
+        "Structured stdout defaults to YAML; use `--format json` or the compatibility alias `--json` when a parser needs JSON. `--output` writes the JSON packet file."
       ]
     },
     {
@@ -155,13 +157,14 @@
         "plan"
       ],
       "group": "workflow",
-      "usage": "cautilus evaluate claims plan --claims <reviewed-claims.json> [--max-claims <n>] [--allow-stale-claims] [--output <eval-plan.json>]",
+      "usage": "cautilus evaluate claims plan --claims <reviewed-claims.json> [--max-claims <n>] [--allow-stale-claims] [--format yaml|json] [--json] [--output <eval-plan.json>]",
       "example": "cautilus evaluate claims plan --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json",
       "notes": [
         "Emits `cautilus.claim_eval_plan.v1` for reviewed `cautilus-eval` claims that are ready to verify.",
         "Skips claims that already have `evidenceStatus=satisfied`; they do not need a new eval fixture plan by default.",
         "Rejects stale claim packets by default before planning eval fixtures; generated claim artifact commits do not make the source inventory stale.",
-        "The command plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy."
+        "The command plans eval fixtures but does not write host-owned fixtures, prompts, runners, or policy.",
+        "Structured stdout defaults to YAML; use `--format json` or the compatibility alias `--json` when a parser needs JSON. `--output` writes the JSON packet file."
       ]
     },
     {
@@ -171,11 +174,12 @@
         "validate"
       ],
       "group": "workflow",
-      "usage": "cautilus discover claims validate --claims <claims.json> [--output <validation-report.json>]",
+      "usage": "cautilus discover claims validate --claims <claims.json> [--format yaml|json] [--json] [--output <validation-report.json>]",
       "example": "cautilus discover claims validate --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-claim-validation.json",
       "notes": [
         "Emits `cautilus.claim_validation_report.v1` and exits non-zero when packet shape or evidence refs are invalid.",
-        "The command validates existing packets but does not mutate claims or search for evidence."
+        "The command validates existing packets but does not mutate claims or search for evidence.",
+        "Structured stdout defaults to YAML; use `--format json` or the compatibility alias `--json` when a parser needs JSON. `--output` writes the JSON packet file."
       ]
     },
     {
@@ -394,8 +398,12 @@
         "run"
       ],
       "group": "lifecycle",
-      "usage": "cautilus init run [args]",
-      "example": "eval \"$(cautilus init run --label mode-held-out)\""
+      "usage": "cautilus init run [--root <path>] [--label <label>] [--format yaml|json] [--json]",
+      "example": "eval \"$(cautilus init run --label mode-held-out)\"",
+      "notes": [
+        "Default stdout is the shell export used by `eval \"$(...)\"`.",
+        "`--format yaml`, `--format json`, and the compatibility alias `--json` emit the structured `cautilus.workspace_run_manifest.v1` payload instead."
+      ]
     },
     {
       "path": [
@@ -452,8 +460,11 @@
         "binary"
       ],
       "group": "lifecycle",
-      "usage": "cautilus doctor binary [--json]",
-      "example": "cautilus doctor binary --json"
+      "usage": "cautilus doctor binary [--format yaml|json] [--json]",
+      "example": "cautilus doctor binary --format json",
+      "notes": [
+        "Structured stdout defaults to YAML for agent readability; use `--format json` or the compatibility alias `--json` when a parser needs JSON."
+      ]
     },
     {
       "path": [
@@ -766,8 +777,11 @@
         "commands"
       ],
       "group": "lifecycle",
-      "usage": "cautilus doctor commands [--json]",
-      "example": "cautilus doctor commands --json"
+      "usage": "cautilus doctor commands [--format yaml|json] [--json]",
+      "example": "cautilus doctor commands --format json",
+      "notes": [
+        "Structured stdout defaults to YAML for agent readability; use `--format json` or the compatibility alias `--json` when a parser needs JSON."
+      ]
     },
     {
       "path": [
@@ -775,8 +789,11 @@
         "scenarios"
       ],
       "group": "workflow",
-      "usage": "cautilus discover scenarios [--json]",
-      "example": "cautilus discover scenarios --json"
+      "usage": "cautilus discover scenarios [--format yaml|json] [--json]",
+      "example": "cautilus discover scenarios --format json",
+      "notes": [
+        "Structured stdout defaults to YAML for agent readability; use `--format json` or the compatibility alias `--json` when a parser needs JSON."
+      ]
     },
     {
       "path": [

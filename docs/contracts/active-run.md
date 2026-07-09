@@ -60,7 +60,7 @@ An operator never has to thread paths between commands or parse JSON payloads.
 
 ## Shell-Export stdout Format
 
-`cautilus init run` (without `--json`) emits exactly one line on stdout:
+`cautilus init run` (without `--json` or explicit `--format`) emits exactly one line on stdout:
 
 ```
 export CAUTILUS_RUN_DIR='/abs/path/to/.cautilus/runs/20260411T103215123Z-<slug>'
@@ -70,7 +70,8 @@ The path is wrapped in POSIX single-quoted form, with embedded single quotes esc
 This makes `eval "$(...)"` safe even for roots that contain spaces or shell metacharacters.
 
 `--json` flips the stdout to the `cautilus.workspace_run_manifest.v1` payload used by automation and internal test scripts.
-`--json` is the machine path, not the operator happy path — no JSON parser dependency is introduced for the default flow.
+Explicit `--format yaml|json` also flips stdout to that structured payload in the requested format.
+`--json` and `--format json` are the JSON machine paths, not the operator happy path — no parser dependency is introduced for the default flow.
 
 ## Canonical Filenames
 
@@ -161,10 +162,10 @@ Inputs that still have multiple plausible runDir candidates, such as mode-prefix
 
 ## Entry Surface
 
-- `cautilus init run [--root R] [--label L] [--json]`
+- `cautilus init run [--root R] [--label L] [--format yaml|json] [--json]`
   - library: `scripts/agent-runtime/workspace-start.mjs`
   - default stdout: `export CAUTILUS_RUN_DIR='<abs runDir>'`
-  - `--json` alternate: `cautilus.workspace_run_manifest.v1` payload
+  - `--json` / `--format yaml|json` alternate: `cautilus.workspace_run_manifest.v1` payload
 - `cautilus doctor artifacts prune --root R [--keep-last N] [--max-age-days N]`
   - explicit opt-in.
     `workspace start` does not clean up older runs.
@@ -202,8 +203,9 @@ Record these so future sessions do not re-propose them:
 - `workspace start` is the only per-run materializer entry.
   `workspace new-run` is removed, not aliased.
 - The `run.json` manifest is intentionally thin: `schemaVersion`, `label`, `startedAt` — marker only.
-- `workspace start` stdout is POSIX `export`, single-quoted.
-- `--json` is the machine branch, not a drop-in alias.
+- `workspace start` default stdout is POSIX `export`, single-quoted.
+- `workspace start --format yaml|json` stdout is the structured run manifest in the requested format.
+- `--json` is the JSON machine branch, not a drop-in alias.
 
 ## Probe Questions
 

@@ -3,83 +3,82 @@ Date: 2026-07-09
 
 ## Problem
 
-Quality startup probes fail for current Cautilus release-readiness checks because configured probe commands call removed top-level CLI aliases.
+`npm run lint:specs` failed after structured stdout changed to default YAML because executable specs still asked the `cautilus-json-command` adapter to parse default stdout as JSON.
 
 ## Correct Behavior
 
-Given Cautilus exposes machine-readable discovery through the current command registry, quality startup probes and agent guidance should call runnable commands.
-When the probe wants binary health it should use `./bin/cautilus doctor binary --json`.
-When the probe wants command discovery it should use `./bin/cautilus doctor commands --json`.
-When the probe wants scenario catalog discovery it should use `./bin/cautilus discover scenarios --json`.
+Given structured command stdout defaults to YAML, human or agent display commands may omit a format flag.
+When an executable spec or parser expects JSON, the command under `cautilus-json-command` must request `--format json`.
 
 ## Observed Facts
 
-- `python3 .../measure_startup_probes.py --repo-root . --json` measured five probes and exited 1.
-- The failing probes were `cautilus-healthcheck`, `cautilus-command-registry`, and `cautilus-scenario-catalog`.
-- `.agents/quality-adapter.yaml` configured those probes as `./bin/cautilus healthcheck --json`, `./bin/cautilus commands --json`, and `./bin/cautilus scenarios --json`.
-- `./bin/cautilus doctor binary --json`, `./bin/cautilus doctor commands --json`, and `./bin/cautilus discover scenarios --json` all exit 0.
-- `./bin/cautilus healthcheck --json`, `./bin/cautilus commands --json`, and `./bin/cautilus scenarios --json` all exit 1 and print the usage surface.
-- `rg` found `.agents/skills/cautilus-agent/SKILL.md` still recommending `"$CAUTILUS_BIN" commands --json` even though portable text in the same line already names `cautilus doctor commands --json`.
+- `go test ./internal/app ./internal/cli ./internal/runtime` passed.
+- `npm run lint:skill-disclosure` initially failed because its required fragments still expected `doctor commands --json` and `discover scenarios --json`.
+- `npm run lint:specs` failed with `Command stdout was not JSON`.
+- `specdown run` showed YAML stdout for `doctor --repo-root ...` and `evaluate claims plan ...` cases executed through `cautilus-json-command`.
+- Adding `--format json` to JSON-parser spec commands made `npm run lint:specs` pass.
+- `npm run verify` then failed in `claims:evidence-state:check` because `render-claim-evidence-state.mjs --refresh-status` parsed `discover claims status` stdout without requesting JSON.
 
 ## Reproduction
 
-- Run `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.62.0/skills/quality/scripts/measure_startup_probes.py --repo-root . --json`.
-- Run the three stale aliases directly: `./bin/cautilus healthcheck --json`, `./bin/cautilus commands --json`, and `./bin/cautilus scenarios --json`.
+- Run `npm run lint:specs` after defaulting `writeJSON`/`writeOutput` stdout to YAML.
+- The smallest spec failing command was `${sample_cautilus} doctor --repo-root ${missing_git_repo}` under `check:cautilus-json-command(exit_code=1)`.
+- The smallest script failing path was `node scripts/agent-runtime/render-claim-evidence-state.mjs --refresh-status --check`.
 
 ## Candidate Causes
 
-- The quality adapter startup probes were not updated when command discovery moved under `doctor` and scenario catalog discovery moved under `discover`.
-- The binary accidentally removed backwards-compatible aliases that release probes still depend on.
-- The quality helper might be resolving an old binary rather than the checked-in `./bin/cautilus`.
-- Agent guidance copied an old local alias while docs and release adapter moved to the current command names.
+- Executable specs that verify JSON parser paths were not updated to pass `--format json`.
+- The specdown Cautilus adapter could be incorrectly parsing YAML as JSON.
+- The CLI default could be wrong and should have preserved JSON for all specdown runs.
 
 ## Hypothesis
 
-- Falsifiable claim: the release-readiness failure is stale probe and agent guidance configuration, not a broken current CLI discovery surface.
-- Disconfirmer: current documented commands fail, or registry/docs still define the stale top-level aliases as supported commands.
+- Falsifiable claim: the failure is spec/parser command drift, not a broken CLI JSON mode.
+- Disconfirmer: the same commands still fail when run with `--format json`.
 
 ## Verification
 
 - Result: confirmed.
-- Current documented commands passed: `./bin/cautilus doctor binary --json`, `./bin/cautilus doctor commands --json`, and `./bin/cautilus discover scenarios --json`.
-- Stale top-level aliases failed and printed the usage surface.
-- `docs/master-plan.md`, `README.md`, `docs/guides/cli.md`, `.agents/release-adapter.yaml`, and `.agents/quality-adapter.yaml` command-doc/probe-command sections already point at `doctor commands` and `discover scenarios`.
+- `cautilus doctor ... --format json`, `cautilus doctor status ... --format json`, `cautilus discover claims status ... --format json`, `cautilus discover claims validate ... --format json`, and `cautilus evaluate claims plan ... --format json` are valid JSON parser paths.
+- `npm run lint:specs` passed after the spec directives and parser examples were updated.
+- `npm run lint:skill-disclosure` passed after the required fragments moved from `--json` to `--format json`.
+- `scripts/agent-runtime/render-claim-evidence-state.test.mjs` now uses a fixture binary that fails unless `--format json` is passed on refresh.
 
 ## Root Cause
 
-The startup probe list and one local Cautilus Agent command-discovery sentence retained pre-registry top-level aliases after the current product surface settled on `doctor binary`, `doctor commands`, and `discover scenarios`.
-The standing `npm run verify` gate did not run the optional quality startup-probe inventory, so the drift stayed advisory until the whole-repo quality sweep measured startup probes.
+The implementation correctly changed structured stdout presentation to YAML, but executable specs and a disclosure guard still encoded the old assumption that no flag or the legacy `--json` spelling was the canonical parser path.
+The product contract had moved to `--format json`; the parser-facing proof surface had not fully moved with it.
 
 ## Invariant Proof
 
-- Invariant: release-readiness startup probes must exercise commands that the current registry and docs advertise.
-- Producer Proof: `.agents/quality-adapter.yaml` owns startup probe command lists for `measure_startup_probes.py`.
-- Final-Consumer Proof: rerun `measure_startup_probes.py --repo-root . --json` after the fix and require all configured probes to exit 0.
-- Interface-Shape Sibling Scan: `.agents/skills/cautilus-agent/SKILL.md`, `skills/cautilus-agent/SKILL.md`, and packaged plugin copies must not recommend removed top-level command-discovery aliases.
-- Non-Claims: this does not claim every historical doc in `docs/specs/old/` avoids old vocabulary; archived specs can preserve historical examples.
+- Invariant: parser-facing proof commands must request JSON explicitly.
+- Producer Proof: `docs/contracts/cli-output-format.md` defines YAML default stdout and `--format json` parser stdout.
+- Final-Consumer Proof: `npm run lint:specs` re-executes the specdown JSON parser checks and passed; `npm run claims:evidence-state:check` covers the internal refresh parser path.
+- Interface-Shape Sibling Scan: `scripts/check-cautilus-skill-disclosure.mjs` now requires `--format json` fragments for Cautilus Agent command discovery.
+- Non-Claims: default human/auditor display commands may still omit `--format json` and receive YAML.
 
 ## Detection Gap
 
-- startup probes | `npm run verify` did not run `measure_startup_probes.py` | smallest change to fire it: run the quality startup-probe inventory during release-readiness review.
-- agent command guidance | `lint:skill-disclosure` checks required fragments but not removed alias fragments | smallest change to fire it: add a forbidden fragment for `$CAUTILUS_BIN" commands --json` or update the skill text so existing disclosure checks no longer carry the stale alias.
-- CLI docs | docs and release adapter already used the current commands | smallest change to fire it: none needed for maintained docs.
+- executable specs | JSON-parser directives did not fail until `lint:specs` ran after implementation | smallest change to fire it: keep `npm run lint:specs` in the focused gate for CLI stdout-format work.
+- skill disclosure guard | required fragments lagged behind the command contract | smallest change to fire it: update required fragments in the same slice as contract language.
+- examples with `jq` | parser examples can silently become stale when stdout defaults change | smallest change to fire it: search `| jq` examples whenever stdout presentation changes.
 
 ## Sibling Search
 
-- Mental model: a command renamed in docs is automatically renamed in every probe and agent-facing helper sentence.
-- same layer: `.agents/quality-adapter.yaml` startup probes | decision: same bug, fix now | proof: direct probe failure.
-- same layer: `.agents/skills/cautilus-agent/SKILL.md` command discovery sentence | decision: same bug, fix now | proof: static scan plus current alias failure.
-- package layer: `skills/cautilus-agent/SKILL.md` and `plugins/cautilus/skills/cautilus-agent/SKILL.md` | decision: same bug, fix now | proof: source and packaged surfaces should match local agent guidance.
-- docs layer: `README.md`, `docs/guides/cli.md`, `.agents/release-adapter.yaml` | decision: same class, diagnostic-only for this slice | proof: static scan found current commands there.
-- cross-file: `.agents/quality-adapter.yaml`, `.agents/skills/cautilus-agent/SKILL.md`, `skills/cautilus-agent/SKILL.md`, and `plugins/cautilus/skills/cautilus-agent/SKILL.md`.
+- Mental model: changing the CLI writer is enough if app tests pass.
+- same layer: `docs/specs/promises/doctor-readiness.spec.md` | decision: same bug, fixed now | proof: specdown failure and passing rerun.
+- same layer: `docs/specs/promises/reviewable-artifacts.spec.md` and `docs/specs/promises/a-testable-agent.spec.md` | decision: same bug, fixed now | proof: parser-command scan and passing rerun.
+- internal script layer: `scripts/agent-runtime/render-claim-evidence-state.mjs` | decision: same bug, fixed now | proof: `verify` failure and fixture assertion requiring `--format json`.
+- guard layer: `scripts/check-cautilus-skill-disclosure.mjs` | decision: same bug, fixed now | proof: failing then passing `npm run lint:skill-disclosure`.
+- cross-file: specs, internal parser scripts, skill-disclosure guard, and Cautilus Agent skill/package copies.
 
 ## Seam Risk
 
-- Interrupt ID: startup-probe-command-drift-2026-07-09
+- Interrupt ID: cli-yaml-default-parser-spec-drift-2026-07-09
 - Risk Class: none
-- Seam: quality adapter probes and Cautilus Agent command-discovery guidance versus current CLI registry.
-- Disproving Observation: current documented commands pass directly; stale aliases fail directly.
-- What Local Reasoning Cannot Prove: whether downstream consumer repos have copied the stale aliases.
+- Seam: CLI stdout presentation contract versus executable JSON-parser specs.
+- Disproving Observation: explicit `--format json` commands parse and specdown passes.
+- What Local Reasoning Cannot Prove: whether external consumer scripts parse default stdout without `--format json`; release notes must call out the new default.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -91,5 +90,4 @@ The standing `npm run verify` gate did not run the optional quality startup-prob
 
 ## Prevention
 
-Keep startup probes tied to registry-backed commands rather than historical aliases.
-When command names move, scan quality adapters and Cautilus Agent package copies in the same slice, then rerun `measure_startup_probes.py`.
+For future stdout-format changes, update executable spec commands, `jq` examples, and deterministic skill-disclosure fragments in the same slice as the CLI writer change.

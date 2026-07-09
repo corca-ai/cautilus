@@ -26,6 +26,6 @@ The binary owns deterministic command execution, packet schemas, help text, and 
 ## Evidence
 
 - `npm run lint:skill-disclosure` enforces the progressive-disclosure contract between the source and packaged Cautilus Agent via [scripts/check-cautilus-skill-disclosure.mjs](../../../scripts/check-cautilus-skill-disclosure.mjs).
-- [internal/cli/registry_test.go](../../../internal/cli/registry_test.go) covers the deterministic command-discovery surface that `cautilus doctor commands --json` advertises.
+- [internal/cli/registry_test.go](../../../internal/cli/registry_test.go) covers the deterministic command-discovery surface that `cautilus doctor commands --format json` advertises.
 - The Cautilus Agent `dev/skill` self-dogfood fixtures (first-scan-flow, refresh-flow, review-prepare-flow, reviewer-launch-flow) under [fixtures/eval/dev/skill/](../../../fixtures/eval/dev/skill/) exercise the skill-driven branches end-to-end.
 - `npm run lint:product-import-isolation` ([scripts/check-product-import-isolation.mjs](../../../scripts/check-product-import-isolation.mjs)) parses every non-test Go file under `cmd/` and `internal/`, rejects any third-party import outside an explicit allowlist (currently `gopkg.in/yaml.v3` only), and rejects forbidden LLM provider host strings in the source; this proves the binary code path never opens a direct LLM provider connection. Self-test: [scripts/check-product-import-isolation.test.mjs](../../../scripts/check-product-import-isolation.test.mjs).

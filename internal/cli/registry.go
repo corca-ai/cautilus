@@ -105,7 +105,7 @@ func validateRegistry(r Registry) error {
 }
 
 // UsageLines returns the flat list of usage strings in group order.
-// Kept for the `cautilus doctor commands --json` payload.
+// Kept for the `cautilus doctor commands --format json` payload.
 func (r Registry) UsageLines() []string {
 	lines := make([]string, 0, len(r.Commands))
 	for _, command := range r.orderedCommands() {
@@ -115,7 +115,7 @@ func (r Registry) UsageLines() []string {
 }
 
 // ExampleLines returns the flat list of example strings in group order.
-// Kept for the `cautilus doctor commands --json` payload.
+// Kept for the `cautilus doctor commands --format json` payload.
 func (r Registry) ExampleLines() []string {
 	lines := make([]string, 0, len(r.Commands))
 	for _, command := range r.orderedCommands() {

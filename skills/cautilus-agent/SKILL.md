@@ -37,7 +37,7 @@ if [ -x ./bin/cautilus ]; then CAUTILUS_BIN=./bin/cautilus; fi
 ```
 
 Let the binary print command families and packet examples.
-Use `"$CAUTILUS_BIN" doctor commands --json`, `"$CAUTILUS_BIN" --help`, portable `cautilus doctor commands --json` / `cautilus --help`, or a command's `--example-input` / `--example-output` surface instead of copying broad command lists into the answer.
+Use `"$CAUTILUS_BIN" doctor commands --format json`, `"$CAUTILUS_BIN" --help`, portable `cautilus doctor commands --format json` / `cautilus --help`, or a command's `--example-input` / `--example-output` surface instead of copying broad command lists into the answer; structured stdout defaults to YAML, so use `--format json` when a parser needs JSON.
 Use [command-cookbook.md](references/command-cookbook.md) only after the binary has identified the relevant command family and a concrete multi-step invocation is needed.
 
 ## No-Input Orientation
@@ -45,7 +45,7 @@ Use [command-cookbook.md](references/command-cookbook.md) only after the binary 
 When invoked with no task detail, orient first:
 
 ```bash
-"$CAUTILUS_BIN" doctor status --repo-root . --json
+"$CAUTILUS_BIN" doctor status --repo-root . --format json
 ```
 
 Read `cautilus.agent_status.v1` as the current product map.
@@ -180,7 +180,7 @@ Routing rule:
 - `app / chat`: multi-turn product conversation behavior regressed after a prompt or wrapper change.
 - `app / prompt`: a single product input/output behavior must remain stable.
 
-Use `cautilus discover scenarios --json` only when you need the proposal-input normalization catalog.
+Use `cautilus discover scenarios` only when you need the proposal-input normalization catalog in YAML, or `cautilus discover scenarios --format json` when a parser needs JSON.
 Use `cautilus doctor --repo-root .` when the selected branch is repo evaluation readiness.
 Use `cautilus doctor --repo-root . --scope agent-surface` or `doctor --scope agent-surface` when the selected branch is only local Cautilus Agent install/readiness.
 

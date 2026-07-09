@@ -12,7 +12,37 @@ import (
 
 	"github.com/corca-ai/cautilus/internal/cli"
 	"github.com/corca-ai/cautilus/internal/contracts"
+	"gopkg.in/yaml.v3"
 )
+
+func decodeStructuredPayload(t *testing.T, payload []byte, target any) error {
+	t.Helper()
+	if err := json.Unmarshal(payload, target); err == nil {
+		return nil
+	}
+	var yamlValue any
+	if err := yaml.Unmarshal(payload, &yamlValue); err != nil {
+		return fmt.Errorf("failed to parse structured stdout as JSON or YAML: %w", err)
+	}
+	normalized, err := json.Marshal(yamlValue)
+	if err != nil {
+		return fmt.Errorf("marshal normalized YAML: %w", err)
+	}
+	if err := json.Unmarshal(normalized, target); err != nil {
+		return fmt.Errorf("unmarshal normalized YAML: %w", err)
+	}
+	return nil
+}
+
+func decodeJSONPayload(t *testing.T, payload []byte, target any) {
+	t.Helper()
+	if !strings.HasPrefix(strings.TrimSpace(string(payload)), "{") {
+		t.Fatalf("expected JSON object stdout, got %q", string(payload))
+	}
+	if err := json.Unmarshal(payload, target); err != nil {
+		t.Fatalf("expected JSON stdout, got error %v and payload %s", err, string(payload))
+	}
+}
 
 func TestRunVersionUsesEnvVersionWithoutToolRoot(t *testing.T) {
 	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
@@ -46,7 +76,7 @@ func TestRunVersionVerboseEmitsVersionStateJSON(t *testing.T) {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &payload); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	current, ok := payload["current"].(map[string]any)
@@ -94,7 +124,7 @@ func TestRunDoctorDoesNotRequireToolRootForNativeCommands(t *testing.T) {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &payload); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	if ready, ok := payload["ready"].(bool); !ok || !ready {
@@ -147,7 +177,7 @@ func TestRunDoctorDoesNotBlockWhenSpecdownMissingAndPacketsValidate(t *testing.T
 		t.Fatalf("expected doctor to stay ready without specdown, stdout=%s stderr=%s", stdout.String(), stderr.String())
 	}
 	var doctor map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &doctor); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &doctor); err != nil {
 		t.Fatalf("Unmarshal doctor returned error: %v\nstdout=%s", err, stdout.String())
 	}
 	if doctor["ready"] != true {
@@ -161,7 +191,7 @@ func TestRunDoctorDoesNotBlockWhenSpecdownMissingAndPacketsValidate(t *testing.T
 		t.Fatalf("raw claim packets should remain readable without specdown, stdout=%s stderr=%s", stdout.String(), stderr.String())
 	}
 	var validation map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &validation); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &validation); err != nil {
 		t.Fatalf("Unmarshal validation returned error: %v\nstdout=%s", err, stdout.String())
 	}
 	if validation["valid"] != true {
@@ -198,9 +228,7 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
-		t.Fatalf("Unmarshal returned error: %v", err)
-	}
+	decodeJSONPayload(t, stdout.Bytes(), &payload)
 	if payload["schemaVersion"] != "cautilus.commands.v1" {
 		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
 	}
@@ -253,6 +281,79 @@ func TestRunCommandsJSONReturnsRegistry(t *testing.T) {
 	}
 	if foundWorkbenchCommand {
 		t.Fatalf("commands payload should not include top-level workbench commands, got %#v", commands)
+	}
+}
+
+func TestRunStructuredStdoutDefaultsToYAMLAndSupportsFormatJSON(t *testing.T) {
+	t.Setenv("CAUTILUS_CALLER_CWD", t.TempDir())
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+	t.Setenv("CAUTILUS_VERSION", "v1.2.3")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"doctor", "binary"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if strings.HasPrefix(strings.TrimSpace(stdout.String()), "{") {
+		t.Fatalf("expected default structured stdout to be YAML, got JSON: %s", stdout.String())
+	}
+	var yamlPayload map[string]any
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &yamlPayload); err != nil {
+		t.Fatalf("failed to parse YAML stdout: %v\nstdout=%s", err, stdout.String())
+	}
+	if yamlPayload["schemaVersion"] != "cautilus.healthcheck.v1" {
+		t.Fatalf("unexpected YAML payload: %#v", yamlPayload)
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{"doctor", "binary", "--format", "json"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if !strings.HasPrefix(strings.TrimSpace(stdout.String()), "{") {
+		t.Fatalf("expected --format json stdout to be JSON, got: %s", stdout.String())
+	}
+	var jsonPayload map[string]any
+	if err := json.Unmarshal(stdout.Bytes(), &jsonPayload); err != nil {
+		t.Fatalf("expected JSON stdout, got error %v and payload %s", err, stdout.String())
+	}
+	if jsonPayload["schemaVersion"] != "cautilus.healthcheck.v1" {
+		t.Fatalf("unexpected JSON payload: %#v", jsonPayload)
+	}
+}
+
+func TestRunInitRunKeepsShellDefaultAndSupportsExplicitFormat(t *testing.T) {
+	root := t.TempDir()
+	t.Setenv("CAUTILUS_CALLER_CWD", root)
+	t.Setenv("CAUTILUS_TOOL_ROOT", "")
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	exitCode := Run([]string{"init", "run", "--label", "demo"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if !strings.HasPrefix(stdout.String(), "export CAUTILUS_RUN_DIR=") {
+		t.Fatalf("expected shell export default, got %q", stdout.String())
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{"init", "run", "--label", "demo-structured", "--format", "yaml"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	if strings.HasPrefix(stdout.String(), "export ") {
+		t.Fatalf("expected explicit --format yaml to produce structured output, got %q", stdout.String())
+	}
+	var payload map[string]any
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &payload); err != nil {
+		t.Fatalf("failed to parse init run payload: %v\nstdout=%s", err, stdout.String())
+	}
+	if payload["schemaVersion"] != "cautilus.workspace_run_manifest.v1" {
+		t.Fatalf("unexpected init run payload: %#v", payload)
 	}
 }
 
@@ -328,7 +429,7 @@ func TestRunAgentStatusJSONReturnsNoInputOrientation(t *testing.T) {
 		t.Fatalf("Run returned exit code %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &payload); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	if payload["schemaVersion"] != contracts.AgentStatusSchema {
@@ -563,7 +664,7 @@ func TestRunPacketInspectEmitsSchemaVersionAndArrayCounts(t *testing.T) {
 		t.Fatalf("expected exit 0, got %d stderr=%s", exitCode, stderr.String())
 	}
 	var report map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &report); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &report); err != nil {
 		t.Fatalf("invalid JSON stdout: %v\n%s", err, stdout.String())
 	}
 	if report["schemaVersion"] != "cautilus.packet_inspection.v1" {
@@ -682,7 +783,7 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &payload); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	if payload["schemaVersion"] != "cautilus.claim_status_summary.v1" || payload["candidateCount"] != float64(1) {
@@ -698,6 +799,18 @@ func TestRunClaimShowSummarizesExistingProofPlan(t *testing.T) {
 	sample := samples[0].(map[string]any)
 	if sample["claimId"] != "claim-readme-md-3" || sample["summary"] == "" {
 		t.Fatalf("expected sample claim identity and summary, got %#v", sample)
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{"discover", "claims", "status", "--input", claimsPath, "--sample-claims", "1", "--json"}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected --json exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var jsonPayload map[string]any
+	decodeJSONPayload(t, stdout.Bytes(), &jsonPayload)
+	if jsonPayload["schemaVersion"] != "cautilus.claim_status_summary.v1" {
+		t.Fatalf("unexpected --json discover claims status payload: %#v", jsonPayload)
 	}
 }
 
@@ -718,7 +831,7 @@ func TestRunClaimShowReportsStaleGitState(t *testing.T) {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &payload); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	gitState := payload["gitState"].(map[string]any)
@@ -758,7 +871,7 @@ func TestRunClaimShowTreatsNonSourceHeadDriftAsFresh(t *testing.T) {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
+	if err := decodeStructuredPayload(t, stdout.Bytes(), &payload); err != nil {
 		t.Fatalf("Unmarshal returned error: %v", err)
 	}
 	gitState := payload["gitState"].(map[string]any)
@@ -1036,6 +1149,22 @@ func TestRunClaimPlanEvalsWritesIntermediatePlan(t *testing.T) {
 	if first["claimId"] != "claim-agents-md-3" || first["targetSurface"] != "dev/repo" {
 		t.Fatalf("unexpected eval plan: %#v", first)
 	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{
+		"evaluate", "claims", "plan",
+		"--claims", claimsPath,
+		"--json",
+	}, &stdout, &stderr)
+	if exitCode != 0 {
+		t.Fatalf("expected --json exit code 0, got %d, stderr=%s", exitCode, stderr.String())
+	}
+	var jsonPayload map[string]any
+	decodeJSONPayload(t, stdout.Bytes(), &jsonPayload)
+	if jsonPayload["schemaVersion"] != "cautilus.claim_eval_plan.v1" {
+		t.Fatalf("unexpected --json claim eval plan payload: %#v", jsonPayload)
+	}
 }
 
 func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
@@ -1097,6 +1226,22 @@ func TestRunClaimValidateWritesReportAndFailsInvalidEvidence(t *testing.T) {
 	}
 	if issues := payload["issues"].([]any); len(issues) == 0 {
 		t.Fatalf("expected validation issues, got %#v", payload)
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	exitCode = Run([]string{
+		"discover", "claims", "validate",
+		"--claims", claimsPath,
+		"--json",
+	}, &stdout, &stderr)
+	if exitCode == 0 {
+		t.Fatalf("expected non-zero --json exit code for invalid evidence")
+	}
+	var jsonPayload map[string]any
+	decodeJSONPayload(t, stdout.Bytes(), &jsonPayload)
+	if jsonPayload["schemaVersion"] != "cautilus.claim_validation_report.v1" || jsonPayload["valid"] != false {
+		t.Fatalf("unexpected --json validation payload: %#v", jsonPayload)
 	}
 }
 
@@ -1276,9 +1421,7 @@ func TestRunScenariosJSONReturnsThreeNormalizationFamilies(t *testing.T) {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
-		t.Fatalf("Unmarshal returned error: %v", err)
-	}
+	decodeJSONPayload(t, stdout.Bytes(), &payload)
 	if payload["schemaVersion"] != "cautilus.scenario_normalization_catalog.v1" {
 		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
 	}
@@ -1320,9 +1463,7 @@ func TestRunHealthcheckJSONReturnsHealthyPayload(t *testing.T) {
 		t.Fatalf("expected exit code 0, got %d, stderr=%s", exitCode, stderr.String())
 	}
 	var payload map[string]any
-	if err := json.Unmarshal(stdout.Bytes(), &payload); err != nil {
-		t.Fatalf("Unmarshal returned error: %v", err)
-	}
+	decodeJSONPayload(t, stdout.Bytes(), &payload)
 	if payload["status"] != "healthy" || payload["healthy"] != true {
 		t.Fatalf("expected healthy payload, got %#v", payload)
 	}

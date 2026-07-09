@@ -105,7 +105,7 @@ test("repo shim preserves caller cwd while resolving doctor against a consumer r
 			"utf-8",
 		);
 
-		const result = spawnSync(BIN_PATH, ["doctor", "--repo-root", "."], {
+		const result = spawnSync(BIN_PATH, ["doctor", "--repo-root", ".", "--format", "json"], {
 			cwd: root,
 			encoding: "utf-8",
 		});
@@ -127,7 +127,8 @@ test("repo shim keeps lifecycle install working from a consumer repo", () => {
 			encoding: "utf-8",
 		});
 		assert.equal(install.status, 0, install.stderr);
-		assert.match(install.stdout, /Installed .*\.agents\/skills\/cautilus-agent/);
+		assert.match(install.stdout, /schemaVersion: cautilus\.install_summary\.v1/);
+		assert.match(install.stdout, /destinationDir: .*\.agents\/skills\/cautilus-agent/);
 
 		const skillPath = join(root, ".agents", "skills", "cautilus-agent", "SKILL.md");
 		assert.equal(existsSync(skillPath), true);

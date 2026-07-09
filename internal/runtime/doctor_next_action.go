@@ -82,7 +82,7 @@ func buildRepoNextAction(result map[string]any, repoRoot string, adapterName *st
 		}
 		discoveryCommand := strings.TrimSpace(stringOrEmpty(asMap(result["first_bounded_run"])["discoveryCommand"]))
 		if discoveryCommand == "" {
-			discoveryCommand = "cautilus discover scenarios --json"
+			discoveryCommand = "cautilus discover scenarios"
 		}
 		return doctorAction(
 			"complete_first_bounded_run",

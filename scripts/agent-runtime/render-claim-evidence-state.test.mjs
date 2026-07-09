@@ -121,6 +121,11 @@ function writeFixtureCautilus(root, statusPacket) {
 		bin,
 		[
 			"#!/usr/bin/env node",
+			"const formatIndex = process.argv.indexOf('--format');",
+			"if (formatIndex === -1 || process.argv[formatIndex + 1] !== 'json') {",
+			"  process.stderr.write('expected --format json\\n');",
+			"  process.exit(2);",
+			"}",
 			`process.stdout.write(${JSON.stringify(`${JSON.stringify(statusPacket, null, 2)}\n`)});`,
 		].join("\n"),
 	);

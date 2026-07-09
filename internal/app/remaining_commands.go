@@ -158,18 +158,10 @@ func handleInstall(repoRoot string, cwd string, args []string, stdout io.Writer,
 			fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
 		},
 	}
-	if options.json {
-		if err := writeJSON(stdout, summary); err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		return 0
+	if err := writeJSON(stdout, summary); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
 	}
-	writeLifecycleMessages(stdout, logLines(logBuffer.String()))
-	fmt.Fprintf(stdout, "Installed %s\n", skill.DestinationDir)
-	fmt.Fprintf(stdout, "Current CLI: v%s (%s)\n", state.Current.Version, state.Current.InstallKind)
-	fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --next-action\n", targetRepo)
-	fmt.Fprintf(stdout, "Inspect: cautilus doctor --repo-root %s\n", targetRepo)
 	return 0
 }
 
@@ -220,19 +212,10 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 				fmt.Sprintf("cautilus doctor --repo-root %s", targetRepo),
 			)
 		}
-		if options.json {
-			summary["nextSteps"] = nextSteps
-			if err := writeJSON(stdout, summary); err != nil {
-				fmt.Fprintf(stderr, "%s\n", err)
-				return 1
-			}
-			return 0
-		}
-		fmt.Fprintf(stdout, "Source checkout detected. Pull the repo and rebuild to update the CLI.\n")
-		if targetRepo != "" {
-			fmt.Fprintf(stdout, "Refreshed Cautilus Agent in %s\n", targetRepo)
-			fmt.Fprintf(stdout, "Next: cautilus doctor --repo-root %s --next-action\n", targetRepo)
-			fmt.Fprintf(stdout, "Inspect: cautilus doctor --repo-root %s\n", targetRepo)
+		summary["nextSteps"] = nextSteps
+		if err := writeJSON(stdout, summary); err != nil {
+			fmt.Fprintf(stderr, "%s\n", err)
+			return 1
 		}
 		return 0
 	}
@@ -275,16 +258,9 @@ func handleUpdate(repoRoot string, cwd string, args []string, stdout io.Writer, 
 	summary["messages"] = messages
 	summary["nextSteps"] = nextSteps
 
-	if options.json {
-		if err := writeJSON(stdout, summary); err != nil {
-			fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		return 0
-	}
-	writeLifecycleMessages(stdout, messages)
-	for _, step := range nextSteps {
-		fmt.Fprintf(stdout, "Next: %s\n", step)
+	if err := writeJSON(stdout, summary); err != nil {
+		fmt.Fprintf(stderr, "%s\n", err)
+		return 1
 	}
 	return 0
 }
@@ -1546,12 +1522,6 @@ func logLines(content string) []string {
 		lines = append(lines, trimmed)
 	}
 	return lines
-}
-
-func writeLifecycleMessages(stdout io.Writer, messages []string) {
-	for _, message := range messages {
-		_, _ = fmt.Fprintln(stdout, message)
-	}
 }
 
 func progressLogger(quiet bool, stderr io.Writer) func(string) {

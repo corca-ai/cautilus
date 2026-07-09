@@ -18,7 +18,7 @@ test("repairCommands points release operators at saved packet refresh and projec
 		claims: "custom claims;danger.json",
 		status: "custom status's.json",
 	}), [
-		"cd '/tmp/cautilus repo' && ./bin/cautilus discover claims status --input 'custom claims;danger.json' --sample-claims 1 > 'custom status'\\''s.json'",
+		"cd '/tmp/cautilus repo' && ./bin/cautilus discover claims status --input 'custom claims;danger.json' --sample-claims 1 --format json > 'custom status'\\''s.json'",
 	]);
 });
 
@@ -367,7 +367,7 @@ test("check-claim-freshness CLI prints fresh release metadata", () => {
 		const argv = JSON.parse(spawnSync("node", ["-e", `process.stdout.write(require('node:fs').readFileSync(${JSON.stringify(join(root, "argv.json"))}, 'utf-8'))`], {
 			encoding: "utf-8",
 		}).stdout);
-		assert.deepEqual(argv, ["discover", "claims", "status", "--input", claims, "--sample-claims", "1"]);
+			assert.deepEqual(argv, ["discover", "claims", "status", "--input", claims, "--sample-claims", "1", "--format", "json"]);
 	});
 });
 

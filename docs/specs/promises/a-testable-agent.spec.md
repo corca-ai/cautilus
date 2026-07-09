@@ -22,9 +22,9 @@ jq -r '.inputPath' .cautilus/claims/status-summary.json
 
 ### The binary emits a live runner-readiness verdict for this repo's agent.
 
-`doctor status --json` carries a `runnerReadiness` block: the assessed runner's proof class, surface, and recommendation, the source of the proof class, the freshness policy, and the scaffold source an operator copies to author an assessment.
+`doctor status --format json` carries a `runnerReadiness` block: the assessed runner's proof class, surface, and recommendation, the source of the proof class, the freshness policy, and the scaffold source an operator copies to author an assessment.
 
-> check:cautilus-json-command(command=cautilus doctor status --repo-root . --json)
+> check:cautilus-json-command(command=cautilus doctor status --repo-root . --format json)
 | path | equals | includes | min_number |
 | --- | --- | --- | --- |
 | runnerReadiness.assessment.schemaVersion | cautilus.runner_assessment.v1 | | |
@@ -63,7 +63,7 @@ The Surface Honesty Audit reads each file below, so the badge stays bound to ass
 `evaluate claims plan` records, per eval-ready claim, the runner capability and observability the proof requires — a requirement field, not a readiness verdict.
 Every planned claim names a runner capability and the proof mechanism that surfaces it.
 
-> check:cautilus-json-command(command=cautilus evaluate claims plan --claims ${canon} --allow-stale-claims)
+> check:cautilus-json-command(command=cautilus evaluate claims plan --claims ${canon} --allow-stale-claims --format json)
 | path | equals | includes | min_number |
 | --- | --- | --- | --- |
 | schemaVersion | cautilus.claim_eval_plan.v1 | | |
@@ -89,7 +89,7 @@ jq '(.runnerFiles) = [{"path":"scripts/does-not-exist-runner.mjs","sha256":"sha2
 printf '%s\n' "$out"
 ```
 
-> check:cautilus-json-command(command=cautilus doctor status --repo-root ${stale_root} --json)
+> check:cautilus-json-command(command=cautilus doctor status --repo-root ${stale_root} --format json)
 | path | equals |
 | --- | --- |
 | runnerReadiness.state | stale |

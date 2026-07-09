@@ -66,9 +66,9 @@ A ready setup does not mean every next action is complete; `doctor` can still po
 
 ### Repo-Owned Adapter
 
-Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
+Command: `${sample_cautilus} doctor --repo-root ${sample_repo} --format json`
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo})
+> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo} --format json)
 | path | equals | meaning |
 | --- | --- | --- |
 | checks[id=adapter_found].ok | true | Cautilus can find repo-owned configuration. |
@@ -77,9 +77,9 @@ Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
 
 ### First Bounded Eval
 
-Command: `${sample_cautilus} doctor --repo-root ${sample_repo}`
+Command: `${sample_cautilus} doctor --repo-root ${sample_repo} --format json`
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo})
+> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo} --format json)
 | path | equals | meaning |
 | --- | --- | --- |
 | checks[id=evaluation_surfaces].ok | true | The repo names the behavior surfaces Cautilus may evaluate. |
@@ -107,7 +107,7 @@ printf '%s\n' "$repo"
 > check:cautilus-json-command(exit_code=1)
 | command | path | equals |
 | --- | --- | --- |
-| ${sample_cautilus} doctor --repo-root ${missing_git_repo} | status | missing_git |
+| ${sample_cautilus} doctor --repo-root ${missing_git_repo} --format json | status | missing_git |
 
 ### No Commits
 
@@ -123,7 +123,7 @@ printf '%s\n' "$repo"
 "${sample_cautilus}" doctor --repo-root "${no_commit_repo}" || true
 ```
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${no_commit_repo}, exit_code=1)
+> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${no_commit_repo} --format json, exit_code=1)
 | path | equals |
 | --- | --- |
 | status | no_commits |
@@ -148,7 +148,7 @@ printf '%s\n' "$repo"
 "${sample_cautilus}" doctor --repo-root "${missing_adapter_repo}" || true
 ```
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${missing_adapter_repo}, exit_code=1)
+> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${missing_adapter_repo} --format json, exit_code=1)
 | path | equals | includes |
 | --- | --- | --- |
 | status | missing_adapter | |
@@ -176,7 +176,7 @@ printf '%s\n' "$repo"
 "${sample_cautilus}" doctor --repo-root "${invalid_adapter_repo}" || true
 ```
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${invalid_adapter_repo}, exit_code=1)
+> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${invalid_adapter_repo} --format json, exit_code=1)
 | path | equals |
 | --- | --- |
 | status | invalid_adapter |
@@ -203,7 +203,7 @@ printf '%s\n' "$repo"
 "${sample_cautilus}" doctor --repo-root "${incomplete_adapter_repo}" || true
 ```
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${incomplete_adapter_repo}, exit_code=1)
+> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${incomplete_adapter_repo} --format json, exit_code=1)
 | path | equals | meaning |
 | --- | --- | --- |
 | status | incomplete_adapter | |
@@ -215,14 +215,14 @@ printf '%s\n' "$repo"
 Readiness is useful only if it points to bounded next work.
 For the generated sample adapter, `doctor` keeps the first bounded eval loop visible but first asks the user to create a runner assessment for the declared runner.
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo})
+> check:cautilus-json-command(command=${sample_cautilus} doctor --repo-root ${sample_repo} --format json)
 | path | equals | includes |
 | --- | --- | --- |
 | status | ready | |
 | next_action.kind | runner_readiness | |
 | runnerReadiness.nextBranch.id | create_runner_assessment | |
 | first_bounded_run.summary | | bounded eval |
-| first_bounded_run.discoveryCommand | cautilus discover scenarios --json | |
+| first_bounded_run.discoveryCommand | cautilus discover scenarios | |
 | first_bounded_run.decisionLoopCommands[0] | | cautilus evaluate fixture |
 | first_bounded_run.decisionLoopCommands[1] | | cautilus evaluate observation |
 
@@ -230,14 +230,15 @@ For the generated sample adapter, `doctor` keeps the first bounded eval loop vis
 
 A ready setup still needs a safe next branch before the agent spends workflow budget.
 `doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.
-`doctor status --json` gives Cautilus Agent an orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.
+`doctor status --format json` gives Cautilus Agent a JSON orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.
+Default structured stdout is YAML; `--format json` is the parser path and `--json` remains a compatibility alias.
 
 ```run:shell
 # Show the raw agent orientation packet for this repo.
-"${sample_cautilus}" doctor status --repo-root . --json
+"${sample_cautilus}" doctor status --repo-root . --format json
 ```
 
-> check:cautilus-json-command(command=${sample_cautilus} doctor status --repo-root . --json)
+> check:cautilus-json-command(command=${sample_cautilus} doctor status --repo-root . --format json)
 | path | equals | min_number | includes |
 | --- | --- | --- | --- |
 | schemaVersion | cautilus.agent_status.v1 | | |

@@ -205,10 +205,10 @@ guessing.
 
 ## Entry Surface
 
-- `cautilus init run [--root R] [--label L] [--json]`
+- `cautilus init run [--root R] [--label L] [--format yaml|json] [--json]`
   - library: `scripts/agent-runtime/workspace-start.mjs`
   - default stdout: `export CAUTILUS_RUN_DIR='<abs runDir>'`
-  - `--json` alternate: `cautilus.workspace_run_manifest.v1` payload
+  - `--json` / `--format yaml|json` alternate: `cautilus.workspace_run_manifest.v1` payload
 - `cautilus doctor artifacts prune --root R [--keep-last N] [--max-age-days N]`
   - explicit opt-in. `workspace start` does not clean up older runs.
 

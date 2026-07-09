@@ -71,14 +71,14 @@ For `dev/repo` and `dev/skill`, a non-fixture coding-agent runtime may report th
 ## Probes & discovery
 
 ```bash
-# binary health, no repo required
-cautilus doctor binary --json
+# binary health, no repo required; structured stdout defaults to YAML
+cautilus doctor binary
 
 # command discovery, safe for wrapper tooling and agent runtimes
-cautilus doctor commands --json
+cautilus doctor commands
 
 # no-input agent orientation over binary, adapter, agent-surface, and claim state
-cautilus doctor status --repo-root /path/to/repo --json
+cautilus doctor status --repo-root /path/to/repo --format json
 
 # repo readiness for evaluation
 cautilus doctor --repo-root /path/to/repo
@@ -98,11 +98,14 @@ cautilus discover claims validate --claims /tmp/cautilus-reviewed-claims.json --
 cautilus evaluate claims plan --claims /tmp/cautilus-reviewed-claims.json --output /tmp/cautilus-eval-plan.json
 
 # scenario-normalization catalog, for agents that need proposal-input examples
-cautilus discover scenarios --json
+cautilus discover scenarios
 ```
 
 `cautilus <subcommand> --help` exits `0` for the registered native command surface, including grouped topics such as `cautilus improve search --help`.
-Use `doctor status --json` when a Cautilus Agent or agent is invoked without a detailed task.
+Structured stdout defaults to YAML for agent readability.
+Use `--format json` when a parser needs JSON; `--json` remains a compatibility alias for existing automation.
+The full stdout/file-format contract lives in [CLI Output Format](../contracts/cli-output-format.md).
+Use `doctor status --repo-root <repo> --format json` when a Cautilus Agent or agent is invoked without a detailed task and needs JSON parsing.
 It emits `cautilus.agent_status.v1`: a read-only orientation packet over binary health, local agent-surface readiness, adapter state, claim-state availability, scan scope, and branch choices.
 Use `doctor --next-action` when you want one current onboarding step plus the exact follow-up loop.
 If repo setup is ready but runner proof is not, that next action can point at runner assessment setup before the first bounded eval loop.
@@ -111,7 +114,7 @@ Use default `doctor` (`--scope repo`) to verify the repo has a real runnable eva
 Each `doctor` check separates stable contract from run-specific observation:
 `id` names the machine-readable readiness condition, `ok` reports the boolean result, `meaning` explains why the condition matters, and `detail` records the observed fact for this run.
 External executable prerequisites should put the resolved binary path in `detail` when present and the searched `PATH` in `detail` when missing.
-When repo-scope `doctor` returns `ready`, the JSON payload includes `first_bounded_run`: a starter `evaluate fixture -> evaluate observation` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
+When repo-scope `doctor` returns `ready`, the structured payload includes `first_bounded_run`: a starter `evaluate fixture -> evaluate observation` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 Use `cautilus discover claims` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.
 Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
@@ -255,7 +258,8 @@ cautilus discover scenarios summarize-telemetry \
 ```
 
 Every normalize command plus `cautilus evaluate observation` and `cautilus evaluate report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.
-`cautilus discover scenarios --json` now exposes those same inspect commands under `normalizationFamilies[*].exampleInputCli`.
+`cautilus discover scenarios` now exposes those same inspect commands under `normalizationFamilies[*].exampleInputCli`.
+Use `--format json` when a parser needs the catalog as JSON.
 `cautilus discover scenarios propose` now preserves the full ranked `proposals` list in the canonical JSON output.
 The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.
 Each emitted proposal includes `provenanceSummary`, which rolls up origin and split counts plus replay and scored evidence counts for the review and HTML surfaces.

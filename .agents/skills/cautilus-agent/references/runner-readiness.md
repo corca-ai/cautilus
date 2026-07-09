@@ -9,7 +9,7 @@ The binary owns command discovery, the assessment scaffold source, and freshness
 Read runner readiness from the orientation packet rather than guessing from source:
 
 ```bash
-"$CAUTILUS_BIN" doctor status --repo-root . --json
+"$CAUTILUS_BIN" doctor status --repo-root . --format json
 ```
 
 Read `runnerReadiness`: `state` (one of missing-assessment, smoke-only, assessed, stale, not-ready, ready), the per-runner entries, `scaffoldSource`, `assessment`, and the readiness next branches.

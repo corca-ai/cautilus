@@ -87,8 +87,8 @@ func readJSONObjectFile(t *testing.T, path string) map[string]any {
 func readJSONObjectPayload(t *testing.T, payload []byte) map[string]any {
 	t.Helper()
 	var value map[string]any
-	if err := json.Unmarshal(payload, &value); err != nil {
-		t.Fatalf("Unmarshal returned error: %v", err)
+	if err := decodeStructuredPayload(t, payload, &value); err != nil {
+		t.Fatalf("Unmarshal returned error: %v\npayload=%s", err, string(payload))
 	}
 	return value
 }
@@ -124,8 +124,8 @@ func readJSONArrayFile(t *testing.T, path string) []any {
 func parseJSONObject(t *testing.T, payload string) map[string]any {
 	t.Helper()
 	var value map[string]any
-	if err := json.Unmarshal([]byte(payload), &value); err != nil {
-		t.Fatalf("Unmarshal returned error: %v", err)
+	if err := decodeStructuredPayload(t, []byte(payload), &value); err != nil {
+		t.Fatalf("Unmarshal returned error: %v\npayload=%s", err, payload)
 	}
 	return value
 }
@@ -343,7 +343,7 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected first_bounded_run payload, got %#v", payload["first_bounded_run"])
 	}
-	if anyToString(firstBoundedRun["discoveryCommand"]) != "cautilus discover scenarios --json" {
+	if anyToString(firstBoundedRun["discoveryCommand"]) != "cautilus discover scenarios" {
 		t.Fatalf("unexpected first_bounded_run discovery command: %#v", firstBoundedRun["discoveryCommand"])
 	}
 	decisionLoopCommands, ok := firstBoundedRun["decisionLoopCommands"].([]any)

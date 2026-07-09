@@ -5,8 +5,8 @@ The product should not need a host-specific migration story before an operator c
 
 Three discovery surfaces matter here:
 
-- `./bin/cautilus doctor binary --json` for binary health
-- `./bin/cautilus doctor commands --json` and `./bin/cautilus discover scenarios --json` for safe machine-readable discovery
+- `./bin/cautilus doctor binary --format json` for binary health
+- `./bin/cautilus doctor commands --format json` and `./bin/cautilus discover scenarios --format json` for safe machine-readable discovery
 - `./bin/cautilus doctor --repo-root <path>` for repo-local readiness plus the first bounded-run handoff once a repo is ready
 - `./bin/cautilus discover live-targets` and `./bin/cautilus evaluate live` when a repo exposes live local instances for app evals
 
@@ -18,9 +18,9 @@ The follow-up readiness check should report the next missing prerequisite honest
 ## Discovery Proof
 
 ```run:shell
-$ ./bin/cautilus doctor binary --json | grep '"schemaVersion": "cautilus.healthcheck.v1"'
+$ ./bin/cautilus doctor binary --format json | grep '"schemaVersion": "cautilus.healthcheck.v1"'
   "schemaVersion": "cautilus.healthcheck.v1",
-$ ./bin/cautilus doctor commands --json | grep '"path": \[' | head -n 1
+$ ./bin/cautilus doctor commands --format json | grep '"path": \[' | head -n 1
       "path": [
 $ ./bin/cautilus doctor --repo-root . | grep '"status": "ready"'
   "status": "ready",

@@ -78,7 +78,7 @@ func LoadFirstBoundedRunGuide(repoRoot string) FirstBoundedRunGuide {
 	outputDir := filepath.Join(repoRoot, ".cautilus", "runs", "first-bounded-run")
 	return FirstBoundedRunGuide{
 		Summary:          "Pick one checked-in fixture, then complete one bounded evaluate fixture run and packet recheck instead of stopping at doctor.",
-		DiscoveryCommand: "cautilus discover scenarios --json",
+		DiscoveryCommand: "cautilus discover scenarios",
 		DecisionLoopCommands: []string{
 			"cautilus evaluate fixture --repo-root " + ShellSingleQuote(repoRoot) + " --fixture <fixture.json> --output-dir " + ShellSingleQuote(outputDir),
 			"cautilus evaluate observation --input " + ShellSingleQuote(filepath.Join(outputDir, "eval-observed.json")) + " --output " + ShellSingleQuote(filepath.Join(outputDir, "eval-summary.recheck.json")),

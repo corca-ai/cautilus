@@ -43,9 +43,9 @@ product_surfaces:
 cli_skill_surface_probe_commands:
   - ./bin/cautilus --version
   - ./bin/cautilus --help
-  - ./bin/cautilus doctor binary --json
-  - ./bin/cautilus doctor commands --json
-  - ./bin/cautilus discover scenarios --json
+  - ./bin/cautilus doctor binary --format json
+  - ./bin/cautilus doctor commands --format json
+  - ./bin/cautilus discover scenarios --format json
   - ./bin/cautilus doctor --repo-root . --scope agent-surface
 cli_skill_surface_command_docs:
   - README.md
@@ -158,8 +158,8 @@ gate_commands:
   - npm run dogfood:self
 review_commands:
   - npm run lint:skill-disclosure
-  - ./bin/cautilus doctor commands --json
-  - ./bin/cautilus discover scenarios --json
+  - ./bin/cautilus doctor commands --format json
+  - ./bin/cautilus discover scenarios --format json
 security_commands:
   - npm run security:govulncheck
   - npm run security:secrets

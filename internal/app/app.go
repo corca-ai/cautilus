@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -14,9 +15,23 @@ import (
 	"github.com/corca-ai/cautilus/internal/cli"
 	"github.com/corca-ai/cautilus/internal/contracts"
 	"github.com/corca-ai/cautilus/internal/runtime"
+	"gopkg.in/yaml.v3"
 )
 
 type handlerFunc func(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int
+
+type outputFormat string
+
+const (
+	outputFormatYAML outputFormat = "yaml"
+	outputFormatJSON outputFormat = "json"
+)
+
+type formattedWriter struct {
+	io.Writer
+	format   outputFormat
+	explicit bool
+}
 
 func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	var err error
@@ -66,7 +81,15 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		return 1
 	}
 
-	if helpRequested(match.ForwardedArgs) {
+	format, forwardedArgs, formatErr := parseOutputFormat(match.ForwardedArgs)
+	if formatErr != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", formatErr)
+		return 1
+	}
+	interactive := detectInteractiveSession(stdout, stderr)
+	stdout = formattedWriter{Writer: stdout, format: format.format, explicit: format.explicit}
+
+	if helpRequested(forwardedArgs) {
 		usage, helpErr := cli.RenderTopicUsage(match.Command.Path)
 		if helpErr != nil {
 			_, _ = fmt.Fprintf(stderr, "%s\n", helpErr)
@@ -80,11 +103,11 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		if shouldPrimeVersionState(match.Command.Path) {
 			_, _ = cli.InspectVersionState(toolRoot, cli.VersionStateOptions{Now: time.Now()})
 		}
-		exitCode := invokeHandler(handler, toolRoot, cwd, match.ForwardedArgs, stdout, stderr)
+		exitCode := invokeHandler(handler, toolRoot, cwd, forwardedArgs, stdout, stderr)
 		if shouldCheckForUpdates(match.Command.Path) {
 			notice, noticeErr := cli.MaybeCheckForUpdates(toolRoot, cli.AutoUpdateOptions{
 				Now:         time.Now(),
-				Interactive: detectInteractiveSession(stdout, stderr),
+				Interactive: interactive,
 			})
 			if noticeErr == nil && notice != "" {
 				_, _ = fmt.Fprintf(stderr, "%s\n", notice)
@@ -125,6 +148,80 @@ func helpRequested(args []string) bool {
 		if arg == "-h" || arg == "--help" {
 			return true
 		}
+	}
+	return false
+}
+
+type outputFormatSelection struct {
+	format   outputFormat
+	explicit bool
+}
+
+func parseOutputFormat(args []string) (outputFormatSelection, []string, error) {
+	format := outputFormatSelection{format: outputFormatYAML}
+	for _, arg := range args {
+		if arg == "--json" {
+			format = outputFormatSelection{format: outputFormatJSON, explicit: true}
+			break
+		}
+	}
+	filtered := make([]string, 0, len(args))
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch {
+		case arg == "--format":
+			value, next, err := requiredValue(args, index, arg)
+			if err != nil {
+				return outputFormatSelection{}, nil, err
+			}
+			index = next
+			parsed, err := parseOutputFormatValue(value)
+			if err != nil {
+				return outputFormatSelection{}, nil, err
+			}
+			if format.format == outputFormatJSON && parsed != outputFormatJSON {
+				return outputFormatSelection{}, nil, fmt.Errorf("use either --json or --format yaml, not both")
+			}
+			format = outputFormatSelection{format: parsed, explicit: true}
+		case strings.HasPrefix(arg, "--format="):
+			parsed, err := parseOutputFormatValue(strings.TrimPrefix(arg, "--format="))
+			if err != nil {
+				return outputFormatSelection{}, nil, err
+			}
+			if format.format == outputFormatJSON && parsed != outputFormatJSON {
+				return outputFormatSelection{}, nil, fmt.Errorf("use either --json or --format yaml, not both")
+			}
+			format = outputFormatSelection{format: parsed, explicit: true}
+		case arg == "--json":
+			format = outputFormatSelection{format: outputFormatJSON, explicit: true}
+		default:
+			filtered = append(filtered, arg)
+		}
+	}
+	return format, filtered, nil
+}
+
+func parseOutputFormatValue(value string) (outputFormat, error) {
+	switch strings.ToLower(strings.TrimSpace(value)) {
+	case "yaml", "yml":
+		return outputFormatYAML, nil
+	case "json":
+		return outputFormatJSON, nil
+	default:
+		return "", fmt.Errorf("unsupported --format %q; use yaml or json", value)
+	}
+}
+
+func outputFormatForWriter(writer io.Writer) outputFormat {
+	if formatted, ok := writer.(formattedWriter); ok {
+		return formatted.format
+	}
+	return outputFormatYAML
+}
+
+func explicitOutputFormatForWriter(writer io.Writer) bool {
+	if formatted, ok := writer.(formattedWriter); ok {
+		return formatted.explicit
 	}
 	return false
 }
@@ -600,7 +697,7 @@ func handleVersion(repoRoot string, cwd string, args []string, stdout io.Writer,
 }
 
 func handleCommands(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseCommandsArgs(args)
+	_, err := parseCommandsArgs(args)
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -610,70 +707,37 @@ func handleCommands(repoRoot string, cwd string, args []string, stdout io.Writer
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	if options.json {
-		payload := map[string]any{
-			"schemaVersion": "cautilus.commands.v1",
-			"usage":         registry.UsageLines(),
-			"examples":      registry.ExampleLines(),
-			"groups":        registry.Groups,
-			"commands":      registry.Commands,
-		}
-		if err := writeJSON(stdout, payload); err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		return 0
+	payload := map[string]any{
+		"schemaVersion": "cautilus.commands.v1",
+		"usage":         registry.UsageLines(),
+		"examples":      registry.ExampleLines(),
+		"groups":        registry.Groups,
+		"commands":      registry.Commands,
 	}
-	usage, err := cli.RenderUsage()
-	if err != nil {
+	if err := writeJSON(stdout, payload); err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	_, _ = fmt.Fprintf(stdout, "%s\n", usage)
 	return 0
 }
 
 //nolint:errcheck // CLI stdout/stderr reporting is best-effort.
 func handleScenarios(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseScenariosArgs(args)
+	_, err := parseScenariosArgs(args)
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
 	catalog := runtime.LoadScenarioCatalog()
-	if options.json {
-		if err := writeJSON(stdout, catalog); err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		return 0
+	if err := writeJSON(stdout, catalog); err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
 	}
-	lines := []string{"Cautilus scenario normalization families:", ""}
-	for _, entry := range catalog.NormalizationFamilies {
-		lines = append(lines,
-			fmt.Sprintf("  %s", entry.Family),
-			fmt.Sprintf("    %s", entry.Summary),
-			fmt.Sprintf("    behavior focus: %s", entry.BehaviorFocus),
-			fmt.Sprintf("    example input:  %s", entry.ExampleInput),
-			fmt.Sprintf("    inspect input:  %s", entry.ExampleInputCLI),
-			fmt.Sprintf("    next-step CLI:  %s", entry.NextStepCLI),
-			"",
-		)
-	}
-	lines = append(lines,
-		"Every normalize command also accepts --example-input, which prints a",
-		"minimal valid packet you can pipe back into the same command:",
-		"  cautilus discover scenarios normalize chatbot --example-input | \\",
-		"    cautilus discover scenarios normalize chatbot --input /dev/stdin",
-		"",
-		"Pass --json for the machine-readable catalog (schema: "+runtime.ScenarioCatalogSchema+").",
-	)
-	_, _ = fmt.Fprintln(stdout, strings.Join(lines, "\n"))
 	return 0
 }
 
 func handleHealthcheck(repoRoot string, cwd string, args []string, stdout io.Writer, stderr io.Writer) int {
-	options, err := parseHealthcheckArgs(args)
+	_, err := parseHealthcheckArgs(args)
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
@@ -701,14 +765,10 @@ func handleHealthcheck(repoRoot string, cwd string, args []string, stdout io.Wri
 		},
 		"current": state.Current,
 	}
-	if options.json {
-		if err := writeJSON(stdout, payload); err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		return 0
+	if err := writeJSON(stdout, payload); err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
 	}
-	_, _ = fmt.Fprintf(stdout, "healthy\n")
 	return 0
 }
 
@@ -740,14 +800,10 @@ func handleAgentStatus(repoRoot string, cwd string, args []string, stdout io.Wri
 		_, _ = fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	if options.json {
-		if err := writeJSON(stdout, payload); err != nil {
-			_, _ = fmt.Fprintf(stderr, "%s\n", err)
-			return 1
-		}
-		return exitCode
+	if err := writeJSON(stdout, payload); err != nil {
+		_, _ = fmt.Fprintf(stderr, "%s\n", err)
+		return 1
 	}
-	_, _ = fmt.Fprintf(stdout, "%s\n", anyString(payload["status"]))
 	return exitCode
 }
 
@@ -1174,7 +1230,7 @@ func handleWorkspaceStart(repoRoot string, cwd string, args []string, stdout io.
 		fmt.Fprintf(stderr, "%s\n", err)
 		return 1
 	}
-	if options.json {
+	if options.json || explicitOutputFormatForWriter(stdout) {
 		if err := writeJSON(stdout, run); err != nil {
 			fmt.Fprintf(stderr, "%s\n", err)
 			return 1
@@ -2361,7 +2417,7 @@ func handleImproveSearchPrepareInput(repoRoot string, cwd string, args []string,
 			return 1
 		}
 	}
-	if options.json {
+	if options.json || explicitOutputFormatForWriter(stdout) {
 		if options.output != nil {
 			if err := writeOutputResolved(stdout, options.output, packet); err != nil {
 				fmt.Fprintf(stderr, "%s\n", err)
@@ -4195,12 +4251,37 @@ func readJSONArray(path string, label string) ([]any, error) {
 }
 
 func writeJSON(writer io.Writer, value any) error {
-	payload, err := json.MarshalIndent(value, "", "  ")
+	if outputFormatForWriter(writer) == outputFormatJSON {
+		payload, err := json.MarshalIndent(value, "", "  ")
+		if err != nil {
+			return err
+		}
+		_, err = writer.Write(append(payload, '\n'))
+		return err
+	}
+	normalized, err := normalizeStructuredOutput(value)
 	if err != nil {
 		return err
 	}
-	_, err = writer.Write(append(payload, '\n'))
+	payload, err := yaml.Marshal(normalized)
+	if err != nil {
+		return err
+	}
+	_, err = writer.Write(payload)
 	return err
+}
+
+func normalizeStructuredOutput(value any) (any, error) {
+	payload, err := json.Marshal(value)
+	if err != nil {
+		return nil, err
+	}
+	decoder := json.NewDecoder(bytes.NewReader(payload))
+	var normalized any
+	if err := decoder.Decode(&normalized); err != nil {
+		return nil, err
+	}
+	return normalized, nil
 }
 
 func writeOutput(stdout io.Writer, cwd string, output *string, value any) error {

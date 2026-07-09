@@ -38,7 +38,7 @@ Live app execution is now exposed under `cautilus eval live ...`.
 
 ```run:shell
 tmpdir=$(mktemp -d)
-./bin/cautilus doctor status --repo-root . --json >"$tmpdir/agent-status.json"
+./bin/cautilus doctor status --repo-root . --format json >"$tmpdir/agent-status.json"
 ./bin/cautilus discover claims --repo-root ./fixtures/claim-discovery/tiny-repo --output "$tmpdir/claims.json"
 ./bin/cautilus discover claims status --input "$tmpdir/claims.json" --sample-claims 2 --output "$tmpdir/claim-status.json"
 ./bin/cautilus discover claims review-input --claims "$tmpdir/claims.json" --action-bucket agent-plan-cautilus-eval --max-clusters 2 --output "$tmpdir/claim-review-input.json"
@@ -277,7 +277,7 @@ It should point to the relevant scenario command rather than duplicating scenari
 
 ## Constraints
 
-- The three families must be discoverable from `cautilus doctor commands --json`.
+- The three families must be discoverable from `cautilus doctor commands --format json`.
 - The Cautilus Agent must route claim discovery, evaluation, and improvement to the same family names as the binary.
 - Generated claim plans must be repo-agnostic and source-ref based.
 - `claim discover` must be useful before a repo has a runnable eval adapter.
