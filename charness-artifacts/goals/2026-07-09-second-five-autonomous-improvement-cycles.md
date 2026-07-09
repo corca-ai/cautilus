@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 2 — choose the next small packet/report consistency hardening target.
-- Current slice intent: use Cycle 1's completed guard improvement as the base and pick a non-overlapping claim/report seam.
-- Next action: inspect status report summary consistency and choose whether to hard-fail mismatched status packet summaries.
+- Current slice: Cycle 3 — expose cross-cutting sample claim IDs in evidence-state Markdown.
+- Current slice intent: make the human-readable evidence-state projection show the bounded sample IDs already preserved in JSON.
+- Next action: update `render-claim-evidence-state` Markdown and focused tests, regenerate checked-in evidence-state projection if needed.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -82,8 +82,8 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Expand generated drift coverage for specdown projection outputs. | Start by making the pre-push guard cover generated files verify already checks. | Focused tests, critique, commit. | complete |
-| 2 | Follow the next discovered adjacent quality gap. | Use cycle 1 learning rather than speculative architecture. | Focused tests, critique, commit. | pending |
-| 3 | Strengthen a packet/report/check-mode seam. | Mid-run should improve repeatable proof surfaces. | Focused tests or generated check, critique, commit. | pending |
+| 2 | Harden claim status report summary consistency. | Prevent stale status snapshots from silently shaping the status report scoreboard. | Focused tests, critique, commit. | complete |
+| 3 | Show cross-cutting signal sample IDs in evidence-state Markdown. | JSON already preserves sample IDs, but the human projection omits them. | Focused tests, generated projection check, critique, commit. | in-progress |
 | 4 | Improve operator/agent auditability on a narrow surface. | Keep product surfaces packet-first and human-auditable. | Focused tests/docs as needed, critique, commit. | pending |
 | 5 | Close with a final small hardening slice and broad bundle verification. | Finish with useful code plus final proof. | Focused tests, fresh-eye review, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | pending |
 
@@ -152,6 +152,20 @@ applies.
 - Critique: Fresh-eye review 019f46ee-d1d2-7433-a117-6c548128fb6d: OK, no findings.
 - Off-goal findings: none
 - Lessons carried forward: When a generated artifact list grows, fixture setup must derive directories from the same list instead of encoding a second directory checklist.
+- Metrics:
+
+### Slice 2: Cycle 2 — Claim Status Summary Consistency
+
+- Objective: Harden the claim status report against mismatched status packet claim summaries.
+- Why this approach: The status report calls itself a projection over the current claim packet and status summary; an explicit stale statusPacket.claimSummary should fail instead of silently shaping the scoreboard.
+- Commits:
+- What changed: Added claimSummary consistency assertion; made nested statusPacket.claimSummary take precedence over legacy top-level status counts when present; added matching, divergent, and mixed-shape focused tests.
+- Alternatives rejected: Rejected removing legacy top-level count fallback because older status packet shapes remain useful compatibility input when no nested claimSummary exists.
+- Targeted verification: node --test scripts/agent-runtime/render-claim-status-report.test.mjs; npm run claims:status-report:check; npm run claims:evidence-state:check; npm run lint:eslint; git diff --check
+- Test duplication pressure: Added two focused tests and strengthened one mixed-shape assertion to protect precedence without broad fixture duplication.
+- Critique: Fresh-eye review 019f46f2-fa86-7a42-ac3b-1d31dc60b640: SHOULD-FIX on summary precedence; fixed and re-review OK.
+- Off-goal findings: none
+- Lessons carried forward: When a packet field is validated as source-of-truth, rendering precedence must prefer that validated field over compatibility fallbacks.
 - Metrics:
 
 ## Context Sources

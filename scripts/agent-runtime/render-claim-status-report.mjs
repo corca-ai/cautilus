@@ -147,22 +147,37 @@ function fallbackSummary(claimsPacket) {
 	};
 }
 
-function summaryCounts(statusPacket, claimSummaryPacket, fallback, key) {
-	return statusPacket?.[key] ?? claimSummaryPacket[key] ?? fallback[key];
-}
-
 function candidateCounts(claimsPacket, claimSummaryPacket, key, keyFn) {
 	return claimSummaryPacket[key] ?? countBy(asArray(claimsPacket?.claimCandidates), keyFn);
+}
+
+function selectedClaimSummary(claimsPacket) {
+	const claimSummaryPacket = asObject(claimsPacket?.claimSummary);
+	if (Object.keys(claimSummaryPacket).length > 0) {
+		return claimSummaryPacket;
+	}
+	return fallbackSummary(claimsPacket);
+}
+
+function assertStatusSummaryMatchesClaimPacket(claimsPacket, statusPacket) {
+	const statusSummaryPacket = asObject(statusPacket?.claimSummary);
+	if (Object.keys(statusSummaryPacket).length === 0) {
+		return;
+	}
+	if (!sameCanonicalValue(selectedClaimSummary(claimsPacket), statusSummaryPacket)) {
+		throw new Error("status summary does not match the claim packet summary; regenerate status from the selected claims packet before rendering the claim status report");
+	}
 }
 
 function selectedSummary(claimsPacket, statusPacket) {
 	const fallback = fallbackSummary(claimsPacket);
 	const claimSummaryPacket = asObject(claimsPacket?.claimSummary);
+	const statusSummaryPacket = asObject(statusPacket?.claimSummary);
 	return {
-		byEvidenceStatus: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byEvidenceStatus"),
-		byReviewStatus: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byReviewStatus"),
-		byRecommendedProof: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byRecommendedProof"),
-		byVerificationReadiness: summaryCounts(statusPacket, claimSummaryPacket, fallback, "byVerificationReadiness"),
+		byEvidenceStatus: summaryCounts(statusPacket, statusSummaryPacket, claimSummaryPacket, fallback, "byEvidenceStatus"),
+		byReviewStatus: summaryCounts(statusPacket, statusSummaryPacket, claimSummaryPacket, fallback, "byReviewStatus"),
+		byRecommendedProof: summaryCounts(statusPacket, statusSummaryPacket, claimSummaryPacket, fallback, "byRecommendedProof"),
+		byVerificationReadiness: summaryCounts(statusPacket, statusSummaryPacket, claimSummaryPacket, fallback, "byVerificationReadiness"),
 		byClaimAudience: candidateCounts(claimsPacket, claimSummaryPacket, "byClaimAudience", (candidate) => candidate.claimAudience ?? "unclear"),
 		byClaimSemanticGroup: candidateCounts(
 			claimsPacket,
@@ -171,6 +186,10 @@ function selectedSummary(claimsPacket, statusPacket) {
 			(candidate) => candidate.claimSemanticGroup ?? "General product behavior",
 		),
 	};
+}
+
+function summaryCounts(statusPacket, statusSummaryPacket, claimSummaryPacket, fallback, key) {
+	return statusSummaryPacket[key] ?? statusPacket?.[key] ?? claimSummaryPacket[key] ?? fallback[key];
 }
 
 function reviewResultDigest(filePath) {
@@ -566,6 +585,7 @@ function renderNextWork(lines, statusPacket) {
 }
 
 export function renderStatusReport({ claimsPacket, statusPacket, digests, args }) {
+	assertStatusSummaryMatchesClaimPacket(claimsPacket, statusPacket);
 	const lines = [];
 	const claimsById = claimMap(claimsPacket);
 	const currentReviewResults = reviewResultsForClaims(digests.reviewResults, claimsById);

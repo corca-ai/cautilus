@@ -339,6 +339,102 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.doesNotMatch(report, /This old maintainer-only claim should not appear/);
 });
 
+test("renderStatusReport uses matching status packet claim summary", () => {
+	const claimsPacket = {
+		claimSummary: {
+			byEvidenceStatus: { unknown: 1 },
+			byReviewStatus: { heuristic: 1 },
+			byRecommendedProof: { deterministic: 1 },
+			byVerificationReadiness: { "ready-for-proof": 1 },
+		},
+		claimCandidates: [
+			{
+				claimId: "claim-readme-md-1",
+				recommendedProof: "deterministic",
+				verificationReadiness: "ready-for-proof",
+				reviewStatus: "heuristic",
+				evidenceStatus: "unknown",
+			},
+		],
+	};
+	const statusPacket = {
+		byEvidenceStatus: { satisfied: 99 },
+		claimSummary: {
+			byEvidenceStatus: { unknown: 1 },
+			byReviewStatus: { heuristic: 1 },
+			byRecommendedProof: { deterministic: 1 },
+			byVerificationReadiness: { "ready-for-proof": 1 },
+		},
+		actionSummary: { primaryBuckets: [] },
+	};
+	const report = renderStatusReport({
+		claimsPacket,
+		statusPacket,
+		digests: {
+			reviewResults: [],
+			validationReports: [],
+			evalPlans: [],
+			refreshPlans: [],
+			reviewDrops: null,
+			canonicalMap: null,
+		},
+		args: {
+			claims: ".cautilus/claims/evidenced-typed-runners.json",
+			status: ".cautilus/claims/status-summary.json",
+			samplePerBucket: 2,
+			reviewSample: 2,
+		},
+	});
+
+	assert.match(report, /\| Evidence \| unknown: 1 \|/);
+	assert.doesNotMatch(report, /satisfied: 99/);
+	assert.match(report, /\| Recommended proof \| deterministic: 1 \|/);
+});
+
+test("renderStatusReport fails when status packet claim summary diverges", () => {
+	const claimsPacket = {
+		claimSummary: {
+			byEvidenceStatus: { unknown: 1 },
+			byReviewStatus: { heuristic: 1 },
+			byRecommendedProof: { deterministic: 1 },
+			byVerificationReadiness: { "ready-for-proof": 1 },
+		},
+		claimCandidates: [],
+	};
+	const statusPacket = {
+		claimSummary: {
+			byEvidenceStatus: { satisfied: 1 },
+			byReviewStatus: { heuristic: 1 },
+			byRecommendedProof: { deterministic: 1 },
+			byVerificationReadiness: { "ready-for-proof": 1 },
+		},
+		actionSummary: { primaryBuckets: [] },
+	};
+
+	assert.throws(
+		() =>
+			renderStatusReport({
+				claimsPacket,
+				statusPacket,
+				digests: {
+					reviewResults: [],
+					validationReports: [],
+					evalPlans: [],
+					refreshPlans: [],
+					reviewDrops: null,
+					canonicalMap: null,
+				},
+				args: {
+					claims: ".cautilus/claims/evidenced-typed-runners.json",
+					status: ".cautilus/claims/status-summary.json",
+					samplePerBucket: 2,
+					reviewSample: 2,
+				},
+			}),
+		/status summary does not match the claim packet summary/,
+	);
+});
+
 test("renderStatusReport treats refresh plans against an older base packet as historical", () => {
 	const claimsPacket = {
 		gitCommit: "target123",
