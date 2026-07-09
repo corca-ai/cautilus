@@ -1,6 +1,6 @@
 # Achieve Goal: Five Autonomous Improvement Cycles
 
-Status: active
+Status: complete
 Created: 2026-07-09
 Activation: `/goal @charness-artifacts/goals/2026-07-09-five-autonomous-improvement-cycles.md`
 
@@ -9,10 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 5 — final small hardening slice and bundle verification.
-- Current slice intent: close the autonomous run with one last bounded improvement,
-  then run broad local proof and complete the goal artifact.
-- Next action: choose the final small hardening target.
+- Current slice: complete — all five autonomous improvement cycles are committed.
+- Current slice intent: closed after final bundle verification.
+- Next action: none — report the completed run to the user.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -84,24 +83,11 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | 2 | Expand generated drift coverage for claim refresh outputs. | Candidate scouts found a check gap while Cycle 1 regenerated claim packets. | Focused tests, drift check proof, commit. | complete |
 | 3 | Add canonical claim map check mode and verify phase. | Mid-run cycle should strengthen repeatable checks rather than prose alone. | Focused tests, validator output, commit. | complete |
 | 4 | Add review-drop audit projection to the claim status report. | Use accumulated context to tighten source-of-truth alignment. | Report diff plus check, critique record, commit. | complete |
-| 5 | Final small hardening slice and bundle verification. | Close the run with a useful improvement and broad proof. | Focused checks, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | in-progress |
+| 5 | Align proof-boundary live command checker with shipped CLI. | Close the run with a useful improvement and broad proof. | Focused checks, fresh-eye review, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | complete |
 
 ## Operator Decision Queue
 
-Record decisions, confirmations, credential actions, manual proof steps, and
-external-boundary approvals discovered during the run when they do not block
-safe local progress. Use `none — <reason>` when the queue is empty at closeout.
-
-Queue item form:
-
-- Decision: operator-only decision or confirmation needed
-- Owner: operator or named human owner
-- Why deferred: why the run did not stop immediately
-- Unblock action: exact action or answer needed
-- Revisit trigger: event, date, or proof boundary that reopens this
-
-- none — this run has no operator-only decisions at activation.
-  External side effects are out of scope.
+none — the run stayed within local committed code, generated artifacts, tests, and Charness artifacts; no publish, push, remote CI, release, credential, or operator-only decision was needed.
 
 ## Coordination Cues
 
@@ -136,7 +122,7 @@ placeholder is intentionally non-satisfying (the Gather / Release / Issue
 closeout floors are presence-only, so no stub is seeded for them — add their line
 per the bullets above when that boundary is crossed):
 
-- `Routing: find-skills -> achieve/impl/critique — user requested a multi-cycle autonomous implementation run with per-slice review and goal tracking`
+Routing: find-skills -> achieve, impl, critique, debug, quality, retro — user requested a multi-cycle autonomous implementation run with per-slice review, debugging when gates failed, quality gates, fresh-eye critique, and closeout retro tracking.
 
 ## Discuss Before Activation
 
@@ -207,6 +193,20 @@ applies.
 - Lessons carried forward: whenever a generated report starts reading another generated packet, producer order and verify order become part of the same slice.
 - Metrics: not measured.
 
+### Cycle 5 — Proof Boundary Live Command Checker
+
+- Objective: prevent the dormant `dogfood:*:live` proof-boundary checker from accepting unshipped live command spellings or rejecting the shipped `cautilus evaluate live` command surface.
+- Why this approach: the checker error already named `evaluate live`, but its regex accepted the older `eval live` spelling; a tiny pure-function refactor plus tests fixes the latent mismatch without changing product command surfaces.
+- Commits: `Accept evaluate live proof boundary commands`.
+- What changed: `check-proof-boundary-names.mjs` now exports `checkProofBoundaryNames`, preserves CLI behavior, accepts `cautilus evaluate live`, and rejects both non-product-runner proof scripts and the unshipped `cautilus eval live` spelling for dogfood live scripts.
+- Alternatives rejected: did not add an `eval live` CLI alias because the final-cycle scope is a contract checker fix, not command-surface expansion.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/check-proof-boundary-names.test.mjs`; `npm run lint:contracts`; `npm run lint:eslint`; `./bin/cautilus evaluate live --help` exit 0 and `./bin/cautilus eval live --help` exit 1; `npm run test:coverage && npm run coverage:floor:check`; debug artifact validator; `git diff --check`.
+- Test duplication pressure: focused tests cover the shipped live command, ignored non-dogfood proof scripts, rejection of mislabeled or unshipped live runner commands, and the checker CLI success/failure paths; final bundle verification remains responsible for all standing gates.
+- Critique: parent-delegated fresh-eye review from agent `019f46dd-507b-7663-83c5-8fefdc78d8eb`; initial verdict BLOCKER, unshipped `eval live` acceptance folded.
+- Off-goal findings: none.
+- Lessons carried forward: dormant guards still need tests when their message and regex drift apart.
+- Metrics: not measured.
+
 ## Context Sources
 
 Durable references this goal was shaped from. A fresh session can reconstruct
@@ -251,13 +251,22 @@ retro / host-log probe / disposition-review artifact) or an explicit
 `skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
 `TODO` / `<path>` / `TBD` until you do.
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+Retro: charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md
+Host log probe: charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-host-probe.md
+Disposition review: charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-disposition-review.md
+
+- `npm run verify` passed on the final committed bundle.
+- `npm run hooks:check` passed on the final committed bundle.
+- `npm run generated:drift:check` passed after the final committed bundle.
+- Non-claims: no push, release, remote CI, or live product proof was run for this local-only goal.
 
 ## User Verification Instructions
 
+- Inspect the five commits with `git log --oneline -5`.
+- Re-run `npm run verify`, `npm run hooks:check`, and `npm run generated:drift:check` if local confirmation is needed.
+- Inspect `charness-artifacts/goals/2026-07-09-five-autonomous-improvement-cycles.md` for slice-by-slice evidence and critique outcomes.
+
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: Cycle 5 added CLI smoke-backed proof-boundary tests and CLI wrapper coverage for the new checker, closing the retro's workflow and capability improvements in-session.
+Structural follow-up: applied: `scripts/check-proof-boundary-names.test.mjs` now covers both pure validator behavior and spawned CLI success/failure paths, so the transferable waste became a committed test guard rather than prose memory.

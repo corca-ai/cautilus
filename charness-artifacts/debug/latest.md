@@ -3,72 +3,74 @@ Date: 2026-07-09
 
 ## Problem
 
-`npm run lint:eslint` failed after Cycle 4 added `--review-drops` and `--review-drops-markdown` support to `render-claim-status-report.mjs`.
-The exact error was `Refactor this function to reduce its Cognitive Complexity from 13 to the 12 allowed` at line 18.
+Final `npm run verify` failed in `coverage:floor:check` after Cycle 5 added `scripts/check-proof-boundary-names.mjs`.
+The failure was `scripts/check-proof-boundary-names.mjs stmts=51 cov=64.71%`.
 
 ## Correct Behavior
 
-The status report should accept review-drop packet paths without weakening the existing ESLint complexity gate.
-Argument parsing should stay readable as the report gains optional packet inputs.
+A new deterministic checker should include enough tests for both its pure validator and CLI entry path to satisfy the repo coverage floor.
+Final bundle verification should pass without waiving the floor.
 
 ## Observed Facts
 
-- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs` passed.
-- `npm run claims:status-report:check` failed because the checked-in generated report is stale, which is expected after changing report output.
-- `npm run lint:eslint` failed only on `render-claim-status-report.mjs` cognitive complexity.
+- Focused tests for `checkProofBoundaryNames` passed.
+- `npm run lint:contracts` passed.
+- `./bin/cautilus evaluate live --help` exited 0 and `./bin/cautilus eval live --help` exited 1.
+- `npm run verify` failed only at `coverage:floor:check` after the coverage run.
 
 ## Reproduction
 
-- Run `npm run lint:eslint`.
-- Observe the cognitive complexity failure at `scripts/agent-runtime/render-claim-status-report.mjs:18`.
+- Run `npm run verify`.
+- Observe `coverage:floor:check` reporting `scripts/check-proof-boundary-names.mjs` below `fail_below_pct`.
 
 ## Candidate Causes
 
-- `parseArgs` accumulated too many `else if` branches as new optional packet paths were added.
-- The new review-drop options are independent argument mappings and can be parsed by a table-driven helper.
-- The report-rendering logic is not implicated because focused tests passed before lint.
+- The tests covered the exported pure function but not the CLI `main()` branch.
+- The file is small enough that untested success/failure CLI output paths materially lower statement coverage.
+- The checker should not be excluded or waived because it is a standing contract lint.
 
 ## Hypothesis
 
-- If string-valued option parsing moves into a small path-option map helper, `parseArgs` complexity will drop below the lint threshold while custom argument tests continue to pass.
-- Disconfirmer: rerun `npm run lint:eslint` and see the same complexity failure.
+- If tests spawn the CLI once against the real clean package and once against a temporary package with a bad `dogfood:*:live` script, coverage will include the entry path and floor check will pass.
+- Disconfirmer: rerun focused coverage or `npm run verify` and see the same floor failure for this file.
 
 ## Verification
 
-- Confirmed: `npm run lint:eslint` passes after parser helper extraction.
-- Confirmed: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs` passes.
-- Confirmed: `npm run claims:status-report && npm run claims:status-report:check` passes after regenerating the checked-in report.
+- Confirmed: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/check-proof-boundary-names.test.mjs` passes after adding CLI success/failure tests.
+- Confirmed: `npm run lint:contracts` passes.
+- Confirmed: `npm run test:coverage && npm run coverage:floor:check` passes; the new checker no longer fails the floor.
+- Pending: rerun full `npm run verify`.
 
 ## Root Cause
 
-The implementation added correct new flags in the existing branch chain, crossing the repo's complexity threshold.
-This is a code-shape bug in parser structure, not a report behavior bug.
+Cycle 5 converted a previously script-only checker into a tested pure function, but the test plan did not cover the retained CLI wrapper.
+The broad coverage floor caught that the new file's executable entry path was not exercised.
 
 ## Invariant Proof
 
-- Invariant: status report option growth must preserve deterministic parser behavior and stay under lint complexity limits.
-- Producer Proof: `parseArgs` custom-input tests cover the new flags.
-- Final-Consumer Proof: status report check mode will compare the regenerated report with checked-in output.
-- Interface-Shape Sibling Scan: `build-canonical-claim-map.mjs` and other small CLIs can tolerate short branch chains, but this larger report parser now needs helper extraction.
-- Non-Claims: this does not introduce a generic CLI parser framework.
+- Invariant: standing contract checkers must have tests for their imported validator and executable CLI behavior.
+- Producer Proof: focused Node tests should cover both direct validator calls and spawned CLI calls.
+- Final-Consumer Proof: `npm run lint:contracts` exercises the checker in the same package script used by verify.
+- Interface-Shape Sibling Scan: other small contract checkers with CLI entrypoints need the same pattern when newly tested.
+- Non-Claims: this does not change the proof-boundary command contract.
 
 ## Detection Gap
 
-- ESLint complexity gate | fired correctly after focused tests passed | no new gate needed.
+- Coverage floor | fired correctly during final verify | no new gate needed.
 
 ## Sibling Search
 
-- Mental model: adding two flags to an existing branch chain is cheap until the file is already near the complexity limit.
-- same function: `parseArgs` | decision: move string path options into a helper | proof: rerun ESLint.
-- same file: report digest/render helpers should stay separate from parser complexity | decision: do not refactor renderer broadly | proof: focused report tests.
-- cross-file: no cross-file sibling requires action now because the failure names one parser and the durable guard already exists.
+- Mental model: pure-function tests are enough when a CLI wrapper is trivial.
+- same file: CLI success/failure branches | decision: add spawn tests | proof: coverage floor.
+- same command surface: `lint:contracts` | decision: keep it as the consumer proof | proof: rerun lint script.
+- cross-file: no immediate sibling patch needed because this slice only introduced coverage debt in the new checker.
 
 ## Seam Risk
 
 - Interrupt ID: none
 - Risk Class: none
 - Seam: none
-- Disproving Observation: deterministic lint names a code-shape threshold.
+- Disproving Observation: coverage floor names a deterministic missing test surface.
 - What Local Reasoning Cannot Prove: n/a
 - Generalization Pressure: none
 
@@ -81,4 +83,4 @@ This is a code-shape bug in parser structure, not a report behavior bug.
 
 ## Prevention
 
-When adding optional packet path flags to an already broad renderer CLI, prefer a small option map before appending more `else if` branches.
+When adding a new script that keeps an executable `main()` path, include at least one spawned CLI success or failure test in the same slice.
