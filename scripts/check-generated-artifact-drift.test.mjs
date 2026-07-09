@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
@@ -29,6 +29,7 @@ function initRepo(root) {
 	mkdirSync(join(root, ".cautilus", "audit"), { recursive: true });
 	mkdirSync(join(root, "docs", "specs", "generated"), { recursive: true });
 	for (const path of DEFAULT_GENERATED_ARTIFACTS) {
+		mkdirSync(dirname(join(root, path)), { recursive: true });
 		writeFileSync(join(root, path), `${path}: clean\n`, "utf-8");
 	}
 	writeFileSync(join(root, "README.md"), "clean\n", "utf-8");
@@ -49,6 +50,9 @@ test("parseArgs defaults to checked-in generated artifact paths", () => {
 		".cautilus/claims/review-drops-summary.json",
 		".cautilus/claims/review-drops-summary.md",
 		"docs/specs/generated/claim-evidence-state.md",
+		".cautilus/specdown/claim-inventory.json",
+		"docs/specs/generated/projected-claim-state.md",
+		"docs/specs/generated/promise-ledger.spec.md",
 		".cautilus/audit/surface-audit.json",
 		"docs/specs/generated/audit.spec.md",
 	]);
@@ -124,6 +128,25 @@ test("generated artifact drift check covers claim refresh artifacts beyond statu
 		assert.equal(payload.ready, false);
 		assert.deepEqual(payload.changed, [
 			{ status: " M", path: ".cautilus/claims/latest.json" },
+		]);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("generated artifact drift check covers specdown projection outputs", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-generated-specdown-"));
+	try {
+		initRepo(root);
+		writeFileSync(
+			join(root, "docs", "specs", "generated", "projected-claim-state.md"),
+			"dirty\n",
+			"utf-8",
+		);
+		const payload = checkGeneratedArtifactDrift(root);
+		assert.equal(payload.ready, false);
+		assert.deepEqual(payload.changed, [
+			{ status: " M", path: "docs/specs/generated/projected-claim-state.md" },
 		]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

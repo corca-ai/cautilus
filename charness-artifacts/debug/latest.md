@@ -3,74 +3,72 @@ Date: 2026-07-09
 
 ## Problem
 
-Final `npm run verify` failed in `coverage:floor:check` after Cycle 5 added `scripts/check-proof-boundary-names.mjs`.
-The failure was `scripts/check-proof-boundary-names.mjs stmts=51 cov=64.71%`.
+Cycle 1 focused test failed after adding specdown generated outputs to `DEFAULT_GENERATED_ARTIFACTS`.
+The failure was `ENOENT: no such file or directory, open '<tmp>/.cautilus/specdown/claim-inventory.json'`.
 
 ## Correct Behavior
 
-A new deterministic checker should include enough tests for both its pure validator and CLI entry path to satisfy the repo coverage floor.
-Final bundle verification should pass without waiving the floor.
+`scripts/check-generated-artifact-drift.test.mjs` should create every parent directory needed by the default generated artifact list before writing fixture files.
+Adding a new generated artifact path should require updating the expected list, not remembering to add another hard-coded `mkdirSync`.
 
 ## Observed Facts
 
-- Focused tests for `checkProofBoundaryNames` passed.
-- `npm run lint:contracts` passed.
-- `./bin/cautilus evaluate live --help` exited 0 and `./bin/cautilus eval live --help` exited 1.
-- `npm run verify` failed only at `coverage:floor:check` after the coverage run.
+- `npm run generated:drift:check` passed against the real repo.
+- `node --test scripts/check-generated-artifact-drift.test.mjs` failed in `initRepo`.
+- The stack trace pointed to `writeFileSync(join(root, path), ...)` for `.cautilus/specdown/claim-inventory.json`.
+- `initRepo` pre-created `.cautilus/claims`, `.cautilus/audit`, and `docs/specs/generated`, but not `.cautilus/specdown`.
 
 ## Reproduction
 
-- Run `npm run verify`.
-- Observe `coverage:floor:check` reporting `scripts/check-proof-boundary-names.mjs` below `fail_below_pct`.
+- Run `node --test scripts/check-generated-artifact-drift.test.mjs` after adding `.cautilus/specdown/claim-inventory.json` to `DEFAULT_GENERATED_ARTIFACTS`.
+- Observe the `ENOENT` failure before any drift assertion runs.
 
 ## Candidate Causes
 
-- The tests covered the exported pure function but not the CLI `main()` branch.
-- The file is small enough that untested success/failure CLI output paths materially lower statement coverage.
-- The checker should not be excluded or waived because it is a standing contract lint.
+- The real drift checker cannot handle nested generated paths.
+- The new generated path is not tracked in the real repo.
+- The temporary fixture repo creates only historical generated directories and not parent directories for every default path.
 
 ## Hypothesis
 
-- If tests spawn the CLI once against the real clean package and once against a temporary package with a bad `dogfood:*:live` script, coverage will include the entry path and floor check will pass.
-- Disconfirmer: rerun focused coverage or `npm run verify` and see the same floor failure for this file.
+- If `initRepo` creates `dirname(join(root, path))` for each `DEFAULT_GENERATED_ARTIFACTS` entry before writing it, the focused tests will reach the intended drift assertions and pass.
+- Disconfirmer: rerun the focused test and see another `ENOENT` for a default generated path.
 
 ## Verification
 
-- Confirmed: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/check-proof-boundary-names.test.mjs` passes after adding CLI success/failure tests.
-- Confirmed: `npm run lint:contracts` passes.
-- Confirmed: `npm run test:coverage && npm run coverage:floor:check` passes; the new checker no longer fails the floor.
-- Pending: rerun full `npm run verify`.
+- Confirmed root cause from stack trace and `initRepo` directory setup.
+- Confirmed: `node --test scripts/check-generated-artifact-drift.test.mjs` passes after deriving fixture parent directories from `DEFAULT_GENERATED_ARTIFACTS`.
 
 ## Root Cause
 
-Cycle 5 converted a previously script-only checker into a tested pure function, but the test plan did not cover the retained CLI wrapper.
-The broad coverage floor caught that the new file's executable entry path was not exercised.
+The fixture setup encoded a stale copy of generated artifact parent directories.
+Cycle 1 correctly expanded the default path list, but the test helper did not derive its directory setup from that same list.
 
 ## Invariant Proof
 
-- Invariant: standing contract checkers must have tests for their imported validator and executable CLI behavior.
-- Producer Proof: focused Node tests should cover both direct validator calls and spawned CLI calls.
-- Final-Consumer Proof: `npm run lint:contracts` exercises the checker in the same package script used by verify.
-- Interface-Shape Sibling Scan: other small contract checkers with CLI entrypoints need the same pattern when newly tested.
-- Non-Claims: this does not change the proof-boundary command contract.
+- Invariant: tests that iterate `DEFAULT_GENERATED_ARTIFACTS` should derive fixture directories from `DEFAULT_GENERATED_ARTIFACTS`.
+- Producer Proof: `initRepo` now calls `mkdirSync(dirname(join(root, path)), { recursive: true })` inside the loop.
+- Final-Consumer Proof: focused Node tests exercise each default path through a temporary git repo.
+- Interface-Shape Sibling Scan: future generated path additions should not need separate directory boilerplate.
+- Non-Claims: this does not change the drift checker runtime behavior beyond the intended default path list.
 
 ## Detection Gap
 
-- Coverage floor | fired correctly during final verify | no new gate needed.
+- Focused Node test | fired immediately after the path-list change | smallest prevention is deriving fixture directories from the same list.
 
 ## Sibling Search
 
-- Mental model: pure-function tests are enough when a CLI wrapper is trivial.
-- same file: CLI success/failure branches | decision: add spawn tests | proof: coverage floor.
-- same command surface: `lint:contracts` | decision: keep it as the consumer proof | proof: rerun lint script.
-- cross-file: no immediate sibling patch needed because this slice only introduced coverage debt in the new checker.
+- Mental model: adding a path to the generated list only requires updating assertion arrays.
+- same file: fixture parent directories | decision: derive from `DEFAULT_GENERATED_ARTIFACTS` | proof: focused test.
+- same command surface: real repo `generated:drift:check` | decision: keep as runtime proof | proof: command passed before fixture fix.
+- cross-file: no cross-file sibling because this was local test fixture setup around the changed constant.
 
 ## Seam Risk
 
 - Interrupt ID: none
 - Risk Class: none
 - Seam: none
-- Disproving Observation: coverage floor names a deterministic missing test surface.
+- Disproving Observation: failure is deterministic local fixture setup, not a host/runtime seam.
 - What Local Reasoning Cannot Prove: n/a
 - Generalization Pressure: none
 
@@ -83,4 +81,5 @@ The broad coverage floor caught that the new file's executable entry path was no
 
 ## Prevention
 
-When adding a new script that keeps an executable `main()` path, include at least one spawned CLI success or failure test in the same slice.
+Keep generated-artifact drift tests list-derived where possible.
+When the default generated path list grows, fixture setup should compute parent directories from the list instead of maintaining another directory checklist.

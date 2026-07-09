@@ -14,6 +14,9 @@ export const DEFAULT_GENERATED_ARTIFACTS = [
 	".cautilus/claims/review-drops-summary.json",
 	".cautilus/claims/review-drops-summary.md",
 	"docs/specs/generated/claim-evidence-state.md",
+	".cautilus/specdown/claim-inventory.json",
+	"docs/specs/generated/projected-claim-state.md",
+	"docs/specs/generated/promise-ledger.spec.md",
 	".cautilus/audit/surface-audit.json",
 	"docs/specs/generated/audit.spec.md",
 ];
