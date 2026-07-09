@@ -4,7 +4,7 @@
   "sourceClaimPacket": {
     "path": ".cautilus/claims/evidenced-typed-runners.json",
     "schemaVersion": "cautilus.claim_proof_plan.v1",
-    "gitCommit": "8a7e013887d71e0953d61fbfd5de94152b31491d",
+    "gitCommit": "b172e3adf8e541cfd00c4ca1e4bc149ce4d39d97",
     "candidateCount": 567
   },
   "samplePolicy": {
@@ -13,7 +13,15 @@
     "sourceRecordedSampleCount": 20,
     "selectedSampleCount": 20,
     "preservesSourceSampleReasonRepresentationWhenCapAllows": true,
-    "proportionalSampling": false
+    "proportionalSampling": false,
+    "sourceReviewApplicationSamplePolicy": {
+      "selection": "bounded-reason-representation",
+      "maxRecordedSamples": 20,
+      "sourceDroppedUpdateCount": 305,
+      "selectedSampleCount": 20,
+      "preservesDroppedReasonRepresentationWhenCapAllows": true,
+      "proportionalSampling": false
+    }
   },
   "replaySummary": {
     "appliedResultCount": 90,

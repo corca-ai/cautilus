@@ -9,6 +9,7 @@ import { resolve } from "node:path";
 import { selectDroppedUpdateSamples } from "./drop-sample-selection.mjs";
 
 const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
+const DROPPED_UPDATE_SAMPLE_LIMIT = 20;
 
 export function parseArgs(argv = process.argv.slice(2)) {
 	const args = {
@@ -92,6 +93,7 @@ function emptyApplicationLog() {
 		droppedUpdateCount: 0,
 		droppedUpdateReasonCounts: {},
 		droppedUpdateSamples: [],
+		droppedUpdateSampleLimit: DROPPED_UPDATE_SAMPLE_LIMIT,
 	};
 }
 
@@ -145,6 +147,7 @@ export function projectAggregateProvenance(packet, {
 			droppedUpdateCount: log.droppedUpdateCount,
 			droppedUpdateReasonCounts: log.droppedUpdateReasonCounts || {},
 			droppedUpdateSamples: stableDroppedUpdateSamples(log.droppedUpdateSamples || [], cwd),
+			droppedUpdateSamplePolicy: droppedUpdateSamplePolicy(log),
 			provenanceMode: "aggregate-current-review-results",
 		},
 	};
@@ -194,6 +197,7 @@ export function writeAggregateReviewApplication(packet, options = {}) {
 			droppedUpdateCount: log.droppedUpdateCount,
 			droppedUpdateReasonCounts: log.droppedUpdateReasonCounts,
 			droppedUpdateSamples: stableDroppedUpdateSamples(log.droppedUpdateSamples, cwd),
+			droppedUpdateSamplePolicy: droppedUpdateSamplePolicy(log),
 			provenanceMode: "aggregate-current-review-results",
 		},
 	};
@@ -408,7 +412,20 @@ function mergeDroppedUpdateReasonCounts(target, counts) {
 	}
 }
 
-function recordDroppedUpdateSamples(log, reviewResultPath, droppedUpdates, maxSamples = 20) {
+function droppedUpdateSamplePolicy(log) {
+	const maxSamples = log.droppedUpdateSampleLimit || DROPPED_UPDATE_SAMPLE_LIMIT;
+	return {
+		selection: "bounded-reason-representation",
+		maxRecordedSamples: maxSamples,
+		sourceDroppedUpdateCount: log.droppedUpdateCount || 0,
+		selectedSampleCount: Array.isArray(log.droppedUpdateSamples) ? log.droppedUpdateSamples.length : 0,
+		preservesDroppedReasonRepresentationWhenCapAllows: true,
+		proportionalSampling: false,
+	};
+}
+
+function recordDroppedUpdateSamples(log, reviewResultPath, droppedUpdates, maxSamples = DROPPED_UPDATE_SAMPLE_LIMIT) {
+	log.droppedUpdateSampleLimit = maxSamples;
 	const samples = droppedUpdates.map((dropped) => ({
 		reviewResultPath,
 		claimId: dropped.claimId || "",

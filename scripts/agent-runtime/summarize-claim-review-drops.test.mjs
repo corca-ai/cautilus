@@ -25,6 +25,14 @@ test("buildReviewDropSummary classifies dropped review updates into operator act
 		selectedSampleCount: 2,
 		preservesSourceSampleReasonRepresentationWhenCapAllows: true,
 		proportionalSampling: false,
+		sourceReviewApplicationSamplePolicy: {
+			selection: "bounded-reason-representation",
+			maxRecordedSamples: 20,
+			sourceDroppedUpdateCount: 3,
+			selectedSampleCount: 3,
+			preservesDroppedReasonRepresentationWhenCapAllows: true,
+			proportionalSampling: false,
+		},
 	});
 	assert.equal(summary.replaySummary.droppedUpdateCount, 3);
 	assert.deepEqual(summary.replaySummary.droppedUpdateReasonCounts, {
@@ -90,6 +98,7 @@ test("buildReviewDropSummary treats unsampled reasons as count-level debt", () =
 	packet.reviewApplication.droppedUpdateSamples = packet.reviewApplication.droppedUpdateSamples.filter(
 		(sample) => sample.reason === "missing-fingerprint",
 	);
+	packet.reviewApplication.droppedUpdateSamplePolicy.selectedSampleCount = 1;
 
 	const summary = buildReviewDropSummary({
 		claimsPacket: packet,
@@ -175,6 +184,64 @@ test("buildReviewDropSummary preserves represented reasons when sampleLimit is l
 	);
 });
 
+test("buildReviewDropSummary preserves source review application sample policy", () => {
+	const packet = exampleClaimsPacket();
+
+	const summary = buildReviewDropSummary({
+		claimsPacket: packet,
+		claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+	});
+
+	assert.deepEqual(
+		summary.samplePolicy.sourceReviewApplicationSamplePolicy,
+		packet.reviewApplication.droppedUpdateSamplePolicy,
+	);
+	const markdown = renderReviewDropSummary(summary);
+	assert.match(markdown, /Source replay sample policy: bounded-reason-representation/);
+});
+
+test("buildReviewDropSummary rejects missing source sample policy when drops exist", () => {
+	const packet = exampleClaimsPacket();
+	delete packet.reviewApplication.droppedUpdateSamplePolicy;
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/droppedUpdateSamplePolicy is required/,
+	);
+});
+
+test("buildReviewDropSummary rejects source sample policy count drift", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamplePolicy.selectedSampleCount = 1;
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/selectedSampleCount 1 does not match droppedUpdateSamples length 3/,
+	);
+});
+
+test("buildReviewDropSummary rejects source dropped count drift", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamplePolicy.sourceDroppedUpdateCount = 2;
+
+	assert.throws(
+		() =>
+			buildReviewDropSummary({
+				claimsPacket: packet,
+				claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+			}),
+		/sourceDroppedUpdateCount 2 does not match droppedUpdateCount 3/,
+	);
+});
+
 test("renderReviewDropSummary explains that dropped updates are not recovered", () => {
 	const summary = buildReviewDropSummary({
 		claimsPacket: exampleClaimsPacket(),
@@ -211,6 +278,14 @@ test("renderReviewDropSummary renders every bounded dropped update sample", () =
 					"missing-fingerprint": droppedUpdateSamples.length,
 				},
 				droppedUpdateSamples,
+				droppedUpdateSamplePolicy: {
+					selection: "bounded-reason-representation",
+					maxRecordedSamples: 20,
+					sourceDroppedUpdateCount: droppedUpdateSamples.length,
+					selectedSampleCount: droppedUpdateSamples.length,
+					preservesDroppedReasonRepresentationWhenCapAllows: true,
+					proportionalSampling: false,
+				},
 			},
 		},
 	});
@@ -295,6 +370,14 @@ function exampleClaimsPacket() {
 			droppedUpdateReasonCounts: {
 				"missing-fingerprint": 1,
 				"missing-live-fingerprint": 2,
+			},
+			droppedUpdateSamplePolicy: {
+				selection: "bounded-reason-representation",
+				maxRecordedSamples: 20,
+				sourceDroppedUpdateCount: 3,
+				selectedSampleCount: 3,
+				preservesDroppedReasonRepresentationWhenCapAllows: true,
+				proportionalSampling: false,
 			},
 			droppedUpdateSamples: [
 				{

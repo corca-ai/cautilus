@@ -6,7 +6,7 @@ Use the JSON packet as the audit source; this document does not recover stale up
 ## Packet
 
 - Source claim packet: .cautilus/claims/evidenced-typed-runners.json
-- Source claim packet commit: 8a7e013887d71e0953d61fbfd5de94152b31491d
+- Source claim packet commit: b172e3adf8e541cfd00c4ca1e4bc149ce4d39d97
 - Source claim count: 567
 - Applied review results: 90
 - Skipped review results: 50
@@ -20,6 +20,7 @@ Use the JSON packet as the audit source; this document does not recover stale up
 - Source recorded samples: 20
 - Selected samples: 20
 - Proportional sampling: no
+- Source replay sample policy: bounded-reason-representation
 
 ## Action Classes
 

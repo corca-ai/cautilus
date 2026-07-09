@@ -117,6 +117,14 @@ test("applyCurrentReviewResults records bounded samples across dropped reasons",
 		projected.reviewApplication.droppedUpdateSamples.filter((sample) => sample.reason === "missing-live-fingerprint").length,
 		1,
 	);
+	assert.deepEqual(projected.reviewApplication.droppedUpdateSamplePolicy, {
+		selection: "bounded-reason-representation",
+		maxRecordedSamples: 20,
+		sourceDroppedUpdateCount: 22,
+		selectedSampleCount: 20,
+		preservesDroppedReasonRepresentationWhenCapAllows: true,
+		proportionalSampling: false,
+	});
 });
 
 test("reviewResultPaths keeps explicit review-result order deterministic", () => {
@@ -307,6 +315,35 @@ test("projectAggregateProvenance records aggregate fields in one pass without du
 				keptUpdateCount: 3,
 				rewrittenUpdateCount: 0,
 				droppedUpdateCount: 4,
+				droppedUpdateReasonCounts: {
+					"missing-fingerprint": 4,
+				},
+				droppedUpdateSamples: [
+					{
+						reviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+						claimId: "claim-old-1",
+						claimFingerprint: "",
+						reason: "missing-fingerprint",
+					},
+					{
+						reviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+						claimId: "claim-old-2",
+						claimFingerprint: "",
+						reason: "missing-fingerprint",
+					},
+					{
+						reviewResultPath: "/repo/.cautilus/claims/review-result-two.json",
+						claimId: "claim-old-3",
+						claimFingerprint: "",
+						reason: "missing-fingerprint",
+					},
+					{
+						reviewResultPath: "/repo/.cautilus/claims/review-result-two.json",
+						claimId: "claim-old-4",
+						claimFingerprint: "",
+						reason: "missing-fingerprint",
+					},
+				],
 			},
 			cwd: "/repo",
 		},
@@ -328,8 +365,43 @@ test("projectAggregateProvenance records aggregate fields in one pass without du
 		keptUpdateCount: 3,
 		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 4,
-		droppedUpdateReasonCounts: {},
-		droppedUpdateSamples: [],
+		droppedUpdateReasonCounts: {
+			"missing-fingerprint": 4,
+		},
+		droppedUpdateSamples: [
+			{
+				reviewResultPath: ".cautilus/claims/review-result-one.json",
+				claimId: "claim-old-1",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+			{
+				reviewResultPath: ".cautilus/claims/review-result-one.json",
+				claimId: "claim-old-2",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+			{
+				reviewResultPath: ".cautilus/claims/review-result-two.json",
+				claimId: "claim-old-3",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+			{
+				reviewResultPath: ".cautilus/claims/review-result-two.json",
+				claimId: "claim-old-4",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+		],
+		droppedUpdateSamplePolicy: {
+			selection: "bounded-reason-representation",
+			maxRecordedSamples: 20,
+			sourceDroppedUpdateCount: 4,
+			selectedSampleCount: 4,
+			preservesDroppedReasonRepresentationWhenCapAllows: true,
+			proportionalSampling: false,
+		},
 		provenanceMode: "aggregate-current-review-results",
 	});
 });
@@ -412,6 +484,35 @@ test("writeAggregateReviewApplication records all applied review-result paths", 
 			keptUpdateCount: 3,
 			rewrittenUpdateCount: 0,
 			droppedUpdateCount: 4,
+			droppedUpdateReasonCounts: {
+				"missing-fingerprint": 4,
+			},
+			droppedUpdateSamples: [
+				{
+					reviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+					claimId: "claim-old-1",
+					claimFingerprint: "",
+					reason: "missing-fingerprint",
+				},
+				{
+					reviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+					claimId: "claim-old-2",
+					claimFingerprint: "",
+					reason: "missing-fingerprint",
+				},
+				{
+					reviewResultPath: "/repo/.cautilus/claims/review-result-two.json",
+					claimId: "claim-old-3",
+					claimFingerprint: "",
+					reason: "missing-fingerprint",
+				},
+				{
+					reviewResultPath: "/repo/.cautilus/claims/review-result-two.json",
+					claimId: "claim-old-4",
+					claimFingerprint: "",
+					reason: "missing-fingerprint",
+				},
+			],
 			cwd: "/repo",
 		},
 	);
@@ -434,8 +535,43 @@ test("writeAggregateReviewApplication records all applied review-result paths", 
 		keptUpdateCount: 3,
 		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 4,
-		droppedUpdateReasonCounts: {},
-		droppedUpdateSamples: [],
+		droppedUpdateReasonCounts: {
+			"missing-fingerprint": 4,
+		},
+		droppedUpdateSamples: [
+			{
+				reviewResultPath: ".cautilus/claims/review-result-one.json",
+				claimId: "claim-old-1",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+			{
+				reviewResultPath: ".cautilus/claims/review-result-one.json",
+				claimId: "claim-old-2",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+			{
+				reviewResultPath: ".cautilus/claims/review-result-two.json",
+				claimId: "claim-old-3",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+			{
+				reviewResultPath: ".cautilus/claims/review-result-two.json",
+				claimId: "claim-old-4",
+				claimFingerprint: "",
+				reason: "missing-fingerprint",
+			},
+		],
+		droppedUpdateSamplePolicy: {
+			selection: "bounded-reason-representation",
+			maxRecordedSamples: 20,
+			sourceDroppedUpdateCount: 4,
+			selectedSampleCount: 4,
+			preservesDroppedReasonRepresentationWhenCapAllows: true,
+			proportionalSampling: false,
+		},
 		provenanceMode: "aggregate-current-review-results",
 	});
 });
@@ -545,6 +681,14 @@ test("projectAggregateProvenance records structured dropped update diagnostics",
 			reason: "missing-fingerprint",
 		},
 	]);
+	assert.deepEqual(projected.reviewApplication.droppedUpdateSamplePolicy, {
+		selection: "bounded-reason-representation",
+		maxRecordedSamples: 20,
+		sourceDroppedUpdateCount: 3,
+		selectedSampleCount: 1,
+		preservesDroppedReasonRepresentationWhenCapAllows: true,
+		proportionalSampling: false,
+	});
 });
 
 test("applyCurrentReviewResults records dropped diagnostics when every result is stale", () => {
@@ -626,4 +770,12 @@ test("applyCurrentReviewResults records dropped diagnostics when every result is
 			reason: "missing-fingerprint",
 		},
 	]);
+	assert.deepEqual(projected.reviewApplication.droppedUpdateSamplePolicy, {
+		selection: "bounded-reason-representation",
+		maxRecordedSamples: 20,
+		sourceDroppedUpdateCount: 1,
+		selectedSampleCount: 1,
+		preservesDroppedReasonRepresentationWhenCapAllows: true,
+		proportionalSampling: false,
+	});
 });

@@ -208,6 +208,12 @@ export function buildReviewDropSummary({ claimsPacket, claimsPath = DEFAULT_CLAI
 	const reviewApplication = asObject(claimsPacket?.reviewApplication);
 	const reasonCounts = asObject(reviewApplication.droppedUpdateReasonCounts);
 	const rawSamples = asArray(reviewApplication.droppedUpdateSamples);
+	const sourceSamplePolicy = asObject(reviewApplication.droppedUpdateSamplePolicy);
+	validateSourceSamplePolicy({
+		droppedUpdateCount: reviewApplication.droppedUpdateCount ?? 0,
+		rawSamples,
+		sourceSamplePolicy,
+	});
 	const samples = normalizeSamples(rawSamples, sampleLimit);
 	const sampleReasonCounts = mergeReasonCounts(samples);
 	const coverage = sampleCoverage(reasonCounts, sampleReasonCounts);
@@ -223,6 +229,7 @@ export function buildReviewDropSummary({ claimsPacket, claimsPath = DEFAULT_CLAI
 			selectedSampleCount: samples.length,
 			preservesSourceSampleReasonRepresentationWhenCapAllows: true,
 			proportionalSampling: false,
+			sourceReviewApplicationSamplePolicy: Object.keys(sourceSamplePolicy).length > 0 ? sourceSamplePolicy : null,
 		},
 		replaySummary: {
 			appliedResultCount: reviewApplication.appliedResultCount ?? 0,
@@ -241,6 +248,34 @@ export function buildReviewDropSummary({ claimsPacket, claimsPath = DEFAULT_CLAI
 		nextAction: "Use represented dropped-update samples only when selecting a bounded re-review queue; treat unsampled reason classes as count-level diagnostic debt.",
 		nextActions: nextActions(actions),
 	};
+}
+
+function validateSourceSamplePolicy({ droppedUpdateCount, rawSamples, sourceSamplePolicy }) {
+	const hasPolicy = Object.keys(sourceSamplePolicy).length > 0;
+	if (droppedUpdateCount > 0 && !hasPolicy) {
+		throw new Error("reviewApplication.droppedUpdateSamplePolicy is required when droppedUpdateCount is greater than zero");
+	}
+	if (!hasPolicy) {
+		return;
+	}
+	const sourceDroppedUpdateCount = sourceSamplePolicy.sourceDroppedUpdateCount;
+	if (sourceDroppedUpdateCount !== droppedUpdateCount) {
+		throw new Error(
+			`reviewApplication.droppedUpdateSamplePolicy.sourceDroppedUpdateCount ${sourceDroppedUpdateCount} does not match droppedUpdateCount ${droppedUpdateCount}`,
+		);
+	}
+	const selectedSampleCount = sourceSamplePolicy.selectedSampleCount;
+	if (selectedSampleCount !== rawSamples.length) {
+		throw new Error(
+			`reviewApplication.droppedUpdateSamplePolicy.selectedSampleCount ${selectedSampleCount} does not match droppedUpdateSamples length ${rawSamples.length}`,
+		);
+	}
+	const maxRecordedSamples = sourceSamplePolicy.maxRecordedSamples;
+	if (typeof maxRecordedSamples !== "number" || maxRecordedSamples < rawSamples.length) {
+		throw new Error(
+			`reviewApplication.droppedUpdateSamplePolicy.maxRecordedSamples ${maxRecordedSamples} is lower than droppedUpdateSamples length ${rawSamples.length}`,
+		);
+	}
 }
 
 function formatCounts(counts) {
@@ -343,6 +378,9 @@ export function renderReviewDropSummary(summary) {
 		lines.push(`- Source recorded samples: ${summary.samplePolicy.sourceRecordedSampleCount}`);
 		lines.push(`- Selected samples: ${summary.samplePolicy.selectedSampleCount}`);
 		lines.push(`- Proportional sampling: ${summary.samplePolicy.proportionalSampling ? "yes" : "no"}`);
+		if (summary.samplePolicy.sourceReviewApplicationSamplePolicy) {
+			lines.push(`- Source replay sample policy: ${summary.samplePolicy.sourceReviewApplicationSamplePolicy.selection}`);
+		}
 	}
 	lines.push("");
 	renderActionClasses(lines, summary);
