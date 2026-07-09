@@ -7,6 +7,14 @@
     "gitCommit": "8a7e013887d71e0953d61fbfd5de94152b31491d",
     "candidateCount": 567
   },
+  "samplePolicy": {
+    "selection": "bounded-reason-representation",
+    "maxRecordedSamples": 20,
+    "sourceRecordedSampleCount": 20,
+    "selectedSampleCount": 20,
+    "preservesSourceSampleReasonRepresentationWhenCapAllows": true,
+    "proportionalSampling": false
+  },
   "replaySummary": {
     "appliedResultCount": 90,
     "skippedResultCount": 50,

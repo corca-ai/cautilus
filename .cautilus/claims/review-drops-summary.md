@@ -15,6 +15,11 @@ Use the JSON packet as the audit source; this document does not recover stale up
 - Dropped updates: 305
 - Drop reasons: missing-fingerprint: 165, missing-live-fingerprint: 140
 - Recorded samples: 20
+- Sample policy: bounded-reason-representation
+- Sample cap: 20
+- Source recorded samples: 20
+- Selected samples: 20
+- Proportional sampling: no
 
 ## Action Classes
 

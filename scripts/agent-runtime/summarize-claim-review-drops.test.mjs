@@ -18,6 +18,14 @@ test("buildReviewDropSummary classifies dropped review updates into operator act
 	});
 
 	assert.equal(summary.schemaVersion, "cautilus.claim_review_drop_summary.v1");
+	assert.deepEqual(summary.samplePolicy, {
+		selection: "bounded-reason-representation",
+		maxRecordedSamples: 2,
+		sourceRecordedSampleCount: 3,
+		selectedSampleCount: 2,
+		preservesSourceSampleReasonRepresentationWhenCapAllows: true,
+		proportionalSampling: false,
+	});
 	assert.equal(summary.replaySummary.droppedUpdateCount, 3);
 	assert.deepEqual(summary.replaySummary.droppedUpdateReasonCounts, {
 		"missing-fingerprint": 1,
@@ -236,6 +244,9 @@ test("summarize-claim-review-drops CLI writes JSON and Markdown outputs", () => 
 	assert.equal(packet.schemaVersion, "cautilus.claim_review_drop_summary.v1");
 	assert.equal(packet.sourceClaimPacket.path, claimsPath);
 	assert.match(markdown, /Dropped updates: 3/);
+	assert.match(markdown, /Sample policy: bounded-reason-representation/);
+	assert.match(markdown, /Selected samples: 3/);
+	assert.match(markdown, /Proportional sampling: no/);
 
 	execFileSync("node", [
 		"scripts/agent-runtime/summarize-claim-review-drops.mjs",

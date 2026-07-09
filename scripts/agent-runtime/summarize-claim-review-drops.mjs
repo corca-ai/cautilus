@@ -207,7 +207,8 @@ function sourcePacketMeta(claimsPacket, claimsPath) {
 export function buildReviewDropSummary({ claimsPacket, claimsPath = DEFAULT_CLAIMS, sampleLimit = 20 }) {
 	const reviewApplication = asObject(claimsPacket?.reviewApplication);
 	const reasonCounts = asObject(reviewApplication.droppedUpdateReasonCounts);
-	const samples = normalizeSamples(asArray(reviewApplication.droppedUpdateSamples), sampleLimit);
+	const rawSamples = asArray(reviewApplication.droppedUpdateSamples);
+	const samples = normalizeSamples(rawSamples, sampleLimit);
 	const sampleReasonCounts = mergeReasonCounts(samples);
 	const coverage = sampleCoverage(reasonCounts, sampleReasonCounts);
 	const actions = actionClasses(coverage);
@@ -215,6 +216,14 @@ export function buildReviewDropSummary({ claimsPacket, claimsPath = DEFAULT_CLAI
 		schemaVersion: "cautilus.claim_review_drop_summary.v1",
 		packetNotice: "Diagnostic projection over aggregate review replay drops; this packet does not recover or infer-match dropped updates.",
 		sourceClaimPacket: sourcePacketMeta(claimsPacket, claimsPath),
+		samplePolicy: {
+			selection: "bounded-reason-representation",
+			maxRecordedSamples: sampleLimit,
+			sourceRecordedSampleCount: rawSamples.length,
+			selectedSampleCount: samples.length,
+			preservesSourceSampleReasonRepresentationWhenCapAllows: true,
+			proportionalSampling: false,
+		},
 		replaySummary: {
 			appliedResultCount: reviewApplication.appliedResultCount ?? 0,
 			skippedResultCount: reviewApplication.skippedResultCount ?? 0,
@@ -328,6 +337,13 @@ export function renderReviewDropSummary(summary) {
 	lines.push(`- Dropped updates: ${summary.replaySummary.droppedUpdateCount}`);
 	lines.push(`- Drop reasons: ${formatCounts(summary.replaySummary.droppedUpdateReasonCounts)}`);
 	lines.push(`- Recorded samples: ${summary.replaySummary.recordedSampleCount}`);
+	if (summary.samplePolicy) {
+		lines.push(`- Sample policy: ${summary.samplePolicy.selection}`);
+		lines.push(`- Sample cap: ${summary.samplePolicy.maxRecordedSamples}`);
+		lines.push(`- Source recorded samples: ${summary.samplePolicy.sourceRecordedSampleCount}`);
+		lines.push(`- Selected samples: ${summary.samplePolicy.selectedSampleCount}`);
+		lines.push(`- Proportional sampling: ${summary.samplePolicy.proportionalSampling ? "yes" : "no"}`);
+	}
 	lines.push("");
 	renderActionClasses(lines, summary);
 	renderSampleCoverage(lines, summary);
