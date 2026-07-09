@@ -1,6 +1,6 @@
 # Achieve Goal: Second Five Autonomous Improvement Cycles
 
-Status: active
+Status: complete
 Created: 2026-07-09
 Activation: `/goal @charness-artifacts/goals/2026-07-09-second-five-autonomous-improvement-cycles.md`
 
@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 5 — pin CI specdown installation instead of using `latest`.
-- Current slice intent: close the run with a small workflow determinism hardening slice, then run final broad proof and closeout.
-- Next action: inspect GitHub workflow specdown install commands, add a guard test, and update workflows to a pinned version.
+- Current slice: complete — all five improvement cycles are implemented, reviewed, committed, and locally verified.
+- Current slice intent: closed after final broad local proof and closeout evidence.
+- Next action: none — report the completed run.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -85,7 +85,7 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | 2 | Harden claim status report summary consistency. | Prevent stale status snapshots from silently shaping the status report scoreboard. | Focused tests, critique, commit. | complete |
 | 3 | Show cross-cutting signal sample IDs in evidence-state Markdown. | JSON already preserves sample IDs, but the human projection omits them. | Focused tests, generated projection check, critique, commit. | complete |
 | 4 | Add a schema marker to `first_bounded_run`. | Keep agent-facing doctor guide payloads structured and durable. | Focused CLI smoke test, critique, commit. | complete |
-| 5 | Pin CI specdown installation. | Finish with deterministic workflow tooling plus final proof. | Focused workflow tests, fresh-eye review, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | in-progress |
+| 5 | Pin CI specdown installation. | Finish with deterministic workflow tooling plus final proof. | Focused workflow tests, fresh-eye review, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | complete |
 
 ## Operator Decision Queue
 
@@ -196,6 +196,20 @@ applies.
 - Lessons carried forward: When a doctor payload object becomes agent handoff material, additive schema markers are useful but should be paired with the existing user-facing executable spec path.
 - Metrics:
 
+### Slice 5: Cycle 5 — Pinned Specdown CI Install
+
+- Objective: Pin GitHub workflow specdown installs instead of using latest.
+- Why this approach: Specdown is a proof gate dependency for specs and reports; CI should use the same known version rather than a moving latest target.
+- Commits:
+- What changed: Pinned specdown installs in verify, spec-report, and release-artifacts workflows to v0.48.0; added a GitHub Actions policy test that rejects @latest and requires the pinned version in all workflows.
+- Alternatives rejected: Rejected leaving latest with human convention only because workflow dependencies are deterministic gate inputs and should be test-guarded.
+- Targeted verification: node --test scripts/github-actions.test.mjs; npm run lint:eslint; npm run lint:specs; npm run generated:drift:check; git diff --check
+- Test duplication pressure: Added one workflow policy test over the existing workflow files; no networked CI run was claimed.
+- Critique: Fresh-eye review 019f4701-3d16-7bb0-8d39-639ab083de14: OK, no findings.
+- Off-goal findings: none
+- Lessons carried forward: Moving CI tool versions should be guarded by a repo-local workflow test so @latest does not return unnoticed.
+- Metrics:
+
 ## Context Sources
 
 Durable references this goal was shaped from. A fresh session can reconstruct
@@ -234,18 +248,23 @@ Issues or deferred findings discovered during the run.
 
 ## Final Verification
 
-Closeout evidence — replace each `TODO` with a bound `<path>` (a checked-in
-retro / host-log probe / disposition-review artifact) or an explicit
-`skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
-`TODO` / `<path>` / `TBD` until you do.
+Retro: charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md
+Host log probe: charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-host-probe.md
+Disposition review: charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-disposition-review.md
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+- `npm run verify`: passed.
+- `npm run hooks:check`: passed.
+- `npm run generated:drift:check`: passed.
+- `describe_goal_closeout_shape.py --goal-path charness-artifacts/goals/2026-07-09-second-five-autonomous-improvement-cycles.md`: passed after closeout evidence was bound.
+- External or live proof: skipped — local-only run, no push, release, remote CI, or live proof was requested or claimed.
 
 ## User Verification Instructions
 
+- Inspect the five scoped commits with `git log --oneline -5`.
+- Re-run final local gates with `npm run verify`, `npm run hooks:check`, and `npm run generated:drift:check`.
+- Inspect the goal, retro, host-probe, and disposition artifacts named in `## Final Verification`.
+
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: Cycle 1 made generated-artifact fixture setup list-derived, Cycle 2 added mixed-shape summary precedence tests, and Cycle 4 folded claim-source refresh into the same slice after the gate surfaced it.
+Structural follow-up: applied: workflow and test guard changes landed in the relevant slices; no issue-routed follow-up remains.

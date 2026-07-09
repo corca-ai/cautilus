@@ -28,7 +28,7 @@ jobs:
           node-version: "22"
           cache: npm
       - run: echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-      - run: go install github.com/corca-ai/specdown/cmd/specdown@latest
+      - run: go install github.com/corca-ai/specdown/cmd/specdown@v0.48.0
       - run: npm ci
       - run: npm run specdown:pages
       - uses: actions/upload-pages-artifact@v5
