@@ -115,6 +115,8 @@ Each `doctor` check separates stable contract from run-specific observation:
 `id` names the machine-readable readiness condition, `ok` reports the boolean result, `meaning` explains why the condition matters, and `detail` records the observed fact for this run.
 External executable prerequisites should put the resolved binary path in `detail` when present and the searched `PATH` in `detail` when missing.
 When repo-scope `doctor` returns `ready`, the structured payload includes `first_bounded_run`: a starter `evaluate fixture -> evaluate observation` packet loop plus the scenario-normalization catalog for agents that still need proposal-input examples.
+If the adapter declares `evaluation_input_default`, the first bounded-run command names that checked-in fixture path directly.
+Otherwise it keeps a `<fixture.json>` placeholder so the host repo still chooses the fixture it owns.
 When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.
 Use `cautilus discover claims` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.
 Default discovery starts from adapter-owned claim entries or README.md/AGENTS.md/CLAUDE.md and follows repo-local Markdown links to depth 3.
@@ -213,7 +215,7 @@ cautilus doctor artifacts prune \
 ```
 
 `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use) and prints `export CAUTILUS_RUN_DIR=<absolute runDir>`.
-Pass `--json` instead of `eval` when a script needs the machine-readable payload.
+Pass `--format json` instead of shell `eval` when a script needs the machine-readable payload.
 When `CAUTILUS_RUN_DIR` is already pinned, downstream commands (`evaluate comparison prepare`, `evaluate fixture`) reuse that active `runDir`; if nothing is pinned they auto-materialize a fresh `runDir` and print `Active run: <path>` to stderr.
 
 ## Scenarios

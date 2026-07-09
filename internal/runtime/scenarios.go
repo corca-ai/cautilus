@@ -1,6 +1,9 @@
 package runtime
 
-import "path/filepath"
+import (
+	"path/filepath"
+	"strings"
+)
 
 // Scenario normalization catalog for `cautilus discover scenarios`.
 //
@@ -74,13 +77,20 @@ func LoadScenarioCatalog() ScenarioCatalog {
 	}
 }
 
-func LoadFirstBoundedRunGuide(repoRoot string) FirstBoundedRunGuide {
+func LoadFirstBoundedRunGuide(repoRoot string, evaluationInputDefault string) FirstBoundedRunGuide {
 	outputDir := filepath.Join(repoRoot, ".cautilus", "runs", "first-bounded-run")
+	fixtureArg := "--fixture <fixture.json>"
+	if defaultFixture := strings.TrimSpace(evaluationInputDefault); defaultFixture != "" {
+		if !filepath.IsAbs(defaultFixture) {
+			defaultFixture = filepath.Join(repoRoot, defaultFixture)
+		}
+		fixtureArg = "--fixture " + ShellSingleQuote(defaultFixture)
+	}
 	return FirstBoundedRunGuide{
 		Summary:          "Pick one checked-in fixture, then complete one bounded evaluate fixture run and packet recheck instead of stopping at doctor.",
 		DiscoveryCommand: "cautilus discover scenarios",
 		DecisionLoopCommands: []string{
-			"cautilus evaluate fixture --repo-root " + ShellSingleQuote(repoRoot) + " --fixture <fixture.json> --output-dir " + ShellSingleQuote(outputDir),
+			"cautilus evaluate fixture --repo-root " + ShellSingleQuote(repoRoot) + " " + fixtureArg + " --output-dir " + ShellSingleQuote(outputDir),
 			"cautilus evaluate observation --input " + ShellSingleQuote(filepath.Join(outputDir, "eval-observed.json")) + " --output " + ShellSingleQuote(filepath.Join(outputDir, "eval-summary.recheck.json")),
 		},
 		NormalizationFamilies: LoadScenarioCatalog().NormalizationFamilies,

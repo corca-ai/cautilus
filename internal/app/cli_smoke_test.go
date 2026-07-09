@@ -296,11 +296,34 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 		"  - smoke",
 		"baseline_options:",
 		"  - baseline git ref via {baseline_ref}",
+		"evaluation_input_default: fixtures/eval/smoke.fixture.json",
 		"eval_test_command_templates:",
 		"  - npm run check",
 		"",
 	}, "\n")
 	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	fixturePath := filepath.Join(root, "fixtures", "eval", "smoke.fixture.json")
+	if err := os.MkdirAll(filepath.Dir(fixturePath), 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	fixture := `{
+  "schemaVersion": "cautilus.evaluation_input.v1",
+  "surface": "app",
+  "preset": "prompt",
+  "suiteId": "smoke",
+  "provider": "anthropic",
+  "model": "claude-sonnet-4-6",
+  "cases": [
+    {
+      "caseId": "smoke",
+      "input": "Say Cautilus.",
+      "expected": {"finalText": "Cautilus"}
+    }
+  ]
+}`
+	if err := os.WriteFile(fixturePath, []byte(fixture), 0o644); err != nil {
 		t.Fatalf("WriteFile returned error: %v", err)
 	}
 
@@ -353,6 +376,12 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !strings.Contains(anyToString(decisionLoopCommands[0]), "cautilus evaluate fixture --repo-root '"+root+"'") {
 		t.Fatalf("expected evaluate fixture first bounded run command, got %#v", decisionLoopCommands[0])
 	}
+	if strings.Contains(anyToString(decisionLoopCommands[0]), "<fixture") {
+		t.Fatalf("expected default fixture path instead of placeholder, got %#v", decisionLoopCommands[0])
+	}
+	if !strings.Contains(anyToString(decisionLoopCommands[0]), "--fixture '"+filepath.Join(root, "fixtures", "eval", "smoke.fixture.json")+"'") {
+		t.Fatalf("expected default fixture path in first bounded run command, got %#v", decisionLoopCommands[0])
+	}
 	if !strings.Contains(anyToString(decisionLoopCommands[1]), "cautilus evaluate observation --input '"+filepath.Join(root, ".cautilus", "runs", "first-bounded-run", "eval-observed.json")+"'") {
 		t.Fatalf("expected evaluate observation packet recheck command, got %#v", decisionLoopCommands[1])
 	}
@@ -363,6 +392,59 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	firstFamily, ok := families[0].(map[string]any)
 	if !ok || anyToString(firstFamily["exampleInputCli"]) == "" {
 		t.Fatalf("expected exampleInputCli in normalization-family hint, got %#v", families[0])
+	}
+}
+
+func TestCLIDoctorBlocksMissingEvaluationInputDefault(t *testing.T) {
+	root := t.TempDir()
+	initGitRepo(t, root)
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"evaluation_input_default: fixtures/eval/missing.fixture.json",
+		"eval_test_command_templates:",
+		"  - npm run check",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	stdout, stderr, exitCode := runCLI(t, root, "doctor", "--repo-root", root)
+	if exitCode != 1 {
+		t.Fatalf("expected missing default fixture to fail doctor, got exit=%d stdout=%s stderr=%s", exitCode, stdout, stderr)
+	}
+	payload := parseJSONObject(t, stdout)
+	if payload["ready"] != false || payload["status"] != "incomplete_adapter" {
+		t.Fatalf("expected incomplete doctor payload, got %#v", payload)
+	}
+	checks, ok := payload["checks"].([]any)
+	if !ok {
+		t.Fatalf("expected checks array, got %#v", payload["checks"])
+	}
+	found := false
+	for _, raw := range checks {
+		check := raw.(map[string]any)
+		if check["id"] == "evaluation_input_default_valid" {
+			found = true
+			if check["ok"] != false {
+				t.Fatalf("expected missing default fixture check to fail, got %#v", check)
+			}
+		}
+	}
+	if !found {
+		t.Fatalf("expected evaluation_input_default_valid check, got %#v", checks)
+	}
+	if _, ok := payload["first_bounded_run"]; ok {
+		t.Fatalf("not-ready adapter should not receive first_bounded_run: %#v", payload["first_bounded_run"])
 	}
 }
 

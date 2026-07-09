@@ -51,6 +51,8 @@ test("the onboarding capture records the human-auditable invariant the apex Host
 		assert.equal(capture.onboarding.evalRecommendation, "accept-now");
 		assert.match(capture.onboarding.hostOwned.runnerPath, /cautilus-smoke-eval\.mjs$/);
 		assert.match(capture.onboarding.hostOwned.adapterPath, /\.agents\/cautilus-adapter\.yaml$/);
+		assert.ok(capture.onboarding.steps.includes("cautilus doctor --format json"));
+		assert.equal(capture.onboarding.steps.includes("cautilus doctor json"), false);
 		assert.ok(capture.onboarding.steps.includes("cautilus evaluate fixture"));
 		// Host-owned paths must be repo-relative — no absolute temp-workspace leakage.
 		assert.equal(capture.onboarding.hostOwned.runnerPath.startsWith("/"), false);

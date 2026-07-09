@@ -30,7 +30,7 @@
       "git",
       "git",
       "cautilus doctor adapter",
-      "cautilus doctor",
+      "cautilus doctor --format json",
       "cautilus evaluate fixture"
     ]
   }

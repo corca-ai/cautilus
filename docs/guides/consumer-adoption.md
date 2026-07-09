@@ -49,6 +49,7 @@ What each step proves:
    If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.
 6. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
    Use `first_bounded_run.decisionLoopCommands[*]` for the generic packet loop, and use `first_bounded_run.normalizationFamilies[*].exampleInputCli` only when you want a minimal scenario-normalization packet before reaching for repo-local fixtures.
+   If the adapter declares `evaluation_input_default`, the fixture command points at that checked-in default directly; otherwise choose the host-owned fixture before running it.
 
 ## Migration Checklist
 

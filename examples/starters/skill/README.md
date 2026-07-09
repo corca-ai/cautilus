@@ -12,16 +12,18 @@ The `scenario normalize skill` proposal-input lineage owns the input shape; see 
 
 1. Copy `cautilus-adapter.yaml` and `input.json` from this directory into your consumer repo.
    The adapter can live at the repo root or under `.agents/cautilus-adapter.yaml`.
-2. Install the CLI and confirm the starter resolves clean:
+2. Install the repo-local Cautilus Agent and confirm the starter resolves clean:
 
    ```bash
-   cautilus install --repo-root .
-   cautilus adapter resolve --repo-root .
+   cautilus init --repo-root .
+   cautilus doctor adapter --repo-root .
    cautilus doctor --repo-root .
+   cautilus doctor --repo-root . --next-action
    ```
 
 The starter ships a `node -e` smoke placeholder for `eval_test_command_templates`, so `doctor` returns `ready` immediately.
-Replace the placeholder with your real `cautilus eval test` command over time.
+Treat that as bootstrap help, not product-behavior proof.
+Replace the placeholder with your real `cautilus evaluate fixture` runner over time.
 
 ## Run the skill entry point
 
@@ -29,16 +31,16 @@ Replace the placeholder with your real `cautilus eval test` command over time.
 Use it to confirm the pipeline is wired, then substitute your own skill evaluation summaries:
 
 ```bash
-cautilus scenario normalize skill --input input.json
+cautilus discover scenarios normalize skill --input input.json
 ```
 
-If you want to generate such a summary in the first place, run `cautilus eval test` with a `surface=dev, preset=skill` fixture against an adapter-owned runner, then feed its observed packet into `cautilus eval evaluate` and from there into `scenario normalize skill`.
+If you want to generate such a summary in the first place, run `cautilus evaluate fixture` with a `surface=dev, preset=skill` fixture against an adapter-owned runner, then feed its observed packet into `cautilus evaluate observation` and from there into `cautilus discover scenarios normalize skill`.
 
 See [skill-normalization.md](../../../docs/contracts/skill-normalization.md) for the full input shape.
 
 ## Next
 
 - Replace the smoke placeholders with real commands.
-- Run `cautilus eval test --fixture <skill.fixture.json>` and `cautilus eval evaluate` against your real skill case suite.
+- Run `cautilus evaluate fixture --fixture <skill.fixture.json>` and `cautilus evaluate observation` against your real skill case suite.
 - When you have regressions worth saving, pipe them into
-  `cautilus scenario propose`.
+  `cautilus discover scenarios propose`.

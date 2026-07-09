@@ -72,7 +72,7 @@ eval "$(cautilus init run --label mode-held-out)"
 
 `workspace start` defaults `--root` to `./.cautilus/runs/` (auto-created on first use).
 After the `eval`, `CAUTILUS_RUN_DIR` is set in the current shell and consumer commands like `evaluate fixture`, `evaluate review variants`, `evaluate review prepare-input`, and `evaluate comparison prepare` resolve their runDir from that env var without operator path-threading.
-Pass `--json` instead of `eval` if a script needs the machine-readable payload.
+Pass `--format json` instead of shell `eval` if a script needs the machine-readable payload.
 
 If interpretation or reporting is getting sloppy, read [reporting.md](../contracts/reporting.md) before continuing.
 

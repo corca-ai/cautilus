@@ -301,7 +301,20 @@ export function buildOnboardingCapture(summary) {
 	const rel = (path) => (path ? relative(summary.repoRoot, path).replaceAll("\\", "/") : null);
 	const stepLabel = (entry) => {
 		if (entry.command === summary.cautilusBin) {
-			const sub = (entry.args || []).filter((arg) => !arg.startsWith("-") && !arg.includes("/"));
+			const sub = [];
+			const args = entry.args || [];
+			for (let index = 0; index < args.length; index += 1) {
+				const arg = args[index];
+				if (arg === "--format" && args[index + 1]) {
+					sub.push(arg, args[index + 1]);
+					index += 1;
+					continue;
+				}
+				if (arg.startsWith("-") || arg.includes("/")) {
+					continue;
+				}
+				sub.push(arg);
+			}
 			return ["cautilus", ...sub].join(" ").trim();
 		}
 		if (/(^|\/)git$/.test(entry.command)) {
@@ -417,8 +430,9 @@ export async function runExternalConsumerOnboardingSmoke(
 			summarizeCommand(cautilusBin, ["doctor", "adapter", "--repo-root", workspace.repoRoot], adapterResolve),
 		);
 
-		const doctor = execCommand(cautilusBin, ["doctor", "--repo-root", workspace.repoRoot]);
-		summary.commands.push(summarizeCommand(cautilusBin, ["doctor", "--repo-root", workspace.repoRoot], doctor));
+		const doctorArgs = ["doctor", "--repo-root", workspace.repoRoot, "--format", "json"];
+		const doctor = execCommand(cautilusBin, doctorArgs);
+		summary.commands.push(summarizeCommand(cautilusBin, doctorArgs, doctor));
 		const doctorPayload = JSON.parse(doctor.stdout);
 
 		const evalResult = runFirstBoundedEval(summary, cautilusBin, workspace.repoRoot, execCommand);

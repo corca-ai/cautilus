@@ -12,16 +12,18 @@ The `scenario normalize workflow` proposal-input lineage owns the input shape; s
 
 1. Copy `cautilus-adapter.yaml` and `input.json` from this directory into your consumer repo.
    The adapter can live at the repo root or under `.agents/cautilus-adapter.yaml`.
-2. Install the CLI and confirm the starter resolves clean:
+2. Install the repo-local Cautilus Agent and confirm the starter resolves clean:
 
    ```bash
-   cautilus install --repo-root .
-   cautilus adapter resolve --repo-root .
+   cautilus init --repo-root .
+   cautilus doctor adapter --repo-root .
    cautilus doctor --repo-root .
+   cautilus doctor --repo-root . --next-action
    ```
 
 The starter ships a `node -e` smoke placeholder for `eval_test_command_templates`, so `doctor` returns `ready` immediately.
-Replace the placeholder with your real `cautilus eval test` command over time.
+Treat that as bootstrap help, not product-behavior proof.
+Replace the placeholder with your real `cautilus evaluate fixture` runner over time.
 
 ## Run the workflow entry point
 
@@ -29,7 +31,7 @@ Replace the placeholder with your real `cautilus eval test` command over time.
 Use it to confirm the pipeline is wired, then substitute your own run summaries:
 
 ```bash
-cautilus scenario normalize workflow --input input.json
+cautilus discover scenarios normalize workflow --input input.json
 ```
 
 Each run summary needs `targetId`, `status` (`blocked`, `degraded`, `failed`, or `passed`), `surface`, and `blockedSteps` where progress stalled.
@@ -40,5 +42,5 @@ See [workflow-normalization.md](../../../docs/contracts/workflow-normalization.m
 ## Next
 
 - Replace the smoke placeholders with real commands.
-- Feed your own automation run summaries into `cautilus scenario normalize workflow`.
-- When the helper flags a blocker pattern, pipe the proposals into `cautilus scenario propose` to produce a repeatable recovery scenario.
+- Feed your own automation run summaries into `cautilus discover scenarios normalize workflow`.
+- When the helper flags a blocker pattern, pipe the proposals into `cautilus discover scenarios propose` to produce a repeatable recovery scenario.

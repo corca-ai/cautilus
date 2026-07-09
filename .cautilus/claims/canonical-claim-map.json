@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:abd7891574da02c809e72e4e8fd7046c01d9a0b84d4ae14311320028b6a66913"
+      "contentHash": "sha256:6f0ae4a7e163370c3785f851384f54a7967c99186835d9fdcb533609aadfb271"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:a6f61b85d4439fa76db8a8b35cfd5b0626d47614fc4611bcb4cea57827a31d91"
     }
   },
-  "claimsPacketGitCommit": "28e2af82a982fc3673fe140806fa4ecb624cc659",
+  "claimsPacketGitCommit": "1446dd6bfac1375e790ada64b2a8a913e132a086",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 568,
   "catalogs": {
@@ -255,39 +255,39 @@
       "claim-docs-guides-cli-md-49",
       "claim-docs-guides-cli-md-109",
       "claim-docs-guides-cli-md-111",
-      "claim-docs-guides-cli-md-118",
-      "claim-docs-guides-cli-md-119",
-      "claim-docs-guides-cli-md-124",
-      "claim-docs-guides-cli-md-135",
-      "claim-docs-guides-cli-md-180",
-      "claim-docs-guides-cli-md-186",
-      "claim-docs-guides-cli-md-187",
-      "claim-docs-guides-cli-md-193",
+      "claim-docs-guides-cli-md-120",
+      "claim-docs-guides-cli-md-121",
+      "claim-docs-guides-cli-md-126",
+      "claim-docs-guides-cli-md-137",
+      "claim-docs-guides-cli-md-182",
+      "claim-docs-guides-cli-md-188",
+      "claim-docs-guides-cli-md-189",
       "claim-docs-guides-cli-md-195",
-      "claim-docs-guides-cli-md-260",
-      "claim-docs-guides-cli-md-264",
-      "claim-docs-guides-cli-md-267",
-      "claim-docs-guides-cli-md-275",
-      "claim-docs-guides-cli-md-279",
-      "claim-docs-guides-cli-md-318",
-      "claim-docs-guides-cli-md-475",
-      "claim-docs-guides-cli-md-476",
-      "claim-docs-guides-cli-md-480",
-      "claim-docs-guides-cli-md-481",
-      "claim-docs-guides-cli-md-489",
-      "claim-docs-guides-cli-md-512",
-      "claim-docs-guides-cli-md-572",
-      "claim-docs-guides-cli-md-589",
-      "claim-docs-guides-cli-md-607",
+      "claim-docs-guides-cli-md-197",
+      "claim-docs-guides-cli-md-262",
+      "claim-docs-guides-cli-md-266",
+      "claim-docs-guides-cli-md-269",
+      "claim-docs-guides-cli-md-277",
+      "claim-docs-guides-cli-md-281",
+      "claim-docs-guides-cli-md-320",
+      "claim-docs-guides-cli-md-477",
+      "claim-docs-guides-cli-md-478",
+      "claim-docs-guides-cli-md-482",
+      "claim-docs-guides-cli-md-483",
+      "claim-docs-guides-cli-md-491",
+      "claim-docs-guides-cli-md-514",
+      "claim-docs-guides-cli-md-574",
+      "claim-docs-guides-cli-md-591",
+      "claim-docs-guides-cli-md-609",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
       "claim-docs-guides-consumer-adoption-md-29",
       "claim-docs-guides-consumer-adoption-md-48",
       "claim-docs-guides-consumer-adoption-md-49",
-      "claim-docs-guides-consumer-adoption-md-67",
-      "claim-docs-guides-consumer-adoption-md-83",
-      "claim-docs-guides-consumer-adoption-md-106",
+      "claim-docs-guides-consumer-adoption-md-68",
+      "claim-docs-guides-consumer-adoption-md-84",
       "claim-docs-guides-consumer-adoption-md-107",
+      "claim-docs-guides-consumer-adoption-md-108",
       "claim-docs-guides-evaluation-process-md-10",
       "claim-docs-guides-evaluation-process-md-52",
       "claim-docs-guides-evaluation-process-md-253",
@@ -407,39 +407,39 @@
       "claim-docs-guides-cli-md-49",
       "claim-docs-guides-cli-md-109",
       "claim-docs-guides-cli-md-111",
-      "claim-docs-guides-cli-md-118",
-      "claim-docs-guides-cli-md-119",
-      "claim-docs-guides-cli-md-124",
-      "claim-docs-guides-cli-md-135",
-      "claim-docs-guides-cli-md-180",
-      "claim-docs-guides-cli-md-186",
-      "claim-docs-guides-cli-md-187",
-      "claim-docs-guides-cli-md-193",
+      "claim-docs-guides-cli-md-120",
+      "claim-docs-guides-cli-md-121",
+      "claim-docs-guides-cli-md-126",
+      "claim-docs-guides-cli-md-137",
+      "claim-docs-guides-cli-md-182",
+      "claim-docs-guides-cli-md-188",
+      "claim-docs-guides-cli-md-189",
       "claim-docs-guides-cli-md-195",
-      "claim-docs-guides-cli-md-260",
-      "claim-docs-guides-cli-md-264",
-      "claim-docs-guides-cli-md-267",
-      "claim-docs-guides-cli-md-275",
-      "claim-docs-guides-cli-md-279",
-      "claim-docs-guides-cli-md-318",
-      "claim-docs-guides-cli-md-475",
-      "claim-docs-guides-cli-md-476",
-      "claim-docs-guides-cli-md-480",
-      "claim-docs-guides-cli-md-481",
-      "claim-docs-guides-cli-md-489",
-      "claim-docs-guides-cli-md-512",
-      "claim-docs-guides-cli-md-572",
-      "claim-docs-guides-cli-md-589",
-      "claim-docs-guides-cli-md-607",
+      "claim-docs-guides-cli-md-197",
+      "claim-docs-guides-cli-md-262",
+      "claim-docs-guides-cli-md-266",
+      "claim-docs-guides-cli-md-269",
+      "claim-docs-guides-cli-md-277",
+      "claim-docs-guides-cli-md-281",
+      "claim-docs-guides-cli-md-320",
+      "claim-docs-guides-cli-md-477",
+      "claim-docs-guides-cli-md-478",
+      "claim-docs-guides-cli-md-482",
+      "claim-docs-guides-cli-md-483",
+      "claim-docs-guides-cli-md-491",
+      "claim-docs-guides-cli-md-514",
+      "claim-docs-guides-cli-md-574",
+      "claim-docs-guides-cli-md-591",
+      "claim-docs-guides-cli-md-609",
       "claim-docs-guides-consumer-adoption-md-20",
       "claim-docs-guides-consumer-adoption-md-25",
       "claim-docs-guides-consumer-adoption-md-29",
       "claim-docs-guides-consumer-adoption-md-48",
       "claim-docs-guides-consumer-adoption-md-49",
-      "claim-docs-guides-consumer-adoption-md-67",
-      "claim-docs-guides-consumer-adoption-md-83",
-      "claim-docs-guides-consumer-adoption-md-106",
+      "claim-docs-guides-consumer-adoption-md-68",
+      "claim-docs-guides-consumer-adoption-md-84",
       "claim-docs-guides-consumer-adoption-md-107",
+      "claim-docs-guides-consumer-adoption-md-108",
       "claim-docs-guides-evaluation-process-md-10",
       "claim-docs-guides-evaluation-process-md-52",
       "claim-docs-guides-evaluation-process-md-253",
@@ -5860,12 +5860,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-118",
+      "claimId": "claim-docs-guides-cli-md-120",
       "summary": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 118,
+          "line": 120,
           "excerpt": "When a repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, run `cautilus doctor --repo-root /path/to/repo --adapter-name <name>` for repo-scope validation instead of expecting plain `doctor` to guess which named adapter you mean."
         }
       ],
@@ -5888,12 +5888,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-119",
+      "claimId": "claim-docs-guides-cli-md-121",
       "summary": "Use `cautilus discover claims` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 119,
+          "line": 121,
           "excerpt": "Use `cautilus discover claims` before writing eval fixtures when you need to inventory declared behavior claims and decide whether each belongs in human review, deterministic CI, Cautilus eval, scenario proposal work, or alignment work."
         }
       ],
@@ -5916,12 +5916,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-124",
+      "claimId": "claim-docs-guides-cli-md-126",
       "summary": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 124,
+          "line": 126,
           "excerpt": "The CLI rejects that overwrite because refresh-plan packets use `cautilus.claim_refresh_plan.v1`, while saved claim maps must remain `cautilus.claim_proof_plan.v1`."
         }
       ],
@@ -5944,12 +5944,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-135",
+      "claimId": "claim-docs-guides-cli-md-137",
       "summary": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 135,
+          "line": 137,
           "excerpt": "It emits `cautilus.claim_review_input.v1` and does not call an LLM or mark claims satisfied."
         }
       ],
@@ -5972,12 +5972,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-180",
+      "claimId": "claim-docs-guides-cli-md-182",
       "summary": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 180,
+          "line": 182,
           "excerpt": "An eval live instance is one live consumer target on this host that `Cautilus` can select by stable id."
         }
       ],
@@ -6000,12 +6000,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-186",
+      "claimId": "claim-docs-guides-cli-md-188",
       "summary": "`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 186,
+          "line": 188,
           "excerpt": "`cautilus evaluate live scenarios` is the product-owned batch primitive above that seam: it accepts an explicit `cautilus.live_run_invocation_request_batch.v1` file for one selected instance, schedules the requests in-process, retries only when the batch packet asks for it and a prior attempt returned an explicit transient class, and writes one aggregated `cautilus.live_run_invocation_batch_result.v1` packet."
         }
       ],
@@ -6028,12 +6028,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-187",
+      "claimId": "claim-docs-guides-cli-md-189",
       "summary": "The product owns the packet boundary and status semantics.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 187,
+          "line": 189,
           "excerpt": "The product owns the packet boundary and status semantics."
         }
       ],
@@ -6056,12 +6056,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-193",
+      "claimId": "claim-docs-guides-cli-md-195",
       "summary": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 193,
+          "line": 195,
           "excerpt": "That keeps persona prompt shaping and result semantics product-owned while backend selection stays adapter-owned."
         }
       ],
@@ -6084,12 +6084,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-195",
+      "claimId": "claim-docs-guides-cli-md-197",
       "summary": "The batch flow keeps prep and execution separate on purpose: prep owns deterministic request synthesis plus explicit filter semantics, and `run-scenarios` owns concurrency, retry, transient-count aggregation, and per-attempt artifact layout for an explicit batch file.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 195,
+          "line": 197,
           "excerpt": "The batch flow keeps prep and execution separate on purpose: prep owns deterministic request synthesis plus explicit filter semantics, and `run-scenarios` owns concurrency, retry, transient-count aggregation, and per-attempt artifact layout for an explicit batch file."
         }
       ],
@@ -6112,12 +6112,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-260",
+      "claimId": "claim-docs-guides-cli-md-262",
       "summary": "Every normalize command plus `cautilus evaluate observation` and `cautilus evaluate report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 260,
+          "line": 262,
           "excerpt": "Every normalize command plus `cautilus evaluate observation` and `cautilus evaluate report build` accepts `--example-input`: it prints a minimal valid packet to stdout that can be piped back into the same command, so operators can inspect the expected shape without clicking into a fixture on GitHub."
         }
       ],
@@ -6140,12 +6140,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-264",
+      "claimId": "claim-docs-guides-cli-md-266",
       "summary": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 264,
+          "line": 266,
           "excerpt": "The same packet also emits an `attentionView`, which is a bounded human-facing shortlist derived from the full ranked set."
         }
       ],
@@ -6168,12 +6168,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-267",
+      "claimId": "claim-docs-guides-cli-md-269",
       "summary": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 267,
+          "line": 269,
           "excerpt": "It links normalized chatbot threads to scenario proposals and coverage hints so an operator can review behavior-eval evidence without browsing every live operator turn."
         }
       ],
@@ -6196,12 +6196,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-275",
+      "claimId": "claim-docs-guides-cli-md-277",
       "summary": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 275,
+          "line": 277,
           "excerpt": "`cautilus evaluate fixture` runs a checked-in fixture through an adapter-owned runner and then evaluates the observed packet."
         }
       ],
@@ -6224,12 +6224,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-279",
+      "claimId": "claim-docs-guides-cli-md-281",
       "summary": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 279,
+          "line": 281,
           "excerpt": "`cautilus evaluate observation` evaluates an already-observed packet without launching the runner again."
         }
       ],
@@ -6252,12 +6252,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-318",
+      "claimId": "claim-docs-guides-cli-md-320",
       "summary": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 318,
+          "line": 320,
           "excerpt": "`cautilus evaluate skill-experiment` emits `cautilus.skill_clone_experiment_report.v1` with `variant_ran`, baseline-versus-variant delta, rubric match, source coverage delta, isolation notes, and a promotion recommendation."
         }
       ],
@@ -6280,12 +6280,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-475",
+      "claimId": "claim-docs-guides-cli-md-477",
       "summary": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 475,
+          "line": 477,
           "excerpt": "`evaluate review variants` writes a product-owned `review-summary.json` (`cautilus.review_summary.v1`) plus one per-variant `cautilus.review_variant_result.v1` file."
         }
       ],
@@ -6308,12 +6308,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-476",
+      "claimId": "claim-docs-guides-cli-md-478",
       "summary": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 476,
+          "line": 478,
           "excerpt": "A variant can finish as `passed`, `blocked`, or `failed`; blocked runs carry machine-readable reason codes instead of prose-only abort text."
         }
       ],
@@ -6336,12 +6336,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-480",
+      "claimId": "claim-docs-guides-cli-md-482",
       "summary": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 480,
+          "line": 482,
           "excerpt": "When `--output-text-key` is present, Cautilus also extracts that JSON narrative span into the rendered prompt so the judge can read the realized output directly."
         }
       ],
@@ -6364,12 +6364,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-481",
+      "claimId": "claim-docs-guides-cli-md-483",
       "summary": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 481,
+          "line": 483,
           "excerpt": "This command answers: \"do multiple bounded reviewers agree with the current report, and what concrete reason codes or warnings survive that second pass?\" `review feedback build` writes `cautilus.review_feedback.v1`."
         }
       ],
@@ -6392,12 +6392,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-489",
+      "claimId": "claim-docs-guides-cli-md-491",
       "summary": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 489,
+          "line": 491,
           "excerpt": "This command answers: \"which discovery or evaluation method produced this source-reviewed proposal outcome?\" `review feedback summarize` writes `cautilus.review_feedback_summary.v1`."
         }
       ],
@@ -6420,12 +6420,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-512",
+      "claimId": "claim-docs-guides-cli-md-514",
       "summary": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\"",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 512,
+          "line": 514,
           "excerpt": "This command answers: \"what single packet should I hand to the next decision step when report, scenario, audit, and history evidence all matter together?\""
         }
       ],
@@ -6448,12 +6448,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-572",
+      "claimId": "claim-docs-guides-cli-md-574",
       "summary": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 572,
+          "line": 574,
           "excerpt": "`doctor` stays read-only — record a skipped read with `evaluate acceptance waive-skip`, never by mutating it from the doctor surface."
         }
       ],
@@ -6476,12 +6476,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-589",
+      "claimId": "claim-docs-guides-cli-md-591",
       "summary": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\"",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 589,
+          "line": 591,
           "excerpt": "These renderers answer: \"what should a human reviewer open first if they should inspect the same decision surface without parsing raw JSON?\""
         }
       ],
@@ -6504,12 +6504,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-cli-md-607",
+      "claimId": "claim-docs-guides-cli-md-609",
       "summary": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths.",
       "sourceRefs": [
         {
           "path": "docs/guides/cli.md",
-          "line": 607,
+          "line": 609,
           "excerpt": "Shipped runtime entrypoints such as `cautilus discover live-targets` and `cautilus evaluate live` are Go-owned now and should be called through the CLI instead of direct `node scripts/agent-runtime/...` paths."
         }
       ],
@@ -6672,12 +6672,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-consumer-adoption-md-67",
+      "claimId": "claim-docs-guides-consumer-adoption-md-68",
       "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.",
       "sourceRefs": [
         {
           "path": "docs/guides/consumer-adoption.md",
-          "line": 67,
+          "line": 68,
           "excerpt": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit."
         }
       ],
@@ -6700,20 +6700,20 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-consumer-adoption-md-83",
+      "claimId": "claim-docs-guides-consumer-adoption-md-84",
       "summary": "It should answer \"what is the default `Cautilus` evaluation for this repo?\" without forcing the operator to mentally sort multiple unrelated workflows.",
       "sourceRefs": [
         {
           "path": "docs/guides/consumer-adoption.md",
-          "line": 83,
+          "line": 84,
           "excerpt": "It should answer \"what is the default `Cautilus` evaluation for this repo?\" without forcing the operator to mentally sort multiple unrelated workflows."
         }
       ],
       "disposition": "user-review-needed",
       "mappingStatus": "needs-catalog-review",
       "claimAudience": "user",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "needs-alignment",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "agent-reviewed",
       "claimFingerprint": "sha256:23d83d6f72cc9755461377ad2ac8e6f2dafbf01128bd117a8efa793b71aeb95e",
@@ -6728,12 +6728,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-consumer-adoption-md-106",
+      "claimId": "claim-docs-guides-consumer-adoption-md-107",
       "summary": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`.",
       "sourceRefs": [
         {
           "path": "docs/guides/consumer-adoption.md",
-          "line": 106,
+          "line": 107,
           "excerpt": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`."
         }
       ],
@@ -6756,12 +6756,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-guides-consumer-adoption-md-107",
+      "claimId": "claim-docs-guides-consumer-adoption-md-108",
       "summary": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene.",
       "sourceRefs": [
         {
           "path": "docs/guides/consumer-adoption.md",
-          "line": 107,
+          "line": 108,
           "excerpt": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene."
         }
       ],

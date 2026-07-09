@@ -1498,6 +1498,14 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string, histo
 	automatedCommands := len(stringArrayOrEmpty(data["eval_test_command_templates"])) > 0 || len(arrayOrEmpty(asMap(data["runner_readiness"])["runners"])) > 0
 	hasVariants := len(arrayOrEmpty(data["executor_variants"])) > 0
 	appendFieldCheck(&checks, &suggestions, "execution_surface", automatedCommands, "Adapter declares runnable eval runner commands.", "Adapter has no eval runner command templates yet.", "Add at least one runner_readiness.runners entry or eval_test_command_templates entry so `cautilus evaluate fixture` and `first_bounded_run` are runnable.")
+	if defaultFixture := strings.TrimSpace(stringOrEmpty(data["evaluation_input_default"])); defaultFixture != "" {
+		defaultFixturePath := defaultFixture
+		if !filepath.IsAbs(defaultFixturePath) {
+			defaultFixturePath = filepath.Join(repoRoot, defaultFixturePath)
+		}
+		defaultFixtureErr := validateDefaultEvaluationInput(defaultFixturePath)
+		appendFieldCheck(&checks, &suggestions, "evaluation_input_default_valid", defaultFixtureErr == nil, fmt.Sprintf("Default evaluation fixture is valid at %s.", defaultFixturePath), fmt.Sprintf("Adapter declares evaluation_input_default but the fixture is not runnable: %s (%v).", defaultFixturePath, defaultFixtureErr), "Add a valid checked-in default fixture or remove evaluation_input_default so first_bounded_run asks the operator to choose one.")
+	}
 	if !automatedCommands && hasVariants {
 		suggestions = append(suggestions, "executor_variants can run bounded review after a report packet exists, but they do not provide the evaluate fixture runner required by first_bounded_run.")
 	}
@@ -1539,7 +1547,7 @@ func DoctorRepo(repoRoot string, adapterPath *string, adapterName *string, histo
 		result["status"] = "ready"
 		result["ready"] = true
 		result["summary"] = "Adapter is ready for standalone Cautilus use."
-		result["first_bounded_run"] = LoadFirstBoundedRunGuide(repoRoot)
+		result["first_bounded_run"] = LoadFirstBoundedRunGuide(repoRoot, stringOrEmpty(data["evaluation_input_default"]))
 		result["next_steps"] = []any{
 			"Inspect `first_bounded_run` or run `cautilus discover scenarios` when you need the scenario-normalization catalog.",
 		}
@@ -1573,6 +1581,21 @@ func onlyAcceptanceReadinessFailing(checks []any) bool {
 		sawAcceptanceFailure = true
 	}
 	return sawAcceptanceFailure
+}
+
+func validateDefaultEvaluationInput(path string) error {
+	input, err := LoadEvaluationInputFile(path)
+	if err != nil {
+		return err
+	}
+	if steps, hasSteps := input["steps"]; hasSteps {
+		if _, ok := steps.([]any); !ok {
+			return fmt.Errorf("steps must be an array")
+		}
+		return nil
+	}
+	_, err = NormalizeEvaluationInput(input)
+	return err
 }
 
 func DoctorAgentSurface(repoRoot string) (map[string]any, int, error) {

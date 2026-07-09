@@ -12,16 +12,18 @@ The `scenario normalize chatbot` proposal-input lineage owns the input shape; se
 
 1. Copy `cautilus-adapter.yaml` and `input.json` from this directory into your consumer repo.
    The adapter can live at the repo root or under `.agents/cautilus-adapter.yaml`.
-2. Install the CLI and confirm the starter resolves clean:
+2. Install the repo-local Cautilus Agent and confirm the starter resolves clean:
 
    ```bash
-   cautilus install --repo-root .
-   cautilus adapter resolve --repo-root .
+   cautilus init --repo-root .
+   cautilus doctor adapter --repo-root .
    cautilus doctor --repo-root .
+   cautilus doctor --repo-root . --next-action
    ```
 
 The starter ships a `node -e` smoke placeholder for `eval_test_command_templates`, so `doctor` returns `ready` immediately.
-Replace the placeholder with your real `cautilus eval test` command over time.
+Treat that as bootstrap help, not product-behavior proof.
+Replace the placeholder with your real `cautilus evaluate fixture` runner over time.
 
 ## Run the chatbot entry point
 
@@ -29,7 +31,7 @@ Replace the placeholder with your real `cautilus eval test` command over time.
 Use it to confirm the pipeline is wired, then substitute your own conversation summaries:
 
 ```bash
-cautilus scenario normalize chatbot --input input.json
+cautilus discover scenarios normalize chatbot --input input.json
 ```
 
 See [chatbot-normalization.md](../../../docs/contracts/chatbot-normalization.md) for the full input shape.
@@ -37,6 +39,6 @@ See [chatbot-normalization.md](../../../docs/contracts/chatbot-normalization.md)
 ## Next
 
 - Replace the smoke placeholders with real commands.
-- Feed your own conversation logs into `cautilus scenario normalize chatbot`.
+- Feed your own conversation logs into `cautilus discover scenarios normalize chatbot`.
 - When you have regressions worth saving, pipe them into
-  `cautilus scenario propose`.
+  `cautilus discover scenarios propose`.
