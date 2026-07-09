@@ -1,10 +1,18 @@
 import assert from "node:assert/strict";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { buildCanonicalClaimMap, parseMaintainerCatalog, parseUserCatalog } from "./build-canonical-claim-map.mjs";
+import {
+	buildCanonicalClaimMap,
+	parseArgs,
+	parseMaintainerCatalog,
+	parseUserCatalog,
+} from "./build-canonical-claim-map.mjs";
+
+const SCRIPT = join(process.cwd(), "scripts", "agent-runtime", "build-canonical-claim-map.mjs");
 
 const userCatalogMarkdown = `# User Claims
 
@@ -49,6 +57,47 @@ Absorbs: raw claims about eval cases, observed behavior, summaries, and durable 
 
 Source anchors: docs/specs/evaluation-surfaces.spec.md.
 `;
+
+function exampleClaimsPacket() {
+	return {
+		schemaVersion: "cautilus.claim_proof_plan.v1",
+		gitCommit: "abc123",
+		claimCandidates: [
+			{
+				claimId: "claim-readme-md-1",
+				claimFingerprint: "sha256:user",
+				claimAudience: "user",
+				summary: "Cautilus helps a repo list behavior it promises and shows proof debt.",
+				sourceRefs: [{ path: "README.md", line: 1 }],
+				recommendedProof: "deterministic",
+				verificationReadiness: "ready-for-proof",
+				evidenceStatus: "unknown",
+				reviewStatus: "heuristic",
+			},
+		],
+	};
+}
+
+function writeExampleInputs(root) {
+	const claimsPath = join(root, "claims.json");
+	const userCatalogPath = join(root, "user.md");
+	const maintainerCatalogPath = join(root, "maintainer.md");
+	writeFileSync(claimsPath, `${JSON.stringify(exampleClaimsPacket(), null, 2)}\n`, "utf-8");
+	writeFileSync(userCatalogPath, userCatalogMarkdown, "utf-8");
+	writeFileSync(maintainerCatalogPath, maintainerCatalogMarkdown, "utf-8");
+	return { claimsPath, userCatalogPath, maintainerCatalogPath };
+}
+
+function runCli(args) {
+	return spawnSync("node", [SCRIPT, ...args], {
+		encoding: "utf-8",
+	});
+}
+
+test("parseArgs supports canonical map check mode", () => {
+	const args = parseArgs(["node", "script", "--check"]);
+	assert.equal(args.check, true);
+});
 
 test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical catalogs", () => {
 	const packet = buildCanonicalClaimMap({
@@ -101,6 +150,40 @@ test("buildCanonicalClaimMap maps raw user and maintainer claims to canonical ca
 	assert.equal(packet.userCoverage[0].absorbedRawClaims[0].claimFingerprint, "sha256:user");
 	assert.deepEqual(packet.maintainerCoverage[0].absorbedRawClaimIds, ["claim-contract-md-1"]);
 	assert.equal(packet.maintainerCoverage[0].absorbedRawClaims[0].claimFingerprint, "sha256:developer");
+});
+
+test("canonical claim map check mode detects missing and stale output", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-canonical-check-"));
+	try {
+		const { claimsPath, userCatalogPath, maintainerCatalogPath } = writeExampleInputs(root);
+		const outputPath = join(root, "canonical-claim-map.json");
+		const args = [
+			"--claims",
+			claimsPath,
+			"--user-catalog",
+			userCatalogPath,
+			"--maintainer-catalog",
+			maintainerCatalogPath,
+			"--output",
+			outputPath,
+		];
+
+		const missing = runCli([...args, "--check"]);
+		assert.equal(missing.status, 1);
+		assert.match(missing.stderr, /canonical-claim-map\.json is missing; run npm run claims:canonical-map/);
+
+		const writeResult = runCli(args);
+		assert.equal(writeResult.status, 0, writeResult.stderr);
+		const clean = runCli([...args, "--check"]);
+		assert.equal(clean.status, 0, clean.stderr);
+
+		writeFileSync(outputPath, "{}\n", "utf-8");
+		const stale = runCli([...args, "--check"]);
+		assert.equal(stale.status, 1);
+		assert.match(stale.stderr, /canonical-claim-map\.json is stale; run npm run claims:canonical-map/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
 });
 
 test("buildCanonicalClaimMap leaves low-confidence claims for review", () => {

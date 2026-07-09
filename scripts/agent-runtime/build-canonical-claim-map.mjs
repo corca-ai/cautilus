@@ -63,6 +63,7 @@ export function parseArgs(argv) {
 		userCatalog: DEFAULT_USER_CATALOG,
 		maintainerCatalog: DEFAULT_MAINTAINER_CATALOG,
 		output: DEFAULT_OUTPUT,
+		check: false,
 	};
 	for (let index = 2; index < argv.length; index += 1) {
 		const arg = argv[index];
@@ -74,6 +75,8 @@ export function parseArgs(argv) {
 			args.maintainerCatalog = argv[++index];
 		} else if (arg === "--output") {
 			args.output = argv[++index];
+		} else if (arg === "--check") {
+			args.check = true;
 		} else {
 			throw new Error(`Unsupported argument: ${arg}`);
 		}
@@ -583,11 +586,30 @@ export function buildCanonicalClaimMapFromFiles(args) {
 	});
 }
 
+function stableJSON(value) {
+	return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+function assertCurrent(filePath, expected) {
+	if (!fs.existsSync(filePath)) {
+		throw new Error(`${filePath} is missing; run npm run claims:canonical-map`);
+	}
+	const actual = fs.readFileSync(filePath, "utf8");
+	if (actual !== expected) {
+		throw new Error(`${filePath} is stale; run npm run claims:canonical-map`);
+	}
+}
+
 function main() {
 	const args = parseArgs(process.argv);
 	const packet = buildCanonicalClaimMapFromFiles(args);
+	const output = stableJSON(packet);
+	if (args.check) {
+		assertCurrent(args.output, output);
+		return;
+	}
 	fs.mkdirSync(path.dirname(args.output), { recursive: true });
-	fs.writeFileSync(args.output, `${JSON.stringify(packet, null, 2)}\n`, "utf8");
+	fs.writeFileSync(args.output, output, "utf8");
 	console.log(`wrote ${args.output}`);
 }
 

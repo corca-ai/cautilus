@@ -9,10 +9,10 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 3 — choose the next deterministic validator or proof guard.
-- Current slice intent: continue with a small locally decidable improvement after
-  Cycle 2's generated drift guard expansion.
-- Next action: inspect remaining scout candidates and pick a narrow Cycle 3 target.
+- Current slice: Cycle 4 — contract/report synchronization hardening.
+- Current slice intent: use the accumulated claim proof-chain context to tighten
+  a user-facing or maintainer-facing projection without broad refactor.
+- Next action: inspect remaining scout candidates and pick a narrow Cycle 4 target.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -82,8 +82,8 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | --- | --- | --- | --- | --- |
 | 1 | Validate review-drop source sample policy shape. | Start with a low-risk proof-integrity slice. | Focused tests, generated artifacts, critique record, commit. | complete |
 | 2 | Expand generated drift coverage for claim refresh outputs. | Candidate scouts found a check gap while Cycle 1 regenerated claim packets. | Focused tests, drift check proof, commit. | complete |
-| 3 | Improve a deterministic validator, scanner, or fixture path. | Mid-run cycle should strengthen repeatable checks rather than prose alone. | Focused tests, validator output, commit. | in-progress |
-| 4 | Improve documentation/contract synchronization where code and packet behavior can prove it. | Use accumulated context to tighten source-of-truth alignment. | Contract/doc diff plus check, critique/defer record, commit. | pending |
+| 3 | Add canonical claim map check mode and verify phase. | Mid-run cycle should strengthen repeatable checks rather than prose alone. | Focused tests, validator output, commit. | complete |
+| 4 | Improve documentation/contract synchronization where code and packet behavior can prove it. | Use accumulated context to tighten source-of-truth alignment. | Contract/doc diff plus check, critique/defer record, commit. | in-progress |
 | 5 | Final small hardening slice and bundle verification. | Close the run with a useful improvement and broad proof. | Focused checks, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | pending |
 
 ## Operator Decision Queue
@@ -177,6 +177,20 @@ applies.
 - Critique: parent-delegated fresh-eye review from agent `019f46ce-1a37-7cb0-9e4e-211421549ef3`; verdict OK, no findings.
 - Off-goal findings: none beyond existing Cycle 1 scout queue.
 - Lessons carried forward: pre-push guard confidence depends on the default generated-artifact inventory matching the producer command chain.
+- Metrics: not measured.
+
+### Cycle 3 — Canonical Claim Map Check Mode
+
+- Objective: make stale `.cautilus/claims/canonical-claim-map.json` fail directly instead of relying on downstream readers to notice drift.
+- Why this approach: `claims:refresh:all` writes the canonical map and status report links to it, so the map needs the same check-mode contract as other generated claim projections.
+- Commits: `Check canonical claim map freshness`.
+- What changed: `build-canonical-claim-map.mjs` now accepts `--check`, compares the regenerated stable JSON to the checked-in output without writing, and fails on missing or stale output; `claims:canonical-map:check` is wired into `npm run verify`.
+- Alternatives rejected: did not normalize away claim packet hashes or commit ids because the canonical map generator does not add volatile timestamps and the input metadata should remain part of the stale-output contract.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/build-canonical-claim-map.test.mjs scripts/run-verify.test.mjs`; `npm run claims:canonical-map:check`; `npm run generated:drift:check`; `npm run lint:eslint`; `git diff --check`.
+- Test duplication pressure: focused CLI tests cover missing, clean, and stale states; final `npm run verify` will re-run the phase through the bundled gate.
+- Critique: parent-delegated fresh-eye review from agent `019f46d1-ad4c-7430-8c1e-b80b1e0fa8de`; verdict OK, no findings.
+- Off-goal findings: none.
+- Lessons carried forward: generated proof projections should expose check mode at the producer boundary before downstream reports consume them.
 - Metrics: not measured.
 
 ## Context Sources

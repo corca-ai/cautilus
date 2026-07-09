@@ -18,6 +18,7 @@ export const PHASES = [
 	{ id: "claims:evidence-state:check", label: "lint · claim evidence state" },
 	{ id: "claims:source-freshness:check", label: "lint · claim source freshness" },
 	{ id: "release:claim-freshness", label: "lint · release claim freshness" },
+	{ id: "claims:canonical-map:check", label: "lint · canonical claim map" },
 	{ id: "claims:status-report:check", label: "lint · claim status report" },
 	{ id: "claims:review-drops:check", label: "lint · claim review drops" },
 	{ id: "lint:links", label: "lint · links" },

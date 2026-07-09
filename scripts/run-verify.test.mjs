@@ -58,6 +58,7 @@ test("PHASES covers every npm run verify sub-phase", () => {
 		"claims:evidence-state:check",
 		"claims:source-freshness:check",
 		"release:claim-freshness",
+		"claims:canonical-map:check",
 		"claims:status-report:check",
 		"claims:review-drops:check",
 		"lint:links",
