@@ -1,9 +1,9 @@
 {
-  "candidateCount": 568,
+  "candidateCount": 567,
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 568,
+    "matchedClaimCount": 567,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -51,15 +51,17 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as a product-direction statement, not an app/prompt behavior claim. A single eval fixture cannot prove that the long-term product direction is realized or that future prompt changes remain intent-first.",
+      "evidenceStatusReason": "Reviewed as broad product ownership positioning. It is too broad for a single dev/repo eval and should be decomposed into concrete binary, skill, adapter, and workflow-contract claims.",
       "groupHints": [
         "audience:developer",
-        "human-auditable",
+        "cautilus-eval",
+        "dev/repo",
         "repo-instructions"
       ],
       "lifecycle": "new",
-      "nextAction": "If this should remain a proof target, split it into concrete product claims under the roadmap/spec surface, such as claim/eval/optimize allowing prompt changes only when held-out behavior evidence improves.",
-      "recommendedProof": "human-auditable",
+      "nextAction": "Do not satisfy directly; either leave as positioning or decompose into narrower contract ownership claims.",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -69,10 +71,7 @@
         }
       ],
       "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts.",
-      "unresolvedQuestions": [
-        "Should product-intent statements in AGENTS.md be discoverable claims, or should discovery demote them unless a concrete behavior surface is named?"
-      ],
-      "verificationReadiness": "blocked",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -756,27 +755,27 @@
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [
         {
-          "contentHash": "sha256:97f1c86b6b037fd02df377681d62b71bded29bbdc78357e880b9f87027af6a8d",
+          "contentHash": "sha256:1f55f79e5f07642187e4436e6d2debaa599cb3a3365b769c1453ec5767c284d0",
           "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-claim-eval-plan-2026-05-01.json",
+          "matchKind": "possible",
+          "path": ".cautilus/claims/evidence-agent-design-scenario-proposals-2026-05-17.json",
           "supportsClaimIds": [
             "claim-readme-md-123"
           ]
         }
       ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by the checked claim-eval-plan evidence bundle: after review, `claim plan-evals` emitted `cautilus.claim_eval_plan.v1`, included an app/prompt plan for this claim, and preserved the non-writer boundary.",
+      "evidenceStatus": "unknown",
+      "evidenceStatusReason": "A concrete scenario proposal exists, but the scenario has not yet been promoted to a checked-in fixture or evaluated.",
       "groupHints": [
-        "app/prompt",
+        "app/chat",
         "audience:user",
         "cautilus-eval",
         "needs-scenario",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep covered by a reviewed claim-plan smoke when claim eval planning or fixture-authoring guidance changes.",
-      "recommendedEvalSurface": "app/prompt",
+      "nextAction": "Plan a protected app/chat eval fixture from the `context-recovery-protected-from-tuning` proposal, keeping it out of tuning inputs.",
+      "recommendedEvalSurface": "app/chat",
       "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
@@ -787,7 +786,9 @@
         }
       ],
       "summary": "`Cautilus` treats the context-recovery case as a protected scenario kept out of tuning so the signal stays honest.",
-      "unresolvedQuestions": [],
+      "unresolvedQuestions": [
+        "Which accepted fixture path should own the protected context-recovery scenario?"
+      ],
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim describes app/chat behavior and protected-scenario separation; it needs a Cautilus eval, but the scenario proposal packet now gives it a concrete protected context-recovery scenario."
     },
@@ -825,31 +826,18 @@
       "claimFingerprint": "sha256:26fb3d242b29d1859c5171dda55376329d47dc400c8136fb67df8562a6160c5a",
       "claimId": "claim-readme-md-144",
       "claimSemanticGroup": "Documentation and contracts",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:dd7e4a590d4439cf31cb119491f2cb73c150f3454cf1f79d51ff6b9064c18cc5",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-dev-skill-routing-install.json",
-          "supportsClaimIds": [
-            "claim-readme-md-144"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by the checked-in dev/skill routing/install evidence bundle: the self-dogfood-eval-skill Codex run passed one trigger case and two execution cases after install and agent-surface doctor preflight.",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
       "groupHints": [
         "audience:user",
         "blocked",
-        "cautilus-eval",
-        "dev/skill",
+        "human-auditable",
         "readme"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep this claim covered by rerunning self-dogfood-eval-skill when bundled skill routing, eval skill fixtures, install behavior, or static skill validation changes.",
-      "recommendedEvalSurface": "dev/skill",
-      "recommendedProof": "cautilus-eval",
-      "reviewStatus": "agent-reviewed",
+      "nextAction": "Keep this as human-auditable positioning or decompose it into concrete deterministic or Cautilus eval claims before proof planning.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
@@ -858,8 +846,7 @@
         }
       ],
       "summary": "The longer-term direction is close to the workflow philosophy behind DSPy: prompts can change as long as the evaluated behavior survives.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-for-proof",
+      "verificationReadiness": "blocked",
       "whyThisLayer": "The claim is a broad positioning or aggregate product promise; a single eval fixture would overclaim until concrete subclaims are named."
     },
     {
@@ -2651,7 +2638,6 @@
         }
       ],
       "summary": "`cautilus --version` must work on `PATH` before any consumer adapter or skill wiring is treated as valid.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names a deterministic gate or static contract that should be protected outside Cautilus eval."
     },
@@ -2666,13 +2652,15 @@
       "evidenceStatusReason": "Generic product-boundary ownership claim. It is not a dev/repo eval target until decomposed into concrete CLI, workflow-contract, and normalization-helper claims.",
       "groupHints": [
         "audience:user",
+        "cautilus-eval",
+        "dev/repo",
         "docs",
-        "human-auditable",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
       "nextAction": "Split or link deterministic proof for generic workflow contract, CLI, and normalization helper ownership.",
-      "recommendedProof": "human-auditable",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -2682,8 +2670,7 @@
         }
       ],
       "summary": "`Cautilus` only owns the generic workflow contract, CLI, and normalization helpers.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "needs-alignment",
+      "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
     {
@@ -2752,7 +2739,6 @@
         }
       ],
       "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim's dominant facet is what a named CLI flag does to config, session state, auth, or IO (keeps, copies, or extracts); that is a deterministic command-contract mechanism even when the line co-mentions an eval or judge noun. Whether the resulting behavior is good is a separate eval facet (Fork B per-facet routing, 2026-06-21)."
     },
@@ -2921,7 +2907,6 @@
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as an ownership-boundary statement about the evaluation-process seam. The statement is plausible, but satisfaction needs cross-surface alignment proof rather than one eval run.",
       "groupHints": [
         "audience:user",
         "docs",
@@ -2930,9 +2915,9 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Link this claim to the matching adapter contract, eval test implementation, and packet-level evaluate/proposal-normalization tests before marking it satisfied.",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
       "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "That seam owns the checked-in case suite, adapter-runner invocation, and chained summary artifacts before the flow returns to packet-level `cautilus evaluate observation` and proposal normalization.",
@@ -2941,9 +2926,6 @@
         }
       ],
       "summary": "That seam owns the checked-in case suite, adapter-runner invocation, and chained summary artifacts before the flow returns to packet-level `cautilus evaluate observation` and proposal normalization.",
-      "unresolvedQuestions": [
-        "Which deterministic test should be the canonical proof that this seam owns exactly the checked-in case suite, adapter-runner invocation, and chained summary artifacts?"
-      ],
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
@@ -3009,13 +2991,15 @@
       "evidenceStatusReason": "Verified by the batch5 CLI/runtime evidence bundle: `scenario normalize skill --example-input` exits 0 and exposes the checked-in skill normalization helper path.",
       "groupHints": [
         "audience:user",
-        "deterministic",
+        "cautilus-eval",
+        "dev/repo",
         "docs",
         "linked-from:README.md"
       ],
       "lifecycle": "new",
       "nextAction": "Keep covered by scenario-normalize skill examples and schema tests when normalization helper behavior changes.",
-      "recommendedProof": "deterministic",
+      "recommendedEvalSurface": "dev/repo",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -3025,7 +3009,6 @@
         }
       ],
       "summary": "When repeated workflow failures should become durable scenario coverage, prefer the checked-in `skill` normalization helper over repo-local one-off shapers:",
-      "unresolvedQuestions": [],
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim depends on model, agent, prompt, skill, workflow, or behavior execution evidence."
     },
@@ -3068,7 +3051,6 @@
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
-      "evidenceStatusReason": "Reviewed as an ownership-boundary statement about host-owned raw invocation versus Cautilus-owned workflow and packet semantics. The batch5 CLI evidence supports pieces of the command surface but not the whole cross-surface ownership boundary.",
       "groupHints": [
         "audience:user",
         "docs",
@@ -3077,9 +3059,9 @@
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Connect this claim to adapter contract tests plus skill-normalization and packet recommendation tests before marking it satisfied.",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
       "recommendedProof": "human-auditable",
-      "reviewStatus": "agent-reviewed",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow, packet-level recommendation, behavior-intent framing, and the direct chain into `discover scenarios normalize skill`.",
@@ -3088,7 +3070,6 @@
         }
       ],
       "summary": "The host still owns raw invocation and transcript capture; `Cautilus` owns the case-suite/runDir workflow, packet-level recommendation, behavior-intent framing, and the direct chain into `discover scenarios normalize skill`.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
@@ -3202,7 +3183,6 @@
         }
       ],
       "summary": "Past sessions showed `codex exec` can emit fatal skill-loading errors on stderr while the final process exit still looks successful.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "blocked",
       "whyThisLayer": "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target."
     },
@@ -3234,7 +3214,6 @@
         }
       ],
       "summary": "Past sessions showed that overly aggressive effort overrides can conflict with tool surfaces that the prompt or skill still needs.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "blocked",
       "whyThisLayer": "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target."
     },
@@ -3266,7 +3245,6 @@
         }
       ],
       "summary": "Past sessions showed `--bare` can disable the local OAuth or keychain path and fail with `Not logged in`.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "blocked",
       "whyThisLayer": "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target."
     },
@@ -3298,7 +3276,6 @@
         }
       ],
       "summary": "In JSON mode, `claude -p` can wrap the verdict under `structured_output` instead of printing the schema payload as the top-level object.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "blocked",
       "whyThisLayer": "The claim records provider or host-runtime caveat context; it can guide future protection but is not itself a ready product proof target."
     },
@@ -3330,7 +3307,6 @@
         }
       ],
       "summary": "Past sessions showed `claude -p` can look silent for a while and tempt operators into manual polling or abort loops.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "blocked",
       "whyThisLayer": "The claim records a historical observation; it can guide future scenarios but is not itself a ready eval target."
     },
@@ -3465,7 +3441,6 @@
         }
       ],
       "summary": "Cautilus owns the generic claim-to-proof workflow; consumer repos own their local fixtures, runners, prompts, wrappers, and policy.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
@@ -3648,30 +3623,19 @@
       "claimFingerprint": "sha256:369242dab623a340040e48a7ba7b1b8e279514aaf0d83fc23ad2474c5509777b",
       "claimId": "claim-docs-master-plan-md-82",
       "claimSemanticGroup": "Claim discovery and review",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:d9f53769c40b22044ed7e39ebb2e27caa88d3e3c1661cf4eb2b1ac5e1b8069cb",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-deterministic-gates-2026-05-01.json",
-          "supportsClaimIds": [
-            "claim-docs-master-plan-md-82"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by `npm run verify`: `lint:specs` and `lint:scenario-normalizers` both passed, including the runtime completeness check for three normalization families.",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
-        "deterministic",
         "docs",
+        "human-auditable",
         "linked-from:README.md",
         "needs-alignment"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep covered by lint:specs and lint:scenario-normalizers whenever scenario-normalization vocabulary changes.",
-      "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
+      "nextAction": "Reconcile or cite the matching adapter, CLI, docs, and test surfaces before treating this as satisfied.",
+      "recommendedProof": "human-auditable",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
           "excerpt": "The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.",
@@ -3680,8 +3644,7 @@
         }
       ],
       "summary": "The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "ready-for-proof",
+      "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
     {
@@ -7871,38 +7834,8 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:2d630a492b608ecb895b2c84c1dfb26f817aa6b3bdbb1b6515c0ea9e1f1bc93d",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-593",
-      "claimSemanticGroup": "Packets and reporting",
-      "evidenceRefs": [],
-      "evidenceStatus": "unknown",
-      "groupHints": [
-        "audience:developer",
-        "contract",
-        "human-auditable",
-        "linked-from:docs/master-plan.md",
-        "needs-alignment"
-      ],
-      "lifecycle": "new",
-      "nextAction": "Reconcile the named docs, code, skill, adapter, or CLI surface before treating this as a verification target.",
-      "recommendedProof": "human-auditable",
-      "reviewStatus": "heuristic",
-      "sourceRefs": [
-        {
-          "excerpt": "Review-result `claimUpdates` should therefore carry `claimFingerprint`; fingerprint-less updates whose display id drifted are unrecoverable and are reported as dropped (per-packet warnings plus `rewrittenUpdateCount`/`droppedUpdateCount` in the output packet's `reviewApplication`) instead of vanishing silently.",
-          "line": 593,
-          "path": "docs/contracts/claim-discovery-workflow.md"
-        }
-      ],
-      "summary": "Review-result `claimUpdates` should therefore carry `claimFingerprint`; fingerprint-less updates whose display id drifted are unrecoverable and are reported as dropped (per-packet warnings plus `rewrittenUpdateCount`/`droppedUpdateCount` in the output packet's `reviewApplication`) instead of vanishing silently.",
-      "verificationReadiness": "needs-alignment",
-      "whyThisLayer": "The claim says surfaces should agree, so proof is not honest until the mismatched surfaces are reconciled."
-    },
-    {
-      "claimAudience": "developer",
-      "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:49f8f8b14b258e94ebd520a3adcf9ea4c70cfd5392084ee4d6a292c6a0d3ac8a",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-651",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-653",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -7919,7 +7852,7 @@
       "sourceRefs": [
         {
           "excerpt": "In the claim discovery workflow, the Cautilus Agent owns claim extraction, LLM-backed claim review, budget explanation, and subagent orchestration.",
-          "line": 651,
+          "line": 653,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -7931,7 +7864,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:733ee15e34015fb189dc278a2a3dd0177b43a5fe53b9540cfba3baa84bde7177",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-657",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-659",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -7942,7 +7875,7 @@
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-461",
             "claim-docs-contracts-claim-discovery-workflow-md-579",
-            "claim-docs-contracts-claim-discovery-workflow-md-657"
+            "claim-docs-contracts-claim-discovery-workflow-md-659"
           ]
         }
       ],
@@ -7961,7 +7894,7 @@
       "sourceRefs": [
         {
           "excerpt": "Existing state refresh is selected by Cautilus Agent when prior claim JSON exists, but deterministic refresh-plan output owns the state transition.",
-          "line": 657,
+          "line": 659,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -7974,7 +7907,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b64603dc391e90986d777c1d616a0650bb4900a82928039d5649e49dc8c9d538",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-689",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-691",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [
         {
@@ -7984,7 +7917,7 @@
           "path": ".cautilus/claims/evidence-contract-compact-status-summary-2026-05-17.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-483",
-            "claim-docs-contracts-claim-discovery-workflow-md-689",
+            "claim-docs-contracts-claim-discovery-workflow-md-691",
             "claim-docs-contracts-claim-discovery-workflow-md-635",
             "claim-docs-contracts-claim-discovery-workflow-md-691"
           ]
@@ -8005,7 +7938,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can invoke the Cautilus Agent without detailed input and get a clear status summary rather than a raw 500-claim dump.",
-          "line": 689,
+          "line": 691,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8018,7 +7951,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:bdbc828a9ab620826a62a657e3583f56ca912f06527f977376408a4afcc572ec",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-693",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-695",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8037,7 +7970,7 @@
       "sourceRefs": [
         {
           "excerpt": "Agent extraction produces anchored claims with verbatim source refs and audit provenance, and the review seam preserves review provenance for the queues it serves.",
-          "line": 693,
+          "line": 695,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8049,7 +7982,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2f006cdc0b2c26694835121869f8eb2d65ff4327e293477d439a86c4f58f58a7",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-694",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-696",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -8060,7 +7993,7 @@
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-483",
             "claim-docs-contracts-claim-discovery-workflow-md-630",
-            "claim-docs-contracts-claim-discovery-workflow-md-694",
+            "claim-docs-contracts-claim-discovery-workflow-md-696",
             "claim-docs-contracts-claim-discovery-workflow-md-691"
           ]
         }
@@ -8080,7 +8013,7 @@
       "sourceRefs": [
         {
           "excerpt": "The workflow can say which claims already have deterministic or Cautilus evidence, and which still need scenarios, tests, or alignment work.",
-          "line": 694,
+          "line": 696,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8093,7 +8026,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:56ea5f23fe5f5c9f2162924802d83660c4ce98925cc9c623e6f0da41159a4292",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-695",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-697",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8111,7 +8044,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters.",
-          "line": 695,
+          "line": 697,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8123,7 +8056,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b2338ca8431457f9797b38b147840619b01ad7549557616dd7b394b5972ef6b0",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-720",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-722",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8142,7 +8075,7 @@
       "sourceRefs": [
         {
           "excerpt": "The binary should remain deterministic and provider-neutral.",
-          "line": 720,
+          "line": 722,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8157,7 +8090,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:54f451eb5c40a5f8f0dcf84b2d5c1c1de64658cc01ce6deff9e52c33d9fbbdff",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-749",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-751",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -8169,7 +8102,7 @@
             "claim-docs-contracts-claim-discovery-workflow-md-483",
             "claim-docs-contracts-claim-discovery-workflow-md-630",
             "claim-docs-contracts-claim-discovery-workflow-md-635",
-            "claim-docs-contracts-claim-discovery-workflow-md-749"
+            "claim-docs-contracts-claim-discovery-workflow-md-751"
           ]
         }
       ],
@@ -8188,7 +8121,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims status` emits `cautilus.claim_status_summary.v1` and can include bounded `sampleClaims` plus `gitState` for agents that need concrete candidates before choosing the next branch.",
-          "line": 749,
+          "line": 751,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8201,7 +8134,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:21c53f5ec4d397e49c7affa5c7be9dd23e9709e1649e3989c5fbaad619211e98",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-752",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-754",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [
         {
@@ -8210,7 +8143,7 @@
           "matchKind": "verified",
           "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
           "supportsClaimIds": [
-            "claim-docs-contracts-claim-discovery-workflow-md-752",
+            "claim-docs-contracts-claim-discovery-workflow-md-754",
             "claim-docs-contracts-claim-discovery-workflow-md-695",
             "claim-docs-contracts-claim-discovery-workflow-md-704"
           ]
@@ -8232,7 +8165,7 @@
       "sourceRefs": [
         {
           "excerpt": "Commit drift caused only by generated claim artifacts remains visible as head drift without blocking review or eval planning.",
-          "line": 752,
+          "line": 754,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8245,7 +8178,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:2a355e68ca6385415f36965dc2689f7f1d27014afc922e22e2703464b34100d2",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-753",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-755",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [
         {
@@ -8255,7 +8188,7 @@
           "path": ".cautilus/claims/evidence-contract-claim-workflow-helper-packets-2026-05-17.json",
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-694",
-            "claim-docs-contracts-claim-discovery-workflow-md-753",
+            "claim-docs-contracts-claim-discovery-workflow-md-755",
             "claim-docs-contracts-claim-discovery-workflow-md-704"
           ]
         }
@@ -8275,7 +8208,7 @@
       "sourceRefs": [
         {
           "excerpt": "`discover claims review-input` emits `cautilus.claim_review_input.v1` and records bounded clusters, skipped clusters, and skipped claims, but still does not call an LLM or merge review results.",
-          "line": 753,
+          "line": 755,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8288,7 +8221,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:d94d8642a7467878df80b58d110e874368ba1402147ff447dc961b4732eca82b",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-754",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-756",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8305,7 +8238,7 @@
       "sourceRefs": [
         {
           "excerpt": "Already satisfied and already reviewed non-stale claims are excluded from review clusters by default so reviewer budget stays focused on unresolved heuristic claims while carried evidence and prior decisions remain auditable under `skippedClaims`.",
-          "line": 754,
+          "line": 756,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8317,7 +8250,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:35d3c94e17ac6e26dea9df92f91d63d0ce6acf535869cd80a36a24029565b2c7",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-758",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-760",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8334,7 +8267,7 @@
       "sourceRefs": [
         {
           "excerpt": "It consumes `cautilus.claim_review_result.v1`, applies reviewed labels and evidence refs, records provenance, and rejects `evidenceStatus=satisfied` unless a direct or verified evidence ref supports the claim.",
-          "line": 758,
+          "line": 760,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8346,7 +8279,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:e1f238b94302fc34437333c1a961bf8ea0289588ea97402ae9be1b6b733217c9",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-762",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-764",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -8357,7 +8290,7 @@
           "supportsClaimIds": [
             "claim-docs-contracts-claim-discovery-workflow-md-694",
             "claim-docs-contracts-claim-discovery-workflow-md-695",
-            "claim-docs-contracts-claim-discovery-workflow-md-762"
+            "claim-docs-contracts-claim-discovery-workflow-md-764"
           ]
         }
       ],
@@ -8377,7 +8310,7 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_eval_plan.v1` from reviewed `cautilus-eval` claims that are ready to verify, while preserving the host boundary by not writing fixtures, prompts, runners, wrappers, or policy.",
-          "line": 762,
+          "line": 764,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -8390,7 +8323,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:0f7a6c59547e24743850249aa85a63104ca06991bcfb4b18e40a4094e6c38a11",
-      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-771",
+      "claimId": "claim-docs-contracts-claim-discovery-workflow-md-773",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -8407,7 +8340,7 @@
       "sourceRefs": [
         {
           "excerpt": "It emits `cautilus.claim_validation_report.v1`, exits non-zero for invalid packet shape or evidence refs, and does not mutate claims or search for evidence.",
-          "line": 771,
+          "line": 773,
           "path": "docs/contracts/claim-discovery-workflow.md"
         }
       ],
@@ -9769,7 +9702,6 @@
         }
       ],
       "summary": "Raw provider-error interpretation stays consumer-owned.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
@@ -10053,7 +9985,6 @@
         }
       ],
       "summary": "The workspace directory contents stay consumer-owned even when `Cautilus` owns the directory allocation and one-time prepare timing.",
-      "unresolvedQuestions": [],
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
@@ -11919,14 +11850,14 @@
       "evidenceStatusReason": "The candidate describes a missing repo-agnostic scenario-cadence design, not a ready eval scenario.",
       "groupHints": [
         "audience:developer",
+        "cautilus-eval",
         "contract",
-        "human-auditable",
         "linked-from:docs/master-plan.md",
         "needs-scenario"
       ],
       "lifecycle": "new",
       "nextAction": "Specify the scenario history contract and split concrete deterministic cadence checks before proof planning.",
-      "recommendedProof": "human-auditable",
+      "recommendedProof": "cautilus-eval",
       "reviewStatus": "agent-reviewed",
       "sourceRefs": [
         {
@@ -11936,8 +11867,7 @@
         }
       ],
       "summary": "`Cautilus` needs a repo-agnostic way to decide which scenarios run during iterate, held-out, and full-gate evaluation, and how repeated train runs change scenario cadence over time.",
-      "unresolvedQuestions": [],
-      "verificationReadiness": "blocked",
+      "verificationReadiness": "needs-scenario",
       "whyThisLayer": "The claim points at behavior that needs scenario shaping before it is ready as a protected eval fixture."
     },
     {
@@ -19103,7 +19033,7 @@
   },
   "claimSummary": {
     "byClaimAudience": {
-      "developer": 439,
+      "developer": 438,
       "user": 129
     },
     "byClaimSemanticGroup": {
@@ -19114,31 +19044,31 @@
       "Evaluation surfaces": 1,
       "General product behavior": 1,
       "Improvement and improvement": 59,
-      "Packets and reporting": 64,
+      "Packets and reporting": 63,
       "Quality gates": 37,
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 143,
-      "unknown": 425
+      "satisfied": 140,
+      "unknown": 427
     },
     "byLifecycle": {
-      "new": 568
+      "new": 567
     },
     "byRecommendedProof": {
-      "cautilus-eval": 159,
-      "deterministic": 258,
-      "human-auditable": 151
+      "cautilus-eval": 162,
+      "deterministic": 256,
+      "human-auditable": 149
     },
     "byReviewStatus": {
-      "agent-reviewed": 192,
-      "heuristic": 375,
+      "agent-reviewed": 188,
+      "heuristic": 378,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
-      "blocked": 32,
-      "needs-alignment": 56,
-      "needs-scenario": 1,
+      "blocked": 31,
+      "needs-alignment": 55,
+      "needs-scenario": 2,
       "ready-for-proof": 479
     }
   },
@@ -19338,7 +19268,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "abe583e2d4d053262d224da7594ce9fdba864db3",
+  "gitCommit": "39a6bfe3d0f143c645754613ec559a1889189775",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19393,22 +19323,8 @@
     "unresolvedQuestions": [],
     "outputPath": ".cautilus/claims/evidenced-typed-runners.json",
     "aggregateReviewResultPaths": [
-      ".cautilus/claims/review-result-loop2-lane-a.json",
-      ".cautilus/claims/review-result-loop2-lane-b.json",
-      ".cautilus/claims/review-result-deterministic-gates-2026-05-01.json",
-      ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
-      ".cautilus/claims/review-result-evidence-dev-skill-routing-install.json",
-      ".cautilus/claims/review-result-llm-batch1.json",
-      ".cautilus/claims/review-result-llm-batch3.json",
-      ".cautilus/claims/review-result-llm-batch4.json",
-      ".cautilus/claims/review-result-llm-batch5.json",
-      ".cautilus/claims/review-result-llm-batch6.json",
-      ".cautilus/claims/review-result-human-align-action-bucket.json",
-      ".cautilus/claims/review-result-human-confirm-action-bucket.json",
       ".cautilus/claims/review-result-hitl-audience-2026-05-02.json",
-      ".cautilus/claims/review-result-hitl-claim-review-boundary-2026-05-02.json",
       ".cautilus/claims/review-result-hitl-evidence-backed-human-review-2026-05-02.json",
-      ".cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json",
       ".cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json",
       ".cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json",
@@ -19444,7 +19360,6 @@
       ".cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json",
       ".cautilus/claims/review-result-claim-discovery-routing-flow-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json",
-      ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-cautilus-agent-source-launcher-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json",
@@ -19502,10 +19417,24 @@
     "skippedReviewResultPaths": [
       ".cautilus/claims/review-result-loop1-lane-a.json",
       ".cautilus/claims/review-result-loop1-lane-b.json",
+      ".cautilus/claims/review-result-loop2-lane-a.json",
+      ".cautilus/claims/review-result-loop2-lane-b.json",
+      ".cautilus/claims/review-result-deterministic-gates-2026-05-01.json",
+      ".cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json",
       ".cautilus/claims/review-result-evidence-dev-skill-dogfood.json",
+      ".cautilus/claims/review-result-evidence-dev-skill-routing-install.json",
+      ".cautilus/claims/review-result-llm-batch1.json",
+      ".cautilus/claims/review-result-llm-batch3.json",
       ".cautilus/claims/review-result-positioning-boundary.json",
       ".cautilus/claims/review-result-evidence-review-to-eval-flow.json",
+      ".cautilus/claims/review-result-llm-batch4.json",
+      ".cautilus/claims/review-result-llm-batch5.json",
+      ".cautilus/claims/review-result-llm-batch6.json",
       ".cautilus/claims/review-result-action-boundary-skill-guidance.json",
+      ".cautilus/claims/review-result-human-align-action-bucket.json",
+      ".cautilus/claims/review-result-human-confirm-action-bucket.json",
+      ".cautilus/claims/review-result-hitl-claim-review-boundary-2026-05-02.json",
+      ".cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json",
       ".cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-claim-discover-proof-routing-2026-05-03.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-proof-2026-05-03.json",
@@ -19526,6 +19455,7 @@
       ".cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json",
       ".cautilus/claims/review-result-dev-skill-branch-proof-2026-05-04.json",
       ".cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json",
+      ".cautilus/claims/review-result-readiness-triage-2026-05-10.json",
       ".cautilus/claims/review-result-evidence-chatbot-normalize-proposals-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-fixture-runtime-eval-path-2026-05-11.json",
       ".cautilus/claims/review-result-evidence-scenario-catalog-example-cli-2026-05-11.json",
@@ -19536,11 +19466,137 @@
       ".cautilus/claims/review-result-contract-agent-review-ownership-2026-05-17.json",
       ".cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json"
     ],
-    "appliedResultCount": 105,
-    "skippedResultCount": 35,
-    "keptUpdateCount": 269,
+    "appliedResultCount": 90,
+    "skippedResultCount": 50,
+    "keptUpdateCount": 223,
     "rewrittenUpdateCount": 152,
-    "droppedUpdateCount": 259,
+    "droppedUpdateCount": 305,
+    "droppedUpdateReasonCounts": {
+      "missing-fingerprint": 165,
+      "missing-live-fingerprint": 140
+    },
+    "droppedUpdateSamples": [
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-13",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-149",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-7",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-137",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-91",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-95",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-148",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+        "claimId": "claim-readme-md-232",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+        "claimId": "claim-readme-md-148",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+        "claimId": "claim-readme-md-232",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+        "claimId": "claim-readme-md-171",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+        "claimId": "claim-readme-md-159",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+        "claimId": "claim-readme-md-211",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+        "claimId": "claim-readme-md-13",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+        "claimId": "claim-readme-md-149",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+        "claimId": "claim-readme-md-7",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+        "claimId": "claim-readme-md-3",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+        "claimId": "claim-readme-md-153",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+        "claimId": "claim-readme-md-231",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      },
+      {
+        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+        "claimId": "claim-readme-md-9",
+        "claimFingerprint": "",
+        "reason": "missing-fingerprint"
+      }
+    ],
     "provenanceMode": "aggregate-current-review-results"
   },
   "reviewRuns": [
@@ -19798,42 +19854,11 @@
     {
       "clusterCount": 1,
       "reviewRun": {
-        "assignedClusterIndexes": [
-          0,
-          1,
-          2
-        ],
-        "createdAt": "2026-04-30T20:20:11+09:00",
-        "evidencePolicy": "Only mark evidenceStatus=satisfied when this lane verifies direct evidence refs; otherwise leave evidenceStatus=unknown.",
-        "inputPath": ".cautilus/claims/review-input-loop2.json",
-        "lane": "lane-a",
-        "reviewer": "codex"
-      },
-      "schemaVersion": "cautilus.claim_review_result.v1"
-    },
-    {
-      "clusterCount": 1,
-      "reviewRun": {
         "backend": "chat-hitl",
         "mode": "hitl-decision-cards",
         "reviewInputPath": "charness-artifacts/hitl/latest.md",
         "reviewPolicy": "Apply maintainer decisions from the claim source-boundary HITL loop. Keep evidenceStatus unknown unless direct evidence is attached; use human-reviewed for accepted human decisions.",
         "reviewer": "human-maintainer"
-      },
-      "schemaVersion": "cautilus.claim_review_result.v1"
-    },
-    {
-      "clusterCount": 3,
-      "reviewRun": {
-        "backend": "same-agent-review",
-        "createdAt": "2026-05-10T15:20:00+09:00",
-        "mode": "action-bucket-readiness-triage",
-        "reviewInputPaths": [
-          ".cautilus/claims/review-input-agent-design-scenario-2026-05-10.json",
-          ".cautilus/claims/review-input-human-align-surfaces-2026-05-10.json"
-        ],
-        "reviewPolicy": "Review needs-scenario and needs-alignment action buckets for claims that can honestly move to ready-for-proof without product discussion. Keep product-scope, future-surface, ownership-boundary, and label-definition claims non-ready.",
-        "reviewer": "codex-current-agent"
       },
       "schemaVersion": "cautilus.claim_review_result.v1"
     },
@@ -21454,7 +21479,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:5fa87493b5e8980946bda12b5b270318cbd354bd5bedc049b24ddf18005b8537",
+      "contentHash": "sha256:44a157c305aa95a0c4eb2f0b0dfca1e29a9ac9cd1c67e06ed1bbb0fa1f422c3c",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

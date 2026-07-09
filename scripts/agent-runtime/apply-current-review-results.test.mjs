@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -9,6 +9,7 @@ import {
 	claimIdsForPacket,
 	compareReviewResultPaths,
 	claimFingerprintIndexForPacket,
+	applyCurrentReviewResults,
 	filterReviewResultForCurrentClaims,
 	filterReviewResultForClaimIds,
 	normalizeAggregateReviewApplication,
@@ -135,6 +136,14 @@ test("filterReviewResultForCurrentClaims drops reused ids with mismatched finger
 
 	assert.equal(result.keptUpdateCount, 1);
 	assert.equal(result.droppedUpdateCount, 1);
+	assert.deepEqual(result.droppedUpdateReasonCounts, { "missing-live-fingerprint": 1 });
+	assert.deepEqual(result.droppedUpdates, [
+		{
+			claimId: "claim-skills-cautilus-skill-md-68",
+			claimFingerprint: "sha256:old",
+			reason: "missing-live-fingerprint",
+		},
+	]);
 	assert.deepEqual(result.reviewResult.clusterResults[0].claimUpdates, [
 		{
 			claimId: "claim-skills-cautilus-skill-md-68",
@@ -142,6 +151,46 @@ test("filterReviewResultForCurrentClaims drops reused ids with mismatched finger
 			reviewStatus: "agent-reviewed",
 		},
 	]);
+});
+
+test("filterReviewResultForCurrentClaims drops fingerprintless updates for fingerprinted reused ids", () => {
+	const claimIndex = claimIndexForPacket({
+		claimCandidates: [
+			{
+				claimId: "claim-docs-contracts-md-42",
+				claimFingerprint: "sha256:current",
+			},
+		],
+	});
+	const result = filterReviewResultForCurrentClaims(
+		{
+			schemaVersion: "cautilus.claim_review_result.v1",
+			clusterResults: [
+				{
+					clusterId: "fingerprintless-reused-id",
+					claimUpdates: [
+						{
+							claimId: "claim-docs-contracts-md-42",
+							reviewStatus: "agent-reviewed",
+						},
+					],
+				},
+			],
+		},
+		claimIndex,
+	);
+
+	assert.equal(result.keptUpdateCount, 0);
+	assert.equal(result.droppedUpdateCount, 1);
+	assert.deepEqual(result.droppedUpdateReasonCounts, { "missing-fingerprint": 1 });
+	assert.deepEqual(result.droppedUpdates, [
+		{
+			claimId: "claim-docs-contracts-md-42",
+			claimFingerprint: "",
+			reason: "missing-fingerprint",
+		},
+	]);
+	assert.deepEqual(result.reviewResult.clusterResults, []);
 });
 
 test("normalizeAggregateReviewApplication replaces temporary paths with stable inputs", () => {
@@ -214,6 +263,8 @@ test("projectAggregateProvenance records aggregate fields in one pass without du
 		keptUpdateCount: 3,
 		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 4,
+		droppedUpdateReasonCounts: {},
+		droppedUpdateSamples: [],
 		provenanceMode: "aggregate-current-review-results",
 	});
 });
@@ -318,6 +369,8 @@ test("writeAggregateReviewApplication records all applied review-result paths", 
 		keptUpdateCount: 3,
 		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 4,
+		droppedUpdateReasonCounts: {},
+		droppedUpdateSamples: [],
 		provenanceMode: "aggregate-current-review-results",
 	});
 });
@@ -364,8 +417,9 @@ test("filterReviewResultForCurrentClaims recovers fingerprinted updates across d
 	assert.equal(result.keptUpdateCount, 1);
 	assert.equal(result.rewrittenUpdateCount, 1);
 	assert.equal(result.droppedUpdateCount, 1);
+	assert.deepEqual(result.droppedUpdateReasonCounts, { "missing-fingerprint": 1 });
 	assert.deepEqual(result.droppedUpdates, [
-		{ claimId: "claim-docs-master-plan-md-12", claimFingerprint: "" },
+		{ claimId: "claim-docs-master-plan-md-12", claimFingerprint: "", reason: "missing-fingerprint" },
 	]);
 	assert.deepEqual(result.reviewResult.clusterResults[0].claimUpdates, [
 		{
@@ -378,6 +432,133 @@ test("filterReviewResultForCurrentClaims recovers fingerprinted updates across d
 					supportsClaimIds: ["claim-docs-master-plan-md-91", "claim-other"],
 				},
 			],
+		},
+	]);
+});
+
+test("projectAggregateProvenance records structured dropped update diagnostics", () => {
+	const projected = projectAggregateProvenance(
+		{ reviewApplication: { schemaVersion: "cautilus.claim_review_result.v1" } },
+		{
+			claims: "/repo/.cautilus/claims/latest.json",
+			output: "/repo/.cautilus/claims/evidenced.json",
+			applicationLog: {
+				appliedReviewResultPaths: ["/repo/.cautilus/claims/review-result-one.json"],
+				skippedReviewResultPaths: [],
+				lastAppliedReviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+				appliedResultCount: 1,
+				skippedResultCount: 0,
+				keptUpdateCount: 1,
+				rewrittenUpdateCount: 2,
+				droppedUpdateCount: 3,
+				droppedUpdateReasonCounts: {
+					"missing-fingerprint": 1,
+					"missing-live-fingerprint": 2,
+				},
+				droppedUpdateSamples: [
+					{
+						reviewResultPath: "/repo/.cautilus/claims/review-result-one.json",
+						claimId: "claim-old",
+						claimFingerprint: "",
+						reason: "missing-fingerprint",
+					},
+				],
+			},
+			cwd: "/repo",
+		},
+	);
+
+	assert.deepEqual(projected.reviewApplication.droppedUpdateReasonCounts, {
+		"missing-fingerprint": 1,
+		"missing-live-fingerprint": 2,
+	});
+	assert.deepEqual(projected.reviewApplication.droppedUpdateSamples, [
+		{
+			reviewResultPath: ".cautilus/claims/review-result-one.json",
+			claimId: "claim-old",
+			claimFingerprint: "",
+			reason: "missing-fingerprint",
+		},
+	]);
+});
+
+test("applyCurrentReviewResults records dropped diagnostics when every result is stale", () => {
+	const dir = mkdtempSync(join(tmpdir(), "cautilus-all-stale-review-"));
+	const claims = join(dir, "latest.json");
+	const reviewResult = join(dir, "review-result-stale-2026-07-09.json");
+	const output = join(dir, "evidenced.json");
+	writeFileSync(
+		claims,
+		`${JSON.stringify({
+			claimCandidates: [
+				{
+					claimId: "claim-current",
+					claimFingerprint: "sha256:current",
+				},
+			],
+		}, null, 2)}\n`,
+	);
+	writeFileSync(
+		reviewResult,
+		`${JSON.stringify({
+			schemaVersion: "cautilus.claim_review_result.v1",
+			clusterResults: [
+				{
+					clusterId: "all-stale",
+					claimUpdates: [
+						{
+							claimId: "claim-old",
+							reviewStatus: "agent-reviewed",
+						},
+					],
+				},
+			],
+		}, null, 2)}\n`,
+	);
+	const warnings = [];
+	const originalWarn = console.warn;
+	console.warn = (message) => warnings.push(message);
+	try {
+		const summary = applyCurrentReviewResults({
+			claims,
+			output,
+			reviewResults: [reviewResult],
+			claimsDir: dir,
+			cautilusBin: "unused",
+		});
+
+		assert.deepEqual(
+			{
+				appliedResultCount: summary.appliedResultCount,
+				skippedResultCount: summary.skippedResultCount,
+				keptUpdateCount: summary.keptUpdateCount,
+				droppedUpdateCount: summary.droppedUpdateCount,
+			},
+			{
+				appliedResultCount: 0,
+				skippedResultCount: 1,
+				keptUpdateCount: 0,
+				droppedUpdateCount: 1,
+			},
+		);
+	} finally {
+		console.warn = originalWarn;
+	}
+
+	assert.equal(warnings.length, 1);
+	assert.match(warnings[0], /dropped 1 update\(s\)/);
+	assert.match(warnings[0], /missing-fingerprint=1/);
+	const projected = JSON.parse(readFileSync(output, "utf8"));
+	assert.equal(projected.reviewApplication.appliedResultCount, 0);
+	assert.equal(projected.reviewApplication.skippedResultCount, 1);
+	assert.equal(projected.reviewApplication.droppedUpdateCount, 1);
+	assert.deepEqual(projected.reviewApplication.droppedUpdateReasonCounts, { "missing-fingerprint": 1 });
+	assert.deepEqual(projected.reviewApplication.droppedUpdateSamples, [
+		{
+			reviewResultPath: reviewResult,
+			claimId: "claim-old",
+			claimFingerprint: "",
+			reason: "missing-fingerprint",
 		},
 	]);
 });

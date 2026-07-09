@@ -71,6 +71,13 @@ function stableDisplayPaths(paths, cwd) {
 	return paths.map((filePath) => stableDisplayPath(filePath, cwd));
 }
 
+function stableDroppedUpdateSamples(samples, cwd) {
+	return samples.map((sample) => ({
+		...sample,
+		reviewResultPath: stableDisplayPath(sample.reviewResultPath, cwd),
+	}));
+}
+
 function emptyApplicationLog() {
 	return {
 		appliedReviewResultPaths: [],
@@ -81,6 +88,8 @@ function emptyApplicationLog() {
 		keptUpdateCount: 0,
 		rewrittenUpdateCount: 0,
 		droppedUpdateCount: 0,
+		droppedUpdateReasonCounts: {},
+		droppedUpdateSamples: [],
 	};
 }
 
@@ -132,6 +141,8 @@ export function projectAggregateProvenance(packet, {
 			keptUpdateCount: log.keptUpdateCount,
 			rewrittenUpdateCount: log.rewrittenUpdateCount || 0,
 			droppedUpdateCount: log.droppedUpdateCount,
+			droppedUpdateReasonCounts: log.droppedUpdateReasonCounts || {},
+			droppedUpdateSamples: stableDroppedUpdateSamples(log.droppedUpdateSamples || [], cwd),
 			provenanceMode: "aggregate-current-review-results",
 		},
 	};
@@ -145,7 +156,6 @@ export function projectAggregateProvenance(packet, {
 }
 
 // Back-compat exports retained for callers that imported the previous helper names.
-// Both delegate to projectAggregateProvenance under the hood.
 export function normalizeAggregateReviewApplication(packet, { claims, reviewResultPath, cwd = process.cwd() } = {}) {
 	if (!packet || typeof packet !== "object" || !packet.reviewApplication) {
 		return packet;
@@ -161,34 +171,27 @@ export function normalizeAggregateReviewApplication(packet, { claims, reviewResu
 	};
 }
 
-export function writeAggregateReviewApplication(packet, {
-	claims,
-	output,
-	appliedReviewResultPaths = [],
-	skippedReviewResultPaths = [],
-	appliedResultCount = 0,
-	skippedResultCount = 0,
-	keptUpdateCount = 0,
-	rewrittenUpdateCount = 0,
-	droppedUpdateCount = 0,
-	cwd = process.cwd(),
-} = {}) {
+export function writeAggregateReviewApplication(packet, options = {}) {
 	if (!packet || typeof packet !== "object") {
 		return packet;
 	}
+	const log = { ...emptyApplicationLog(), ...options };
+	const cwd = options.cwd || process.cwd();
 	return {
 		...packet,
 		reviewApplication: {
 			...reviewApplicationOrEmpty(packet),
-			claimsPath: stableDisplayPath(claims, cwd),
-			outputPath: stableDisplayPath(output, cwd),
-			aggregateReviewResultPaths: stableDisplayPaths(appliedReviewResultPaths, cwd),
-			skippedReviewResultPaths: stableDisplayPaths(skippedReviewResultPaths, cwd),
-			appliedResultCount,
-			skippedResultCount,
-			keptUpdateCount,
-			rewrittenUpdateCount,
-			droppedUpdateCount,
+			claimsPath: stableDisplayPath(options.claims, cwd),
+			outputPath: stableDisplayPath(options.output, cwd),
+			aggregateReviewResultPaths: stableDisplayPaths(log.appliedReviewResultPaths, cwd),
+			skippedReviewResultPaths: stableDisplayPaths(log.skippedReviewResultPaths, cwd),
+			appliedResultCount: log.appliedResultCount,
+			skippedResultCount: log.skippedResultCount,
+			keptUpdateCount: log.keptUpdateCount,
+			rewrittenUpdateCount: log.rewrittenUpdateCount,
+			droppedUpdateCount: log.droppedUpdateCount,
+			droppedUpdateReasonCounts: log.droppedUpdateReasonCounts,
+			droppedUpdateSamples: stableDroppedUpdateSamples(log.droppedUpdateSamples, cwd),
 			provenanceMode: "aggregate-current-review-results",
 		},
 	};
@@ -299,10 +302,17 @@ function updateMatchesClaim(update, claim) {
 	if (!claim) {
 		return false;
 	}
+	if (claim.claimFingerprint && !update.claimFingerprint) {
+		return false;
+	}
 	if (update.claimFingerprint && claim.claimFingerprint && update.claimFingerprint !== claim.claimFingerprint) {
 		return false;
 	}
 	return true;
+}
+
+function droppedUpdateReason(update) {
+	return update.claimFingerprint ? "missing-live-fingerprint" : "missing-fingerprint";
 }
 
 // Rewriting an update to the current display id must also rewrite the old id
@@ -346,7 +356,11 @@ function filterClusterUpdates(cluster, claimIndex, fingerprintIndex, tally) {
 	for (const update of Array.isArray(cluster.claimUpdates) ? cluster.claimUpdates : []) {
 		const resolved = resolveUpdateAgainstCurrentClaims(update, claimIndex, fingerprintIndex);
 		if (resolved.kind === "dropped") {
-			tally.droppedUpdates.push({ claimId: update.claimId || "", claimFingerprint: update.claimFingerprint || "" });
+			tally.droppedUpdates.push({
+				claimId: update.claimId || "",
+				claimFingerprint: update.claimFingerprint || "",
+				reason: droppedUpdateReason(update),
+			});
 			continue;
 		}
 		claimUpdates.push(resolved.update);
@@ -372,8 +386,54 @@ export function filterReviewResultForCurrentClaims(reviewResult, claimIndex, fin
 		keptUpdateCount: tally.keptUpdateCount,
 		rewrittenUpdateCount: tally.rewrittenUpdateCount,
 		droppedUpdateCount: tally.droppedUpdates.length,
+		droppedUpdateReasonCounts: droppedUpdateReasonCounts(tally.droppedUpdates),
 		droppedUpdates: tally.droppedUpdates,
 	};
+}
+
+function droppedUpdateReasonCounts(droppedUpdates) {
+	const counts = {};
+	for (const dropped of droppedUpdates) {
+		const reason = dropped.reason || "unknown";
+		counts[reason] = (counts[reason] || 0) + 1;
+	}
+	return counts;
+}
+
+function mergeDroppedUpdateReasonCounts(target, counts) {
+	for (const [reason, count] of Object.entries(counts || {})) {
+		target[reason] = (target[reason] || 0) + count;
+	}
+}
+
+function recordDroppedUpdateSamples(log, reviewResultPath, droppedUpdates, maxSamples = 20) {
+	const remaining = maxSamples - log.droppedUpdateSamples.length;
+	if (remaining <= 0) {
+		return;
+	}
+	for (const dropped of droppedUpdates.slice(0, remaining)) {
+		log.droppedUpdateSamples.push({
+			reviewResultPath,
+			claimId: dropped.claimId || "",
+			claimFingerprint: dropped.claimFingerprint || "",
+			reason: dropped.reason || "unknown",
+		});
+	}
+}
+
+function formatDroppedUpdateSummary(reviewResultPath, filtered) {
+	const counts = Object.entries(filtered.droppedUpdateReasonCounts || {})
+		.map(([reason, count]) => `${reason}=${count}`)
+		.join(", ");
+	const samples = filtered.droppedUpdates
+		.slice(0, 3)
+		.map((dropped) => `${dropped.claimId || "<no claimId>"}${dropped.claimFingerprint ? `@${dropped.claimFingerprint}` : ""}`)
+		.join(", ");
+	return [
+		`apply-current-review-results: dropped ${filtered.droppedUpdateCount} update(s) from ${reviewResultPath}`,
+		counts ? `(${counts})` : "",
+		samples ? `samples: ${samples}` : "",
+	].filter(Boolean).join(" ");
 }
 
 export function filterReviewResultForClaimIds(reviewResult, claimIds) {
@@ -416,10 +476,10 @@ export function applyOrderedResults({ basePacket, orderedPaths, cautilusBin, tmp
 		const filtered = filterReviewResultForCurrentClaims(reviewResult, currentIndex, currentFingerprintIndex);
 		log.droppedUpdateCount += filtered.droppedUpdateCount;
 		log.rewrittenUpdateCount += filtered.rewrittenUpdateCount;
-		for (const dropped of filtered.droppedUpdates) {
-			console.warn(
-				`apply-current-review-results: dropped update for ${dropped.claimId || "<no claimId>"} from ${reviewResultPath} (no current claimId match${dropped.claimFingerprint ? " and no live fingerprint" : "; update carries no claimFingerprint"})`,
-			);
+		mergeDroppedUpdateReasonCounts(log.droppedUpdateReasonCounts, filtered.droppedUpdateReasonCounts);
+		recordDroppedUpdateSamples(log, reviewResultPath, filtered.droppedUpdates);
+		if (filtered.droppedUpdateCount > 0) {
+			console.warn(formatDroppedUpdateSummary(reviewResultPath, filtered));
 		}
 		if (filtered.keptUpdateCount === 0) {
 			log.skippedResultCount += 1;
@@ -457,7 +517,7 @@ export function applyCurrentReviewResults(options) {
 		});
 		fs.mkdirSync(path.dirname(options.output), { recursive: true });
 		fs.copyFileSync(finalPacketPath, options.output);
-		if (applicationLog.appliedResultCount > 0) {
+		if (orderedPaths.length > 0) {
 			const projected = projectAggregateProvenance(readJSON(options.output), {
 				claims: options.claims,
 				output: options.output,
