@@ -17,6 +17,10 @@ test("parseArgs supports custom status report inputs", () => {
 		"status.json",
 		"--canonical-map",
 		"canonical.json",
+		"--review-drops",
+		"review-drops.json",
+		"--review-drops-markdown",
+		"review-drops.md",
 		"--claims-dir",
 		"claims-dir",
 		"--output",
@@ -29,6 +33,8 @@ test("parseArgs supports custom status report inputs", () => {
 	assert.equal(args.claims, "claims.json");
 	assert.equal(args.status, "status.json");
 	assert.equal(args.canonicalMap, "canonical.json");
+	assert.equal(args.reviewDrops, "review-drops.json");
+	assert.equal(args.reviewDropsMarkdown, "review-drops.md");
 	assert.equal(args.claimsDir, "claims-dir");
 	assert.equal(args.output, "report.md");
 	assert.equal(args.samplePerBucket, 7);
@@ -198,6 +204,42 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 				],
 			},
 		],
+		reviewDrops: {
+			path: ".cautilus/claims/review-drops-summary.json",
+			markdownPath: ".cautilus/claims/review-drops-summary.md",
+			sourceClaimPacket: {
+				path: ".cautilus/claims/evidenced-typed-runners.json",
+			},
+			replaySummary: {
+				droppedUpdateCount: 3,
+				droppedUpdateReasonCounts: {
+					"missing-fingerprint": 2,
+					"missing-live-fingerprint": 1,
+				},
+				recordedSampleCount: 2,
+			},
+			sampleCoverage: [
+				{
+					reason: "missing-fingerprint",
+					count: 2,
+					recordedSampleCount: 2,
+					sampleStatus: "represented",
+				},
+				{
+					reason: "missing-live-fingerprint",
+					count: 1,
+					recordedSampleCount: 0,
+					sampleStatus: "not-represented",
+				},
+			],
+			actionClasses: [
+				{
+					reason: "missing-fingerprint",
+					actionClass: "unrecoverable",
+					queueHint: "Prepare fresh review-input for the currently live claims.",
+				},
+			],
+		},
 		canonicalMap: {
 			path: ".cautilus/claims/canonical-claim-map.json",
 			coverageSummary: {
@@ -256,7 +298,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	const report = renderStatusReport({ claimsPacket, statusPacket, digests, args });
 
 	assert.match(report, /# Cautilus Claim Status Report/);
-	assert.match(report, /human-readable projection over the current claim packet, status summary, review results, validation reports, and eval plans/);
+	assert.match(report, /human-readable projection over the current claim packet, status summary, review results, review-drop summary, validation reports, and eval plans/);
 	assert.match(report, /Use the JSON packets as the audit source; use this report to decide what to inspect or do next/);
 	assert.match(report, /Snapshot notice: git state is a generated status snapshot/);
 	assert.match(report, /Git state snapshot: fresh; stale=no/);
@@ -270,6 +312,13 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /review-result-human-align-action-bucket\.json/);
 	assert.match(report, /Active updates still match the current claim packet/);
 	assert.match(report, /Superseded/);
+	assert.match(report, /## Review Drop Audit/);
+	assert.match(report, /review-drops-summary\.json/);
+	assert.match(report, /review-drops-summary\.md/);
+	assert.match(report, /Dropped updates: 3/);
+	assert.match(report, /Drop reasons: missing-fingerprint: 2, missing-live-fingerprint: 1/);
+	assert.match(report, /Reason classes represented by samples: 1\/2/);
+	assert.match(report, /missing-fingerprint: unrecoverable/);
 	assert.match(report, /validation-report\.json/);
 	assert.match(report, /Zero eval plans are expected/);
 	assert.match(report, /refresh-plan-claim-status-report\.json/);
@@ -342,6 +391,7 @@ test("renderStatusReport treats refresh plans against an older base packet as hi
 					mtimeMs: 1,
 				},
 			],
+			reviewDrops: null,
 			canonicalMap: null,
 		},
 		args: {
@@ -411,6 +461,7 @@ test("renderStatusReport selects refresh plan summaries without filesystem mtime
 					nextActions: [],
 				},
 			],
+			reviewDrops: null,
 			canonicalMap: null,
 		},
 		args: {

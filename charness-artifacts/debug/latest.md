@@ -3,73 +3,73 @@ Date: 2026-07-09
 
 ## Problem
 
-`npm run lint:eslint` failed after Cycle 1 added source sample policy shape validation.
-The exact error was `Function 'validateSourceSamplePolicy' has a complexity of 13. Maximum allowed is 12`.
+`npm run lint:eslint` failed after Cycle 4 added `--review-drops` and `--review-drops-markdown` support to `render-claim-status-report.mjs`.
+The exact error was `Refactor this function to reduce its Cognitive Complexity from 13 to the 12 allowed` at line 18.
 
 ## Correct Behavior
 
-Given a narrow validator expansion, ESLint should still pass without weakening the policy check.
-The source policy validator should keep shape checks readable and put the reason-coverage invariant in a small helper.
+The status report should accept review-drop packet paths without weakening the existing ESLint complexity gate.
+Argument parsing should stay readable as the report gains optional packet inputs.
 
 ## Observed Facts
 
-- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/summarize-claim-review-drops.test.mjs` passed.
-- `npm run claims:review-drops:check` passed.
-- `npm run lint:eslint` failed only on `scripts/agent-runtime/summarize-claim-review-drops.mjs` complexity.
+- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs` passed.
+- `npm run claims:status-report:check` failed because the checked-in generated report is stale, which is expected after changing report output.
+- `npm run lint:eslint` failed only on `render-claim-status-report.mjs` cognitive complexity.
 
 ## Reproduction
 
 - Run `npm run lint:eslint`.
-- Observe the complexity failure at `scripts/agent-runtime/summarize-claim-review-drops.mjs:254`.
+- Observe the cognitive complexity failure at `scripts/agent-runtime/render-claim-status-report.mjs:18`.
 
 ## Candidate Causes
 
-- The source policy validator accumulated too many independent conditionals.
-- The reason-representation check belongs in a helper because it is a separate invariant.
-- The ESLint complexity threshold is intentionally catching validator growth.
+- `parseArgs` accumulated too many `else if` branches as new optional packet paths were added.
+- The new review-drop options are independent argument mappings and can be parsed by a table-driven helper.
+- The report-rendering logic is not implicated because focused tests passed before lint.
 
 ## Hypothesis
 
-- If reason-coverage validation moves into a helper, the parent validator complexity will drop below the lint threshold while focused policy tests continue to pass.
-- Disconfirmer: run `npm run lint:eslint` and see the same complexity failure.
+- If string-valued option parsing moves into a small path-option map helper, `parseArgs` complexity will drop below the lint threshold while custom argument tests continue to pass.
+- Disconfirmer: rerun `npm run lint:eslint` and see the same complexity failure.
 
 ## Verification
 
-- Confirmed: `npm run lint:eslint` passes after helper extraction.
-- Confirmed: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/summarize-claim-review-drops.test.mjs` passes with 15 tests.
-- Confirmed: `npm run claims:review-drops:check` passes against the checked-in generated packet.
+- Confirmed: `npm run lint:eslint` passes after parser helper extraction.
+- Confirmed: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs` passes.
+- Confirmed: `npm run claims:status-report && npm run claims:status-report:check` passes after regenerating the checked-in report.
 
 ## Root Cause
 
-The implementation added correct policy checks in one function, crossing the repo's complexity guard.
-The failure was structural, not a behavior bug in the source policy invariant.
+The implementation added correct new flags in the existing branch chain, crossing the repo's complexity threshold.
+This is a code-shape bug in parser structure, not a report behavior bug.
 
 ## Invariant Proof
 
-- Invariant: the summary generator must reject malformed source sample policy while keeping validator code below lint complexity limits.
-- Producer Proof: n/a — this is a validator implementation structure bug.
-- Final-Consumer Proof: focused tests and `claims:review-drops:check` exercise the policy consumer.
-- Interface-Shape Sibling Scan: the sibling risk is future validator growth in the same function; helper extraction is the local prevention.
-- Non-Claims: this does not add a full reviewApplication schema validator.
+- Invariant: status report option growth must preserve deterministic parser behavior and stay under lint complexity limits.
+- Producer Proof: `parseArgs` custom-input tests cover the new flags.
+- Final-Consumer Proof: status report check mode will compare the regenerated report with checked-in output.
+- Interface-Shape Sibling Scan: `build-canonical-claim-map.mjs` and other small CLIs can tolerate short branch chains, but this larger report parser now needs helper extraction.
+- Non-Claims: this does not introduce a generic CLI parser framework.
 
 ## Detection Gap
 
-- ESLint complexity gate | fired correctly after the focused tests passed | no new gate needed.
+- ESLint complexity gate | fired correctly after focused tests passed | no new gate needed.
 
 ## Sibling Search
 
-- Mental model: because the policy rules were related, they could stay in one validator function.
-- same function: `validateSourceSamplePolicy` | decision: split helper | proof: rerun ESLint.
-- same file: other summary helpers already isolate coverage and action classification | decision: follow local pattern | proof: helper extraction keeps tests unchanged.
-- cross-file: no sibling validator currently failed; no broader refactor is needed.
+- Mental model: adding two flags to an existing branch chain is cheap until the file is already near the complexity limit.
+- same function: `parseArgs` | decision: move string path options into a helper | proof: rerun ESLint.
+- same file: report digest/render helpers should stay separate from parser complexity | decision: do not refactor renderer broadly | proof: focused report tests.
+- cross-file: no cross-file sibling requires action now because the failure names one parser and the durable guard already exists.
 
 ## Seam Risk
 
 - Interrupt ID: none
 - Risk Class: none
 - Seam: none
-- Disproving Observation: local lint names a deterministic code-shape threshold.
-- What Local Reasoning Cannot Prove: n/a.
+- Disproving Observation: deterministic lint names a code-shape threshold.
+- What Local Reasoning Cannot Prove: n/a
 - Generalization Pressure: none
 
 ## Interrupt Decision
@@ -81,4 +81,4 @@ The failure was structural, not a behavior bug in the source policy invariant.
 
 ## Prevention
 
-Keep policy shape checks and derived coverage invariants in separate helpers when the same validator grows past the lint threshold.
+When adding optional packet path flags to an already broad renderer CLI, prefer a small option map before appending more `else if` branches.

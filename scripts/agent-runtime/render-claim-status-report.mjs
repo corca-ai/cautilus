@@ -11,13 +11,27 @@ const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
 const DEFAULT_CLAIMS = `${DEFAULT_CLAIMS_DIR}/evidenced-typed-runners.json`;
 const DEFAULT_STATUS = `${DEFAULT_CLAIMS_DIR}/status-summary.json`;
 const DEFAULT_CANONICAL_MAP = `${DEFAULT_CLAIMS_DIR}/canonical-claim-map.json`;
+const DEFAULT_REVIEW_DROPS = `${DEFAULT_CLAIMS_DIR}/review-drops-summary.json`;
+const DEFAULT_REVIEW_DROPS_MARKDOWN = `${DEFAULT_CLAIMS_DIR}/review-drops-summary.md`;
 const DEFAULT_OUTPUT = `${DEFAULT_CLAIMS_DIR}/claim-status-report.md`;
+
+const PATH_OPTIONS = new Map([
+	["--claims", "claims"],
+	["--status", "status"],
+	["--canonical-map", "canonicalMap"],
+	["--review-drops", "reviewDrops"],
+	["--review-drops-markdown", "reviewDropsMarkdown"],
+	["--claims-dir", "claimsDir"],
+	["--output", "output"],
+]);
 
 export function parseArgs(argv) {
 	const args = {
 		claims: DEFAULT_CLAIMS,
 		status: DEFAULT_STATUS,
 		canonicalMap: DEFAULT_CANONICAL_MAP,
+		reviewDrops: DEFAULT_REVIEW_DROPS,
+		reviewDropsMarkdown: DEFAULT_REVIEW_DROPS_MARKDOWN,
 		claimsDir: DEFAULT_CLAIMS_DIR,
 		output: DEFAULT_OUTPUT,
 		samplePerBucket: 5,
@@ -26,16 +40,9 @@ export function parseArgs(argv) {
 	};
 	for (let index = 2; index < argv.length; index += 1) {
 		const arg = argv[index];
-		if (arg === "--claims") {
-			args.claims = argv[++index];
-		} else if (arg === "--status") {
-			args.status = argv[++index];
-		} else if (arg === "--canonical-map") {
-			args.canonicalMap = argv[++index];
-		} else if (arg === "--claims-dir") {
-			args.claimsDir = argv[++index];
-		} else if (arg === "--output") {
-			args.output = argv[++index];
+		const pathOption = PATH_OPTIONS.get(arg);
+		if (pathOption) {
+			args[pathOption] = argv[++index];
 		} else if (arg === "--sample-per-bucket") {
 			args.samplePerBucket = parsePositiveInteger(argv[++index], arg);
 		} else if (arg === "--review-sample") {
@@ -282,12 +289,28 @@ function evalPlanDigest(filePath) {
 	};
 }
 
+function reviewDropDigest(filePath, markdownPath) {
+	const packet = readOptionalJSON(filePath);
+	if (!packet) {
+		return null;
+	}
+	return {
+		path: filePath,
+		markdownPath,
+		sourceClaimPacket: asObject(packet.sourceClaimPacket),
+		replaySummary: asObject(packet.replaySummary),
+		sampleCoverage: asArray(packet.sampleCoverage),
+		actionClasses: asArray(packet.actionClasses),
+	};
+}
+
 function collectDigests(args) {
 	return {
 		reviewResults: discoverJSONFiles(args.claimsDir, "review-result-").map(reviewResultDigest).filter(Boolean),
 		validationReports: discoverJSONFiles(args.claimsDir, "validation-").map(validationDigest).filter(Boolean),
 		evalPlans: discoverJSONFiles(args.claimsDir, "eval-plan-").map(evalPlanDigest).filter(Boolean),
 		refreshPlans: discoverJSONFiles(args.claimsDir, "refresh-plan").map(refreshPlanDigest).filter(Boolean),
+		reviewDrops: reviewDropDigest(args.reviewDrops, args.reviewDropsMarkdown),
 	};
 }
 
@@ -315,7 +338,7 @@ function renderHeader(lines, claimsPacket, statusPacket, args) {
 	const gitState = asObject(statusPacket?.gitState);
 	lines.push("# Cautilus Claim Status Report");
 	lines.push("");
-	lines.push("This is a human-readable projection over the current claim packet, status summary, review results, validation reports, and eval plans.");
+	lines.push("This is a human-readable projection over the current claim packet, status summary, review results, review-drop summary, validation reports, and eval plans.");
 	lines.push("Use the JSON packets as the audit source; use this report to decide what to inspect or do next.");
 	lines.push("");
 	lines.push("## Packet");
@@ -432,6 +455,36 @@ function prioritizedReviewDetails(digests) {
 		.map((item) => item.digest);
 }
 
+function renderReviewDropAudit(lines, digest) {
+	lines.push("## Review Drop Audit");
+	lines.push("");
+	if (!digest) {
+		lines.push("No review-drop summary packet was found.");
+		lines.push("");
+		return;
+	}
+	const replay = digest.replaySummary;
+	lines.push(`- Drop summary packet: ${digest.path}`);
+	lines.push(`- Drop summary report: ${digest.markdownPath}`);
+	lines.push(`- Source claim packet: ${digest.sourceClaimPacket.path ?? "-"}`);
+	lines.push(`- Dropped updates: ${replay.droppedUpdateCount ?? 0}`);
+	lines.push(`- Drop reasons: ${formatCounts(replay.droppedUpdateReasonCounts)}`);
+	lines.push(`- Recorded samples: ${replay.recordedSampleCount ?? 0}`);
+	const represented = digest.sampleCoverage.filter((coverage) => coverage.sampleStatus === "represented").length;
+	const unrepresented = digest.sampleCoverage.length - represented;
+	lines.push(`- Reason classes represented by samples: ${represented}/${digest.sampleCoverage.length}`);
+	if (unrepresented > 0) {
+		lines.push(`- Count-only reason classes: ${unrepresented}`);
+	}
+	if (digest.actionClasses.length > 0) {
+		lines.push("- Drop actions:");
+		for (const action of digest.actionClasses) {
+			lines.push(`  - ${action.reason}: ${action.actionClass}; ${compactText(action.queueHint)}`);
+		}
+	}
+	lines.push("");
+}
+
 function renderValidation(lines, validationReports) {
 	lines.push("## Validation");
 	lines.push("");
@@ -522,6 +575,7 @@ export function renderStatusReport({ claimsPacket, statusPacket, digests, args }
 	renderNextWork(lines, statusPacket);
 	renderActionBuckets(lines, statusPacket, claimsById, args.samplePerBucket, { formatCounts, table });
 	renderReviewResults(lines, currentReviewResults, claimsById, args.reviewSample);
+	renderReviewDropAudit(lines, digests.reviewDrops);
 	renderValidation(lines, digests.validationReports);
 	renderEvalPlans(lines, digests.evalPlans);
 	renderRefreshPlans(lines, digests.refreshPlans, claimsPacket, statusPacket);

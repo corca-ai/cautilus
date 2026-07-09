@@ -1,6 +1,6 @@
 # Cautilus Claim Status Report
 
-This is a human-readable projection over the current claim packet, status summary, review results, validation reports, and eval plans.
+This is a human-readable projection over the current claim packet, status summary, review results, review-drop summary, validation reports, and eval plans.
 Use the JSON packets as the audit source; use this report to decide what to inspect or do next.
 
 ## Packet
@@ -342,6 +342,19 @@ Active updates still match the current claim packet; superseded updates are hist
 | claim-docs-contracts-runner-readiness-md-283 | deterministic | ready-for-proof | satisfied | Keep skill disclosure lint required and forbidden fragments aligned with command discovery changes. |
 | claim-docs-contracts-runner-verification-md-24 | human-auditable | needs-alignment | unknown | Keep this as a host-alignment claim until a concrete adapter assessment demonstrates same-boundary external substitution honestly. |
 | claim-docs-contracts-runner-verification-md-68 | deterministic | ready-for-proof | satisfied | Keep product-path proof promotion explicit in evaluation proof tests. |
+
+## Review Drop Audit
+
+- Drop summary packet: .cautilus/claims/review-drops-summary.json
+- Drop summary report: .cautilus/claims/review-drops-summary.md
+- Source claim packet: .cautilus/claims/evidenced-typed-runners.json
+- Dropped updates: 305
+- Drop reasons: missing-fingerprint: 165, missing-live-fingerprint: 140
+- Recorded samples: 20
+- Reason classes represented by samples: 2/2
+- Drop actions:
+  - missing-fingerprint: unrecoverable; Prepare fresh review-input for the currently live claims instead of carrying the stale update forward.
+  - missing-live-fingerprint: stale-fingerprint; Use the reviewResultPath and claimFingerprint to decide whether a focused review-input queue is warranted.
 
 ## Validation
 

@@ -9,10 +9,10 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 4 — contract/report synchronization hardening.
-- Current slice intent: use the accumulated claim proof-chain context to tighten
-  a user-facing or maintainer-facing projection without broad refactor.
-- Next action: inspect remaining scout candidates and pick a narrow Cycle 4 target.
+- Current slice: Cycle 5 — final small hardening slice and bundle verification.
+- Current slice intent: close the autonomous run with one last bounded improvement,
+  then run broad local proof and complete the goal artifact.
+- Next action: choose the final small hardening target.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -83,8 +83,8 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | 1 | Validate review-drop source sample policy shape. | Start with a low-risk proof-integrity slice. | Focused tests, generated artifacts, critique record, commit. | complete |
 | 2 | Expand generated drift coverage for claim refresh outputs. | Candidate scouts found a check gap while Cycle 1 regenerated claim packets. | Focused tests, drift check proof, commit. | complete |
 | 3 | Add canonical claim map check mode and verify phase. | Mid-run cycle should strengthen repeatable checks rather than prose alone. | Focused tests, validator output, commit. | complete |
-| 4 | Improve documentation/contract synchronization where code and packet behavior can prove it. | Use accumulated context to tighten source-of-truth alignment. | Contract/doc diff plus check, critique/defer record, commit. | in-progress |
-| 5 | Final small hardening slice and bundle verification. | Close the run with a useful improvement and broad proof. | Focused checks, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | pending |
+| 4 | Add review-drop audit projection to the claim status report. | Use accumulated context to tighten source-of-truth alignment. | Report diff plus check, critique record, commit. | complete |
+| 5 | Final small hardening slice and bundle verification. | Close the run with a useful improvement and broad proof. | Focused checks, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | in-progress |
 
 ## Operator Decision Queue
 
@@ -191,6 +191,20 @@ applies.
 - Critique: parent-delegated fresh-eye review from agent `019f46d1-ad4c-7430-8c1e-b80b1e0fa8de`; verdict OK, no findings.
 - Off-goal findings: none.
 - Lessons carried forward: generated proof projections should expose check mode at the producer boundary before downstream reports consume them.
+- Metrics: not measured.
+
+### Cycle 4 — Review Drop Audit In Status Report
+
+- Objective: make the main claim status report surface review replay drop debt without duplicating the detailed review-drop report.
+- Why this approach: operators and agents start from `.cautilus/claims/claim-status-report.md`; adding a compact review-drop audit section makes dropped review updates visible at the first report surface while keeping samples and detailed action text in `review-drops-summary.md`.
+- Commits: `Show review drop audit in status report`.
+- What changed: `render-claim-status-report.mjs` now reads `review-drops-summary.json`, renders a small `Review Drop Audit` section with packet links, dropped counts, reason coverage, and action-class hints, updates the report header, and parses the added packet paths through a table-driven path option map.
+- Alternatives rejected: did not inline bounded dropped samples or review-result buckets because that would duplicate the dedicated drop report.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-status-report.test.mjs scripts/run-verify.test.mjs`; `npm run claims:review-drops:check && npm run claims:status-report && npm run claims:status-report:check`; `npm run lint:eslint`; `npm run claims:source-freshness:check`; debug artifact validator; `git diff --check`.
+- Test duplication pressure: focused tests cover parser options, section rendering, and verify order; final `npm run verify` and `npm run hooks:check` remain the broad bundle gates.
+- Critique: parent-delegated fresh-eye review from agent `019f46d7-b5dc-7df1-b426-65582cbbab1f`; initial verdict SHOULD-FIX, both generation-order and header findings folded.
+- Off-goal findings: none.
+- Lessons carried forward: whenever a generated report starts reading another generated packet, producer order and verify order become part of the same slice.
 - Metrics: not measured.
 
 ## Context Sources

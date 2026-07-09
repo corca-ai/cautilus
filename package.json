@@ -104,7 +104,7 @@
     "claims:canonical-map:check": "node scripts/agent-runtime/build-canonical-claim-map.mjs --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/canonical-claim-map.json --check",
     "claims:evidence-state": "node scripts/agent-runtime/render-claim-evidence-state.mjs --refresh-status",
     "claims:evidence-state:check": "node scripts/agent-runtime/render-claim-evidence-state.mjs --refresh-status --check",
-    "claims:refresh:all": "./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json && npm run claims:apply-review-results && npm run claims:canonical-map && npm run claims:evidence-state && npm run claims:status-report && npm run claims:review-drops",
+    "claims:refresh:all": "./bin/cautilus discover claims --repo-root . --output .cautilus/claims/latest.json && npm run claims:apply-review-results && npm run claims:canonical-map && npm run claims:evidence-state && npm run claims:review-drops && npm run claims:status-report",
     "claims:review-drops": "node scripts/agent-runtime/summarize-claim-review-drops.mjs --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/review-drops-summary.json --markdown .cautilus/claims/review-drops-summary.md",
     "claims:review-drops:check": "node scripts/agent-runtime/summarize-claim-review-drops.mjs --claims .cautilus/claims/evidenced-typed-runners.json --output .cautilus/claims/review-drops-summary.json --markdown .cautilus/claims/review-drops-summary.md --check",
     "claims:review-input-summary": "node scripts/agent-runtime/render-claim-review-input-summary.mjs",
