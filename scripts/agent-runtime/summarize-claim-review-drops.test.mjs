@@ -7,8 +7,20 @@ import test from "node:test";
 
 import {
 	buildReviewDropSummary,
+	parseArgs,
 	renderReviewDropSummary,
 } from "./summarize-claim-review-drops.mjs";
+
+test("parseArgs rejects partial numeric review-drop sample limits", () => {
+	assert.throws(
+		() => parseArgs(["node", "script", "--sample-limit", "2abc"]),
+		/--sample-limit expects a positive integer/,
+	);
+	assert.throws(
+		() => parseArgs(["node", "script", "--sample-limit", "0"]),
+		/--sample-limit expects a positive integer/,
+	);
+});
 
 test("buildReviewDropSummary classifies dropped review updates into operator actions", () => {
 	const summary = buildReviewDropSummary({

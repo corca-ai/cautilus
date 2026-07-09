@@ -57,8 +57,9 @@ export function parseArgs(argv) {
 }
 
 function parsePositiveInteger(value, flag) {
-	const parsed = Number.parseInt(value, 10);
-	if (!Number.isInteger(parsed) || parsed < 1) {
+	const text = String(value ?? "");
+	const parsed = Number.parseInt(text, 10);
+	if (!/^[0-9]+$/.test(text) || !Number.isInteger(parsed) || parsed < 1) {
 		throw new Error(`${flag} expects a positive integer`);
 	}
 	return parsed;

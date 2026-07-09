@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 3 selection — Cycle 2 is reviewed and ready to commit.
+- Current slice: Cycle 4 selection — Cycle 3 is reviewed and ready to commit.
 - Current slice intent: choose the next narrow quality/gate determinism slice from explorer findings.
-- Next action: commit Cycle 2, then implement Cycle 3 with focused proof and fresh-eye review.
+- Next action: commit Cycle 3, then implement Cycle 4 with focused proof and fresh-eye review.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -84,7 +84,7 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | --- | --- | --- | --- | --- |
 | 1 | Show bounded cross-cutting signal samples in the claim status report. | Status packets already carry sample IDs, but the human report hid the next inspection targets. | Focused tests, generated status report check, critique, commit. | complete |
 | 2 | Add `packet inspect` selector hints for report and scenario-results packets. | Keep the standalone binary's packet inspection surface useful for core evidence packets, not only claim workflow packets. | Focused Go tests, CLI usage regression test, critique, commit. | complete |
-| 3 | Select a narrow quality/gate determinism slice. | Reduce silent drift in existing verification surfaces. | Focused tests or check-mode proof, critique, commit. | planned |
+| 3 | Reject partial numeric CLI limits in claim status helper scripts. | Prevent `parseInt` from accepting malformed operator limits like `2abc`. | Focused Node tests, check-mode proof, critique, commit. | complete |
 | 4 | Select the safest next candidate from explorer findings or slice lessons. | Let earlier slices reveal the next most useful seam instead of forcing speculative roadmap work. | Focused tests, critique, commit. | planned |
 | 5 | Finish with a deterministic workflow or proof-boundary guard and final bundle proof. | Close the run with a broad gate and audit-ready closeout. | Focused tests, fresh-eye review, final gates, goal closeout, commit. | planned |
 
@@ -167,6 +167,20 @@ applies.
 - Critique: Fresh-eye review 019f4710-b34e-79d3-9816-0ca923bc9e0d found stale command-registry wording; fixed, re-review OK.
 - Off-goal findings: none.
 - Lessons carried forward: Packet capability changes need both runtime schema tests and operator-facing command metadata tests in the same slice.
+- Metrics:
+
+### Slice 3: Cycle 3 — Strict Claim Helper Numeric Limits
+
+- Objective: Reject partial numeric CLI limits in claim status report and review-drop helper scripts.
+- Why this approach: `Number.parseInt` accepted malformed values such as `2abc`, which weakens deterministic command input validation.
+- Commits:
+- What changed: Made `--sample-per-bucket`, `--review-sample`, and `--sample-limit` require the full argument to be a positive decimal integer; added negative parser tests.
+- Alternatives rejected: Rejected a broad parser utility refactor because only the touched claim helper scripts were in this slice and the local duplication is small.
+- Targeted verification: `node --test scripts/agent-runtime/render-claim-status-report.test.mjs scripts/agent-runtime/summarize-claim-review-drops.test.mjs`; `npm run claims:status-report:check`; `npm run claims:review-drops:check`; `npm run lint:eslint`; `git diff --check`.
+- Test duplication pressure: Added one parser test per helper family rather than expanding full CLI output fixtures.
+- Critique: Fresh-eye review 019f4715-3010-78f0-ad63-2aabbd02e639: OK, no findings.
+- Off-goal findings: none.
+- Lessons carried forward: For CLI numeric options, full-string validation matters; `parseInt` alone is not an input contract.
 - Metrics:
 
 ## Context Sources

@@ -41,6 +41,17 @@ test("parseArgs supports custom status report inputs", () => {
 	assert.equal(args.reviewSample, 3);
 });
 
+test("parseArgs rejects partial numeric status report limits", () => {
+	assert.throws(
+		() => parseArgs(["node", "script", "--sample-per-bucket", "2abc"]),
+		/--sample-per-bucket expects a positive integer/,
+	);
+	assert.throws(
+		() => parseArgs(["node", "script", "--review-sample", "0"]),
+		/--review-sample expects a positive integer/,
+	);
+});
+
 test("renderStatusReport summarizes status, review results, validation, and eval plans", () => {
 	const args = {
 		claims: ".cautilus/claims/evidenced-typed-runners.json",
