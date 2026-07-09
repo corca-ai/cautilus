@@ -65,9 +65,11 @@ test("parseArgs accepts json and explicit path overrides", () => {
 	assert.deepEqual(parsed.paths, ["README.md"]);
 });
 
-test("parseArgs rejects unknown flags and missing repo root", () => {
+test("parseArgs rejects unknown flags, missing repo root, and missing explicit path values", () => {
 	assert.throws(() => parseArgs(["--nope"]), /Unknown argument: --nope/);
 	assert.throws(() => parseArgs(["--repo-root", ""]), /--repo-root is required/);
+	assert.throws(() => parseArgs(["--repo-root", ".", "--path"]), /--path requires a value/);
+	assert.throws(() => parseArgs(["--repo-root", ".", "--path", "--json"]), /--path requires a value/);
 });
 
 test("generated artifact drift check passes when tracked generated artifacts are clean", () => {
@@ -191,6 +193,15 @@ test("generated artifact drift check reports git errors", () => {
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
+});
+
+test("generated artifact drift check CLI rejects missing explicit path values", () => {
+	const result = spawnSync("node", [SCRIPT, "--repo-root", ".", "--path"], {
+		encoding: "utf-8",
+	});
+	assert.equal(result.status, 1);
+	assert.match(result.stderr, /--path requires a value/);
+	assert.equal(result.stdout, "");
 });
 
 test("generated artifact drift check ignores unrelated dirty files", () => {

@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 2 — generated artifact drift explicit path validation.
-- Current slice intent: harden explicit generated-artifact drift path parsing after Cycle 1 aligned status-report review projection with apply-current identity semantics.
-- Next action: commit Cycle 1, then implement Cycle 2.
+- Current slice: Cycle 3 — claim review input summary schema validation.
+- Current slice intent: make review-input summary rendering fail fast on non-review-input packets after Cycle 2 hardened generated-artifact drift path parsing.
+- Next action: commit Cycle 2, then implement Cycle 3.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at closeout.
 - Gate cadence: pre-lock slices use `run_slice_closeout.py --skip-broad-pytest`; final/bundle proof records the verification lock and uses `--verification-lock`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -72,8 +72,8 @@ Each cycle should improve the standalone Cautilus product boundary or Cautilus A
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Align claim status report review-result projection with apply-current claim identity semantics. | The report mixed current-claim field equality with review-result identity and could misclassify active/superseded updates. | Focused Node tests, generated report check, critique, commit. | complete |
-| 2 | Reject missing values for explicit generated artifact drift `--path`. | Explicit path mode should fail on malformed CLI input instead of silently falling back to the default artifact set. | Focused Node tests, critique, commit. | in progress |
-| 3 | Expand package-script parity tests for Node standing test globs. | Verification scripts should remain aligned across spec and coverage variants, including on-demand exclusions. | Focused Node tests, critique, commit. | planned |
+| 2 | Reject missing values for explicit generated artifact drift `--path`. | Explicit path mode should fail on malformed CLI input instead of silently falling back to the default artifact set. | Focused Node tests, critique, commit. | complete |
+| 3 | Reject non-review-input packets in the claim review input summary renderer. | A readable projection should not silently summarize the wrong JSON packet shape. | Focused Node tests, critique, commit. | in progress |
 | 4 | Harden a locally discoverable CLI/report/packet edge found during exploration. | Keep one slot flexible for fresh repo evidence rather than forcing a stale backlog item. | Focused tests, critique, commit. | planned |
 | 5 | Harden a second locally discoverable CLI/report/packet edge and close the goal. | Finish with an independent product-quality slice plus final broad gates and retro. | Focused tests, final gates, closeout artifacts, commit. | planned |
 
@@ -131,6 +131,17 @@ Required only when a trigger fires (live/prod proof, issue close/split, broad sc
   Final fresh-eye review `019f472e-e240-7ba0-affa-744b7625f4ac` found only stale wording and goal-log issues; both were fixed before commit.
 - Off-goal findings: none.
 - Lessons carried forward: Projection code that claims parity with replay/application code should compare against the replay identity contract, not against human-readable field equality.
+
+### Slice 2: Cycle 2 — Generated Drift Explicit Path Validation
+
+- Objective: Make `scripts/check-generated-artifact-drift.mjs --path` require an explicit non-flag value.
+- Why this approach: Missing `--path` previously pushed an empty value that was filtered away, causing explicit path mode to silently fall back to the default generated artifact list.
+- What changed: Added `readOptionValue` for `--path`, made missing or flag-like values fail with `--path requires a value`, and covered parser plus CLI stderr behavior.
+- Alternatives rejected: Rejected broad parser normalization across scripts because this slice only needed to close the generated drift checker edge.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/check-generated-artifact-drift.test.mjs`; `npm run generated:drift:check`; `npm run lint:eslint`; `git diff --check`.
+- Critique: Fresh-eye review `019f4733-40dc-7343-bdaa-59f889f05b6d` returned OK and noted the dash-prefixed path compatibility tradeoff matches the explicit non-flag value contract.
+- Off-goal findings: none.
+- Lessons carried forward: Optional repeated path flags should reject malformed explicit mode instead of filtering bad values into default behavior.
 
 ## Context Sources
 

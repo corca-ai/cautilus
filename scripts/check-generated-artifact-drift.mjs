@@ -53,7 +53,8 @@ export function parseArgs(argv) {
 			continue;
 		}
 		if (arg === "--path") {
-			args.paths.push(argv[++index] || "");
+			args.paths.push(readOptionValue(argv, index, arg));
+			index += 1;
 			continue;
 		}
 		throw new Error(`Unknown argument: ${arg}`);
@@ -67,6 +68,14 @@ export function parseArgs(argv) {
 		json: args.json,
 		paths: paths.length > 0 ? paths : DEFAULT_GENERATED_ARTIFACTS,
 	};
+}
+
+function readOptionValue(argv, index, flag) {
+	const value = argv[index + 1];
+	if (!value || value.startsWith("-")) {
+		throw new Error(`${flag} requires a value`);
+	}
+	return value;
 }
 
 function runGit(repoRoot, args) {
