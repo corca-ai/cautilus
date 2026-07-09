@@ -19268,7 +19268,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "935bd5126ffbda321ecdc6f84787d981c57b53c7",
+  "gitCommit": "8a7e013887d71e0953d61fbfd5de94152b31491d",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19591,10 +19591,10 @@
         "reason": "missing-fingerprint"
       },
       {
-        "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
-        "claimId": "claim-readme-md-9",
-        "claimFingerprint": "",
-        "reason": "missing-fingerprint"
+        "reviewResultPath": ".cautilus/claims/review-result-hitl-audience-2026-05-02.json",
+        "claimId": "claim-skills-cautilus-skill-md-112",
+        "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
+        "reason": "missing-live-fingerprint"
       }
     ],
     "provenanceMode": "aggregate-current-review-results"
@@ -21479,7 +21479,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d1e8a6b8404f840ad9b460adcc5f9228c24e450a9937ca831d2bfcf38af8b5ea",
+      "contentHash": "sha256:41403bfd21d05ff71af3ea7084d8002de7960c94c8dbbe012e8d2f654e88bc44",
       "depth": 2,
       "discoveredFrom": "docs/master-plan.md",
       "kind": "contract",

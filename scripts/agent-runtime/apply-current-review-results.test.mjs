@@ -16,6 +16,7 @@ import {
 	projectAggregateProvenance,
 	reviewResultPaths,
 	reviewResultTimestamp,
+	selectDroppedUpdateSamples,
 	writeAggregateReviewApplication,
 } from "./apply-current-review-results.mjs";
 
@@ -52,6 +53,95 @@ test("filterReviewResultForClaimIds drops stale updates before replay", () => {
 	assert.deepEqual(result.reviewResult.clusterResults[0].claimUpdates, [
 		{ claimId: "claim-current-1", reviewStatus: "agent-reviewed" },
 	]);
+});
+
+test("selectDroppedUpdateSamples preserves late reason representation within the bound", () => {
+	const samples = [
+		...Array.from({ length: 21 }, (_, index) => ({
+			reviewResultPath: `review-${index}.json`,
+			claimId: `claim-missing-${index}`,
+			claimFingerprint: "",
+			reason: "missing-fingerprint",
+		})),
+		{
+			reviewResultPath: "review-live.json",
+			claimId: "claim-live",
+			claimFingerprint: "sha256:old",
+			reason: "missing-live-fingerprint",
+		},
+	];
+
+	const selected = selectDroppedUpdateSamples(samples, 20);
+
+	assert.equal(selected.length, 20);
+	assert.equal(selected.filter((sample) => sample.reason === "missing-fingerprint").length, 19);
+	assert.equal(selected.filter((sample) => sample.reason === "missing-live-fingerprint").length, 1);
+	assert.equal(selected.at(-1).claimId, "claim-live");
+});
+
+test("applyCurrentReviewResults records bounded samples across dropped reasons", () => {
+	const dir = mkdtempSync(join(tmpdir(), "cautilus-balanced-drop-samples-"));
+	const claims = join(dir, "latest.json");
+	const reviewResult = join(dir, "review-result-balanced-2026-07-09.json");
+	const output = join(dir, "evidenced.json");
+	writeFileSync(
+		claims,
+		`${JSON.stringify({
+			claimCandidates: [
+				{
+					claimId: "claim-live",
+					claimFingerprint: "sha256:current",
+				},
+			],
+		}, null, 2)}\n`,
+	);
+	writeFileSync(
+		reviewResult,
+		`${JSON.stringify({
+			schemaVersion: "cautilus.claim_review_result.v1",
+			clusterResults: [
+				{
+					clusterId: "many-fingerprintless",
+					claimUpdates: [
+						...Array.from({ length: 21 }, (_, index) => ({
+							claimId: `claim-missing-${index}`,
+							reviewStatus: "agent-reviewed",
+						})),
+						{
+							claimId: "claim-live",
+							claimFingerprint: "sha256:old",
+							reviewStatus: "agent-reviewed",
+						},
+					],
+				},
+			],
+		}, null, 2)}\n`,
+	);
+	const originalWarn = console.warn;
+	console.warn = () => {};
+	try {
+		applyCurrentReviewResults({
+			claims,
+			output,
+			reviewResults: [reviewResult],
+			claimsDir: dir,
+			cautilusBin: "unused",
+		});
+	} finally {
+		console.warn = originalWarn;
+	}
+
+	const projected = JSON.parse(readFileSync(output, "utf8"));
+	assert.equal(projected.reviewApplication.droppedUpdateCount, 22);
+	assert.deepEqual(projected.reviewApplication.droppedUpdateReasonCounts, {
+		"missing-fingerprint": 21,
+		"missing-live-fingerprint": 1,
+	});
+	assert.equal(projected.reviewApplication.droppedUpdateSamples.length, 20);
+	assert.equal(
+		projected.reviewApplication.droppedUpdateSamples.filter((sample) => sample.reason === "missing-live-fingerprint").length,
+		1,
+	);
 });
 
 test("reviewResultPaths keeps explicit review-result order deterministic", () => {

@@ -4,7 +4,7 @@
   "sourceClaimPacket": {
     "path": ".cautilus/claims/evidenced-typed-runners.json",
     "schemaVersion": "cautilus.claim_proof_plan.v1",
-    "gitCommit": "935bd5126ffbda321ecdc6f84787d981c57b53c7",
+    "gitCommit": "8a7e013887d71e0953d61fbfd5de94152b31491d",
     "candidateCount": 567
   },
   "replaySummary": {
@@ -19,28 +19,29 @@
     },
     "recordedSampleCount": 20,
     "recordedSampleReasonCounts": {
-      "missing-fingerprint": 20
+      "missing-fingerprint": 19,
+      "missing-live-fingerprint": 1
     }
   },
   "sampleCoverage": [
     {
       "reason": "missing-fingerprint",
       "count": 165,
-      "recordedSampleCount": 20,
+      "recordedSampleCount": 19,
       "sampleStatus": "represented"
     },
     {
       "reason": "missing-live-fingerprint",
       "count": 140,
-      "recordedSampleCount": 0,
-      "sampleStatus": "not-represented"
+      "recordedSampleCount": 1,
+      "sampleStatus": "represented"
     }
   ],
   "actionClasses": [
     {
       "reason": "missing-fingerprint",
       "count": 165,
-      "recordedSampleCount": 20,
+      "recordedSampleCount": 19,
       "sampleStatus": "represented",
       "actionClass": "unrecoverable",
       "recommendedAction": "Do not infer-match this update; regenerate or re-review against the current claim packet so the update carries claimFingerprint.",
@@ -49,11 +50,11 @@
     {
       "reason": "missing-live-fingerprint",
       "count": 140,
-      "recordedSampleCount": 0,
-      "sampleStatus": "not-represented",
+      "recordedSampleCount": 1,
+      "sampleStatus": "represented",
       "actionClass": "stale-fingerprint",
-      "recommendedAction": "This packet proves 140 count-level dropped update(s) for this reason but records no samples; run a reason-targeted diagnostic or improve upstream sampling before selecting a focused re-review queue.",
-      "queueHint": "No bounded queue can be selected from this packet for this reason because no dropped samples were recorded."
+      "recommendedAction": "Treat this as stale review debt; inspect whether the source claim was removed, rewritten, or should be reviewed again in the current packet.",
+      "queueHint": "Use the reviewResultPath and claimFingerprint to decide whether a focused review-input queue is warranted."
     }
   ],
   "reviewResultBuckets": [
@@ -73,9 +74,9 @@
     },
     {
       "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
-      "droppedSampleCount": 7,
+      "droppedSampleCount": 6,
       "reasonCounts": {
-        "missing-fingerprint": 7
+        "missing-fingerprint": 6
       },
       "sampleClaimIds": [
         "claim-readme-md-13",
@@ -97,6 +98,16 @@
         "claim-readme-md-171",
         "claim-readme-md-159",
         "claim-readme-md-211"
+      ]
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-hitl-audience-2026-05-02.json",
+      "droppedSampleCount": 1,
+      "reasonCounts": {
+        "missing-live-fingerprint": 1
+      },
+      "sampleClaimIds": [
+        "claim-skills-cautilus-skill-md-112"
       ]
     }
   ],
@@ -235,16 +246,16 @@
       "actionClass": "unrecoverable"
     },
     {
-      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
-      "claimId": "claim-readme-md-9",
-      "claimFingerprint": "",
-      "reason": "missing-fingerprint",
-      "actionClass": "unrecoverable"
+      "reviewResultPath": ".cautilus/claims/review-result-hitl-audience-2026-05-02.json",
+      "claimId": "claim-skills-cautilus-skill-md-112",
+      "claimFingerprint": "sha256:ebff670a7be2ce628a7746f3a30e31c98d21eb103137e70a4ff70fa52b2bfdba",
+      "reason": "missing-live-fingerprint",
+      "actionClass": "stale-fingerprint"
     }
   ],
   "nextAction": "Use represented dropped-update samples only when selecting a bounded re-review queue; treat unsampled reason classes as count-level diagnostic debt.",
   "nextActions": [
     "missing-fingerprint: Regenerate or re-review current live claims so new updates carry claimFingerprint; do not infer-match fingerprintless drops.",
-    "missing-live-fingerprint: Treat 140 dropped update(s) as count-level review debt only; run reason-targeted diagnostics or improve replay sampling before selecting a queue."
+    "missing-live-fingerprint: Inspect represented samples' reviewResultPath and claimFingerprint before deciding whether a focused current-packet re-review is warranted."
   ]
 }

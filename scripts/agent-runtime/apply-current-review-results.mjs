@@ -406,19 +406,50 @@ function mergeDroppedUpdateReasonCounts(target, counts) {
 	}
 }
 
-function recordDroppedUpdateSamples(log, reviewResultPath, droppedUpdates, maxSamples = 20) {
-	const remaining = maxSamples - log.droppedUpdateSamples.length;
-	if (remaining <= 0) {
-		return;
+function sampleReason(sample) {
+	return sample.reason || "unknown";
+}
+
+function reasonCountsForSamples(samples) {
+	const counts = {};
+	for (const sample of samples) {
+		const reason = sampleReason(sample);
+		counts[reason] = (counts[reason] || 0) + 1;
 	}
-	for (const dropped of droppedUpdates.slice(0, remaining)) {
-		log.droppedUpdateSamples.push({
+	return counts;
+}
+
+export function selectDroppedUpdateSamples(samples, maxSamples = 20) {
+	if (samples.length <= maxSamples) {
+		return samples;
+	}
+	const selected = samples.slice(0, maxSamples);
+	const selectedReasonCounts = reasonCountsForSamples(selected);
+	for (const sample of samples.slice(maxSamples)) {
+		const reason = sampleReason(sample);
+		if (selectedReasonCounts[reason]) {
+			continue;
+		}
+		const replaceIndex = selected.findLastIndex((candidate) => selectedReasonCounts[sampleReason(candidate)] > 1);
+		if (replaceIndex === -1) {
+			continue;
+		}
+		const replacedReason = sampleReason(selected[replaceIndex]);
+		selected[replaceIndex] = sample;
+		selectedReasonCounts[replacedReason] -= 1;
+		selectedReasonCounts[reason] = 1;
+	}
+	return selected;
+}
+
+function recordDroppedUpdateSamples(log, reviewResultPath, droppedUpdates, maxSamples = 20) {
+	const samples = droppedUpdates.map((dropped) => ({
 			reviewResultPath,
 			claimId: dropped.claimId || "",
 			claimFingerprint: dropped.claimFingerprint || "",
 			reason: dropped.reason || "unknown",
-		});
-	}
+		}));
+	log.droppedUpdateSamples = selectDroppedUpdateSamples([...log.droppedUpdateSamples, ...samples], maxSamples);
 }
 
 function formatDroppedUpdateSummary(reviewResultPath, filtered) {

@@ -297,7 +297,7 @@ function renderSamples(lines, summary) {
 		lines.push("");
 		return;
 	}
-	for (const sample of summary.droppedUpdateSamples.slice(0, 10)) {
+	for (const sample of summary.droppedUpdateSamples) {
 		const fingerprint = sample.claimFingerprint ? ` @ ${sample.claimFingerprint}` : "";
 		lines.push(`- ${sample.claimId || "<no claimId>"}${fingerprint}`);
 		lines.push(`  - Review result: ${sample.reviewResultPath}`);

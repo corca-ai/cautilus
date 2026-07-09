@@ -133,6 +133,34 @@ test("renderReviewDropSummary explains that dropped updates are not recovered", 
 	assert.doesNotMatch(markdown, /^\|/m);
 });
 
+test("renderReviewDropSummary renders every bounded dropped update sample", () => {
+	const droppedUpdateSamples = Array.from({ length: 12 }, (_, index) => ({
+		reviewResultPath: ".cautilus/claims/review-result-many.json",
+		claimId: `claim-many-${index}`,
+		claimFingerprint: "",
+		reason: "missing-fingerprint",
+	}));
+	const summary = buildReviewDropSummary({
+		claimsPacket: {
+			schemaVersion: "cautilus.claim_proof_plan.v1",
+			claimCandidates: [],
+			reviewApplication: {
+				droppedUpdateCount: droppedUpdateSamples.length,
+				droppedUpdateReasonCounts: {
+					"missing-fingerprint": droppedUpdateSamples.length,
+				},
+				droppedUpdateSamples,
+			},
+		},
+	});
+	const markdown = renderReviewDropSummary(summary);
+
+	assert.match(markdown, /claim-many-0/);
+	assert.match(markdown, /claim-many-10/);
+	assert.match(markdown, /claim-many-11/);
+	assert.equal(markdown.match(/Action class: unrecoverable/g).length, 12);
+});
+
 test("summarize-claim-review-drops CLI writes JSON and Markdown outputs", () => {
 	const dir = mkdtempSync(join(tmpdir(), "cautilus-review-drops-"));
 	const claimsPath = join(dir, "claims.json");
