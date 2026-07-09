@@ -94,7 +94,7 @@ Semantic sampling recommended for 489 raw claim(s): claim-agents-md-12, claim-ag
 | human-confirm-or-decompose | human | 65 | heuristic: 65 | unknown: 65 | Confirm, decompose, or accept a human-auditable claim before treating it as proven. |
 | split-or-defer | human | 31 | agent-reviewed: 24, heuristic: 7 | unknown: 31 | Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification. |
 
-Cross-cutting signal: heuristic-review-needed (378) - Review heuristic labels before spending proof or eval budget.
+Cross-cutting signal: heuristic-review-needed (378) - Review heuristic labels before spending proof or eval budget.; samples (5 of 378): claim-agents-md-96, claim-agents-md-116, claim-readme-md-6, claim-readme-md-19, claim-readme-md-49, ...
 
 ### agent-add-deterministic-proof
 

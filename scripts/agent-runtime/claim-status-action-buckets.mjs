@@ -87,6 +87,17 @@ function crossCuttingSignals(statusPacket) {
 	return asArray(statusPacket?.actionSummary?.crossCuttingSignals);
 }
 
+function signalSampleSuffix(signal) {
+	const sampleIds = asArray(signal?.sampleClaimIds).slice(0, 5).map(compactText).filter(Boolean);
+	if (sampleIds.length === 0) {
+		return "";
+	}
+	const totalCount = Number(signal?.count ?? 0);
+	const totalLabel = totalCount > sampleIds.length ? ` (${sampleIds.length} of ${totalCount})` : "";
+	const suffix = totalCount > sampleIds.length || asArray(signal?.sampleClaimIds).length > sampleIds.length ? ", ..." : "";
+	return `; samples${totalLabel}: ${sampleIds.join(", ")}${suffix}`;
+}
+
 export function renderActionBuckets(lines, statusPacket, claimsById, sampleLimit, { formatCounts, table }) {
 	lines.push("## Action Buckets");
 	lines.push("");
@@ -101,7 +112,7 @@ export function renderActionBuckets(lines, statusPacket, claimsById, sampleLimit
 	lines.push(...table(["Bucket", "Actor", "Count", "Review", "Evidence", "Meaning"], bucketRows));
 	lines.push("");
 	for (const signal of crossCuttingSignals(statusPacket)) {
-		lines.push(`Cross-cutting signal: ${signal.id} (${signal.count ?? 0}) - ${compactText(signal.summary)}`);
+		lines.push(`Cross-cutting signal: ${signal.id} (${signal.count ?? 0}) - ${compactText(signal.summary)}${signalSampleSuffix(signal)}`);
 		lines.push("");
 	}
 	const focusBucketIds = ["human-align-surfaces", "human-confirm-or-decompose", "split-or-defer", "agent-add-deterministic-proof", "agent-plan-cautilus-eval", "agent-design-scenario"];
