@@ -34,25 +34,30 @@ The release does not change the `v0.19.0` structured stdout contract, the instal
 
 ## Release State
 
-- local release mutation: prepared locally for `0.19.1`; release preparation commit is pending at the time this pre-publish narrative is authored.
-- branch/tag push: pending `npm run release:publish -- --version 0.19.1 --json`.
-- release tag commit: pending.
-- GitHub release record: pending the tag-triggered `release-artifacts` workflow.
-- public release surface verification: pending the tag-triggered `verify-public-release` workflow.
-- requested review commands: must pass inside the publish helper before branch or tag push.
-- post-publish install readback: pending public release visibility.
+- local release mutation: prepared and committed at `51f3137f27ed62fa3c2a63e5b9ef4b9174485636`.
+- branch/tag push: published; at publish time `origin/main` and `refs/tags/v0.19.1` both pointed at `51f3137f27ed62fa3c2a63e5b9ef4b9174485636`.
+- release tag commit: `refs/tags/v0.19.1` remains fixed at `51f3137f27ed62fa3c2a63e5b9ef4b9174485636`.
+- GitHub release record: published by `release-artifacts` workflow run `29026486780`.
+- public release surface verification: passed in the workflow and passed locally through `scripts/release/verify-public-release.mjs`.
+- requested review commands: passed in dry-run and inside the publish helper before branch/tag push.
+- post-publish install readback: passed through `node scripts/release/run-install-smoke-current.mjs --skip-update --json`.
 
 ## Public Release Verification
 
-- GitHub Actions: pending the `release-artifacts` workflow for `v0.19.1`.
+- GitHub Actions: `release-artifacts` run `29026486780` completed successfully.
+- Workflow jobs: `release-artifacts` passed in 4m16s and `verify-public-release` passed in 9s.
 - Public release URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.19.1`.
-- Expected assets: `cautilus-v0.19.1.sha256`, four platform tarballs, `cautilus-v0.19.1-checksums.txt`, and `release-notes-v0.19.1.md`.
+- GitHub release record: non-draft, non-prerelease, published at `2026-07-09T14:46:53Z`.
+- Local verifier: `node ./scripts/release/verify-public-release.mjs --version v0.19.1 --json --retry-attempts 5 --retry-delay-ms 10000` passed on the first attempt.
+- Expected assets were present: `cautilus-v0.19.1.sha256`, four platform tarballs, `cautilus-v0.19.1-checksums.txt`, and `release-notes-v0.19.1.md`.
+- Checksum verification passed, and the release-notes source archive checksum matched `6f5607d37c288defcb5a2c08fd086aa7476abec861b353c73acf63fdfce22d45`.
 
 ## Distinct-Channel Verification
 
-- Pending post-publish install readback through `node scripts/release/run-install-smoke-current.mjs --skip-update --json`.
-- The readback must verify `cautilus --version` as `0.19.1`.
-- The readback must verify `cautilus version --verbose` reports `current.version` as `0.19.1` and `installKind` as `install_sh_binary`.
+- `node scripts/release/run-install-smoke-current.mjs --skip-update --json` passed.
+- The install-sh smoke installed `https://github.com/corca-ai/cautilus/releases/download/v0.19.1/cautilus_0.19.1_linux_x64.tar.gz`.
+- The installed wrapper returned `0.19.1` for `--version`.
+- `cautilus version --verbose` reported `current.version` as `0.19.1` and `installKind` as `install_sh_binary`.
 
 ## Release Adapter Preflight
 
@@ -82,12 +87,12 @@ The release does not change the `v0.19.0` structured stdout contract, the instal
 
 ## Post-Publish Proof
 
-- Public release check: pending.
-- Install readback: pending.
+- Public release check: passed in GitHub Actions and passed locally.
+- Install readback: passed through `node scripts/release/run-install-smoke-current.mjs --skip-update --json`.
 
 ## Install Refresh
 
-- Post-publish install refresh status: pending.
+- Post-publish install refresh status: passed.
 - Full install/update smoke after public release remains available for broader channel validation: `npm run release:smoke-install -- --channel install_sh --version v0.19.1`.
 
 ## User Update Steps
