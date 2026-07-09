@@ -16,7 +16,6 @@ import {
 	projectAggregateProvenance,
 	reviewResultPaths,
 	reviewResultTimestamp,
-	selectDroppedUpdateSamples,
 	writeAggregateReviewApplication,
 } from "./apply-current-review-results.mjs";
 
@@ -53,30 +52,6 @@ test("filterReviewResultForClaimIds drops stale updates before replay", () => {
 	assert.deepEqual(result.reviewResult.clusterResults[0].claimUpdates, [
 		{ claimId: "claim-current-1", reviewStatus: "agent-reviewed" },
 	]);
-});
-
-test("selectDroppedUpdateSamples preserves late reason representation within the bound", () => {
-	const samples = [
-		...Array.from({ length: 21 }, (_, index) => ({
-			reviewResultPath: `review-${index}.json`,
-			claimId: `claim-missing-${index}`,
-			claimFingerprint: "",
-			reason: "missing-fingerprint",
-		})),
-		{
-			reviewResultPath: "review-live.json",
-			claimId: "claim-live",
-			claimFingerprint: "sha256:old",
-			reason: "missing-live-fingerprint",
-		},
-	];
-
-	const selected = selectDroppedUpdateSamples(samples, 20);
-
-	assert.equal(selected.length, 20);
-	assert.equal(selected.filter((sample) => sample.reason === "missing-fingerprint").length, 19);
-	assert.equal(selected.filter((sample) => sample.reason === "missing-live-fingerprint").length, 1);
-	assert.equal(selected.at(-1).claimId, "claim-live");
 });
 
 test("applyCurrentReviewResults records bounded samples across dropped reasons", () => {

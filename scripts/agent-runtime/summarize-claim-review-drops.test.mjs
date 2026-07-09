@@ -114,6 +114,59 @@ test("buildReviewDropSummary treats unsampled reasons as count-level debt", () =
 	assert.match(markdown, /No bounded queue can be selected from this packet/);
 });
 
+test("buildReviewDropSummary preserves represented reasons when sampleLimit is lower than recorded samples", () => {
+	const packet = exampleClaimsPacket();
+	packet.reviewApplication.droppedUpdateSamples = [
+		{
+			reviewResultPath: ".cautilus/claims/review-result-a.json",
+			claimId: "claim-docs-a-md-10",
+			claimFingerprint: "",
+			reason: "missing-fingerprint",
+		},
+		{
+			reviewResultPath: ".cautilus/claims/review-result-b.json",
+			claimId: "claim-docs-b-md-11",
+			claimFingerprint: "",
+			reason: "missing-fingerprint",
+		},
+		{
+			reviewResultPath: ".cautilus/claims/review-result-c.json",
+			claimId: "claim-docs-c-md-12",
+			claimFingerprint: "sha256:stale",
+			reason: "missing-live-fingerprint",
+		},
+	];
+
+	const summary = buildReviewDropSummary({
+		claimsPacket: packet,
+		claimsPath: ".cautilus/claims/evidenced-typed-runners.json",
+		sampleLimit: 2,
+	});
+
+	assert.deepEqual(summary.replaySummary.recordedSampleReasonCounts, {
+		"missing-fingerprint": 1,
+		"missing-live-fingerprint": 1,
+	});
+	assert.deepEqual(summary.sampleCoverage, [
+		{
+			reason: "missing-fingerprint",
+			count: 1,
+			recordedSampleCount: 1,
+			sampleStatus: "represented",
+		},
+		{
+			reason: "missing-live-fingerprint",
+			count: 2,
+			recordedSampleCount: 1,
+			sampleStatus: "represented",
+		},
+	]);
+	assert.deepEqual(
+		summary.droppedUpdateSamples.map((sample) => sample.reason),
+		["missing-fingerprint", "missing-live-fingerprint"],
+	);
+});
+
 test("renderReviewDropSummary explains that dropped updates are not recovered", () => {
 	const summary = buildReviewDropSummary({
 		claimsPacket: exampleClaimsPacket(),

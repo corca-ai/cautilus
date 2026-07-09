@@ -2,6 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { selectDroppedUpdateSamples } from "./drop-sample-selection.mjs";
+
 const DEFAULT_CLAIMS = ".cautilus/claims/evidenced-typed-runners.json";
 const DEFAULT_OUTPUT = ".cautilus/claims/review-drops-summary.json";
 const DEFAULT_MARKDOWN = ".cautilus/claims/review-drops-summary.md";
@@ -180,7 +182,7 @@ function bucketSamples(samples) {
 }
 
 function normalizeSamples(samples, sampleLimit) {
-	return samples.slice(0, sampleLimit).map((sample) => {
+	return selectDroppedUpdateSamples(samples, sampleLimit).map((sample) => {
 		const reason = sample.reason || "unknown";
 		const action = actionClassForReason(reason);
 		return {
