@@ -6,6 +6,7 @@ import path from "node:path";
 import { primaryBuckets, renderActionBuckets } from "./claim-status-action-buckets.mjs";
 import { renderCanonicalMapSection } from "./render-canonical-claim-map-section.mjs";
 import { refreshPlanDigest, renderRefreshPlans } from "./claim-status-refresh-plans.mjs";
+import { reviewResultsForCurrentClaims } from "./claim-review-result-projection.mjs";
 
 const DEFAULT_CLAIMS_DIR = ".cautilus/claims";
 const DEFAULT_CLAIMS = `${DEFAULT_CLAIMS_DIR}/evidenced-typed-runners.json`;
@@ -217,55 +218,6 @@ function reviewResultDigest(filePath) {
 	};
 }
 
-function reviewResultsForClaims(reviewResults, claimsById) {
-	const filtered = [];
-	for (const digest of asArray(reviewResults)) {
-		const currentUpdates = digest.updates.filter((update) => claimsById.has(update.claimId));
-		if (currentUpdates.length === 0) {
-			continue;
-		}
-		const updates = currentUpdates.filter((update) => reviewUpdateMatchesCurrentClaim(update, claimsById.get(update.claimId)));
-		filtered.push({
-			...digest,
-			clusterCount: new Set(updates.map((update) => update.clusterId)).size,
-			updateCount: updates.length,
-			supersededUpdateCount: currentUpdates.length - updates.length,
-			byProof: countBy(updates, (update) => update.recommendedProof ?? "unchanged"),
-			byReadiness: countBy(updates, (update) => update.verificationReadiness ?? "unchanged"),
-			byEvidence: countBy(updates, (update) => update.evidenceStatus ?? "unchanged"),
-			updates,
-		});
-	}
-	return filtered;
-}
-
-function reviewUpdateMatchesCurrentClaim(update, candidate) {
-	if (!candidate) {
-		return false;
-	}
-	return stringUpdateFieldsMatch(update, candidate) && evalSurfaceUpdateMatches(update, candidate) && arrayUpdateFieldsMatch(update, candidate);
-}
-
-function stringUpdateFieldsMatch(update, candidate) {
-	return appliedReviewStringFields().every((field) => stringUpdateFieldMatches(update, candidate, field)) && stringUpdateFieldMatches(update, candidate, "claimAudience");
-}
-
-function stringUpdateFieldMatches(update, candidate, field) {
-	return !Object.hasOwn(update, field) || !compactText(update[field]) || compactText(update[field]) === compactText(candidate[field]);
-}
-
-function evalSurfaceUpdateMatches(update, candidate) {
-	return !Object.hasOwn(update, "recommendedEvalSurface") || compactText(update.recommendedEvalSurface) === compactText(candidate.recommendedEvalSurface);
-}
-
-function arrayUpdateFieldsMatch(update, candidate) {
-	return ["evidenceRefs", "unresolvedQuestions"].every((field) => !Object.hasOwn(update, field) || sameCanonicalValue(asArray(update[field]), asArray(candidate[field])));
-}
-
-function appliedReviewStringFields() {
-	return ["recommendedProof", "verificationReadiness", "evidenceStatus", "reviewStatus", "lifecycle", "whyThisLayer", "nextAction", "evidenceStatusReason"];
-}
-
 function sameCanonicalValue(left, right) {
 	return JSON.stringify(canonicalValue(left)) === JSON.stringify(canonicalValue(right));
 }
@@ -418,7 +370,7 @@ function renderReviewResults(lines, digests, claimsById, sampleLimit) {
 		lines.push("");
 		return;
 	}
-	lines.push("Active updates still match the current claim packet; superseded updates are historical and omitted from the detail tables below.");
+	lines.push("Active updates still match current claim identity; superseded updates are historical and omitted from the detail tables below.");
 	lines.push("");
 	const rows = digests.map((digest) => [
 		digest.path,
@@ -589,7 +541,7 @@ export function renderStatusReport({ claimsPacket, statusPacket, digests, args }
 	assertStatusSummaryMatchesClaimPacket(claimsPacket, statusPacket);
 	const lines = [];
 	const claimsById = claimMap(claimsPacket);
-	const currentReviewResults = reviewResultsForClaims(digests.reviewResults, claimsById);
+	const currentReviewResults = reviewResultsForCurrentClaims(digests.reviewResults, claimsPacket, claimsById);
 	renderHeader(lines, claimsPacket, statusPacket, args);
 	renderScoreboard(lines, claimsPacket, statusPacket);
 	lines.push(...renderCanonicalMapSection({ canonicalMap: digests.canonicalMap, formatCounts, table }));

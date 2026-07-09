@@ -249,99 +249,156 @@ Full bucket detail is shown because this bucket is not ready for proof.
 
 ## Review Results
 
-Active updates still match the current claim packet; superseded updates are historical and omitted from the detail tables below.
+Active updates still match current claim identity; superseded updates are historical and omitted from the detail tables below.
 
 | Packet | Mode | Reviewer | Clusters | Active | Superseded | Proof | Readiness |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| .cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json | parallel-agent-review | - | 1 | 1 | 0 | deterministic: 1 | needs-alignment: 1 |
+| .cautilus/claims/review-result-adapter-gate-split-2026-05-03.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
+| .cautilus/claims/review-result-agent-design-scenario-proposals-2026-05-17.json | - | - | 1 | 6 | 0 | cautilus-eval: 6 | ready-for-proof: 6 |
+| .cautilus/claims/review-result-agent-plan-cautilus-eval-2026-05-04.json | parallel-agent-review | - | 2 | 3 | 0 | deterministic: 3 | ready-for-proof: 1, needs-alignment: 2 |
 | .cautilus/claims/review-result-agent-status-safe-branch-catalog-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-canonical-spec-curation-flow-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-claim-discovery-routing-flow-2026-05-04.json | evidence-application | codex-dev-skill-routing-dogfood-proof | 1 | 1 | 0 | cautilus-eval: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-contract-claim-workflow-helper-packets-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
+| .cautilus/claims/review-result-contract-compact-status-summary-2026-05-17.json | - | - | 1 | 4 | 0 | deterministic: 4 | ready-for-proof: 4 |
+| .cautilus/claims/review-result-contract-discover-refresh-carry-forward-2026-05-17.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-contract-refresh-selection-state-transition-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-contract-reporting-telemetry-packets-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | needs-alignment: 1, ready-for-proof: 4 |
 | .cautilus/claims/review-result-contract-runner-readiness-packets-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
-| .cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json | - | - | 1 | 4 | 2 | deterministic: 2, human-auditable: 2 | blocked: 2, ready-for-proof: 2 |
+| .cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json | - | - | 1 | 9 | 1 | deterministic: 7, human-auditable: 2 | ready-for-proof: 6, needs-alignment: 1, blocked: 2 |
 | .cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-deterministic-gates-2026-05-01.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-deterministic-proof-batch-2026-05-04.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
-| .cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json | - | - | 3 | 6 | 5 | deterministic: 5, human-auditable: 1 | blocked: 1, ready-for-proof: 5 |
+| .cautilus/claims/review-result-deterministic-proof-batch-2026-05-04.json | - | - | 1 | 8 | 0 | deterministic: 8 | ready-for-proof: 8 |
+| .cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json | - | - | 7 | 23 | 4 | deterministic: 14, human-auditable: 8, cautilus-eval: 1 | ready-for-proof: 15, blocked: 8 |
 | .cautilus/claims/review-result-eval-bucket-user-c-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json | - | - | 1 | 1 | 4 | human-auditable: 1 | needs-alignment: 1 |
+| .cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json | - | - | 1 | 14 | 1 | deterministic: 11, human-auditable: 3 | ready-for-proof: 11, needs-alignment: 1, blocked: 2 |
 | .cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-adapter-claim-discovery-hints-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-adapter-discovery-contracts-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-adapter-review-prompt-compare-path-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-adapter-review-prompt-human-visible-failure-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-agent-status-orientation-refresh-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-cautilus-agent-source-launcher-2026-05-11.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-claim-cli-packet-boundary-2026-05-11.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-evidence-claim-review-prepare-input-boundary-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
-| .cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-evidence-consumer-doctor-onboarding-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-cli-decision-packet-projections-2026-05-11.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
+| .cautilus/claims/review-result-evidence-cli-live-runtime-go-owned-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-cli-reference-doctor-discovery-refresh-2026-05-11.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-consumer-doctor-onboarding-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-consumer-surface-alias-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-deterministic-proof-batch-2026-05-04b.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
 | .cautilus/claims/review-result-evidence-dev-skill-routing-install.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-evidence-doctor-runner-readiness-next-action-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-durable-packets-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-eval-live-cli-boundary-2026-05-11.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-evaluation-process-artifacts-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-evaluation-process-compare-paths-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
-| .cautilus/claims/review-result-evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-evidence-gepa-sparse-evidence-block-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-guides-cli-claim-discovery-routing-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-guides-cli-decision-packet-projections-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
+| .cautilus/claims/review-result-evidence-guides-cli-doctor-refresh-boundaries-2026-05-16.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-guides-cli-eval-live-instance-selection-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-guides-cli-evaluate-fixture-path-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-guides-cli-evaluate-observation-no-runner-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-guides-cli-runner-readiness-next-action-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-improve-search-sparse-evidence-block-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-install-packaging-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
 | .cautilus/claims/review-result-evidence-live-run-workspace-boundary-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-master-plan-claim-discover-proof-plan-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-master-plan-gates-consumer-smoke-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-evidence-master-plan-packet-routes-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-master-plan-spec-normalizer-gates-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-11.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-on-demand-test-gate-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-proof-class-downstream-summary-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-readme-bounded-eval-loop-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-readme-core-flow-consumer-artifacts-2026-05-17.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-readme-reviewable-artifacts-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-readme-spec-report-renderer-independence-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-refresh-plan-state-transition-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-evidence-remaining-stale-claims-2026-05-11.json | - | - | 2 | 3 | 1 | deterministic: 3 | ready-for-proof: 3 |
 | .cautilus/claims/review-result-evidence-review-packet-boundary-2026-05-16.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-review-summary-telemetry-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-review-variants-read-mostly-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-review-variants-status-and-output-text-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
 | .cautilus/claims/review-result-evidence-runner-readiness-branch-shape-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-runner-readiness-schema-fields-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
-| .cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json | - | - | 1 | 1 | 0 | cautilus-eval: 1 | ready-for-proof: 1 |
-| .cautilus/claims/review-result-final-deterministic-proof-debt-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
-| .cautilus/claims/review-result-final-deterministic-queue-2026-05-17.json | - | - | 1 | 6 | 0 | deterministic: 6 | ready-for-proof: 6 |
+| .cautilus/claims/review-result-evidence-scenario-review-attention-linkage-2026-05-03.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-self-dogfood-html-renderers-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-evidence-spec-vocabulary-evidence-definition-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-family-b-dev-skill-deterministic-proof-2026-05-20.json | - | - | 1 | 2 | 0 | cautilus-eval: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-final-deterministic-proof-debt-2026-05-03.json | - | - | 1 | 3 | 1 | human-auditable: 1, deterministic: 2 | needs-alignment: 1, ready-for-proof: 2 |
+| .cautilus/claims/review-result-final-deterministic-queue-2026-05-17.json | - | - | 1 | 7 | 0 | deterministic: 7 | ready-for-proof: 7 |
+| .cautilus/claims/review-result-hitl-audience-2026-05-02.json | hitl-decision-cards | human-maintainer | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-hitl-claim-review-boundary-2026-05-02.json | hitl-decision-cards | human-maintainer | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-hitl-evidence-backed-human-review-2026-05-02.json | hitl-decision-cards | human-maintainer | 1 | 1 | 0 | cautilus-eval: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-hitl-priority-reset-2026-05-03.json | hitl-decision-cards | human-maintainer | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-human-align-action-bucket.json | action-bucket-focused-review | codex-current-agent | 2 | 3 | 3 | human-auditable: 3 | needs-alignment: 3 |
+| .cautilus/claims/review-result-human-align-action-bucket.json | action-bucket-focused-review | codex-current-agent | 0 | 0 | 6 | - | - |
 | .cautilus/claims/review-result-human-confirm-action-bucket.json | action-bucket-focused-review | codex-current-agent | 0 | 0 | 5 | - | - |
 | .cautilus/claims/review-result-improve-artifact-runtime-fingerprint-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
 | .cautilus/claims/review-result-llm-batch1.json | - | - | 0 | 0 | 2 | - | - |
 | .cautilus/claims/review-result-llm-batch3.json | - | - | 0 | 0 | 2 | - | - |
 | .cautilus/claims/review-result-llm-batch4.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-llm-batch5.json | - | - | 1 | 2 | 3 | deterministic: 2 | ready-for-proof: 2 |
-| .cautilus/claims/review-result-llm-batch6.json | - | - | 2 | 5 | 3 | human-auditable: 5 | blocked: 5 |
+| .cautilus/claims/review-result-llm-batch5.json | - | - | 0 | 0 | 5 | - | - |
+| .cautilus/claims/review-result-llm-batch6.json | - | - | 0 | 0 | 8 | - | - |
 | .cautilus/claims/review-result-loop2-lane-a.json | - | codex | 0 | 0 | 2 | - | - |
 | .cautilus/claims/review-result-loop2-lane-b.json | clusters 3-5 only | codex-lane-b | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-ownership-evidence-gaps-improvement-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
-| .cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json | - | - | 1 | 1 | 0 | human-auditable: 1 | blocked: 1 |
+| .cautilus/claims/review-result-ownership-evidence-gaps-improvement-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
+| .cautilus/claims/review-result-packet-first-skill-flow-2026-05-03.json | - | - | 1 | 1 | 0 | cautilus-eval: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-policy-claim-reclassification-2026-05-03.json | - | - | 1 | 2 | 0 | human-auditable: 2 | blocked: 2 |
 | .cautilus/claims/review-result-readiness-triage-2026-05-10.json | action-bucket-readiness-triage | codex-current-agent | 0 | 0 | 8 | - | - |
-| .cautilus/claims/review-result-readiness-triage-replay-2026-06-10.json | id-drift-replay-repair | claude-current-agent | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
-| .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 2 | 4 | 3 | deterministic: 3, human-auditable: 1 | needs-alignment: 1, ready-for-proof: 3 |
-| .cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json | - | - | 1 | 1 | 1 | unchanged: 1 | unchanged: 1 |
-| .cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json | - | - | 1 | 2 | 1 | deterministic: 2 | ready-for-proof: 2 |
-
-### .cautilus/claims/review-result-human-align-action-bucket.json
-
-| Claim | Proof | Readiness | Evidence | Next action |
-| --- | --- | --- | --- | --- |
-| claim-docs-contracts-live-run-invocation-batch-md-28 | human-auditable | needs-alignment | unknown | Confirm the provider-error ownership boundary against live-run packets and adapter docs; split concrete schema checks if needed. |
-| claim-docs-contracts-live-run-invocation-md-160 | human-auditable | needs-alignment | unknown | Human-confirm which workspace contents are product-owned versus consumer-owned, then split any observable no-write guarantees into deterministic tests. |
-| claim-docs-master-plan-md-29 | human-auditable | needs-alignment | unknown | Human-review the Cautilus-versus-consumer ownership boundary and split executable subclaims into deterministic or eval proof. |
+| .cautilus/claims/review-result-readiness-triage-replay-2026-06-10.json | id-drift-replay-repair | claude-current-agent | 1 | 3 | 0 | human-auditable: 2, deterministic: 1 | blocked: 2, ready-for-proof: 1 |
+| .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json | - | - | 2 | 5 | 3 | deterministic: 4, human-auditable: 1 | ready-for-proof: 4, needs-alignment: 1 |
+| .cautilus/claims/review-result-remaining-deterministic-proof-2026-05-04.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
+| .cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json | - | - | 1 | 2 | 0 | unchanged: 2 | unchanged: 2 |
+| .cautilus/claims/review-result-reviewable-artifact-workflow-scope-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
+| .cautilus/claims/review-result-scenario-proposal-portable-provenance-2026-05-04.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-skill-packet-first-reclass-2026-05-03.json | - | - | 1 | 1 | 0 | cautilus-eval: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-spec-binary-skill-boundary-2026-05-17.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
+| .cautilus/claims/review-result-spec-reviewable-eval-surfaces-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
+| .cautilus/claims/review-result-user-claim-discovery-reviewable-artifacts-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 4, human-auditable: 1 | ready-for-proof: 4, needs-alignment: 1 |
+| .cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
+| .cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 2, blocked: 1 |
 
 ### .cautilus/claims/review-result-workbench-instance-catalog-contract-2026-05-03.json
 
 | Claim | Proof | Readiness | Evidence | Next action |
 | --- | --- | --- | --- | --- |
 | claim-docs-contracts-workbench-instance-discovery-md-25 | deterministic | ready-for-proof | satisfied | Keep adapter validation and catalog schema tests current when changing instance discovery fields. |
+| claim-docs-contracts-workbench-instance-discovery-md-100 | deterministic | blocked | unknown | Defer until a shipped chooser or review surface exists, or reword the contract to claim only that eval live discover emits display labels in the catalog packet. |
 | claim-docs-contracts-workbench-instance-discovery-md-101 | deterministic | ready-for-proof | satisfied | Keep typed path normalization and catalog schema tests current when adding scenario-adjacent path keys. |
 
-### .cautilus/claims/review-result-rename-chain-supports-replenish-2026-05-20.json
+### .cautilus/claims/review-result-user-evaluation-reopen-packets-2026-05-17.json
 
 | Claim | Proof | Readiness | Evidence | Next action |
 | --- | --- | --- | --- | --- |
-| claim-docs-contracts-reporting-md-144 | - | - | satisfied | - |
+| claim-docs-specs-promises-evaluation-spec-md-170 | deterministic | ready-for-proof | satisfied | Keep summary and observed packet schema checks in the evaluation spec whenever new eval surfaces are promoted as user-facing evidence. |
 
-### .cautilus/claims/review-result-remaining-deterministic-claims-2026-05-03.json
+### .cautilus/claims/review-result-user-claim-discovery-reviewable-artifacts-2026-05-17.json
 
 | Claim | Proof | Readiness | Evidence | Next action |
 | --- | --- | --- | --- | --- |
-| claim-docs-contracts-runner-readiness-md-140 | deterministic | ready-for-proof | satisfied | Keep evaluation proof tests updated when runner proof classes change. |
-| claim-docs-contracts-runner-readiness-md-283 | deterministic | ready-for-proof | satisfied | Keep skill disclosure lint required and forbidden fragments aligned with command discovery changes. |
-| claim-docs-contracts-runner-verification-md-24 | human-auditable | needs-alignment | unknown | Keep this as a host-alignment claim until a concrete adapter assessment demonstrates same-boundary external substitution honestly. |
-| claim-docs-contracts-runner-verification-md-68 | deterministic | ready-for-proof | satisfied | Keep product-path proof promotion explicit in evaluation proof tests. |
+| claim-docs-specs-rules-reviewable-artifacts-spec-md-7 | deterministic | ready-for-proof | satisfied | Keep the reviewable artifact projection matrix, renderer tests, and rule-level spec links aligned when adding a new packet-backed readable view. |
+| claim-docs-specs-promises-claim-discovery-spec-md-10 | deterministic | ready-for-proof | satisfied | Keep claim-discovery CLI tests and Cautilus Agent flow audits synchronized when changing candidate extraction, source refs, curation prompts, or next-work routing. |
+| claim-docs-specs-promises-claim-discovery-spec-md-226 | deterministic | ready-for-proof | satisfied | Keep status-summary packet tests and renderer tests current when changing action buckets or saved-packet status fields. |
+| claim-docs-specs-promises-claim-discovery-spec-md-259 | deterministic | ready-for-proof | satisfied | Keep prepared skill-evaluation wording aligned with the deterministic status-summary command and review-prepare stop boundary. |
+| claim-docs-specs-rules-vocabulary-consistency-spec-md-7 | human-auditable | needs-alignment | unknown | Resolve `gap.vocabulary-evidence-bundle` by defining the vocabulary probe scope across user prose, maintainer specs, CLI JSON, Cautilus Agent guidance, and tests, then create `.cautilus/claims/evidence-vocabulary-consistency-current.json` or record an explicit waiver. |
+
+### .cautilus/claims/review-result-spec-reviewable-eval-surfaces-2026-05-17.json
+
+| Claim | Proof | Readiness | Evidence | Next action |
+| --- | --- | --- | --- | --- |
+| claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-22 | deterministic | ready-for-proof | satisfied | Refresh charness-artifacts/spec/evaluation-surfaces-runners-proof.md when self-dogfood summary packets are regenerated. |
+| claim-docs-specs-contracts-evaluation-surfaces-runners-spec-md-31 | deterministic | ready-for-proof | satisfied | Keep lint:scenario-normalizers in verify when adding or removing scenario normalization helpers. |
+| claim-docs-specs-contracts-evidence-state-artifacts-spec-md-26 | deterministic | ready-for-proof | satisfied | Keep stale status visible in generated packet, Markdown, and HTML/status renderers when changing evidence-state transitions. |
+| claim-docs-specs-contracts-reporting-review-variants-spec-md-17 | deterministic | ready-for-proof | satisfied | Keep rendered report/review views generated from machine-readable packet inputs when adding review-learning or active-run aggregation. |
+| claim-docs-specs-contracts-scenario-history-normalization-spec-md-17 | deterministic | ready-for-proof | satisfied | Keep the documented held-out scenario-history evidence gap visible until an end-to-end held-out cycle artifact is captured. |
 
 ## Review Drop Audit
 

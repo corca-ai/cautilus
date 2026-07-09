@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { reviewResultsForCurrentClaims } from "./claim-review-result-projection.mjs";
 import { parseArgs, renderStatusReport } from "./render-claim-status-report.mjs";
 
 test("parseArgs supports status report check mode", () => {
@@ -52,6 +53,54 @@ test("parseArgs rejects partial numeric status report limits", () => {
 	);
 });
 
+test("reviewResultsForCurrentClaims follows apply-current review identity semantics", () => {
+	const claimsPacket = {
+		claimCandidates: [
+			{
+				claimId: "claim-current",
+				claimFingerprint: "sha256:current",
+			},
+			{
+				claimId: "claim-fingerprintless",
+			},
+		],
+	};
+	const claimsById = new Map(claimsPacket.claimCandidates.map((claim) => [claim.claimId, claim]));
+	const [digest] = reviewResultsForCurrentClaims(
+		[
+			{
+				path: ".cautilus/claims/review-result-current.json",
+				updates: [
+					{
+						claimId: "claim-old",
+						claimFingerprint: "sha256:current",
+						recommendedProof: "human-auditable",
+						evidenceRefs: [{ supportsClaimIds: ["claim-old"] }],
+					},
+					{
+						claimId: "claim-fingerprintless",
+						claimFingerprint: "sha256:legacy",
+						recommendedProof: "deterministic",
+					},
+					{
+						claimId: "claim-current",
+						claimFingerprint: "sha256:stale",
+						recommendedProof: "deterministic",
+					},
+				],
+			},
+		],
+		claimsPacket,
+		claimsById,
+	);
+
+	assert.equal(digest.updateCount, 2);
+	assert.equal(digest.supersededUpdateCount, 1);
+	assert.deepEqual(digest.updates.map((update) => update.claimId), ["claim-current", "claim-fingerprintless"]);
+	assert.deepEqual(digest.updates[0].evidenceRefs[0].supportsClaimIds, ["claim-current"]);
+	assert.deepEqual(digest.byProof, { "human-auditable": 1, deterministic: 1 });
+});
+
 test("renderStatusReport summarizes status, review results, validation, and eval plans", () => {
 	const args = {
 		claims: ".cautilus/claims/evidenced-typed-runners.json",
@@ -77,6 +126,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 		claimCandidates: [
 			{
 				claimId: "claim-readme-md-1",
+				claimFingerprint: "sha256:readme-1-current",
 				summary: "Cautilus emits a readable status report.",
 				recommendedProof: "deterministic",
 				verificationReadiness: "ready-for-proof",
@@ -321,7 +371,7 @@ test("renderStatusReport summarizes status, review results, validation, and eval
 	assert.match(report, /A second ambiguous \(relative\.md\) claim should appear even when it is not a bucket sample/);
 	assert.doesNotMatch(report, /\[ambiguous\]\(relative\.md\)/);
 	assert.match(report, /review-result-human-align-action-bucket\.json/);
-	assert.match(report, /Active updates still match the current claim packet/);
+	assert.match(report, /Active updates still match current claim identity/);
 	assert.match(report, /Superseded/);
 	assert.match(report, /## Review Drop Audit/);
 	assert.match(report, /review-drops-summary\.json/);
@@ -400,6 +450,140 @@ test("renderStatusReport uses matching status packet claim summary", () => {
 	assert.match(report, /\| Evidence \| unknown: 1 \|/);
 	assert.doesNotMatch(report, /satisfied: 99/);
 	assert.match(report, /\| Recommended proof \| deterministic: 1 \|/);
+});
+
+test("renderStatusReport treats mismatched review-result fingerprints as superseded", () => {
+	const claimsPacket = {
+		gitCommit: "abc123",
+		candidateCount: 1,
+		sourceCount: 1,
+		claimCandidates: [
+			{
+				claimId: "claim-readme-md-1",
+				claimFingerprint: "sha256:current",
+				summary: "Cautilus keeps review result projections current.",
+				recommendedProof: "deterministic",
+				verificationReadiness: "ready-for-proof",
+				reviewStatus: "agent-reviewed",
+				evidenceStatus: "satisfied",
+				nextAction: "Keep current review update.",
+			},
+			{
+				claimId: "claim-readme-md-2",
+				claimFingerprint: "sha256:renamed",
+				summary: "Cautilus keeps review updates stable across display id drift.",
+				recommendedProof: "deterministic",
+				verificationReadiness: "ready-for-proof",
+				reviewStatus: "agent-reviewed",
+				evidenceStatus: "satisfied",
+				nextAction: "Recover display id drift.",
+			},
+			{
+				claimId: "claim-readme-md-3",
+				summary: "Cautilus still accepts same-id updates for fingerprintless current claims.",
+				recommendedProof: "deterministic",
+				verificationReadiness: "ready-for-proof",
+				reviewStatus: "agent-reviewed",
+				evidenceStatus: "satisfied",
+				nextAction: "Keep fingerprintless live claim update.",
+			},
+		],
+	};
+	const statusPacket = {
+		gitCommit: "abc123",
+		actionSummary: { primaryBuckets: [] },
+	};
+	const report = renderStatusReport({
+		claimsPacket,
+		statusPacket,
+		digests: {
+			reviewResults: [
+				{
+					path: ".cautilus/claims/review-result-current.json",
+					reviewRun: { mode: "action-bucket-focused-review", reviewer: "codex-current-agent" },
+					clusterCount: 1,
+					updateCount: 5,
+					byProof: { deterministic: 5 },
+					byReadiness: { "ready-for-proof": 5 },
+					updates: [
+						{
+							claimId: "claim-readme-md-1",
+							claimFingerprint: "sha256:current",
+							recommendedProof: "deterministic",
+							verificationReadiness: "ready-for-proof",
+							reviewStatus: "agent-reviewed",
+							evidenceStatus: "satisfied",
+							nextAction: "Keep current review update.",
+						},
+						{
+							claimId: "claim-readme-old-md-2",
+							claimFingerprint: "sha256:renamed",
+							recommendedProof: "human-auditable",
+							verificationReadiness: "needs-alignment",
+							reviewStatus: "agent-reviewed",
+							evidenceStatus: "satisfied",
+							evidenceRefs: [
+								{
+									source: "review-result",
+									supportsClaimIds: ["claim-readme-old-md-2"],
+								},
+							],
+							nextAction: "Recover display id drift.",
+						},
+						{
+							claimId: "claim-readme-md-3",
+							claimFingerprint: "sha256:legacy-review",
+							recommendedProof: "deterministic",
+							verificationReadiness: "ready-for-proof",
+							reviewStatus: "agent-reviewed",
+							evidenceStatus: "satisfied",
+							nextAction: "Keep fingerprintless live claim update.",
+						},
+						{
+							claimId: "claim-readme-md-1",
+							claimFingerprint: "sha256:old",
+							recommendedProof: "deterministic",
+							verificationReadiness: "ready-for-proof",
+							reviewStatus: "agent-reviewed",
+							evidenceStatus: "satisfied",
+							nextAction: "Stale fingerprint should not appear.",
+						},
+						{
+							claimId: "claim-readme-md-1",
+							recommendedProof: "deterministic",
+							verificationReadiness: "ready-for-proof",
+							reviewStatus: "agent-reviewed",
+							evidenceStatus: "satisfied",
+							nextAction: "Missing fingerprint should not appear.",
+						},
+					],
+				},
+			],
+			validationReports: [],
+			evalPlans: [],
+			refreshPlans: [],
+			reviewDrops: null,
+			canonicalMap: null,
+		},
+		args: {
+			claims: ".cautilus/claims/evidenced-typed-runners.json",
+			status: ".cautilus/claims/status-summary.json",
+			samplePerBucket: 2,
+			reviewSample: 5,
+		},
+	});
+
+	assert.match(report, /review-result-current\.json/);
+	assert.match(report, /\| \.cautilus\/claims\/review-result-current\.json \| action-bucket-focused-review \| codex-current-agent \| 1 \| 3 \| 2 \| deterministic: 2, human-auditable: 1 \| ready-for-proof: 2, needs-alignment: 1 \|/);
+	assert.match(report, /Keep current review update/);
+	assert.match(report, /claim-readme-md-2/);
+	assert.match(report, /human-auditable/);
+	assert.match(report, /needs-alignment/);
+	assert.match(report, /Recover display id drift/);
+	assert.match(report, /Keep fingerprintless live claim update/);
+	assert.doesNotMatch(report, /claim-readme-old-md-2/);
+	assert.doesNotMatch(report, /Stale fingerprint should not appear/);
+	assert.doesNotMatch(report, /Missing fingerprint should not appear/);
 });
 
 test("renderStatusReport fails when status packet claim summary diverges", () => {
