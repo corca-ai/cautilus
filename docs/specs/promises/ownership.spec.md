@@ -34,13 +34,13 @@ jq '[.commandEvidence[] | {command, notableAssertions: .observed.notableAssertio
 ## A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy.
 
 This is the badge's load-bearing proof, and it is **human-auditable**, not a projected bundle.
-An operator ran `npm run consumer:onboard:smoke` and vouches for the result: the smoke installs Cautilus, initializes adapter wiring, reaches doctor readiness, and runs one bounded `evaluate fixture` in a fresh temporary git repo whose adapter, fixture, and eval runner are all host-owned — so the host keeps execution while Cautilus brings only the generic workflow.
+An operator ran `npm run consumer:onboard:smoke` and vouches for the result: the smoke installs Cautilus, initializes adapter wiring, reaches doctor readiness, and runs one bounded `evaluate fixture -> evaluate observation` packet loop in a fresh temporary git repo whose adapter, fixture, and eval runner are all host-owned — so the host keeps execution while Cautilus brings only the generic workflow.
 The check below replays the operator-witnessed capture on every `npm run lint:specs`; the live re-run is opt-in (`npm run consumer:onboard:smoke`) and regenerates the capture without drift.
 There is no automated judge — the onboarding outcome is a deterministic invariant the operator witnessed.
 
 ```run:shell
-# Show the operator-witnessed onboarding invariant and the host-owned runner, adapter, and fixture.
-jq '{ready: .onboarding.ready, eval: .onboarding.evalRecommendation, hostOwned: .onboarding.hostOwned, steps: .onboarding.steps}' fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json
+# Show the operator-witnessed onboarding invariant and the host-owned runner, adapter, fixture, and packets.
+jq '{ready: .onboarding.ready, eval: .onboarding.evalRecommendation, recheck: .onboarding.recheckRecommendation, hostOwned: .onboarding.hostOwned, packets: .onboarding.packets, steps: .onboarding.steps}' fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json
 ```
 
 > check:cautilus-json-file
@@ -49,7 +49,12 @@ jq '{ready: .onboarding.ready, eval: .onboarding.evalRecommendation, hostOwned: 
 | fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | provenance.kind | operator-witnessed-onboarding | |
 | fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.ready | true | |
 | fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.evalRecommendation | accept-now | |
+| fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.recheckRecommendation | accept-now | |
+| fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.recheckSchemaVersion | cautilus.app_prompt_evaluation_summary.v1 | |
 | fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.hostOwned.runnerPath | | cautilus-smoke-eval.mjs |
+| fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.packets.evalObservedPath | .cautilus/runs/first-bounded-run/eval-observed.json | |
+| fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.packets.evalRecheckSummaryPath | .cautilus/runs/first-bounded-run/eval-summary.recheck.json | |
+| fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json | onboarding.steps | | cautilus evaluate observation |
 
 ## A user can rely on Cautilus for packets and workflow boundaries, not host policy.
 

@@ -4,7 +4,7 @@
   "suiteDisplayName": "External consumer onboarding (operator-witnessed live run)",
   "provenance": {
     "kind": "operator-witnessed-onboarding",
-    "note": "Operator-witnessed fresh live run. `cautilus init` -> `init adapter` -> `doctor` -> one bounded `evaluate fixture` in a fresh temp git repo whose adapter, fixture, and runner are host-owned. Ephemeral workspace paths are relativized to the consumer repo root; rerun `npm run consumer:onboard:smoke` to regenerate.",
+    "note": "Operator-witnessed fresh live run. `cautilus init` -> `init adapter` -> `doctor` -> one bounded `evaluate fixture` plus `evaluate observation` recheck in a fresh temp git repo whose adapter, fixture, and runner are host-owned. Ephemeral workspace paths are relativized to the consumer repo root; rerun `npm run consumer:onboard:smoke` to regenerate.",
     "command": "npm run consumer:onboard:smoke",
     "runner": "scripts/on-demand/smoke-external-consumer.mjs"
   },
@@ -12,10 +12,18 @@
     "ready": true,
     "evalRecommendation": "accept-now",
     "evalSchemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
+    "recheckRecommendation": "accept-now",
+    "recheckSchemaVersion": "cautilus.app_prompt_evaluation_summary.v1",
     "hostOwned": {
       "adapterPath": ".agents/cautilus-adapter.yaml",
       "runnerPath": ".agents/cautilus-smoke-eval.mjs",
       "fixturePath": "fixtures/eval/app/prompt/onboarding-smoke.fixture.json"
+    },
+    "packets": {
+      "evalCasesPath": ".cautilus/runs/first-bounded-run/eval-cases.json",
+      "evalObservedPath": ".cautilus/runs/first-bounded-run/eval-observed.json",
+      "evalSummaryPath": ".cautilus/runs/first-bounded-run/eval-summary.json",
+      "evalRecheckSummaryPath": ".cautilus/runs/first-bounded-run/eval-summary.recheck.json"
     },
     "steps": [
       "git",
@@ -31,7 +39,8 @@
       "git",
       "cautilus doctor adapter",
       "cautilus doctor --format json",
-      "cautilus evaluate fixture"
+      "cautilus evaluate fixture",
+      "cautilus evaluate observation"
     ]
   }
 }

@@ -50,6 +50,7 @@ What each step proves:
 6. After repo-scope `doctor` is ready, run one bounded evaluation path rather than stopping at wiring.
    Use `first_bounded_run.decisionLoopCommands[*]` for the generic packet loop, and use `first_bounded_run.normalizationFamilies[*].exampleInputCli` only when you want a minimal scenario-normalization packet before reaching for repo-local fixtures.
    If the adapter declares `evaluation_input_default`, the fixture command points at that checked-in default directly; otherwise choose the host-owned fixture before running it.
+   The fresh-consumer smoke follows the same loop through `evaluate observation`, so the checked-in capture proves the packet recheck, not only runner invocation.
 
 ## Migration Checklist
 
@@ -100,7 +101,8 @@ This helper:
 - runs `cautilus doctor adapter` inside that temp repo
 - runs `cautilus doctor` inside that temp repo
 - runs `cautilus evaluate fixture --fixture <fixture.json>` inside that temp repo
-- proves the fresh consumer reaches one bounded `eval-summary.json` instead of stopping at wiring
+- runs `cautilus evaluate observation --input <eval-observed.json> --output <eval-summary.recheck.json>` against the observed packet
+- proves the fresh consumer reaches one bounded fixture summary and one packet recheck summary instead of stopping at wiring
 
 ## Deprecated Surface Names
 

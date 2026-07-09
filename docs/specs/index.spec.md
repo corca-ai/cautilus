@@ -79,7 +79,7 @@ CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopen
 ### Host Ownership — proven
 
 Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.
-This is proven **human-auditable**: an operator ran `npm run consumer:onboard:smoke` and vouches for a fresh external consumer installing Cautilus, initializing adapter wiring, reaching doctor readiness, and running one bounded `evaluate fixture` in a temporary git repo whose adapter, fixture, and runner are all host-owned.
+This is proven **human-auditable**: an operator ran `npm run consumer:onboard:smoke` and vouches for a fresh external consumer installing Cautilus, initializing adapter wiring, reaching doctor readiness, and running one bounded `evaluate fixture -> evaluate observation` packet loop in a temporary git repo whose adapter, fixture, and runner are all host-owned.
 The default `npm run lint:specs` replays the operator-witnessed capture; the live re-run is opt-in and regenerates it without drift. There is no automated judge — the onboarding outcome is a deterministic invariant the operator witnessed.
 
 Proof: [badges::Host Ownership spec](promises/ownership.spec.md) (projects `fixtures/eval/consumer/onboard/live/consumer-onboarding-live-capture.json`, the operator-witnessed `consumer:onboard:smoke` capture).

@@ -44,7 +44,7 @@ Current `core validated surface`:
 - a minimal CLI plus a Cautilus Agent entrypoint embedded through `skills/bundled.go`
 - repo-local Codex and Claude plugin packages, marketplace wiring, and local proof paths for the Cautilus Agent
 - adapter readiness checks through `doctor`
-- bounded runtime execution through `evaluate fixture`
+- bounded runtime execution through `evaluate fixture` and packet recheck through `evaluate observation`
 - scenario-history-aware profile selection and history updates for profile-backed mode runs
 - comparison-mode baseline-cache seed materialization for profile-backed runs
 - explicit workspace preparation through `evaluate comparison prepare`
@@ -54,7 +54,7 @@ Current `core validated surface`:
 - report packet assembly, review packet assembly, and review-variant fanout
 - native self-dogfood HTML rendering through `cautilus doctor artifacts render-self-dogfood-html` and `render-experiments-html`
 - tagged-release install surface (`install.sh`, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
-- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`
+- checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture -> evaluate observation` packet loop
 
 Current `product-owned helper surface`:
 
@@ -171,7 +171,7 @@ Still intentionally excluded:
 
 Shipped:
 
-- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready → one bounded `evaluate fixture` in a temp git repo
+- [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready → one bounded `evaluate fixture -> evaluate observation` packet loop in a temp git repo
 - release discipline boundary documented in [release-boundary.md](./maintainers/release-boundary.md)
 
 Still open:

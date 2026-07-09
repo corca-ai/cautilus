@@ -117,6 +117,6 @@ It keeps one official adapter contract while still grounding the normalization l
 1. Keep proving the deepest binary and Cautilus Agent behavior against `cautilus` itself.
 2. Keep checked-in consumer-shaped normalized packet examples for the chatbot, skill-validation, and durable-workflow normalization families.
 3. Keep one explicit external bootstrap-heavy consumer proof for the `dev / repo` preset, but treat it as pattern validation rather than named-repo product ownership.
-4. Treat the next external-consumer question as whether the first bounded run should expand beyond `evaluate fixture` into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
+4. Treat the next external-consumer question as whether the first bounded run should expand beyond the `evaluate fixture -> evaluate observation` packet loop into the first review loop, not as whether `bootstrapHelper` / `workSkill` works at all.
 5. If a stronger claim needs one real external consumer, record that proof as an appendix update without turning the named repo into canonical vocabulary.
-6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `evaluate fixture` run; the next proof question is whether that smoke should also reach `evaluate review prepare-input` without turning the helper into a consumer-specific workflow.
+6. Keep the current product-owned onboarding smoke honest: today it proves fresh-consumer install to `doctor ready` and one completed bounded `evaluate fixture -> evaluate observation` packet loop; the next proof question is whether that smoke should also reach `evaluate review prepare-input` without turning the helper into a consumer-specific workflow.

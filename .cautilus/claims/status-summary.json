@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 374
+          "unknown": 375
         },
         "byReviewStatus": {
-          "heuristic": 374
+          "heuristic": 375
         },
-        "count": 374,
+        "count": 375,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 144
+          "satisfied": 143
         },
         "byReviewStatus": {
-          "agent-reviewed": 144
+          "agent-reviewed": 143
         },
-        "count": 144,
+        "count": 143,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 118
+          "unknown": 119
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 115,
+          "heuristic": 116,
           "human-reviewed": 1
         },
-        "count": 118,
+        "count": 119,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -191,8 +191,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 144,
-      "unknown": 424
+      "satisfied": 143,
+      "unknown": 425
     },
     "byLifecycle": {
       "new": 568
@@ -203,8 +203,8 @@
       "human-auditable": 151
     },
     "byReviewStatus": {
-      "agent-reviewed": 193,
-      "heuristic": 374,
+      "agent-reviewed": 192,
+      "heuristic": 375,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -423,7 +423,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 144,
+    "satisfiedClaimCount": 143,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-144",
@@ -1188,7 +1188,7 @@
         "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation."
       },
       {
-        "claimId": "claim-docs-guides-consumer-adoption-md-68",
+        "claimId": "claim-docs-guides-consumer-adoption-md-69",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1198,7 +1198,7 @@
             "path": ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
             "supportsClaimIds": [
               "claim-docs-guides-consumer-adoption-md-20",
-              "claim-docs-guides-consumer-adoption-md-68"
+              "claim-docs-guides-consumer-adoption-md-69"
             ]
           }
         ],
@@ -1208,7 +1208,7 @@
         "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit."
       },
       {
-        "claimId": "claim-docs-guides-consumer-adoption-md-107",
+        "claimId": "claim-docs-guides-consumer-adoption-md-109",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1218,7 +1218,7 @@
             "path": ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-guides-consumer-adoption-md-48",
-              "claim-docs-guides-consumer-adoption-md-107"
+              "claim-docs-guides-consumer-adoption-md-109"
             ]
           }
         ],
@@ -1228,7 +1228,7 @@
         "summary": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`."
       },
       {
-        "claimId": "claim-docs-guides-consumer-adoption-md-108",
+        "claimId": "claim-docs-guides-consumer-adoption-md-110",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1237,7 +1237,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
             "supportsClaimIds": [
-              "claim-docs-guides-consumer-adoption-md-108"
+              "claim-docs-guides-consumer-adoption-md-110"
             ]
           }
         ],
@@ -1359,25 +1359,6 @@
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
         "summary": "Cautilus exposes machine-readable packets, provenance, status summaries, and bounded next-work routes that other tools can consume."
-      },
-      {
-        "claimId": "claim-docs-master-plan-md-57",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:c69b71816afac483549f64ea96cda219f1f3adf99403634401f5777d5952aaf2",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-master-plan-gates-consumer-smoke-2026-05-17.json",
-            "supportsClaimIds": [
-              "claim-docs-master-plan-md-57"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`"
       },
       {
         "claimId": "claim-docs-master-plan-md-80",
@@ -2925,7 +2906,7 @@
         "summary": "A standalone consumer can install Cautilus, initialize adapter wiring, and reach a first bounded run without Cautilus taking over host policy."
       },
       {
-        "claimId": "claim-docs-specs-promises-ownership-spec-md-56",
+        "claimId": "claim-docs-specs-promises-ownership-spec-md-61",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -2936,7 +2917,7 @@
             "supportsClaimIds": [
               "claim-docs-specs-user-evidence-gaps-spec-md-8",
               "claim-docs-specs-user-ownership-spec-md-27",
-              "claim-docs-specs-promises-ownership-spec-md-56",
+              "claim-docs-specs-promises-ownership-spec-md-61",
               "claim-docs-contracts-improvement-md-27",
               "claim-docs-contracts-improvement-md-34"
             ]
@@ -3453,7 +3434,7 @@
       }
     ]
   },
-  "gitCommit": "1446dd6bfac1375e790ada64b2a8a913e132a086",
+  "gitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3465,10 +3446,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "1446dd6bfac1375e790ada64b2a8a913e132a086",
+    "currentGitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "1446dd6bfac1375e790ada64b2a8a913e132a086",
+    "packetGitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3492,7 +3473,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 332,
+    "heuristicClaimsReadyForReview": 333,
     "needsAlignment": 56,
     "needsScenario": 1
   },

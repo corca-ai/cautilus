@@ -2607,7 +2607,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
-      "claimId": "claim-docs-guides-consumer-adoption-md-68",
+      "claimId": "claim-docs-guides-consumer-adoption-md-69",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -2618,7 +2618,8 @@
           "supportsClaimIds": [
             "claim-docs-guides-consumer-adoption-md-20",
             "claim-docs-guides-consumer-adoption-md-67",
-            "claim-docs-guides-consumer-adoption-md-68"
+            "claim-docs-guides-consumer-adoption-md-68",
+            "claim-docs-guides-consumer-adoption-md-69"
           ]
         }
       ],
@@ -2637,7 +2638,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.",
-          "line": 68,
+          "line": 69,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -2649,7 +2650,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:23d83d6f72cc9755461377ad2ac8e6f2dafbf01128bd117a8efa793b71aeb95e",
-      "claimId": "claim-docs-guides-consumer-adoption-md-84",
+      "claimId": "claim-docs-guides-consumer-adoption-md-85",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2669,7 +2670,7 @@
       "sourceRefs": [
         {
           "excerpt": "It should answer \"what is the default `Cautilus` evaluation for this repo?\" without forcing the operator to mentally sort multiple unrelated workflows.",
-          "line": 84,
+          "line": 85,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -2681,7 +2682,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8edfa3ce4d6f43ef4031008bcdc6e4fa5fb4afb54762da4eb2a4ef061fd3d9fc",
-      "claimId": "claim-docs-guides-consumer-adoption-md-107",
+      "claimId": "claim-docs-guides-consumer-adoption-md-109",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2701,7 +2702,7 @@
       "sourceRefs": [
         {
           "excerpt": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`.",
-          "line": 107,
+          "line": 109,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -2713,7 +2714,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
-      "claimId": "claim-docs-guides-consumer-adoption-md-108",
+      "claimId": "claim-docs-guides-consumer-adoption-md-110",
       "claimSemanticGroup": "Release and packaging",
       "evidenceRefs": [
         {
@@ -2723,7 +2724,8 @@
           "path": ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
           "supportsClaimIds": [
             "claim-docs-guides-consumer-adoption-md-107",
-            "claim-docs-guides-consumer-adoption-md-108"
+            "claim-docs-guides-consumer-adoption-md-108",
+            "claim-docs-guides-consumer-adoption-md-110"
           ]
         }
       ],
@@ -2742,7 +2744,7 @@
       "sourceRefs": [
         {
           "excerpt": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene.",
-          "line": 108,
+          "line": 110,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -3337,7 +3339,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:c0f12efa6b470d39e293f6a2b4959f875ce07fe91f4f47f6e2be03c3929ef54d",
+      "claimFingerprint": "sha256:7268214fc75cbabe8c2bf260e70ec64d4a2f1fb089937e0c59c9ba164ae8b048",
       "claimId": "claim-docs-master-plan-md-57",
       "claimSemanticGroup": "Adapter and portability",
       "evidenceRefs": [],
@@ -3349,19 +3351,19 @@
         "linked-from:README.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep or add deterministic install, adapter, Cautilus Agent, or doctor readiness proof for this claim.",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
       "recommendedProof": "deterministic",
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`",
+          "excerpt": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture -\u003e evaluate observation` packet loop",
           "line": 57,
           "path": "docs/master-plan.md"
         }
       ],
-      "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture`",
+      "summary": "checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture -\u003e evaluate observation` packet loop",
       "verificationReadiness": "ready-for-proof",
-      "whyThisLayer": "The claim names install, packaging, or repo-materialization behavior that should be protected by deterministic smoke or readiness checks."
+      "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
     {
       "claimAudience": "developer",
@@ -14002,7 +14004,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:ed1fdb1fb7e9e0eb4faf73d82a20027a79491214dd906347dadbab0132be6bb4",
+      "claimFingerprint": "sha256:7162edce2b5afe52d44cf55b95119e6984cd7ffc7237973af5bcb301dda7cdea",
       "claimId": "claim-docs-specs-promises-ownership-spec-md-37",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
@@ -14020,12 +14022,12 @@
       "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "An operator ran `npm run consumer:onboard:smoke` and vouches for the result: the smoke installs Cautilus, initializes adapter wiring, reaches doctor readiness, and runs one bounded `evaluate fixture` in a fresh temporary git repo whose adapter, fixture, and eval runner are all host-owned — so the host keeps execution while Cautilus brings only the generic workflow.",
+          "excerpt": "An operator ran `npm run consumer:onboard:smoke` and vouches for the result: the smoke installs Cautilus, initializes adapter wiring, reaches doctor readiness, and runs one bounded `evaluate fixture -\u003e evaluate observation` packet loop in a fresh temporary git repo whose adapter, fixture, and eval runner are all host-owned — so the host keeps execution while Cautilus brings only the generic workflow.",
           "line": 37,
           "path": "docs/specs/promises/ownership.spec.md"
         }
       ],
-      "summary": "An operator ran `npm run consumer:onboard:smoke` and vouches for the result: the smoke installs Cautilus, initializes adapter wiring, reaches doctor readiness, and runs one bounded `evaluate fixture` in a fresh temporary git repo whose adapter, fixture, and eval runner are all host-owned — so the host keeps execution while Cautilus brings only the generic workflow.",
+      "summary": "An operator ran `npm run consumer:onboard:smoke` and vouches for the result: the smoke installs Cautilus, initializes adapter wiring, reaches doctor readiness, and runs one bounded `evaluate fixture -\u003e evaluate observation` packet loop in a fresh temporary git repo whose adapter, fixture, and eval runner are all host-owned — so the host keeps execution while Cautilus brings only the generic workflow.",
       "verificationReadiness": "needs-alignment",
       "whyThisLayer": "The claim describes an ownership or adapter boundary that should be checked across docs, code, and adapter contracts before behavior proof."
     },
@@ -14033,7 +14035,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:b6e8f783eef78fb7de12d865929e7044095d64f4871dc46c6b2df281247716b2",
-      "claimId": "claim-docs-specs-promises-ownership-spec-md-54",
+      "claimId": "claim-docs-specs-promises-ownership-spec-md-59",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -14052,7 +14054,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can rely on Cautilus for packets and workflow boundaries, not host policy.",
-          "line": 54,
+          "line": 59,
           "path": "docs/specs/promises/ownership.spec.md"
         }
       ],
@@ -14064,7 +14066,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:85da31c828c4dbbb3a0dfa610157368d7b0b6c743405bf8512d48f5e28394853",
-      "claimId": "claim-docs-specs-promises-ownership-spec-md-56",
+      "claimId": "claim-docs-specs-promises-ownership-spec-md-61",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -14081,7 +14083,7 @@
       "sourceRefs": [
         {
           "excerpt": "The current durable-packet evidence proves that core command surfaces emit schema-versioned packets another agent can reopen.",
-          "line": 56,
+          "line": 61,
           "path": "docs/specs/promises/ownership.spec.md"
         }
       ],
@@ -18116,7 +18118,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "1446dd6bfac1375e790ada64b2a8a913e132a086",
+  "gitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19980,7 +19982,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:eb066bf93d0cb8ed8d3bd38f873fa6788fb414de5786000b914f466d2b7cad82",
+      "contentHash": "sha256:d81ba31078ec2746712cd4e6a99808b0a97d766bf4ecb253769f244126d516c6",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20020,7 +20022,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:e08650bac993de04d47e0522c25eadd0faea27ced1ba25fc6e952b8a7e482119",
+      "contentHash": "sha256:0379b597d630b06d7a0998f2143e6b1123868a97822dd392db238048f73f295d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20040,7 +20042,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "path-default",
-      "contentHash": "sha256:ec3bb543db360af51d901800ab70d7bed3b0748d24dc0c7fc24068809b5a21f7",
+      "contentHash": "sha256:b3ebb75599e9c2b3f32d6eafe4b12f7f34231627e37b06d9d50f38b5ec3dbe0d",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -20430,7 +20432,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c22994597f18563aaa4feaf47bd27c2137e64399dc84b2bce2988619710d59b2",
+      "contentHash": "sha256:2ce90bbd3ec7575963c5a3b3b47670a14a8d967e0d0b826b44bd9f8bde96ecf0",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",

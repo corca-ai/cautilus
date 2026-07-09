@@ -260,18 +260,25 @@ function seedFirstBoundedRunAssets(summary, repoRoot) {
 	return { fixturePath, runnerPath };
 }
 
-function runFirstBoundedEval(summary, cautilusBin, repoRoot, execCommand) {
-	const evalOutputDir = join(repoRoot, "tmp", "cautilus-eval");
-	const args = ["evaluate", "fixture", "--repo-root", repoRoot, "--output-dir", evalOutputDir];
+function runFirstBoundedEval(summary, cautilusBin, repoRoot, fixturePath, execCommand) {
+	const evalOutputDir = join(repoRoot, ".cautilus", "runs", "first-bounded-run");
+	const args = ["evaluate", "fixture", "--repo-root", repoRoot, "--fixture", fixturePath, "--output-dir", evalOutputDir];
 	const evalTest = execCommand(cautilusBin, args);
 	summary.commands.push(summarizeCommand(cautilusBin, args, evalTest));
 	const evalSummaryPath = evalTest.stdout.trim().split(/\r?\n/).at(-1);
+	const evalObservedPath = join(evalOutputDir, "eval-observed.json");
+	const evalRecheckSummaryPath = join(evalOutputDir, "eval-summary.recheck.json");
+	const recheckArgs = ["evaluate", "observation", "--input", evalObservedPath, "--output", evalRecheckSummaryPath];
+	const evalRecheck = execCommand(cautilusBin, recheckArgs);
+	summary.commands.push(summarizeCommand(cautilusBin, recheckArgs, evalRecheck));
 	return {
 		evalOutputDir,
 		evalSummaryPath,
-		evalObservedPath: join(evalOutputDir, "eval-observed.json"),
+		evalObservedPath,
 		evalCasesPath: join(evalOutputDir, "eval-cases.json"),
 		evalSummary: JSON.parse(readFileSync(evalSummaryPath, "utf-8")),
+		evalRecheckSummaryPath,
+		evalRecheckSummary: JSON.parse(readFileSync(evalRecheckSummaryPath, "utf-8")),
 	};
 }
 
@@ -280,6 +287,7 @@ function ensureSmokeArtifacts(paths) {
 	ensurePathExists(paths.fixturePath, "first bounded run fixture");
 	ensurePathExists(paths.runnerPath, "first bounded run runner");
 	ensurePathExists(paths.evalSummaryPath, "eval summary");
+	ensurePathExists(paths.evalRecheckSummaryPath, "eval recheck summary");
 	ensurePathExists(paths.evalObservedPath, "eval observed packet");
 	ensurePathExists(paths.evalCasesPath, "eval cases packet");
 	ensurePathExists(join(paths.agentSkillRoot, "SKILL.md"), "Cautilus Agent");
@@ -329,7 +337,7 @@ export function buildOnboardingCapture(summary) {
 		provenance: {
 			kind: "operator-witnessed-onboarding",
 			note:
-				"Operator-witnessed fresh live run. `cautilus init` -> `init adapter` -> `doctor` -> one bounded `evaluate fixture` in a fresh temp git repo whose adapter, fixture, and runner are host-owned. Ephemeral workspace paths are relativized to the consumer repo root; rerun `npm run consumer:onboard:smoke` to regenerate.",
+				"Operator-witnessed fresh live run. `cautilus init` -> `init adapter` -> `doctor` -> one bounded `evaluate fixture` plus `evaluate observation` recheck in a fresh temp git repo whose adapter, fixture, and runner are host-owned. Ephemeral workspace paths are relativized to the consumer repo root; rerun `npm run consumer:onboard:smoke` to regenerate.",
 			command: "npm run consumer:onboard:smoke",
 			runner: "scripts/on-demand/smoke-external-consumer.mjs",
 		},
@@ -337,10 +345,18 @@ export function buildOnboardingCapture(summary) {
 			ready: summary.ready === true,
 			evalRecommendation: summary.evalSummary?.recommendation ?? null,
 			evalSchemaVersion: summary.evalSummary?.schemaVersion ?? null,
+			recheckRecommendation: summary.evalRecheckSummary?.recommendation ?? null,
+			recheckSchemaVersion: summary.evalRecheckSummary?.schemaVersion ?? null,
 			hostOwned: {
 				adapterPath: rel(summary.adapterPath),
 				runnerPath: rel(summary.runnerPath),
 				fixturePath: rel(summary.fixturePath),
+			},
+			packets: {
+				evalCasesPath: rel(summary.evalCasesPath),
+				evalObservedPath: rel(summary.evalObservedPath),
+				evalSummaryPath: rel(summary.evalSummaryPath),
+				evalRecheckSummaryPath: rel(summary.evalRecheckSummaryPath),
 			},
 			steps: (summary.commands || []).map(stepLabel),
 		},
@@ -352,6 +368,28 @@ export function writeOnboardingCapture(summary, capturePath) {
 	mkdirSync(dirname(capturePath), { recursive: true });
 	writeFileSync(capturePath, `${JSON.stringify(capture, null, 2)}\n`, "utf-8");
 	return capturePath;
+}
+
+function completeOnboardingSummary(summary, doctorPayload, paths, evalResult) {
+	summary.ready = doctorPayload.ready === true;
+	summary.firstBoundedRun = doctorPayload.first_bounded_run ?? null;
+	summary.fixturePath = paths.fixturePath;
+	summary.runnerPath = paths.runnerPath;
+	summary.evalOutputDir = evalResult.evalOutputDir;
+	summary.evalSummaryPath = evalResult.evalSummaryPath;
+	summary.evalObservedPath = evalResult.evalObservedPath;
+	summary.evalCasesPath = evalResult.evalCasesPath;
+	summary.evalSummary = evalResult.evalSummary;
+	summary.evalRecheckSummaryPath = evalResult.evalRecheckSummaryPath;
+	summary.evalRecheckSummary = evalResult.evalRecheckSummary;
+	summary.adapterPath = paths.adapterPath;
+	summary.agentSkillRoot = paths.agentSkillRoot;
+	summary.claudeSkillLink = paths.claudeSkillLink;
+	summary.ok =
+		summary.ready === true &&
+		evalResult.evalSummary.recommendation === "accept-now" &&
+		evalResult.evalRecheckSummary.recommendation === "accept-now";
+	return summary;
 }
 
 export async function runExternalConsumerOnboardingSmoke(
@@ -435,25 +473,17 @@ export async function runExternalConsumerOnboardingSmoke(
 		summary.commands.push(summarizeCommand(cautilusBin, doctorArgs, doctor));
 		const doctorPayload = JSON.parse(doctor.stdout);
 
-		const evalResult = runFirstBoundedEval(summary, cautilusBin, workspace.repoRoot, execCommand);
+		const evalResult = runFirstBoundedEval(summary, cautilusBin, workspace.repoRoot, fixturePath, execCommand);
 		const agentSkillRoot = join(workspace.repoRoot, ".agents", "skills", "cautilus-agent");
 		const claudeSkillLink = join(workspace.repoRoot, ".claude", "skills");
 		ensureSmokeArtifacts({ adapterPath, fixturePath, runnerPath, agentSkillRoot, claudeSkillLink, ...evalResult });
 
-		summary.ready = readDoctorReady(doctor.stdout);
-		summary.firstBoundedRun = doctorPayload.first_bounded_run ?? null;
-		summary.fixturePath = fixturePath;
-		summary.runnerPath = runnerPath;
-		summary.evalOutputDir = evalResult.evalOutputDir;
-		summary.evalSummaryPath = evalResult.evalSummaryPath;
-		summary.evalObservedPath = evalResult.evalObservedPath;
-		summary.evalCasesPath = evalResult.evalCasesPath;
-		summary.evalSummary = evalResult.evalSummary;
-		summary.adapterPath = adapterPath;
-		summary.agentSkillRoot = agentSkillRoot;
-		summary.claudeSkillLink = claudeSkillLink;
-		summary.ok = summary.ready === true && evalResult.evalSummary.recommendation === "accept-now";
-		return summary;
+		return completeOnboardingSummary(
+			summary,
+			doctorPayload,
+			{ adapterPath, fixturePath, runnerPath, agentSkillRoot, claudeSkillLink },
+			evalResult,
+		);
 	} finally {
 		if (!keepWorkdir && !outputDir) {
 			rmSync(workspace.root, { recursive: true, force: true });

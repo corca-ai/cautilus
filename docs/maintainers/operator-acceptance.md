@@ -218,7 +218,7 @@ source of truth다.
 
 | # | 명령 (각 repo에서) | 통과 조건 | 실행자 |
 |---|---|---|---|
-| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready -> evaluate fixture`까지 통과, `eval-summary.json` recommendation이 `accept-now`, exit 0 | 기계적 |
+| 5.0 | `npm run consumer:onboard:smoke` | temp consumer repo가 `install -> adapter init -> doctor ready -> evaluate fixture -> evaluate observation`까지 통과, `eval-summary.json`과 `eval-summary.recheck.json` recommendation이 `accept-now`, exit 0 | 기계적 |
 | 5.1 | `cautilus doctor --repo-root <repo-path>` | `ready` 출력, exit 0 | 기계적 |
 | 5.2 | `cautilus doctor adapter --repo-root <repo-path>` | adapter 경로 출력, exit 0 | 기계적 |
 
