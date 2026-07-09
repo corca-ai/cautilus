@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 2 selection — Cycle 1 is reviewed and ready to commit.
-- Current slice intent: choose the next narrow CLI/runtime or claim-status hardening slice from explorer findings.
-- Next action: commit Cycle 1, then implement Cycle 2 with focused proof and fresh-eye review.
+- Current slice: Cycle 3 selection — Cycle 2 is reviewed and ready to commit.
+- Current slice intent: choose the next narrow quality/gate determinism slice from explorer findings.
+- Next action: commit Cycle 2, then implement Cycle 3 with focused proof and fresh-eye review.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -83,7 +83,7 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Show bounded cross-cutting signal samples in the claim status report. | Status packets already carry sample IDs, but the human report hid the next inspection targets. | Focused tests, generated status report check, critique, commit. | complete |
-| 2 | Select a narrow CLI/doctor/runtime packet hardening slice. | Keep the standalone binary plus agent-facing payload surface structured and inspectable. | Focused tests, critique, commit. | planned |
+| 2 | Add `packet inspect` selector hints for report and scenario-results packets. | Keep the standalone binary's packet inspection surface useful for core evidence packets, not only claim workflow packets. | Focused Go tests, CLI usage regression test, critique, commit. | complete |
 | 3 | Select a narrow quality/gate determinism slice. | Reduce silent drift in existing verification surfaces. | Focused tests or check-mode proof, critique, commit. | planned |
 | 4 | Select the safest next candidate from explorer findings or slice lessons. | Let earlier slices reveal the next most useful seam instead of forcing speculative roadmap work. | Focused tests, critique, commit. | planned |
 | 5 | Finish with a deterministic workflow or proof-boundary guard and final bundle proof. | Close the run with a broad gate and audit-ready closeout. | Focused tests, fresh-eye review, final gates, goal closeout, commit. | planned |
@@ -153,6 +153,20 @@ applies.
 - Critique: Fresh-eye review 019f470c-6961-7c60-bae6-811862e9cbe3 found the initial truncation marker was misleading when producer-capped samples equaled five; fixed by using `signal.count`, re-review OK.
 - Off-goal findings: none.
 - Lessons carried forward: If a producer pre-caps samples, the human projection must use total count to signal boundedness instead of relying on sample array length.
+- Metrics:
+
+### Slice 2: Cycle 2 — Packet Inspect Evidence Hints
+
+- Objective: Extend `doctor packet inspect` selector hints to report packets and scenario-results packets.
+- Why this approach: These packets are core evidence surfaces; agents inspecting them should get canonical selector paths without guessing array field names.
+- Commits:
+- What changed: Added selector hints for `cautilus.report_packet.v2` (`.modeSummaries`, `.commandObservations`, `.humanReviewFindings`) and `cautilus.scenario_results.v1` (`.results`); added runtime tests; updated command registry usage notes and a registry test so help text tracks the supported schemas.
+- Alternatives rejected: Rejected a generic recursive selector guesser because the current explicit schema map keeps the inspection packet auditable and avoids suggesting noisy arrays as action targets.
+- Targeted verification: `go test ./internal/runtime ./internal/app ./internal/cli -run 'TestBuildPacketInspection|TestRunPacketInspectEmitsSchemaVersionAndArrayCounts|TestRenderPacketInspectUsageNamesCurrentSelectorHintCoverage'`; `npm run lint:eslint`; `git diff --check`.
+- Test duplication pressure: Added focused runtime tests plus one help-text regression test; no broad CLI snapshot was expanded.
+- Critique: Fresh-eye review 019f4710-b34e-79d3-9816-0ca923bc9e0d found stale command-registry wording; fixed, re-review OK.
+- Off-goal findings: none.
+- Lessons carried forward: Packet capability changes need both runtime schema tests and operator-facing command metadata tests in the same slice.
 - Metrics:
 
 ## Context Sources

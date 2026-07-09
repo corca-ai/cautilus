@@ -90,6 +90,57 @@ func TestBuildPacketInspectionPopulatesSelectorHintsForKnownSchemas(t *testing.T
 	}
 }
 
+func TestBuildPacketInspectionPopulatesSelectorHintsForReportPackets(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ReportPacketSchema,
+		"modeSummaries": []any{
+			map[string]any{"mode": "train"},
+			map[string]any{"mode": "held_out"},
+		},
+		"commandObservations": []any{
+			map[string]any{"command": "npm run verify"},
+		},
+		"humanReviewFindings": []any{},
+	}
+
+	report := BuildPacketInspection(packet)
+	hints := report["selectorHints"].([]any)
+	byName := map[string]map[string]any{}
+	for _, raw := range hints {
+		hint := raw.(map[string]any)
+		byName[hint["name"].(string)] = hint
+	}
+	if byName["mode-summaries"]["count"] != 2 || byName["mode-summaries"]["path"] != ".modeSummaries" {
+		t.Fatalf("expected mode summary hint, got %#v", byName["mode-summaries"])
+	}
+	if byName["command-observations"]["count"] != 1 || byName["command-observations"]["path"] != ".commandObservations" {
+		t.Fatalf("expected command observation hint, got %#v", byName["command-observations"])
+	}
+	if byName["human-review-findings"]["count"] != 0 || byName["human-review-findings"]["path"] != ".humanReviewFindings" {
+		t.Fatalf("expected human review finding hint, got %#v", byName["human-review-findings"])
+	}
+}
+
+func TestBuildPacketInspectionPopulatesSelectorHintsForScenarioResults(t *testing.T) {
+	packet := map[string]any{
+		"schemaVersion": contracts.ScenarioResultsSchema,
+		"results": []any{
+			map[string]any{"scenarioId": "claim-routing", "status": "passed"},
+			map[string]any{"scenarioId": "agent-first", "status": "failed"},
+		},
+	}
+
+	report := BuildPacketInspection(packet)
+	hints := report["selectorHints"].([]any)
+	if len(hints) != 1 {
+		t.Fatalf("expected one scenario-results selector hint, got %#v", hints)
+	}
+	hint := hints[0].(map[string]any)
+	if hint["name"] != "results" || hint["path"] != ".results" || hint["count"] != 2 {
+		t.Fatalf("unexpected scenario-results hint: %#v", hint)
+	}
+}
+
 func TestBuildPacketInspectionFallsBackForUnknownSchema(t *testing.T) {
 	packet := map[string]any{
 		"schemaVersion": "third.party.unknown.v1",

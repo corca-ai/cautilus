@@ -61,7 +61,7 @@
       "notes": [
         "Emits `cautilus.packet_inspection.v1` with `schemaVersion`, `topLevelKeys`, `arrayCounts`, and `selectorHints`.",
         "`arrayCounts` reflects the literal top-level array fields of any JSON object input, even for unknown schemas.",
-        "`selectorHints` is populated only for known Cautilus packet schemas (currently `claim_eval_plan` and `claim_review_input`); each hint names a canonical jq path so operators don't have to guess field names like `.plans` versus `.evalPlans`."
+        "`selectorHints` is populated only for known Cautilus packet schemas including claim eval plans, claim review inputs, report packets, and scenario results; each hint names a canonical jq path so operators don't have to guess field names like `.plans` versus `.evalPlans`."
       ]
     },
     {

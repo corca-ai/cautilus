@@ -134,6 +134,23 @@ func TestRenderTopicUsageIncludesCommandNotes(t *testing.T) {
 	}
 }
 
+func TestRenderPacketInspectUsageNamesCurrentSelectorHintCoverage(t *testing.T) {
+	usage, err := RenderTopicUsage([]string{"doctor", "packet", "inspect"})
+	if err != nil {
+		t.Fatalf("RenderTopicUsage returned error: %v", err)
+	}
+	for _, fragment := range []string{
+		"claim eval plans",
+		"claim review inputs",
+		"report packets",
+		"scenario results",
+	} {
+		if !strings.Contains(usage, fragment) {
+			t.Fatalf("packet inspect usage missing selector hint coverage %q:\n%s", fragment, usage)
+		}
+	}
+}
+
 func TestRenderTopicUsageShowsAdHocReviewVariantsPath(t *testing.T) {
 	usage, err := RenderTopicUsage([]string{"evaluate", "review", "variants"})
 	if err != nil {

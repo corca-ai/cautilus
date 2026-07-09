@@ -69,6 +69,14 @@ var packetSelectorHints = map[string][]packetSelectorHint{
 		{name: "candidates", path: ".clusters[].candidates", description: "claim candidates across all clusters", count: nestedArrayLengthSum("clusters", "candidates")},
 		{name: "skipped", path: ".skippedClaims", description: "claims not clustered for review", count: arrayLengthAt("skippedClaims")},
 	},
+	contracts.ReportPacketSchema: {
+		{name: "mode-summaries", path: ".modeSummaries", description: "per-mode report summaries", count: arrayLengthAt("modeSummaries")},
+		{name: "command-observations", path: ".commandObservations", description: "commands observed while building the report evidence", count: arrayLengthAt("commandObservations")},
+		{name: "human-review-findings", path: ".humanReviewFindings", description: "human review findings attached to the report", count: arrayLengthAt("humanReviewFindings")},
+	},
+	contracts.ScenarioResultsSchema: {
+		{name: "results", path: ".results", description: "scenario result rows", count: arrayLengthAt("results")},
+	},
 }
 
 func BuildPacketInspection(packet map[string]any) map[string]any {
