@@ -51,6 +51,8 @@
     "release:smoke-install:current": "node scripts/release/run-install-smoke-current.mjs",
     "critique:surface-packet": "node scripts/prepare-surface-critique-packet.mjs",
     "critique:surface-packet:check": "node scripts/prepare-surface-critique-packet.mjs --check",
+    "critique:surface-packet:cli-agent": "node scripts/prepare-surface-critique-packet.mjs --surface-id cli-agent-product",
+    "critique:surface-packet:cli-agent:check": "node scripts/prepare-surface-critique-packet.mjs --surface-id cli-agent-product --check",
     "consumer:starters:smoke": "node scripts/on-demand/smoke-starter-kits.mjs",
     "hooks:install": "node scripts/install-git-hooks.mjs",
     "hooks:check": "node scripts/check-git-hooks.mjs",

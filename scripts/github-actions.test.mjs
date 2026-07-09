@@ -38,6 +38,11 @@ test("package scripts keep local gates and external consumer onboarding smoke", 
 	assert.equal(packageJSON.scripts.verify, "node scripts/run-verify.mjs");
 	assert.equal(packageJSON.scripts["hooks:check"], "node scripts/check-git-hooks.mjs");
 	assert.equal(packageJSON.scripts["consumer:onboard:smoke"], "node scripts/on-demand/smoke-external-consumer.mjs");
+	assert.equal(packageJSON.scripts["critique:surface-packet:check"], "node scripts/prepare-surface-critique-packet.mjs --check");
+	assert.equal(
+		packageJSON.scripts["critique:surface-packet:cli-agent:check"],
+		"node scripts/prepare-surface-critique-packet.mjs --surface-id cli-agent-product --check",
+	);
 });
 
 test("package scripts keep standing claim evidence audit scoped", () => {

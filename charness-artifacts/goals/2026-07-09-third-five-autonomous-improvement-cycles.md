@@ -1,6 +1,6 @@
 # Achieve Goal: Third Five Autonomous Improvement Cycles
 
-Status: active
+Status: complete
 Created: 2026-07-09
 Activation: `/goal @charness-artifacts/goals/2026-07-09-third-five-autonomous-improvement-cycles.md`
 
@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 5 selection — Cycle 4 is reviewed and ready to commit.
-- Current slice intent: expose the safest remaining surface-packet check before final bundle proof.
-- Next action: commit Cycle 4, then implement Cycle 5 with focused proof and fresh-eye review.
+- Current slice: complete — all five improvement cycles are implemented, reviewed, committed, and locally verified.
+- Current slice intent: closed after final broad local proof and closeout evidence.
+- Next action: none — report the completed run.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -86,7 +86,7 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | 2 | Add `packet inspect` selector hints for report and scenario-results packets. | Keep the standalone binary's packet inspection surface useful for core evidence packets, not only claim workflow packets. | Focused Go tests, CLI usage regression test, critique, commit. | complete |
 | 3 | Reject partial numeric CLI limits in claim status helper scripts. | Prevent `parseInt` from accepting malformed operator limits like `2abc`. | Focused Node tests, check-mode proof, critique, commit. | complete |
 | 4 | Make `hooks:check` verify pre-push phase labels and order. | Existing hook checks verified commands but not the diagnostic phase contract operators see. | Focused Node tests, real hooks check, critique, commit. | complete |
-| 5 | Finish with a deterministic workflow or proof-boundary guard and final bundle proof. | Close the run with a broad gate and audit-ready closeout. | Focused tests, fresh-eye review, final gates, goal closeout, commit. | planned |
+| 5 | Expose `cli-agent-product` surface packet checks as npm scripts. | The packet checker already supported the surface, but operators lacked a direct package script. | Focused package tests, surface packet check, fresh-eye review, final gates, goal closeout, commit. | complete |
 
 ## Operator Decision Queue
 
@@ -197,6 +197,20 @@ applies.
 - Lessons carried forward: When readiness output depends on diagnostic phase names, hook checks should guard those names and order, not only the underlying commands.
 - Metrics:
 
+### Slice 5: Cycle 5 — CLI Agent Surface Packet Script
+
+- Objective: Expose the `cli-agent-product` surface critique packet check through package scripts.
+- Why this approach: The checker already owns packaged skill parity/content sync rules for `cli-agent-product`, but package scripts only exposed the default release-packaging surface.
+- Commits:
+- What changed: Added `critique:surface-packet:cli-agent` and `critique:surface-packet:cli-agent:check` scripts; extended package script tests to lock the check command.
+- Alternatives rejected: Rejected changing the default `critique:surface-packet:check` to run multiple surfaces because existing release-packaging callers may depend on the default output shape and scope.
+- Targeted verification: `npm run critique:surface-packet:cli-agent:check`; `node --test scripts/github-actions.test.mjs scripts/prepare-surface-critique-packet.test.mjs`; `npm run lint:eslint`; `git diff --check`.
+- Test duplication pressure: Added one package-script assertion beside existing local gate assertions; no duplicated surface packet fixtures were added.
+- Critique: Fresh-eye review 019f471a-2994-7d03-afa9-2132c884553f: OK, no findings; `package-lock.json` update not required because root scripts are not recorded there.
+- Off-goal findings: none.
+- Lessons carried forward: When a surface packet exists for a repo-owned quality boundary, expose the common check path through package scripts instead of requiring operators to remember raw flags.
+- Metrics:
+
 ## Context Sources
 
 Durable references this goal was shaped from. A fresh session can reconstruct
@@ -235,18 +249,23 @@ Issues or deferred findings discovered during the run.
 
 ## Final Verification
 
-Closeout evidence — replace each `TODO` with a bound `<path>` (a checked-in
-retro / host-log probe / disposition-review artifact) or an explicit
-`skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
-`TODO` / `<path>` / `TBD` until you do.
+Retro: charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md
+Host log probe: charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-host-probe.md
+Disposition review: charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-disposition-review.md
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+- `npm run verify`: passed.
+- `npm run hooks:check`: passed.
+- `npm run generated:drift:check`: passed.
+- `describe_goal_closeout_shape.py --goal-path charness-artifacts/goals/2026-07-09-third-five-autonomous-improvement-cycles.md`: passed after closeout evidence was bound.
+- External or live proof: skipped — local-only run, no push, release, remote CI, or live proof was requested or claimed.
 
 ## User Verification Instructions
 
+- Inspect the five scoped commits with `git log --oneline -5`.
+- Re-run final local gates with `npm run verify`, `npm run hooks:check`, and `npm run generated:drift:check`.
+- Inspect the goal, retro, host-probe, and disposition artifacts named in `## Final Verification`.
+
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: completed subagent cleanup was performed before Cycle 4 review retry, packet behavior changes now carry command metadata tests, and recurring operator checks gained deterministic hook/package-script gates.
+Structural follow-up: applied: hook readiness, packet inspect metadata, and CLI-agent surface packet access are now enforced by tests or package scripts; no issue-routed follow-up remains.
