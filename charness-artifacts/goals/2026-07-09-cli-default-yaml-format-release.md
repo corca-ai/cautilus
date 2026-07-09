@@ -1,6 +1,6 @@
 # Achieve Goal: CLI default YAML format release
 
-Status: active
+Status: complete
 Created: 2026-07-09
 Activation: `/goal @charness-artifacts/goals/2026-07-09-cli-default-yaml-format-release.md`
 
@@ -9,9 +9,9 @@ It is active because the user explicitly requested design, implementation, push,
 
 ## Active Operating Frame
 
-- Current slice: Prepare and publish the CLI stdout format release.
-- Current slice intent: Commit the verified YAML-default stdout contract, then prepare and publish `v0.19.0`.
-- Next action: commit implementation and proof artifacts, run release preparation, update release narrative, dry-run publish, then publish and verify public release.
+- Current slice: Complete.
+- Current slice intent: Done.
+- Next action: none.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -90,7 +90,7 @@ The user can inspect the published release and install readback for the released
 | 1 | Lock CLI output-format contract | Prevent parser/file contract regressions | contract doc, subagent review findings, focused smoke | complete |
 | 2 | Implement stdout YAML default and format override | Deliver requested behavior | code/tests, docs/spec sync, agent guidance sync | complete |
 | 3 | Run quality and release readiness | Prove broad surface after command contract change | verify, hooks, quality probe, release critique | complete |
-| 4 | Publish minor release | User requested push release | tag, workflow, public verifier, install readback | pending |
+| 4 | Publish minor release | User requested push release | tag, workflow, public verifier, install readback | complete |
 
 ## Operator Decision Queue
 
@@ -132,7 +132,7 @@ per the bullets above when that boundary is crossed):
 - `Routing: find-skills -> <skill> — <why this phase needs it>`
 - Routing: find-skills -> achieve + spec + impl + quality + critique + release — this work changes a CLI contract, implementation, agent guidance, verification surface, and release state.
 - Gather: n/a — no external source was used for this repo-local contract and release slice.
-- Release: pending — release proof will be recorded after `v0.19.0` publication and public verification.
+- Release: charness-artifacts/release/latest.md — `v0.19.0` published and verified through GitHub Actions, local public verifier, and install-sh readback.
 - Issue closeout: n/a — this slice does not resolve a tracked GitHub issue.
 
 ## Discuss Before Activation
@@ -230,18 +230,13 @@ Issues or deferred findings discovered during the run.
 
 ## Final Verification
 
-Closeout evidence — replace each `TODO` with a bound `<path>` (a checked-in
-retro / host-log probe / disposition-review artifact) or an explicit
-`skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
-`TODO` / `<path>` / `TBD` until you do.
-
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+Retro: charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md
+Host log probe: skipped: host-log-not-exposed: Host session logs are not exposed for this release closeout; command-level verification and public release readbacks are recorded instead.
+Disposition review: charness-artifacts/critique/2026-07-09-cli-default-yaml-format-release-disposition-review.md
 
 ## User Verification Instructions
 
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: strict JSON alias tests and release critique proof now guard the missed command-registry compatibility class.
+Structural follow-up: applied: app-level strict JSON tests cover registry-advertised parser aliases for the stdout format contract.

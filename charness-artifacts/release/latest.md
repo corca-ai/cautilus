@@ -27,7 +27,7 @@ The default `cautilus init run` shell export remains unchanged so `eval "$(cauti
 - Release preparation: `npm run release:prepare -- 0.19.0` passed.
 - Claim freshness: `npm run release:claim-freshness` passed during release preparation.
 - Strict alias smoke: `discover claims status --json`, `evaluate claims plan --json`, and `discover claims validate --json` produced parseable JSON after the release critique blocker was fixed.
-- Full verification: `npm run verify` passed all phases in 49.31s before release preparation.
+- Full verification: `npm run verify` passed all phases in 49.31s before release preparation and 43.70s after `0.19.0` release preparation.
 - Hook verification: `npm run hooks:check` passed.
 - Generated drift check: `npm run generated:drift:check` passed on the implementation commit.
 - Full history secret proof: `npm run security:secrets:history` passed.
@@ -35,24 +35,29 @@ The default `cautilus init run` shell export remains unchanged so `eval "$(cauti
 
 ## Release State
 
-- local release mutation: prepared for `0.19.0`; release commit pending at this artifact update.
-- branch/tag push: pending publish helper execution.
-- release tag commit: pending.
-- GitHub release record: pending tag-triggered workflow.
-- public release surface verification: pending post-publish verifier.
-- requested review commands: passed locally and will be re-run inside the publish helper before branch/tag push.
-- post-publish install readback: pending public release.
+- local release mutation: prepared and committed at `7d6404a040c1ab28d94c474398c63b3ba33b9ab4`.
+- branch/tag push: published; at publish time `origin/main` and `refs/tags/v0.19.0` both pointed at `7d6404a040c1ab28d94c474398c63b3ba33b9ab4`.
+- release tag commit: `refs/tags/v0.19.0` remains fixed at `7d6404a040c1ab28d94c474398c63b3ba33b9ab4`.
+- GitHub release record: published by `release-artifacts` workflow run `28984676895`.
+- public release surface verification: passed in the workflow and passed locally through `scripts/release/verify-public-release.mjs`.
+- requested review commands: passed locally and passed inside the publish helper before branch/tag push.
+- post-publish install readback: passed through `node scripts/release/run-install-smoke-current.mjs --skip-update --json`.
 
 ## Public Release Verification
 
-- GitHub Actions: pending after tag push.
+- GitHub Actions: `release-artifacts` run `28984676895` completed successfully.
+- Workflow jobs: `release-artifacts` passed in 3m27s and `verify-public-release` passed in 11s.
 - Public release URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.19.0`.
-- Local verifier command after workflow publication: `node ./scripts/release/verify-public-release.mjs --version v0.19.0 --json --retry-attempts 5 --retry-delay-ms 10000`.
-- Expected assets: `cautilus-v0.19.0.sha256`, four platform tarballs, `cautilus-v0.19.0-checksums.txt`, and `release-notes-v0.19.0.md`.
+- Local verifier: `node ./scripts/release/verify-public-release.mjs --version v0.19.0 --json --retry-attempts 5 --retry-delay-ms 10000` passed on the first attempt.
+- Expected assets were present: `cautilus-v0.19.0.sha256`, four platform tarballs, `cautilus-v0.19.0-checksums.txt`, and `release-notes-v0.19.0.md`.
+- Checksum verification passed, and the release-notes source archive checksum matched `e5b1e13121365362f86b07590cae891c8b895cc9394f731ab3f87c62941abf35`.
 
 ## Distinct-Channel Verification
 
-- Pending post-publish install readback through `npm run release:smoke-install:current -- --skip-update --json`.
+- `node scripts/release/run-install-smoke-current.mjs --skip-update --json` passed.
+- The install-sh smoke installed `https://github.com/corca-ai/cautilus/releases/download/v0.19.0/cautilus_0.19.0_linux_x64.tar.gz`.
+- The installed wrapper returned `0.19.0` for `--version`.
+- `cautilus version --verbose` reported `current.version` as `0.19.0` and `installKind` as `install_sh_binary`.
 
 ## Release Adapter Preflight
 
@@ -81,12 +86,12 @@ The default `cautilus init run` shell export remains unchanged so `eval "$(cauti
 
 ## Post-Publish Proof
 
-- Public release check: pending.
-- Install readback: pending.
+- Public release check: passed in GitHub Actions and passed locally.
+- Install readback: passed through `node scripts/release/run-install-smoke-current.mjs --skip-update --json`.
 
 ## Install Refresh
 
-- Post-publish install refresh status: pending.
+- Post-publish install refresh status: passed.
 - Full install/update smoke after public release remains available for broader channel validation: `npm run release:smoke-install -- --channel install_sh --version v0.19.0`.
 
 ## User Update Steps
