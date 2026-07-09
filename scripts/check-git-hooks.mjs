@@ -71,6 +71,14 @@ function prePushUsesWorktreeGuard(prePushContent) {
 	);
 }
 
+function prePushHasOrderedPhaseSignals(prePushContent) {
+	const verifyPhase = 'run_phase "verify" node scripts/guard-worktree-unchanged.mjs -- npm run verify';
+	const generatedPhase = 'run_phase "generated artifact drift" node scripts/guard-worktree-unchanged.mjs -- npm run generated:drift:check';
+	const verifyIndex = prePushContent.indexOf(verifyPhase);
+	const generatedIndex = prePushContent.indexOf(generatedPhase);
+	return verifyIndex >= 0 && generatedIndex > verifyIndex;
+}
+
 function hooksPathCheck(hooksPath) {
 	return {
 		id: "hooks_path_configured",
@@ -106,6 +114,7 @@ export function checkGitHooks(repoRoot) {
 	const prePushContent = readFile(prePushHook);
 	const hasGeneratedArtifactDriftCheck = prePushContent.includes("npm run generated:drift:check");
 	const hasWorktreeGuard = prePushUsesWorktreeGuard(prePushContent);
+	const hasOrderedPhaseSignals = prePushHasOrderedPhaseSignals(prePushContent);
 	const checks = [
 		hooksPathCheck(hooksPath),
 		prePushExistsCheck(prePushHook),
@@ -123,6 +132,13 @@ export function checkGitHooks(repoRoot) {
 			detail: hasWorktreeGuard
 				? `${PRE_PUSH_PATH} guards verify and generated drift checks against tracked repo mutations.`
 				: `${PRE_PUSH_PATH} must run verify and generated drift checks through scripts/guard-worktree-unchanged.mjs.`,
+		},
+		{
+			id: "pre_push_phase_signal",
+			ok: hasOrderedPhaseSignals,
+			detail: hasOrderedPhaseSignals
+				? `${PRE_PUSH_PATH} reports ordered verify and generated artifact drift phases.`
+				: `${PRE_PUSH_PATH} must run labeled phases in order: verify, then generated artifact drift.`,
 		},
 	];
 	const ready = checks.every((check) => check.ok);

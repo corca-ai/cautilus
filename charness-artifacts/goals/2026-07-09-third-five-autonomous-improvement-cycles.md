@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 4 selection — Cycle 3 is reviewed and ready to commit.
-- Current slice intent: choose the next narrow quality/gate determinism slice from explorer findings.
-- Next action: commit Cycle 3, then implement Cycle 4 with focused proof and fresh-eye review.
+- Current slice: Cycle 5 selection — Cycle 4 is reviewed and ready to commit.
+- Current slice intent: expose the safest remaining surface-packet check before final bundle proof.
+- Next action: commit Cycle 4, then implement Cycle 5 with focused proof and fresh-eye review.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -85,7 +85,7 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | 1 | Show bounded cross-cutting signal samples in the claim status report. | Status packets already carry sample IDs, but the human report hid the next inspection targets. | Focused tests, generated status report check, critique, commit. | complete |
 | 2 | Add `packet inspect` selector hints for report and scenario-results packets. | Keep the standalone binary's packet inspection surface useful for core evidence packets, not only claim workflow packets. | Focused Go tests, CLI usage regression test, critique, commit. | complete |
 | 3 | Reject partial numeric CLI limits in claim status helper scripts. | Prevent `parseInt` from accepting malformed operator limits like `2abc`. | Focused Node tests, check-mode proof, critique, commit. | complete |
-| 4 | Select the safest next candidate from explorer findings or slice lessons. | Let earlier slices reveal the next most useful seam instead of forcing speculative roadmap work. | Focused tests, critique, commit. | planned |
+| 4 | Make `hooks:check` verify pre-push phase labels and order. | Existing hook checks verified commands but not the diagnostic phase contract operators see. | Focused Node tests, real hooks check, critique, commit. | complete |
 | 5 | Finish with a deterministic workflow or proof-boundary guard and final bundle proof. | Close the run with a broad gate and audit-ready closeout. | Focused tests, fresh-eye review, final gates, goal closeout, commit. | planned |
 
 ## Operator Decision Queue
@@ -181,6 +181,20 @@ applies.
 - Critique: Fresh-eye review 019f4715-3010-78f0-ad63-2aabbd02e639: OK, no findings.
 - Off-goal findings: none.
 - Lessons carried forward: For CLI numeric options, full-string validation matters; `parseInt` alone is not an input contract.
+- Metrics:
+
+### Slice 4: Cycle 4 — Pre-Push Phase Signal Check
+
+- Objective: Make `npm run hooks:check` verify the canonical pre-push phase labels and order.
+- Why this approach: The hook already reports `verify` and `generated artifact drift` phases, but the readiness check only looked for guarded commands.
+- Commits:
+- What changed: Added `pre_push_phase_signal` to `scripts/check-git-hooks.mjs`; updated hook test fixtures; added a negative test for unlabeled guard calls.
+- Alternatives rejected: Rejected a flexible shell parser because this repo owns the canonical checked-in hook shape and exact-string drift is useful here.
+- Targeted verification: `node --test scripts/check-git-hooks.test.mjs`; `npm run hooks:check`; `npm run lint:eslint`; `git diff --check`.
+- Test duplication pressure: Added one negative hook-readiness case; no broad hook execution test was added.
+- Critique: Fresh-eye review 019f4717-bec7-7843-8f08-ccd32ee6c409: OK, exact-string check acceptable for the canonical hook contract.
+- Off-goal findings: none.
+- Lessons carried forward: When readiness output depends on diagnostic phase names, hook checks should guard those names and order, not only the underlying commands.
 - Metrics:
 
 ## Context Sources

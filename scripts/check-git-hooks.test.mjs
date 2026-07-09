@@ -30,8 +30,11 @@ function writePrePush(root, executable = true) {
 		[
 			"#!/usr/bin/env sh",
 			"set -eu",
-			"node scripts/guard-worktree-unchanged.mjs -- npm run verify",
-			"node scripts/guard-worktree-unchanged.mjs -- npm run generated:drift:check",
+			"run_phase() {",
+			"  \"$@\"",
+			"}",
+			"run_phase \"verify\" node scripts/guard-worktree-unchanged.mjs -- npm run verify",
+			"run_phase \"generated artifact drift\" node scripts/guard-worktree-unchanged.mjs -- npm run generated:drift:check",
 			"",
 		].join("\n"),
 		"utf-8",
@@ -102,6 +105,37 @@ test("check-git-hooks fails when pre-push omits generated artifact drift check",
 		);
 		assert.equal(generatedCheck.ok, false);
 		assert.match(generatedCheck.detail, /generated:drift:check/);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("check-git-hooks fails when pre-push omits ordered phase signals", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-hooks-no-phase-signal-"));
+	try {
+		initRepo(root);
+		const hookPath = writePrePush(root);
+		writeFileSync(
+			hookPath,
+			[
+				"#!/usr/bin/env sh",
+				"set -eu",
+				"node scripts/guard-worktree-unchanged.mjs -- npm run verify",
+				"node scripts/guard-worktree-unchanged.mjs -- npm run generated:drift:check",
+				"",
+			].join("\n"),
+			"utf-8",
+		);
+		git(root, ["config", "--local", "core.hooksPath", ".githooks"]);
+
+		const result = spawnSync("node", [CHECK_SCRIPT, "--repo-root", root], {
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 1);
+		const payload = JSON.parse(result.stdout);
+		const phaseCheck = payload.checks.find((check) => check.id === "pre_push_phase_signal");
+		assert.equal(phaseCheck.ok, false);
+		assert.match(phaseCheck.detail, /verify, then generated artifact drift/);
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
