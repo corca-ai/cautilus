@@ -5,8 +5,14 @@ import process from "node:process";
 import { resolve } from "node:path";
 
 export const DEFAULT_GENERATED_ARTIFACTS = [
+	".cautilus/claims/latest.json",
+	".cautilus/claims/evidenced-typed-runners.json",
+	".cautilus/claims/canonical-claim-map.json",
 	".cautilus/claims/evidence-state.json",
 	".cautilus/claims/status-summary.json",
+	".cautilus/claims/claim-status-report.md",
+	".cautilus/claims/review-drops-summary.json",
+	".cautilus/claims/review-drops-summary.md",
 	"docs/specs/generated/claim-evidence-state.md",
 	".cautilus/audit/surface-audit.json",
 	"docs/specs/generated/audit.spec.md",

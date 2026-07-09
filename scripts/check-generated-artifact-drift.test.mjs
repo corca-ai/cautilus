@@ -39,6 +39,19 @@ function initRepo(root) {
 test("parseArgs defaults to checked-in generated artifact paths", () => {
 	const parsed = parseArgs(["--repo-root", "."]);
 	assert.equal(parsed.paths.length, DEFAULT_GENERATED_ARTIFACTS.length);
+	assert.deepEqual(parsed.paths, [
+		".cautilus/claims/latest.json",
+		".cautilus/claims/evidenced-typed-runners.json",
+		".cautilus/claims/canonical-claim-map.json",
+		".cautilus/claims/evidence-state.json",
+		".cautilus/claims/status-summary.json",
+		".cautilus/claims/claim-status-report.md",
+		".cautilus/claims/review-drops-summary.json",
+		".cautilus/claims/review-drops-summary.md",
+		"docs/specs/generated/claim-evidence-state.md",
+		".cautilus/audit/surface-audit.json",
+		"docs/specs/generated/audit.spec.md",
+	]);
 	assert.equal(parsed.json, false);
 });
 
@@ -96,6 +109,21 @@ test("generated artifact drift check fails for modified tracked generated artifa
 		assert.equal(payload.status, "generated_artifact_drift");
 		assert.deepEqual(payload.changed, [
 			{ status: " M", path: ".cautilus/claims/status-summary.json" },
+		]);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("generated artifact drift check covers claim refresh artifacts beyond status summaries", () => {
+	const root = mkdtempSync(join(tmpdir(), "cautilus-generated-claim-refresh-"));
+	try {
+		initRepo(root);
+		writeFileSync(join(root, ".cautilus", "claims", "latest.json"), "dirty\n", "utf-8");
+		const payload = checkGeneratedArtifactDrift(root);
+		assert.equal(payload.ready, false);
+		assert.deepEqual(payload.changed, [
+			{ status: " M", path: ".cautilus/claims/latest.json" },
 		]);
 	} finally {
 		rmSync(root, { recursive: true, force: true });

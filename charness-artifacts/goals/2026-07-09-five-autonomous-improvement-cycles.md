@@ -9,11 +9,10 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 2 — generated drift coverage.
-- Current slice intent: make generated-artifact drift checks cover claim refresh
-  outputs that operators already rely on.
-- Next action: commit Cycle 1, then inspect `check-generated-artifact-drift`
-  before editing its coverage.
+- Current slice: Cycle 3 — choose the next deterministic validator or proof guard.
+- Current slice intent: continue with a small locally decidable improvement after
+  Cycle 2's generated drift guard expansion.
+- Next action: inspect remaining scout candidates and pick a narrow Cycle 3 target.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -82,8 +81,8 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Validate review-drop source sample policy shape. | Start with a low-risk proof-integrity slice. | Focused tests, generated artifacts, critique record, commit. | complete |
-| 2 | Expand generated drift coverage for claim refresh outputs. | Candidate scouts found a check gap while Cycle 1 regenerated claim packets. | Focused tests, drift check proof, commit. | in-progress |
-| 3 | Improve a deterministic validator, scanner, or fixture path. | Mid-run cycle should strengthen repeatable checks rather than prose alone. | Focused tests, validator output, commit. | pending |
+| 2 | Expand generated drift coverage for claim refresh outputs. | Candidate scouts found a check gap while Cycle 1 regenerated claim packets. | Focused tests, drift check proof, commit. | complete |
+| 3 | Improve a deterministic validator, scanner, or fixture path. | Mid-run cycle should strengthen repeatable checks rather than prose alone. | Focused tests, validator output, commit. | in-progress |
 | 4 | Improve documentation/contract synchronization where code and packet behavior can prove it. | Use accumulated context to tighten source-of-truth alignment. | Contract/doc diff plus check, critique/defer record, commit. | pending |
 | 5 | Final small hardening slice and bundle verification. | Close the run with a useful improvement and broad proof. | Focused checks, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | pending |
 
@@ -164,6 +163,20 @@ applies.
 - Critique: parent-delegated fresh-eye review recorded in `charness-artifacts/critique/2026-07-09-cycle-1-review-drop-policy-shape-critique.md`.
 - Off-goal findings: scouts proposed later cycles for generated drift coverage, canonical map check mode, status-report SOT splits, and goal closeout guards.
 - Lessons carried forward: policy provenance needs semantic invariant checks, not only field presence checks.
+- Metrics: not measured.
+
+### Cycle 2 — Generated Drift Coverage
+
+- Objective: make `generated:drift:check` cover every checked-in claim refresh artifact that `claims:refresh:all` writes.
+- Why this approach: pre-push already trusts `generated:drift:check`; expanding its default target list closes the smallest observed gap without adding a new gate.
+- Commits: `Cover claim refresh generated drift`.
+- What changed: `DEFAULT_GENERATED_ARTIFACTS` now includes `.cautilus/claims/latest.json`, `evidenced-typed-runners.json`, `canonical-claim-map.json`, `claim-status-report.md`, and `review-drops-summary.{json,md}` in addition to the existing status/evidence/audit outputs.
+- Alternatives rejected: did not add historical or ignored claim artifacts because the gate should stay scoped to canonical checked-in refresh outputs.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/check-generated-artifact-drift.test.mjs`; `npm run generated:drift:check`; `npm run lint:eslint`; `git diff --check`.
+- Test duplication pressure: the test asserts the full default path list and a non-status claim refresh dirty file; full hook execution is reserved for final `npm run hooks:check`.
+- Critique: parent-delegated fresh-eye review from agent `019f46ce-1a37-7cb0-9e4e-211421549ef3`; verdict OK, no findings.
+- Off-goal findings: none beyond existing Cycle 1 scout queue.
+- Lessons carried forward: pre-push guard confidence depends on the default generated-artifact inventory matching the producer command chain.
 - Metrics: not measured.
 
 ## Context Sources
