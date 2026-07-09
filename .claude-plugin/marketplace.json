@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "Local Claude Code marketplace for the standalone Cautilus skill package",
-    "version": "0.19.0"
+    "version": "0.19.1"
   },
   "plugins": [
     {
       "name": "cautilus",
       "source": "./plugins/cautilus",
-      "version": "0.19.0",
+      "version": "0.19.1",
       "description": "Standalone CLI and bundled agent for discovering, evaluating, and improving agent behavior.",
       "keywords": [
         "agent-behavior",
