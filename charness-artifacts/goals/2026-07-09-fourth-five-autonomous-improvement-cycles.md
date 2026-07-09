@@ -1,6 +1,6 @@
 # Achieve Goal: Fourth Five Autonomous Improvement Cycles
 
-Status: active
+Status: complete
 Created: 2026-07-09
 Activation: `/goal @charness-artifacts/goals/2026-07-09-fourth-five-autonomous-improvement-cycles.md`
 
@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 5 — Node standing test script parity.
-- Current slice intent: lock package-script Node test globs so standing spec and coverage variants keep the same exclusions.
-- Next action: commit Cycle 4, then implement Cycle 5.
+- Current slice: complete — all five improvement cycles are implemented, reviewed, committed or staged for the closeout commit, and locally verified.
+- Current slice intent: closed after final broad local proof, debug RCA, retro, host-probe non-claim, and disposition review.
+- Next action: none — report the completed run.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at closeout.
 - Gate cadence: pre-lock slices use `run_slice_closeout.py --skip-broad-pytest`; final/bundle proof records the verification lock and uses `--verification-lock`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -75,23 +75,11 @@ Each cycle should improve the standalone Cautilus product boundary or Cautilus A
 | 2 | Reject missing values for explicit generated artifact drift `--path`. | Explicit path mode should fail on malformed CLI input instead of silently falling back to the default artifact set. | Focused Node tests, critique, commit. | complete |
 | 3 | Reject non-review-input packets in the claim review input summary renderer. | A readable projection should not silently summarize the wrong JSON packet shape. | Focused Node tests, critique, commit. | complete |
 | 4 | Normalize fragment and query suffixes in canonical spec index links. | Spec index links can point at `.spec.md#section` or `.spec.md?view=...`; catalog parsing should still discover the same local spec page once. | Focused Node tests, generated check if affected, critique, commit. | complete |
-| 5 | Lock Node standing test glob parity across spec and coverage scripts. | Script drift can accidentally pull heavier on-demand tests into standing gates or make spec and coverage variants test different files. | Focused tests, final gates, closeout artifacts, commit. | in progress |
+| 5 | Lock Node standing test glob parity across spec and coverage scripts. | Script drift can accidentally pull heavier on-demand tests into standing gates or make spec and coverage variants test different files. | Focused tests, final gates, closeout artifacts, commit. | complete |
 
 ## Operator Decision Queue
 
-- none — this run has no operator-only decisions at activation.
-  External side effects are out of scope.
-
-Record decisions, confirmations, credential actions, manual proof steps, and external-boundary approvals discovered during the run when they do not block safe local progress.
-Use `none — <reason>` when the queue is empty at closeout.
-
-Queue item form:
-
-- Decision: operator-only decision or confirmation needed
-- Owner: operator or named human owner
-- Why deferred: why the run did not stop immediately
-- Unblock action: exact action or answer needed
-- Revisit trigger: event, date, or proof boundary that reopens this
+none — this run stayed local-only; no publish, push, remote CI, release, credential action, or operator-only decision was needed.
 
 ## Coordination Cues
 
@@ -109,7 +97,7 @@ Fill during the run:
 Routing step line — record it on ONE physical line so the floor reads the whole value (a soft-wrapped value is tolerated now, but one line is clearest).
 Copy the form below and replace `<skill>` with the find-skills-recommended skill; the placeholder is intentionally non-satisfying (the Gather / Release / Issue closeout floors are presence-only, so no stub is seeded for them — add their line per the bullets above when that boundary is crossed):
 
-Routing: find-skills -> achieve, impl, quality, critique, retro — user requested another multi-cycle autonomous implementation run with per-slice review, local quality gates, and closeout retro tracking.
+Routing: find-skills -> achieve, impl, debug, quality, critique, retro — user requested another multi-cycle autonomous implementation run with per-slice review, local quality gates, debug-first handling for final verify failure, and closeout retro tracking.
 
 ## Discuss Before Activation
 
@@ -165,6 +153,18 @@ Required only when a trigger fires (live/prod proof, issue close/split, broad sc
 - Off-goal findings: none.
 - Lessons carried forward: Link normalization should validate the raw target before joining it to a local directory; suffix stripping alone can accidentally reinterpret absolute or external links as local.
 
+### Slice 5: Cycle 5 — Node Standing Test Script Parity
+
+- Objective: Lock standing Node test script globs so spec and coverage variants cannot drift into different test sets or accidentally include on-demand tests.
+- Why this approach: `npm run verify` relies on standing test scripts staying bounded; on-demand tests have their own heavier lane and should not enter standing gates through broad glob drift.
+- What changed: Strengthened `scripts/run-verify.test.mjs` to require the exact standing glob allowlist, require `test:node:on-demand` to be exactly `scripts/on-demand/*.test.mjs`, and keep coverage on-demand exclusions asserted.
+- Alternatives rejected: Rejected changing package scripts because the existing scripts were correct; the improvement was to make drift detectable.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/run-verify.test.mjs`; `npm run lint:eslint`; `git diff --check`.
+- Critique: Fresh-eye review `019f473e-4d20-79c2-ac5f-c8895d24f52a` found the first guard did not reject broad recursive globs or mixed on-demand scripts; fixed and re-reviewed OK by `019f4740-9714-72b1-9ba1-0d152f1e92c6`.
+- Final broad verification: `npm run verify`; `npm run hooks:check`; `npm run generated:drift:check`.
+- Off-goal findings: `npm run verify` initially failed because Cycle 1's status report wording changed without updating `docs/contracts/reviewable-artifact-projections.json`; resolved through `charness-artifacts/debug/latest.md` and the projection matrix marker update.
+- Lessons carried forward: Package-script parity tests should use exact allowlists for safety-critical standing gates, not only same-as comparisons.
+
 ## Context Sources
 
 Durable references this goal was shaped from.
@@ -201,18 +201,38 @@ Preserves reasoning so a fresh session re-verifies the folded revisions without 
 
 Issues or deferred findings discovered during the run.
 
+- Final verify found stale reviewable artifact proof-marker metadata after Cycle 1 changed claim-status report wording.
+  Resolved in this run by updating `docs/contracts/reviewable-artifact-projections.json`, validating `scripts/agent-runtime/reviewable-artifact-projections.test.mjs`, and recording `charness-artifacts/debug/latest.md`.
+
 ## Final Verification
 
 Closeout evidence — replace each `TODO` with a bound `<path>` (a checked-in retro / host-log probe / disposition-review artifact) or an explicit `skipped: <allowed-reason>: <detail>`.
 The complete gate rejects a literal `TODO` / `<path>` / `TBD` until you do.
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+Retro: charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md
+Host log probe: charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-host-probe.md
+Disposition review: charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-disposition-review.md
+
+Final gates:
+
+- `npm run verify` — passed after the reviewable artifact projection marker RCA fix.
+- `npm run hooks:check` — passed.
+- `npm run generated:drift:check` — passed.
+- `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/reviewable-artifact-projections.test.mjs` — passed after the debug fix.
+- `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.63.0/scripts/validate_debug_artifact.py --repo-root .` — passed.
+
+Non-claims:
+
+- No push, release, remote CI, live runner proof, or publication was performed.
+- Host-window token/time/tool-call metrics were unavailable; the host-probe artifact records that non-claim.
 
 ## User Verification Instructions
 
+- Run `git log --oneline -5` to see the five scoped improvement commits from this fourth run.
+- Run `npm run verify`, `npm run hooks:check`, and `npm run generated:drift:check` from the repo root to reproduce the final local gates.
+- Inspect `charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md` for the waste, decisions, and applied follow-ups.
+
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: renderer proof-marker drift is guarded by the reviewable artifact projection matrix update and RCA; projection semantics are guarded by identity-parity tests; Node standing/on-demand test separation is guarded by exact glob allowlist tests.
+Structural follow-up: applied: `docs/contracts/reviewable-artifact-projections.json`, `scripts/agent-runtime/claim-review-result-projection.mjs`, and `scripts/run-verify.test.mjs` now carry the transferable fixes from this run.

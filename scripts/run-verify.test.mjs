@@ -75,10 +75,20 @@ test("PHASES covers every npm run verify sub-phase", () => {
 
 test("coverage node runners keep the same test glob as test:node", () => {
 	const { scripts } = JSON.parse(readFileSync("package.json", "utf-8"));
-	const expectedGlobs = nodeTestGlobs(scripts["test:node"]);
+	const expectedGlobs = [
+		"bin/*.test.mjs",
+		"scripts/*.test.mjs",
+		"scripts/agent-runtime/*.test.mjs",
+		"scripts/release/*.test.mjs",
+	];
 
+	assert.deepEqual(nodeTestGlobs(scripts["test:node"]), expectedGlobs);
+	assert.deepEqual(nodeTestGlobs(scripts["test:node:spec"]), expectedGlobs);
 	assert.deepEqual(nodeTestGlobs(scripts["test:node:coverage"]), expectedGlobs);
 	assert.deepEqual(nodeTestGlobs(scripts["test:node:coverage:spec"]), expectedGlobs);
+	assert.deepEqual(nodeTestGlobs(scripts["test:node:on-demand"]), ["scripts/on-demand/*.test.mjs"]);
+	assert.match(scripts["test:node:coverage"], /--exclude='scripts\/on-demand\/\*\*'/);
+	assert.match(scripts["test:node:coverage:spec"], /--exclude='scripts\/on-demand\/\*\*'/);
 });
 
 test("parseArgs defaults to non-verbose", () => {

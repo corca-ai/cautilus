@@ -176,7 +176,7 @@
       "tests": ["scripts/agent-runtime/render-claim-status-report.test.mjs"],
       "commands": ["npm run claims:status-report"],
       "proofMarkers": [
-        {"path": "scripts/agent-runtime/render-claim-status-report.mjs", "contains": ["Use the JSON packets as the audit source", "Active updates still match the current claim packet"]},
+        {"path": "scripts/agent-runtime/render-claim-status-report.mjs", "contains": ["Use the JSON packets as the audit source", "Active updates still match current claim identity"]},
         {"path": "scripts/agent-runtime/render-claim-status-report.test.mjs", "contains": ["human-readable projection over the current claim packet", "Old proof gap should not appear as current work"]}
       ]
     },

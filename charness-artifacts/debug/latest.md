@@ -3,74 +3,74 @@ Date: 2026-07-09
 
 ## Problem
 
-Cycle 1 focused test failed after adding specdown generated outputs to `DEFAULT_GENERATED_ARTIFACTS`.
-The failure was `ENOENT: no such file or directory, open '<tmp>/.cautilus/specdown/claim-inventory.json'`.
+`npm run verify` failed in `test:coverage` after Cycle 5 because `reviewable-artifact-projections.test.mjs` expected the old claim-status report proof marker string.
 
 ## Correct Behavior
 
-`scripts/check-generated-artifact-drift.test.mjs` should create every parent directory needed by the default generated artifact list before writing fixture files.
-Adding a new generated artifact path should require updating the expected list, not remembering to add another hard-coded `mkdirSync`.
+Given a report renderer's operator-facing proof marker text changes, when the reviewable artifact projection matrix is checked, then the matrix should point at the current executable marker text.
 
 ## Observed Facts
 
-- `npm run generated:drift:check` passed against the real repo.
-- `node --test scripts/check-generated-artifact-drift.test.mjs` failed in `initRepo`.
-- The stack trace pointed to `writeFileSync(join(root, path), ...)` for `.cautilus/specdown/claim-inventory.json`.
-- `initRepo` pre-created `.cautilus/claims`, `.cautilus/audit`, and `docs/specs/generated`, but not `.cautilus/specdown`.
+- `npm run verify` failed with `claim-status-markdown proof marker missing Active updates still match the current claim packet in scripts/agent-runtime/render-claim-status-report.mjs`.
+- `scripts/agent-runtime/render-claim-status-report.mjs` now emits `Active updates still match current claim identity`.
+- `docs/contracts/reviewable-artifact-projections.json` still required the old marker.
+- `rg` found no remaining executable use of the old marker except the matrix entry and failing test output.
 
 ## Reproduction
 
-- Run `node --test scripts/check-generated-artifact-drift.test.mjs` after adding `.cautilus/specdown/claim-inventory.json` to `DEFAULT_GENERATED_ARTIFACTS`.
-- Observe the `ENOENT` failure before any drift assertion runs.
+- `npm run verify` reproduced the failure during `test:coverage`.
+- Narrow reproducer: `node --test scripts/agent-runtime/reviewable-artifact-projections.test.mjs`.
 
 ## Candidate Causes
 
-- The real drift checker cannot handle nested generated paths.
-- The new generated path is not tracked in the real repo.
-- The temporary fixture repo creates only historical generated directories and not parent directories for every default path.
+- Matrix drift: proof marker metadata was not updated when the renderer wording changed.
+- Test drift: the projection matrix test might be asserting an obsolete marker that no longer matters.
+- Renderer regression: the renderer might have accidentally dropped the intended proof sentence entirely.
 
 ## Hypothesis
 
-- If `initRepo` creates `dirname(join(root, path))` for each `DEFAULT_GENERATED_ARTIFACTS` entry before writing it, the focused tests will reach the intended drift assertions and pass.
-- Disconfirmer: rerun the focused test and see another `ENOENT` for a default generated path.
+- Falsifiable claim: updating the `claim-status-markdown` matrix marker to the new renderer sentence will make the narrow projection matrix test pass.
+  Disconfirmer: run `node --test scripts/agent-runtime/reviewable-artifact-projections.test.mjs` after the matrix update.
 
 ## Verification
 
-- Confirmed root cause from stack trace and `initRepo` directory setup.
-- Confirmed: `node --test scripts/check-generated-artifact-drift.test.mjs` passes after deriving fixture parent directories from `DEFAULT_GENERATED_ARTIFACTS`.
+- Result: confirmed.
+  The narrow projection matrix test passed after updating the matrix marker.
 
 ## Root Cause
 
-The fixture setup encoded a stale copy of generated artifact parent directories.
-Cycle 1 correctly expanded the default path list, but the test helper did not derive its directory setup from that same list.
+Cycle 1 changed the status report wording from field-equality language to claim-identity language, but only updated the renderer, generated report, and renderer tests.
+The reviewable artifact projection matrix is a separate executable proof registry and was left with the old marker.
 
 ## Invariant Proof
 
-- Invariant: tests that iterate `DEFAULT_GENERATED_ARTIFACTS` should derive fixture directories from `DEFAULT_GENERATED_ARTIFACTS`.
-- Producer Proof: `initRepo` now calls `mkdirSync(dirname(join(root, path)), { recursive: true })` inside the loop.
-- Final-Consumer Proof: focused Node tests exercise each default path through a temporary git repo.
-- Interface-Shape Sibling Scan: future generated path additions should not need separate directory boilerplate.
-- Non-Claims: this does not change the drift checker runtime behavior beyond the intended default path list.
+- Invariant: every operator-facing projection proof marker in `docs/contracts/reviewable-artifact-projections.json` must match current executable renderer text.
+- Producer Proof: `scripts/agent-runtime/render-claim-status-report.mjs` contains `Active updates still match current claim identity`.
+- Final-Consumer Proof: `scripts/agent-runtime/reviewable-artifact-projections.test.mjs` passes after the matrix marker update.
+- Interface-Shape Sibling Scan: searched for both old and new marker strings with `rg`; only the matrix needed synchronization.
+- Non-Claims: this does not claim any change to report semantics beyond the already-reviewed Cycle 1 behavior.
 
 ## Detection Gap
 
-- Focused Node test | fired immediately after the path-list change | smallest prevention is deriving fixture directories from the same list.
+- Surface: Cycle 1 focused checks.
+  What did not fire: they ran report-specific tests and generated report checks, but not the projection matrix proof-marker test.
+  Smallest change to fire it: when changing a renderer proof sentence, run `node --test scripts/agent-runtime/reviewable-artifact-projections.test.mjs` or update the matrix in the same slice.
 
 ## Sibling Search
 
-- Mental model: adding a path to the generated list only requires updating assertion arrays.
-- same file: fixture parent directories | decision: derive from `DEFAULT_GENERATED_ARTIFACTS` | proof: focused test.
-- same command surface: real repo `generated:drift:check` | decision: keep as runtime proof | proof: command passed before fixture fix.
-- cross-file: no cross-file sibling because this was local test fixture setup around the changed constant.
+- Mental model: renderer tests were treated as the whole owner of report wording.
+- same-surface: `.cautilus/claims/claim-status-report.md` was regenerated; decision: synchronized; proof: `npm run claims:status-report:check`.
+- contract registry: `docs/contracts/reviewable-artifact-projections.json`; decision: update required marker; proof: narrow projection matrix test.
+- cross-file: `scripts/agent-runtime/render-claim-status-report.test.mjs`; decision: already updated to the new wording; proof: focused renderer test passed.
 
 ## Seam Risk
 
-- Interrupt ID: none
+- Interrupt ID: reviewable-artifact-projection-marker-drift
 - Risk Class: none
-- Seam: none
-- Disproving Observation: failure is deterministic local fixture setup, not a host/runtime seam.
+- Seam: local contract metadata and renderer source.
+- Disproving Observation: the narrow matrix test passes after metadata synchronization.
 - What Local Reasoning Cannot Prove: n/a
-- Generalization Pressure: none
+- Generalization Pressure: monitor
 
 ## Interrupt Decision
 
@@ -81,5 +81,4 @@ Cycle 1 correctly expanded the default path list, but the test helper did not de
 
 ## Prevention
 
-Keep generated-artifact drift tests list-derived where possible.
-When the default generated path list grows, fixture setup should compute parent directories from the list instead of maintaining another directory checklist.
+When changing projection marker wording, include `reviewable-artifact-projections.test.mjs` in the focused verification set or update the matrix before broad verify.
