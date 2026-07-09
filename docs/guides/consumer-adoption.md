@@ -51,6 +51,8 @@ What each step proves:
    Use `first_bounded_run.decisionLoopCommands[*]` for the generic packet loop, and use `first_bounded_run.normalizationFamilies[*].exampleInputCli` only when you want a minimal scenario-normalization packet before reaching for repo-local fixtures.
    If the adapter declares `evaluation_input_default`, the fixture command points at that checked-in default directly; otherwise choose the host-owned fixture before running it.
    The fresh-consumer smoke follows the same loop through `evaluate observation`, so the checked-in capture proves the packet recheck, not only runner invocation.
+7. If the repo already knows whether it is starting from chatbot, skill, or workflow behavior, start from the matching [starter kit](../../examples/starters/) instead of hand-authoring the first adapter.
+   The starter placeholders prove wiring only; replace them with host-owned runners before claiming real behavior coverage.
 
 ## Migration Checklist
 
@@ -103,6 +105,14 @@ This helper:
 - runs `cautilus evaluate fixture --fixture <fixture.json>` inside that temp repo
 - runs `cautilus evaluate observation --input <eval-observed.json> --output <eval-summary.recheck.json>` against the observed packet
 - proves the fresh consumer reaches one bounded fixture summary and one packet recheck summary instead of stopping at wiring
+
+To prove the shipped normalization-family starters without mutating a consumer repo:
+
+```bash
+npm run consumer:starters:smoke
+```
+
+This helper checks [examples/starters/](../../examples/starters/) and requires all three starter kits to resolve, reach `doctor ready`, and emit at least one normalized scenario candidate.
 
 ## Deprecated Surface Names
 

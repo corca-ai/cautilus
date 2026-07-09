@@ -13,7 +13,7 @@ The target product is:
 - product-owned helper scripts and Cautilus Agent references for bounded evidence mining and improvement loops
 - train-vs-held-out discipline backed by scenario history
 - scenario proposal flows that mine runtime logs and audit traces into draft evaluation cases
-- first-class evaluation surfaces for chatbot, skill, and durable workflow behavior
+- normalization-family proposal flows for chatbot, skill, and durable workflow behavior
 - runner readiness as a setup substrate under `claim`, `eval`, and `improve`, especially for app behavior proof
 - `eval live` as the command surface for live app runner discovery, single-run invocation, and batched live scenarios
 - agent-first command and packet surfaces that reveal user intent while hiding lower-level helper detail
@@ -55,6 +55,7 @@ Current `core validated surface`:
 - native self-dogfood HTML rendering through `cautilus doctor artifacts render-self-dogfood-html` and `render-experiments-html`
 - tagged-release install surface (`install.sh`, checksum + `actions/attest` subject attestation) plus product-owned public-release verification and `release:smoke-install` helpers
 - checked-in local gates, GitHub workflows that run `verify`, and an external consumer onboarding smoke (`consumer:onboard:smoke`) that proves install → adapter init → minimal wiring → adapter resolve → doctor ready → one bounded `evaluate fixture -> evaluate observation` packet loop
+- normalization-family starter kits under [examples/starters/](../examples/starters/) plus `consumer:starters:smoke`, covering chatbot, skill, and workflow bootstrap adapters and canonical normalization inputs
 
 Current `product-owned helper surface`:
 
@@ -173,10 +174,10 @@ Shipped:
 
 - [docs/guides/consumer-adoption.md](./guides/consumer-adoption.md) plus `npm run consumer:onboard:smoke` prove install → adapter init → minimal runnable wiring → adapter resolve → doctor ready → one bounded `evaluate fixture -> evaluate observation` packet loop in a temp git repo
 - release discipline boundary documented in [release-boundary.md](./maintainers/release-boundary.md)
+- normalization-family starter kits for chatbot, skill, and workflow bootstrap adapters plus proposal-input examples, with repo-relative smoke output and parity-tested canonical inputs
 
 Still open:
 
-- normalization-family starter kits beyond the generic onboarding smoke
 - keep the supported install smoke focused on `install.sh`
 - continue moving host-specific runtime seams (raw log readers, host storage conventions) out of the product boundary
 
@@ -198,7 +199,7 @@ What remains is below-apex hardening, in measured priority order:
 3. Expand scenario-history beyond the first profile-backed comparison cache-key path toward reusable baseline results and broader compare ownership.
 4. Continue moving host-specific runtime seams out of the product boundary into consumer-owned adapters, prompts, and storage readers.
 5. Keep expanding normalization-pattern coverage as new consumer patterns appear, while preserving one official adapter contract (`cautilus-adapter.yaml`).
-6. Decide whether to grow external-consumer onboarding into normalization-family starter kits while keeping the supported installer surface centered on `install.sh`.
+6. Keep the shipped normalization-family starter kits current as new consumer patterns appear while keeping the supported installer surface centered on `install.sh`.
 7. Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.
 8. Specify a future interactive workbench only when the product is ready to support GUI-backed claim and scenario browsing, editing, deletion, and addition.
     Do not use the current live app runner seam as that GUI workbench concept.

@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { resolve, join } from "node:path";
+import { isAbsolute, relative, resolve, join } from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
@@ -57,22 +57,74 @@ function runCommand(command, args, { cwd = process.cwd() } = {}) {
 		exitCode: result.status ?? 1,
 		stdout: result.stdout ?? "",
 		stderr: result.stderr ?? "",
+		spawnError: result.error
+			? {
+					code: result.error.code || null,
+					message: result.error.message,
+				}
+			: null,
 	};
 }
 
-function summarizeCommandForOutput(summary) {
-	return {
-		command: summary.command,
-		args: summary.args,
+function toRepoRelative(repoRoot, value) {
+	if (typeof value !== "string" || value === "") {
+		return value;
+	}
+	if (!isAbsolute(value)) {
+		return value;
+	}
+	const relativeValue = relative(repoRoot, value);
+	if (relativeValue === "") {
+		return ".";
+	}
+	if (relativeValue.startsWith("..")) {
+		return value;
+	}
+	return relativeValue;
+}
+
+function excerpt(value) {
+	const trimmed = String(value || "").trim();
+	if (trimmed.length <= 400) {
+		return trimmed;
+	}
+	return `${trimmed.slice(0, 400)}...`;
+}
+
+function summarizeCommandForOutput(summary, repoRoot) {
+	const output = {
+		command: toRepoRelative(repoRoot, summary.command),
+		args: summary.args.map((arg) => toRepoRelative(repoRoot, arg)),
 		exitCode: summary.exitCode,
 	};
+	if (summary.spawnError) {
+		output.spawnError = {
+			...summary.spawnError,
+			message: summary.spawnError.message.replaceAll(summary.command, toRepoRelative(repoRoot, summary.command)),
+		};
+	}
+	return output;
 }
 
-function assertCommandOk(summary) {
+function buildFailurePacket({ repoRoot, phase, summary = null, error = null }) {
+	const packet = {
+		phase,
+		message: error?.message || "starter command failed",
+	};
+	if (summary) {
+		packet.command = summarizeCommandForOutput(summary, repoRoot);
+		packet.stderrExcerpt = excerpt(summary.stderr);
+		packet.stdoutExcerpt = excerpt(summary.stdout);
+	}
+	return packet;
+}
+
+function assertCommandOk(summary, context) {
 	if (summary.exitCode !== 0) {
-		throw new Error(
-			`${summary.command} ${summary.args.join(" ")} failed with exit ${summary.exitCode}\n${summary.stderr || summary.stdout}`,
-		);
+		const command = summarizeCommandForOutput(summary, context.repoRoot);
+		const error = new Error(`${command.command} ${command.args.join(" ")} failed with exit ${summary.exitCode}`);
+		error.failure = buildFailurePacket({ ...context, summary, error });
+		throw error;
 	}
 	return summary;
 }
@@ -118,34 +170,43 @@ export function runStarterKitSmoke({ cautilusBin = resolve(process.cwd(), "bin",
 		const inputPath = join(starterRoot, "input.json");
 		const entry = {
 			family: starter.family,
-			repoRoot: starterRoot,
+			starterPath: toRepoRelative(repoRoot, starterRoot),
+			inputPath: toRepoRelative(repoRoot, inputPath),
+			normalizeCommand: `cautilus discover scenarios normalize ${starter.normalize} --input input.json`,
 			commands: [],
 		};
-		const resolveCommand = assertCommandOk(
-			runCommand(cautilusBin, ["doctor", "adapter", "--repo-root", starterRoot]),
-		);
-		entry.commands.push(summarizeCommandForOutput(resolveCommand));
-		const doctorCommand = assertCommandOk(
-			runCommand(cautilusBin, ["doctor", "--repo-root", starterRoot, "--format", "json"]),
-		);
-		entry.commands.push(summarizeCommandForOutput(doctorCommand));
-		entry.doctorReady = readDoctorReady(doctorCommand.stdout, `${starter.family} doctor`);
-		const normalizeCommand = assertCommandOk(
-			runCommand(cautilusBin, [
-				"discover",
-				"scenarios",
-				"normalize",
-				starter.normalize,
-				"--input",
-				inputPath,
-				"--format",
-				"json",
-			]),
-		);
-		entry.commands.push(summarizeCommandForOutput(normalizeCommand));
-		entry.candidateCount = readCandidateCount(normalizeCommand.stdout, `${starter.family} normalize`);
-		entry.ok = entry.doctorReady === true && entry.candidateCount > 0;
-		if (!entry.ok) {
+		try {
+			const context = { repoRoot };
+			const resolveCommand = assertCommandOk(
+				runCommand(cautilusBin, ["doctor", "adapter", "--repo-root", starterRoot]),
+				{ ...context, phase: "doctor-adapter" },
+			);
+			entry.commands.push(summarizeCommandForOutput(resolveCommand, repoRoot));
+			const doctorCommand = assertCommandOk(
+				runCommand(cautilusBin, ["doctor", "--repo-root", starterRoot, "--format", "json"]),
+				{ ...context, phase: "doctor" },
+			);
+			entry.commands.push(summarizeCommandForOutput(doctorCommand, repoRoot));
+			entry.doctorReady = readDoctorReady(doctorCommand.stdout, `${starter.family} doctor`);
+			const normalizeCommand = assertCommandOk(
+				runCommand(cautilusBin, [
+					"discover",
+					"scenarios",
+					"normalize",
+					starter.normalize,
+					"--input",
+					inputPath,
+					"--format",
+					"json",
+				]),
+				{ ...context, phase: "normalize" },
+			);
+			entry.commands.push(summarizeCommandForOutput(normalizeCommand, repoRoot));
+			entry.candidateCount = readCandidateCount(normalizeCommand.stdout, `${starter.family} normalize`);
+			entry.ok = entry.doctorReady === true && entry.candidateCount > 0;
+		} catch (error) {
+			entry.ok = false;
+			entry.failure = error.failure || buildFailurePacket({ repoRoot, phase: "parse", error });
 			result.ok = false;
 		}
 		result.starters.push(entry);
@@ -163,7 +224,20 @@ export async function main(argv = process.argv.slice(2)) {
 			process.exit(1);
 		}
 	} catch (error) {
-		process.stderr.write(`${error.message}\n`);
+		process.stdout.write(
+			`${JSON.stringify(
+				{
+					schemaVersion: "cautilus.starter_kit_smoke.v1",
+					ok: false,
+					failure: {
+						phase: "startup",
+						message: error.message,
+					},
+				},
+				null,
+				2,
+			)}\n`,
+		);
 		process.exit(1);
 	}
 }

@@ -23,7 +23,7 @@ The `scenario normalize skill` proposal-input lineage owns the input shape; see 
 
 The starter ships a `node -e` smoke placeholder for `eval_test_command_templates`, so `doctor` returns `ready` immediately.
 Treat that as bootstrap help, not product-behavior proof.
-Replace the placeholder with your real `cautilus evaluate fixture` runner over time.
+Replace the placeholder with a host-owned command template that `cautilus evaluate fixture` can invoke over time.
 
 ## Run the skill entry point
 

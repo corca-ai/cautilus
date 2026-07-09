@@ -35,7 +35,7 @@ cautilus init adapter --repo-root .
 cautilus doctor adapter --repo-root .
 ```
 
-If you already know which evaluation surface your repo needs, start from the closest starter kit under [examples/starters/](../../examples/starters/) instead of `cautilus init adapter`.
+If you already know which normalization family or behavior shape your repo needs, start from the closest starter kit under [examples/starters/](../../examples/starters/) instead of `cautilus init adapter`.
 Each starter ships a pre-filled `cautilus-adapter.yaml`, a canonical input fixture, and a README that explains what to replace next.
 Treat starter placeholders as bootstrap help, not as proof that a real consumer workflow is already wired.
 

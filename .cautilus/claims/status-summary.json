@@ -130,7 +130,7 @@
         "sampleClaimIds": [
           "claim-readme-md-61",
           "claim-docs-guides-cli-md-574",
-          "claim-docs-master-plan-md-156",
+          "claim-docs-master-plan-md-157",
           "claim-docs-specs-index-spec-md-101",
           "claim-docs-specs-index-spec-md-102"
         ],
@@ -1188,7 +1188,7 @@
         "summary": "If the repo intentionally keeps only named adapters under `.agents/cautilus-adapters/`, use `cautilus doctor --adapter-name <name>` for repo-scope validation."
       },
       {
-        "claimId": "claim-docs-guides-consumer-adoption-md-69",
+        "claimId": "claim-docs-guides-consumer-adoption-md-71",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1198,7 +1198,7 @@
             "path": ".cautilus/claims/evidence-consumer-doctor-onboarding-2026-05-03.json",
             "supportsClaimIds": [
               "claim-docs-guides-consumer-adoption-md-20",
-              "claim-docs-guides-consumer-adoption-md-69"
+              "claim-docs-guides-consumer-adoption-md-71"
             ]
           }
         ],
@@ -1208,7 +1208,7 @@
         "summary": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit."
       },
       {
-        "claimId": "claim-docs-guides-consumer-adoption-md-109",
+        "claimId": "claim-docs-guides-consumer-adoption-md-119",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1218,7 +1218,7 @@
             "path": ".cautilus/claims/evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json",
             "supportsClaimIds": [
               "claim-docs-guides-consumer-adoption-md-48",
-              "claim-docs-guides-consumer-adoption-md-109"
+              "claim-docs-guides-consumer-adoption-md-119"
             ]
           }
         ],
@@ -1228,7 +1228,7 @@
         "summary": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`."
       },
       {
-        "claimId": "claim-docs-guides-consumer-adoption-md-110",
+        "claimId": "claim-docs-guides-consumer-adoption-md-120",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1237,7 +1237,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-consumer-surface-alias-2026-05-03.json",
             "supportsClaimIds": [
-              "claim-docs-guides-consumer-adoption-md-110"
+              "claim-docs-guides-consumer-adoption-md-120"
             ]
           }
         ],
@@ -1361,7 +1361,7 @@
         "summary": "Cautilus exposes machine-readable packets, provenance, status summaries, and bounded next-work routes that other tools can consume."
       },
       {
-        "claimId": "claim-docs-master-plan-md-80",
+        "claimId": "claim-docs-master-plan-md-81",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1370,7 +1370,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-master-plan-claim-discover-proof-plan-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-master-plan-md-80"
+              "claim-docs-master-plan-md-81"
             ]
           }
         ],
@@ -1396,10 +1396,10 @@
         "recommendedEvalSurface": null,
         "recommendedProof": "deterministic",
         "reviewStatus": "agent-reviewed",
-        "summary": "Direction decision (2026-06-10): claim extraction itself becomes agent-primary — the Cautilus Agent extracts claims against a product-owned template while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to git-diff-changed sources; the deterministic heuristic extractor remains an explicitly labeled baseline mode."
+        "summary": "The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation."
       },
       {
-        "claimId": "claim-docs-master-plan-md-87",
+        "claimId": "claim-docs-master-plan-md-88",
         "evidenceRefCount": 1,
         "evidenceRefs": [
           {
@@ -1408,7 +1408,7 @@
             "matchKind": "verified",
             "path": ".cautilus/claims/evidence-master-plan-spec-normalizer-gates-2026-05-17.json",
             "supportsClaimIds": [
-              "claim-docs-master-plan-md-87"
+              "claim-docs-master-plan-md-88"
             ]
           }
         ],
@@ -3434,7 +3434,7 @@
       }
     ]
   },
-  "gitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
+  "gitCommit": "abe583e2d4d053262d224da7594ce9fdba864db3",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3446,10 +3446,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
+    "currentGitCommit": "abe583e2d4d053262d224da7594ce9fdba864db3",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
+    "packetGitCommit": "abe583e2d4d053262d224da7594ce9fdba864db3",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },

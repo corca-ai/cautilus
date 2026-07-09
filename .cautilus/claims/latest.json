@@ -2607,7 +2607,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8aac208866396b84c450be1369558a4a9accf00000d8711dc7e1a69c5467915d",
-      "claimId": "claim-docs-guides-consumer-adoption-md-69",
+      "claimId": "claim-docs-guides-consumer-adoption-md-71",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [
         {
@@ -2619,7 +2619,8 @@
             "claim-docs-guides-consumer-adoption-md-20",
             "claim-docs-guides-consumer-adoption-md-67",
             "claim-docs-guides-consumer-adoption-md-68",
-            "claim-docs-guides-consumer-adoption-md-69"
+            "claim-docs-guides-consumer-adoption-md-69",
+            "claim-docs-guides-consumer-adoption-md-71"
           ]
         }
       ],
@@ -2638,7 +2639,7 @@
       "sourceRefs": [
         {
           "excerpt": "`cautilus doctor --scope repo` requires the target directory to be a git repository with at least one commit.",
-          "line": 69,
+          "line": 71,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -2650,7 +2651,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:23d83d6f72cc9755461377ad2ac8e6f2dafbf01128bd117a8efa793b71aeb95e",
-      "claimId": "claim-docs-guides-consumer-adoption-md-85",
+      "claimId": "claim-docs-guides-consumer-adoption-md-87",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2670,7 +2671,7 @@
       "sourceRefs": [
         {
           "excerpt": "It should answer \"what is the default `Cautilus` evaluation for this repo?\" without forcing the operator to mentally sort multiple unrelated workflows.",
-          "line": 85,
+          "line": 87,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -2682,7 +2683,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8edfa3ce4d6f43ef4031008bcdc6e4fa5fb4afb54762da4eb2a4ef061fd3d9fc",
-      "claimId": "claim-docs-guides-consumer-adoption-md-109",
+      "claimId": "claim-docs-guides-consumer-adoption-md-119",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -2702,7 +2703,7 @@
       "sourceRefs": [
         {
           "excerpt": "The product owns the behavior-surface vocabulary in `cautilus.behavior_intent.v1`.",
-          "line": 109,
+          "line": 119,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -2714,7 +2715,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:7fccb1b11ea6b2c9ccff7fa0f28cde48c29e17d866287b3b45f8a50628896265",
-      "claimId": "claim-docs-guides-consumer-adoption-md-110",
+      "claimId": "claim-docs-guides-consumer-adoption-md-120",
       "claimSemanticGroup": "Release and packaging",
       "evidenceRefs": [
         {
@@ -2725,7 +2726,8 @@
           "supportsClaimIds": [
             "claim-docs-guides-consumer-adoption-md-107",
             "claim-docs-guides-consumer-adoption-md-108",
-            "claim-docs-guides-consumer-adoption-md-110"
+            "claim-docs-guides-consumer-adoption-md-110",
+            "claim-docs-guides-consumer-adoption-md-120"
           ]
         }
       ],
@@ -2744,7 +2746,7 @@
       "sourceRefs": [
         {
           "excerpt": "The schema version stays at `v1`, but some surface strings have been renamed for legacy vocabulary hygiene.",
-          "line": 110,
+          "line": 120,
           "path": "docs/guides/consumer-adoption.md"
         }
       ],
@@ -3369,7 +3371,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:81e37881d69c6e361727b5669225c4b060e7d339a3a91f1fd82a54f2b4d75698",
-      "claimId": "claim-docs-master-plan-md-73",
+      "claimId": "claim-docs-master-plan-md-74",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3386,7 +3388,7 @@
       "sourceRefs": [
         {
           "excerpt": "the first implemented absorption route is scenario-proposal evidence provenance handoff: host-owned candidate miners may attach `origin` and `activityProvenance` to `cautilus.scenario_proposal_inputs.v1`; `prepare-input` preserves those fields, and `propose` validates them when present and preserves them on emitted top-ranked proposal evidence",
-          "line": 73,
+          "line": 74,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3398,7 +3400,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:f2038595d88883381c1a4e025a4f60ffb70c089f56db944e569539b9294ed41e",
-      "claimId": "claim-docs-master-plan-md-80",
+      "claimId": "claim-docs-master-plan-md-81",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3415,7 +3417,7 @@
       "sourceRefs": [
         {
           "excerpt": "The first `claim` slice ships as deterministic `cautilus discover claims`, which emits a source-ref-backed proof plan rather than a verdict.",
-          "line": 80,
+          "line": 81,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3427,7 +3429,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:369242dab623a340040e48a7ba7b1b8e279514aaf0d83fc23ad2474c5509777b",
-      "claimId": "claim-docs-master-plan-md-81",
+      "claimId": "claim-docs-master-plan-md-82",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3445,7 +3447,7 @@
       "sourceRefs": [
         {
           "excerpt": "The next claim-discovery workflow contract lives in [claim-discovery-workflow.md](./contracts/claim-discovery-workflow.md): the binary owns deterministic skeletons, scan scope, state paths, refresh plans, and packet semantics; the Cautilus Agent owns user confirmation, LLM review, grouping, evidence interpretation, and next-action conversation.",
-          "line": 81,
+          "line": 82,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3457,7 +3459,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:58187c8bd7feb4cf51b58f99bf6a1829c885a77931c673d36f6f61c471dc6fbe",
-      "claimId": "claim-docs-master-plan-md-82",
+      "claimId": "claim-docs-master-plan-md-83",
       "claimSemanticGroup": "Agent and skill workflow",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3475,7 +3477,7 @@
       "sourceRefs": [
         {
           "excerpt": "Direction decision (2026-06-10): claim extraction itself becomes agent-primary — the Cautilus Agent extracts claims against a product-owned template while the binary anchors verbatim excerpts, validates packets, and bounds re-extraction to git-diff-changed sources; the deterministic heuristic extractor remains an explicitly labeled baseline mode.",
-          "line": 82,
+          "line": 83,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3487,7 +3489,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:4fcb36134cb7204ba0dc875a4fd2b554573bb1c70092e5302e7555fd035564af",
-      "claimId": "claim-docs-master-plan-md-87",
+      "claimId": "claim-docs-master-plan-md-88",
       "claimSemanticGroup": "Quality gates",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3504,7 +3506,7 @@
       "sourceRefs": [
         {
           "excerpt": "`npm run lint:specs` and `npm run lint:scenario-normalizers` still gate the runtime completeness of the surviving `discover scenarios normalize` helpers; new user-facing copy must reconcile with the surface/preset contract before landing.",
-          "line": 87,
+          "line": 88,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3516,7 +3518,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:815dd0a63f977133f71cba4abf88a635f27ae1e6db6eee7884fc85f9acab52d4",
-      "claimId": "claim-docs-master-plan-md-93",
+      "claimId": "claim-docs-master-plan-md-94",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3535,7 +3537,7 @@
       "sourceRefs": [
         {
           "excerpt": "Their public command namespace is `eval live`; the `workbench` name is reserved for a possible future GUI where operators can browse and edit claims, scenarios, and evidence.",
-          "line": 93,
+          "line": 94,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3547,7 +3549,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:98e0f85947834f4b4391910de08dc6f1c870af7b5e7cdd701f9f1bd98eee860a",
-      "claimId": "claim-docs-master-plan-md-156",
+      "claimId": "claim-docs-master-plan-md-157",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3564,7 +3566,7 @@
       "sourceRefs": [
         {
           "excerpt": "the risk-tier policy on top of the acceptance read ([acceptance-risk-tier.md](./contracts/acceptance-risk-tier.md)): a host declares per-target `required`/`optional`/`skippable` effects in the adapter `acceptance_risk` block; read-time enforcement blocks-or-waives a `required` read in `cautilus evaluate acceptance`, and the skip-time gate in read-only `cautilus doctor` (`acceptanceReadiness`) catches a `required` target never read, with `cautilus evaluate acceptance waive-skip` recording an explicit waiver-on-skip — the product owns only the effect vocabulary, never the risk categories",
-          "line": 156,
+          "line": 157,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3576,7 +3578,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:862486870933c2f77a6e870f56ecd39d3d61d0e1dc05327473b89897e5897be2",
-      "claimId": "claim-docs-master-plan-md-189",
+      "claimId": "claim-docs-master-plan-md-190",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3593,7 +3595,7 @@
       "sourceRefs": [
         {
           "excerpt": "Per-facet routing is being brought into the deterministic engine baseline (`classifyClaimLine`) that produces the checked-in, CI-visible claim population. Progress (measured against the ratified answer-key overlap; agreeing count rising):",
-          "line": 189,
+          "line": 190,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3605,7 +3607,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:1e1d3781f4946fb70586c315428377ac72b570373e576db85aa852ad118d001e",
-      "claimId": "claim-docs-master-plan-md-192",
+      "claimId": "claim-docs-master-plan-md-193",
       "claimSemanticGroup": "Packets and reporting",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3622,7 +3624,7 @@
       "sourceRefs": [
         {
           "excerpt": "**Fork B (the deeper per-facet end-state) has started:** the `namedPacketEmissionClaim` discriminator routes named-packet/explicit-non-LLM shapes `deterministic` with an eval-judgment over-flip guard, no per-claim schema (slice 1, 2026-06-21).",
-          "line": 192,
+          "line": 193,
           "path": "docs/master-plan.md"
         }
       ],
@@ -3634,7 +3636,7 @@
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:8c15df06769d6900be11672ff1c723937ad20bc3eb3212c84d2d740feb54edfb",
-      "claimId": "claim-docs-master-plan-md-202",
+      "claimId": "claim-docs-master-plan-md-203",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -3652,7 +3654,7 @@
       "sourceRefs": [
         {
           "excerpt": "Keep widening HTML surfaces only when the packet boundary stays stable and the page meaningfully improves human review; agents should consume durable packets first.",
-          "line": 202,
+          "line": 203,
           "path": "docs/master-plan.md"
         }
       ],
@@ -18118,7 +18120,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "2119e021f5a82227096a27e0ae29ce651d0d375f",
+  "gitCommit": "abe583e2d4d053262d224da7594ce9fdba864db3",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19972,7 +19974,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:2ed7c896638da905890b0fb5f5f34cd65de62ff145608ebcee3f8a4b23aab884",
+      "contentHash": "sha256:30b14da352fae986ab26aadacd83351410d335e3c20828ce0cc3ba40bd7467d8",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -19982,7 +19984,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:d81ba31078ec2746712cd4e6a99808b0a97d766bf4ecb253769f244126d516c6",
+      "contentHash": "sha256:c2b64fd8345d53cd88f9a6c5e4bdc249a8270ac05e3ee867ba7e866c05dbb7be",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -20022,7 +20024,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:0379b597d630b06d7a0998f2143e6b1123868a97822dd392db238048f73f295d",
+      "contentHash": "sha256:137b42da7cc5fa6af76bad2cc9ff7f4de28fb0902968b7de399e01106ad74946",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
