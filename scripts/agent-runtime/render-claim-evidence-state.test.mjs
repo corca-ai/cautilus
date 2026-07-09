@@ -161,6 +161,7 @@ test("render claim evidence state from claim packet and status snapshot", () => 
 	assert.match(markdown, /ready for proof/);
 	assert.match(markdown, /does not mean a scenario fixture already exists/);
 	assert.match(markdown, /claim\.ready\.repo/);
+	assert.match(markdown, /\| heuristic-review-needed \| human \| 2 \| claim\.ready\.repo, claim\.ready\.skill \| Review heuristic labels before proof\. \|/);
 	assert.match(markdown, /\\\[Prompt behavior\\\] \(prompt\.spec\.md\)/);
 	assert.doesNotMatch(markdown, /\[Prompt behavior\]\(prompt\.spec\.md\)/);
 });

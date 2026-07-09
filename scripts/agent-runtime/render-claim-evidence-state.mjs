@@ -305,6 +305,14 @@ function formatCounts(counts) {
 	return entries.map(([key, value]) => `${key}: ${value}`).join(", ");
 }
 
+function formatSampleClaimIds(ids) {
+	const sampleIds = asArray(ids);
+	if (sampleIds.length === 0) {
+		return "-";
+	}
+	return sampleIds.join(", ");
+}
+
 export function renderMarkdown(projection) {
 	const lines = [
 		"# Claim Evidence State",
@@ -389,8 +397,14 @@ export function renderMarkdown(projection) {
 		"## Cross-Cutting Signals",
 		"",
 		...table(
-			["Signal", "Actor", "Count", "Meaning"],
-			projection.crossCuttingSignals.map((signal) => [signal.id, signal.actor, signal.count, signal.summary]),
+			["Signal", "Actor", "Count", "Sample claims", "Meaning"],
+			projection.crossCuttingSignals.map((signal) => [
+				signal.id,
+				signal.actor,
+				signal.count,
+				formatSampleClaimIds(signal.sampleClaimIds),
+				signal.summary,
+			]),
 		),
 		"",
 		"## How This Avoids A Split SOT",

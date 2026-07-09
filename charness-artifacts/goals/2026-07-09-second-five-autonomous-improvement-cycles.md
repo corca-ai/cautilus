@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 3 — expose cross-cutting sample claim IDs in evidence-state Markdown.
-- Current slice intent: make the human-readable evidence-state projection show the bounded sample IDs already preserved in JSON.
-- Next action: update `render-claim-evidence-state` Markdown and focused tests, regenerate checked-in evidence-state projection if needed.
+- Current slice: Cycle 4 — add a schema marker to the `first_bounded_run` doctor guide.
+- Current slice intent: make the ready doctor payload's embedded first bounded-run guide easier for agents to consume as a packet-like structure.
+- Next action: add schemaVersion to `FirstBoundedRunGuide` and focused CLI smoke assertion.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -83,8 +83,8 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | --- | --- | --- | --- | --- |
 | 1 | Expand generated drift coverage for specdown projection outputs. | Start by making the pre-push guard cover generated files verify already checks. | Focused tests, critique, commit. | complete |
 | 2 | Harden claim status report summary consistency. | Prevent stale status snapshots from silently shaping the status report scoreboard. | Focused tests, critique, commit. | complete |
-| 3 | Show cross-cutting signal sample IDs in evidence-state Markdown. | JSON already preserves sample IDs, but the human projection omits them. | Focused tests, generated projection check, critique, commit. | in-progress |
-| 4 | Improve operator/agent auditability on a narrow surface. | Keep product surfaces packet-first and human-auditable. | Focused tests/docs as needed, critique, commit. | pending |
+| 3 | Show cross-cutting signal sample IDs in evidence-state Markdown. | JSON already preserves sample IDs, but the human projection omits them. | Focused tests, generated projection check, critique, commit. | complete |
+| 4 | Add a schema marker to `first_bounded_run`. | Keep agent-facing doctor guide payloads structured and durable. | Focused CLI smoke test, critique, commit. | in-progress |
 | 5 | Close with a final small hardening slice and broad bundle verification. | Finish with useful code plus final proof. | Focused tests, fresh-eye review, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | pending |
 
 ## Operator Decision Queue
@@ -166,6 +166,20 @@ applies.
 - Critique: Fresh-eye review 019f46f2-fa86-7a42-ac3b-1d31dc60b640: SHOULD-FIX on summary precedence; fixed and re-review OK.
 - Off-goal findings: none
 - Lessons carried forward: When a packet field is validated as source-of-truth, rendering precedence must prefer that validated field over compatibility fallbacks.
+- Metrics:
+
+### Slice 3: Cycle 3 — Evidence-State Signal Samples
+
+- Objective: Expose cross-cutting signal sample claim IDs in the generated evidence-state Markdown projection.
+- Why this approach: The JSON evidence-state projection already preserved bounded sampleClaimIds, but the human-readable table omitted them, forcing operators to return to JSON to find the example claims.
+- Commits:
+- What changed: Added a Sample claims column to Cross-Cutting Signals, formatting the bounded sampleClaimIds list; added a focused Markdown assertion; regenerated .cautilus/claims/evidence-state.json, .cautilus/claims/status-summary.json, and docs/specs/generated/claim-evidence-state.md.
+- Alternatives rejected: Rejected expanding the sample cap because projection generation already bounds sampleClaimIds to eight; the Markdown should surface that bounded data, not change selection policy.
+- Targeted verification: node --test scripts/agent-runtime/render-claim-evidence-state.test.mjs; npm run claims:evidence-state:check; npm run lint:eslint; git diff --check; fresh-eye scoped diff review.
+- Test duplication pressure: One existing projection test gained a precise table-row assertion; no duplicate fixture family added.
+- Critique: Fresh-eye review 019f46f7-712d-7133-97bb-4969f9943def: OK, no findings.
+- Off-goal findings: none
+- Lessons carried forward: When JSON projections preserve bounded action samples, human Markdown mirrors should expose the same bounded pointers instead of hiding the next inspection target.
 - Metrics:
 
 ## Context Sources
