@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -25,6 +25,25 @@ test("renderReviewInputSummary renders a readable non-table review queue", () =>
 	assert.doesNotMatch(markdown, /^\|/m);
 });
 
+test("renderReviewInputSummary rejects non-review-input packet shapes", () => {
+	assert.throws(
+		() => renderReviewInputSummary({ packet: null, inputPath: "bad.json" }),
+		/Expected cautilus\.claim_review_input\.v1 packet object/,
+	);
+	assert.throws(
+		() => renderReviewInputSummary({ packet: [], inputPath: "bad.json" }),
+		/Expected cautilus\.claim_review_input\.v1 packet object/,
+	);
+	assert.throws(
+		() => renderReviewInputSummary({ packet: { schemaVersion: "cautilus.claim_status.v1" }, inputPath: "bad.json" }),
+		/Expected cautilus\.claim_review_input\.v1 packet, received cautilus\.claim_status\.v1/,
+	);
+	assert.throws(
+		() => renderReviewInputSummary({ packet: {}, inputPath: "bad.json" }),
+		/Expected cautilus\.claim_review_input\.v1 packet, received missing schemaVersion/,
+	);
+});
+
 test("render-claim-review-input-summary CLI writes Markdown", () => {
 	const dir = mkdtempSync(join(tmpdir(), "cautilus-review-input-summary-"));
 	const inputPath = join(dir, "review-input-example.json");
@@ -42,6 +61,27 @@ test("render-claim-review-input-summary CLI writes Markdown", () => {
 	const markdown = readFileSync(outputPath, "utf8");
 	assert.match(markdown, new RegExp(escapeRegExp(`- Input: ${inputPath}`)));
 	assert.match(markdown, /- Selected claims: 1/);
+});
+
+test("render-claim-review-input-summary CLI rejects wrong packet schema", () => {
+	const dir = mkdtempSync(join(tmpdir(), "cautilus-review-input-summary-"));
+	const inputPath = join(dir, "status-summary.json");
+	const outputPath = join(dir, "status-summary.md");
+	writeFileSync(inputPath, JSON.stringify({ schemaVersion: "cautilus.claim_status.v1" }), "utf8");
+
+	const result = spawnSync("node", [
+		"scripts/agent-runtime/render-claim-review-input-summary.mjs",
+		"--input",
+		inputPath,
+		"--output",
+		outputPath,
+	], {
+		encoding: "utf-8",
+	});
+
+	assert.equal(result.status, 1);
+	assert.match(result.stderr, /Expected cautilus\.claim_review_input\.v1 packet, received cautilus\.claim_status\.v1/);
+	assert.equal(result.stdout, "");
 });
 
 test("render-claim-review-input-summary CLI refuses to guess an input packet", () => {

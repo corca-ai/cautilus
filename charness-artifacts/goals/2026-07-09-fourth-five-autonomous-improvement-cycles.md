@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 3 — claim review input summary schema validation.
-- Current slice intent: make review-input summary rendering fail fast on non-review-input packets after Cycle 2 hardened generated-artifact drift path parsing.
-- Next action: commit Cycle 2, then implement Cycle 3.
+- Current slice: Cycle 4 — canonical spec index link normalization.
+- Current slice intent: keep canonical spec-tree catalog discovery complete when index links include fragment or query suffixes.
+- Next action: commit Cycle 3, then implement Cycle 4.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at closeout.
 - Gate cadence: pre-lock slices use `run_slice_closeout.py --skip-broad-pytest`; final/bundle proof records the verification lock and uses `--verification-lock`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -73,8 +73,8 @@ Each cycle should improve the standalone Cautilus product boundary or Cautilus A
 | --- | --- | --- | --- | --- |
 | 1 | Align claim status report review-result projection with apply-current claim identity semantics. | The report mixed current-claim field equality with review-result identity and could misclassify active/superseded updates. | Focused Node tests, generated report check, critique, commit. | complete |
 | 2 | Reject missing values for explicit generated artifact drift `--path`. | Explicit path mode should fail on malformed CLI input instead of silently falling back to the default artifact set. | Focused Node tests, critique, commit. | complete |
-| 3 | Reject non-review-input packets in the claim review input summary renderer. | A readable projection should not silently summarize the wrong JSON packet shape. | Focused Node tests, critique, commit. | in progress |
-| 4 | Harden a locally discoverable CLI/report/packet edge found during exploration. | Keep one slot flexible for fresh repo evidence rather than forcing a stale backlog item. | Focused tests, critique, commit. | planned |
+| 3 | Reject non-review-input packets in the claim review input summary renderer. | A readable projection should not silently summarize the wrong JSON packet shape. | Focused Node tests, critique, commit. | complete |
+| 4 | Normalize fragment and query suffixes in canonical spec index links. | Spec index links can point at `.spec.md#section` or `.spec.md?view=...`; catalog parsing should still discover the same local spec page once. | Focused Node tests, generated check if affected, critique, commit. | in progress |
 | 5 | Harden a second locally discoverable CLI/report/packet edge and close the goal. | Finish with an independent product-quality slice plus final broad gates and retro. | Focused tests, final gates, closeout artifacts, commit. | planned |
 
 ## Operator Decision Queue
@@ -142,6 +142,17 @@ Required only when a trigger fires (live/prod proof, issue close/split, broad sc
 - Critique: Fresh-eye review `019f4733-40dc-7343-bdaa-59f889f05b6d` returned OK and noted the dash-prefixed path compatibility tradeoff matches the explicit non-flag value contract.
 - Off-goal findings: none.
 - Lessons carried forward: Optional repeated path flags should reject malformed explicit mode instead of filtering bad values into default behavior.
+
+### Slice 3: Cycle 3 — Review Input Summary Schema Guard
+
+- Objective: Reject non-`cautilus.claim_review_input.v1` packet shapes before rendering a claim review input summary.
+- Why this approach: The renderer is an audit projection for one packet schema; summarizing a status packet or arbitrary JSON would create misleading operator context.
+- What changed: Added a schema guard before rendering, rejected null/array/wrong/missing schema inputs, and covered both API-level and CLI-level failure paths.
+- Alternatives rejected: Rejected permissive rendering with warnings because the output title and guidance are schema-specific and should not be emitted for unknown packet shapes.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/render-claim-review-input-summary.test.mjs`; `npm run lint:eslint`; `git diff --check`.
+- Critique: Fresh-eye review `019f4735-ef2b-7781-a717-2d69222426ca` returned OK and confirmed the guard runs before file writes.
+- Off-goal findings: none.
+- Lessons carried forward: Human-readable packet projections should validate their exact packet schema before producing operator-facing Markdown.
 
 ## Context Sources
 

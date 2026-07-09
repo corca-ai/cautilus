@@ -32,6 +32,8 @@ function readJSON(filePath) {
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
 
+const REVIEW_INPUT_SCHEMA = "cautilus.claim_review_input.v1";
+
 function compactText(value) {
 	return String(value ?? "")
 		.replace(/\s+/g, " ")
@@ -213,6 +215,15 @@ function renderEvidencePreflightLine(lines, evidencePreflight) {
 	lines.push(`- Evidence preflight: ${evidencePreflight.status || "unknown"}; matched refs=${evidencePreflight.matchedRefCount ?? 0}; scanned files=${evidencePreflight.scannedFileCount ?? 0}`);
 }
 
+function assertReviewInputPacket(packet) {
+	if (!packet || Array.isArray(packet) || typeof packet !== "object") {
+		throw new Error(`Expected ${REVIEW_INPUT_SCHEMA} packet object`);
+	}
+	if (packet.schemaVersion !== REVIEW_INPUT_SCHEMA) {
+		throw new Error(`Expected ${REVIEW_INPUT_SCHEMA} packet, received ${packet.schemaVersion || "missing schemaVersion"}`);
+	}
+}
+
 function renderHeader(lines, packet, inputPath) {
 	const clusters = asArray(packet.clusters);
 	const candidates = clusters.flatMap((cluster) => asArray(cluster.candidates));
@@ -243,6 +254,7 @@ function renderHeader(lines, packet, inputPath) {
 }
 
 export function renderReviewInputSummary({ packet, inputPath }) {
+	assertReviewInputPacket(packet);
 	const lines = [];
 	const clusters = asArray(packet.clusters).slice().sort(clusterSort);
 	renderHeader(lines, packet, inputPath);
