@@ -1,7 +1,7 @@
 {
   "name": "cautilus",
   "description": "Standalone CLI and Cautilus Agent for discovering, evaluating, and improving agent behavior.",
-  "version": "0.18.3",
+  "version": "0.19.0",
   "author": {
     "name": "Corca",
     "url": "https://github.com/corca-ai"

@@ -1,63 +1,58 @@
 # Release Surface Check
 Date: 2026-07-09
 
-Released Cautilus `v0.18.3`.
+Released Cautilus `v0.19.0`.
 
 ## Release Scope
 
-`v0.18.3` is a patch release for release-readiness correctness.
-The quality adapter startup probes now exercise the current registry-backed command surfaces: `doctor binary`, `doctor commands`, and `discover scenarios`.
-Cautilus Agent command-discovery guidance now points agents at `doctor commands` instead of the removed top-level `commands` alias across the repo-local, source, and packaged skill surfaces.
-No public command shape is added or removed in this release.
+`v0.19.0` is a minor release for the CLI structured stdout contract.
+Structured command stdout now defaults to YAML for agent readability and token-efficient inspection.
+Parser-facing callers can request JSON with `--format json`, and the existing `--json` compatibility alias is preserved.
+JSON packet files, `--output` artifacts, active-run artifacts, fixtures, and schemas remain JSON.
+The default `cautilus init run` shell export remains unchanged so `eval "$(cautilus init run ...)"` continues to work.
 
 ## Current Version
 
-- previous version: `0.18.2`
-- target version: `0.18.3`
-- target tag: `v0.18.3`
+- previous version: `0.18.3`
+- target version: `0.19.0`
+- target tag: `v0.19.0`
 - git branch: `main`
 - git remote: `origin`
 
 ## Verification
 
-- Debug proof: `charness-artifacts/debug/latest.md`.
-- Release critique: `charness-artifacts/critique/2026-07-09-v0-18-3-release-critique.md`.
-- Release preparation: `npm run release:prepare -- 0.18.3` passed after `npm run claims:refresh:all` refreshed stale claim state.
-- Claim freshness: `npm run release:claim-freshness` passed during release preparation and inside `npm run verify`.
-- Startup probe proof: `measure_startup_probes.py --repo-root . --json` passed with all five configured probes `ok`.
-- Skill disclosure proof: `npm run lint:skill-disclosure` passed.
-- Full verification: `npm run verify` passed all phases in 49.36s after release preparation.
+- Implementation commit: `f2b3ccb3` defaulted structured CLI stdout to YAML and preserved JSON parser/file contracts.
+- Debug proof: `charness-artifacts/debug/latest.md` and `charness-artifacts/debug/debug-2026-07-09-cli-json-alias-parser-leak.md`.
+- Release critique: `charness-artifacts/critique/2026-07-09-v0-19-0-cli-format-release-critique.md`.
+- Release preparation: `npm run release:prepare -- 0.19.0` passed.
+- Claim freshness: `npm run release:claim-freshness` passed during release preparation.
+- Strict alias smoke: `discover claims status --json`, `evaluate claims plan --json`, and `discover claims validate --json` produced parseable JSON after the release critique blocker was fixed.
+- Full verification: `npm run verify` passed all phases in 49.31s before release preparation.
 - Hook verification: `npm run hooks:check` passed.
+- Generated drift check: `npm run generated:drift:check` passed on the implementation commit.
 - Full history secret proof: `npm run security:secrets:history` passed.
 - Publisher policy: `npm run release:publisher-policy:check` passed.
-- On-demand verification: `npm run test:on-demand` passed.
-- Version readback: `./bin/cautilus --version` returned `0.18.3`.
 
 ## Release State
 
-- local release mutation: prepared and committed at `97042dd964980898182d3c7c57f299e4de3c6dcb`
-- branch/tag push: published; at publish time `origin/main` and `refs/tags/v0.18.3` both pointed at `97042dd964980898182d3c7c57f299e4de3c6dcb`
-- release tag commit: `refs/tags/v0.18.3` remains fixed at `97042dd964980898182d3c7c57f299e4de3c6dcb`
-- GitHub release record: published by `release-artifacts` workflow run `28981602710`
-- public release surface verification: passed in the workflow and passed locally through `scripts/release/verify-public-release.mjs`
-- requested review commands: passed locally and passed inside the publish helper before branch/tag push
-- post-publish install readback: passed through `npm run release:smoke-install:current -- --skip-update --json`
+- local release mutation: prepared for `0.19.0`; release commit pending at this artifact update.
+- branch/tag push: pending publish helper execution.
+- release tag commit: pending.
+- GitHub release record: pending tag-triggered workflow.
+- public release surface verification: pending post-publish verifier.
+- requested review commands: passed locally and will be re-run inside the publish helper before branch/tag push.
+- post-publish install readback: pending public release.
 
 ## Public Release Verification
 
-- GitHub Actions: `release-artifacts` run `28981602710` completed successfully.
-- Workflow jobs: `release-artifacts` passed in 4m13s and `verify-public-release` passed in 12s.
-- Public release URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.18.3`.
-- Local verifier: `node ./scripts/release/verify-public-release.mjs --version v0.18.3 --json --retry-attempts 5 --retry-delay-ms 10000` passed on the first attempt.
-- Expected assets were present: `cautilus-v0.18.3.sha256`, four platform tarballs, `cautilus-v0.18.3-checksums.txt`, and `release-notes-v0.18.3.md`.
-- Checksum verification passed, and the release-notes source archive checksum matched `46de6c046117c208e147a317d15b7295fe4e61ffe59f079065f39acb4e7051d6`.
+- GitHub Actions: pending after tag push.
+- Public release URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.19.0`.
+- Local verifier command after workflow publication: `node ./scripts/release/verify-public-release.mjs --version v0.19.0 --json --retry-attempts 5 --retry-delay-ms 10000`.
+- Expected assets: `cautilus-v0.19.0.sha256`, four platform tarballs, `cautilus-v0.19.0-checksums.txt`, and `release-notes-v0.19.0.md`.
 
 ## Distinct-Channel Verification
 
-- `npm run release:smoke-install:current -- --skip-update --json` passed.
-- The install-sh smoke installed `https://github.com/corca-ai/cautilus/releases/download/v0.18.3/cautilus_0.18.3_linux_x64.tar.gz`.
-- The installed wrapper returned `0.18.3` for `--version`.
-- `cautilus version --verbose` reported `current.version` as `0.18.3`, `installKind` as `install_sh_binary`, and the installed binary path under the smoke workdir.
+- Pending post-publish install readback through `npm run release:smoke-install:current -- --skip-update --json`.
 
 ## Release Adapter Preflight
 
@@ -75,8 +70,8 @@ No public command shape is added or removed in this release.
 
 ## Review Proof
 
-- Review proof: `charness-artifacts/critique/2026-07-09-v0-18-3-release-critique.md`.
-- Quality proof: full `npm run verify`, focused startup probes, and skill disclosure checks passed after the patch.
+- Review proof: `charness-artifacts/critique/2026-07-09-v0-19-0-cli-format-release-critique.md`.
+- Quality proof: full `npm run verify`, hooks check, generated drift check, debug artifact validation, strict JSON alias smokes, and requested-review commands passed after the fresh-eye blocker was fixed.
 
 ## Requested Review Gate
 
@@ -86,13 +81,13 @@ No public command shape is added or removed in this release.
 
 ## Post-Publish Proof
 
-- Public release check: passed in GitHub Actions and passed locally.
-- Install readback: passed through `npm run release:smoke-install:current -- --skip-update --json`.
+- Public release check: pending.
+- Install readback: pending.
 
 ## Install Refresh
 
-- Post-publish install refresh status: passed.
-- Full install/update smoke after public release remains available for broader channel validation: `npm run release:smoke-install -- --channel install_sh --version v0.18.3`.
+- Post-publish install refresh status: pending.
+- Full install/update smoke after public release remains available for broader channel validation: `npm run release:smoke-install -- --channel install_sh --version v0.19.0`.
 
 ## User Update Steps
 
