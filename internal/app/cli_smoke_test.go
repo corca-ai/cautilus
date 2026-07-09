@@ -366,6 +366,9 @@ func TestCLIDoctorReportsReadyWithExecutionSurface(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected first_bounded_run payload, got %#v", payload["first_bounded_run"])
 	}
+	if anyToString(firstBoundedRun["schemaVersion"]) != "cautilus.first_bounded_run_guide.v1" {
+		t.Fatalf("unexpected first_bounded_run schemaVersion: %#v", firstBoundedRun["schemaVersion"])
+	}
 	if anyToString(firstBoundedRun["discoveryCommand"]) != "cautilus discover scenarios" {
 		t.Fatalf("unexpected first_bounded_run discovery command: %#v", firstBoundedRun["discoveryCommand"])
 	}

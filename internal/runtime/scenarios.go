@@ -15,6 +15,7 @@ import (
 // and silently leave the new family invisible to `cautilus discover scenarios`.
 
 const ScenarioCatalogSchema = "cautilus.scenario_normalization_catalog.v1"
+const FirstBoundedRunGuideSchema = "cautilus.first_bounded_run_guide.v1"
 
 type ScenarioCatalogEntry struct {
 	Family          string `json:"family"`
@@ -33,6 +34,7 @@ type ScenarioCatalog struct {
 }
 
 type FirstBoundedRunGuide struct {
+	SchemaVersion         string                 `json:"schemaVersion"`
 	Summary               string                 `json:"summary"`
 	DiscoveryCommand      string                 `json:"discoveryCommand"`
 	DecisionLoopCommands  []string               `json:"decisionLoopCommands"`
@@ -87,6 +89,7 @@ func LoadFirstBoundedRunGuide(repoRoot string, evaluationInputDefault string) Fi
 		fixtureArg = "--fixture " + ShellSingleQuote(defaultFixture)
 	}
 	return FirstBoundedRunGuide{
+		SchemaVersion:    FirstBoundedRunGuideSchema,
 		Summary:          "Pick one checked-in fixture, then complete one bounded evaluate fixture run and packet recheck instead of stopping at doctor.",
 		DiscoveryCommand: "cautilus discover scenarios",
 		DecisionLoopCommands: []string{

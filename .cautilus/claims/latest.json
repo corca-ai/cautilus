@@ -13610,7 +13610,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:41c3a5f18ab1db9e6b53d5fa93c350c80785675cef29be33ce9be43934685a06",
-      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-229",
+      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-230",
       "claimSemanticGroup": "Documentation and contracts",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13629,7 +13629,7 @@
       "sourceRefs": [
         {
           "excerpt": "A user can get a safe next workflow branch before spending workflow budget.",
-          "line": 229,
+          "line": 230,
           "path": "docs/specs/promises/doctor-readiness.spec.md"
         }
       ],
@@ -13641,7 +13641,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:ad8aab282e858212b0b60be1349737226fb31858cb7aa48b97d20ed2dc999cb0",
-      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-232",
+      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-233",
       "claimSemanticGroup": "Claim discovery and review",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13658,7 +13658,7 @@
       "sourceRefs": [
         {
           "excerpt": "`doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.",
-          "line": 232,
+          "line": 233,
           "path": "docs/specs/promises/doctor-readiness.spec.md"
         }
       ],
@@ -13670,7 +13670,7 @@
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
       "claimFingerprint": "sha256:a15b820bbcfeedf739421bc4840b0f418a3dc55e283563c3e8d3e3b3ce942497",
-      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-233",
+      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-234",
       "claimSemanticGroup": "Improvement and improvement",
       "evidenceRefs": [],
       "evidenceStatus": "unknown",
@@ -13689,7 +13689,7 @@
       "sourceRefs": [
         {
           "excerpt": "`doctor status --format json` gives Cautilus Agent a JSON orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.",
-          "line": 233,
+          "line": 234,
           "path": "docs/specs/promises/doctor-readiness.spec.md"
         }
       ],
@@ -18090,7 +18090,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "baa033d00ba0a31e8657838c4b73ca4d2f557767",
+  "gitCommit": "f1f9bad762f5e86ed221196b159e901e1522e458",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -20384,7 +20384,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:07b42d196ef6f2380b8a2a4525d340446c3a7ce35478fbe2d216923c2cfdb074",
+      "contentHash": "sha256:f239b1096cef80f649a0c694e0b74ae26ada4eecd290573683b3d56f7ed8e70f",
       "depth": 2,
       "discoveredFrom": "docs/specs/index.spec.md",
       "kind": "spec",

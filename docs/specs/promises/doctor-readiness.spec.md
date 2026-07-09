@@ -221,6 +221,7 @@ For the generated sample adapter, `doctor` keeps the first bounded eval loop vis
 | status | ready | |
 | next_action.kind | runner_readiness | |
 | runnerReadiness.nextBranch.id | create_runner_assessment | |
+| first_bounded_run.schemaVersion | cautilus.first_bounded_run_guide.v1 | |
 | first_bounded_run.summary | | bounded eval |
 | first_bounded_run.discoveryCommand | cautilus discover scenarios | |
 | first_bounded_run.decisionLoopCommands[0] | | cautilus evaluate fixture |

@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:6f3f72df9035f49f79b00ef48c279d049ac5791d53d84b7ad09b2ad72c7c71ed"
+      "contentHash": "sha256:24a256df4599386c06674501bede4d833a1af2c2ee8548e0af3e4368ae389f7c"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:a6f61b85d4439fa76db8a8b35cfd5b0626d47614fc4611bcb4cea57827a31d91"
     }
   },
-  "claimsPacketGitCommit": "baa033d00ba0a31e8657838c4b73ca4d2f557767",
+  "claimsPacketGitCommit": "f1f9bad762f5e86ed221196b159e901e1522e458",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 567,
   "catalogs": {
@@ -346,9 +346,9 @@
       "claim-docs-specs-promises-doctor-readiness-spec-md-54",
       "claim-docs-specs-promises-doctor-readiness-spec-md-58",
       "claim-docs-specs-promises-doctor-readiness-spec-md-216",
-      "claim-docs-specs-promises-doctor-readiness-spec-md-229",
-      "claim-docs-specs-promises-doctor-readiness-spec-md-232",
+      "claim-docs-specs-promises-doctor-readiness-spec-md-230",
       "claim-docs-specs-promises-doctor-readiness-spec-md-233",
+      "claim-docs-specs-promises-doctor-readiness-spec-md-234",
       "claim-docs-specs-promises-improvement-spec-md-8",
       "claim-docs-specs-promises-improvement-spec-md-17",
       "claim-docs-specs-promises-improvement-spec-md-18",
@@ -731,9 +731,9 @@
       "claim-docs-specs-promises-doctor-readiness-spec-md-54",
       "claim-docs-specs-promises-doctor-readiness-spec-md-58",
       "claim-docs-specs-promises-doctor-readiness-spec-md-216",
-      "claim-docs-specs-promises-doctor-readiness-spec-md-229",
-      "claim-docs-specs-promises-doctor-readiness-spec-md-232",
+      "claim-docs-specs-promises-doctor-readiness-spec-md-230",
       "claim-docs-specs-promises-doctor-readiness-spec-md-233",
+      "claim-docs-specs-promises-doctor-readiness-spec-md-234",
       "claim-docs-specs-promises-improvement-spec-md-8",
       "claim-docs-specs-promises-improvement-spec-md-17",
       "claim-docs-specs-promises-improvement-spec-md-18",
@@ -19817,12 +19817,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-229",
+      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-230",
       "summary": "A user can get a safe next workflow branch before spending workflow budget.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/doctor-readiness.spec.md",
-          "line": 229,
+          "line": 230,
           "excerpt": "A user can get a safe next workflow branch before spending workflow budget."
         }
       ],
@@ -19845,12 +19845,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-232",
+      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-233",
       "summary": "`doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/doctor-readiness.spec.md",
-          "line": 232,
+          "line": 233,
           "excerpt": "`doctor` gives the human-facing readiness result: whether setup is ready and what a user should fix or run next."
         }
       ],
@@ -19873,12 +19873,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-233",
+      "claimId": "claim-docs-specs-promises-doctor-readiness-spec-md-234",
       "summary": "`doctor status --format json` gives Cautilus Agent a JSON orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/doctor-readiness.spec.md",
-          "line": 233,
+          "line": 234,
           "excerpt": "`doctor status --format json` gives Cautilus Agent a JSON orientation packet so it can choose an allowed next branch, such as claim discovery, eval, improve, setup, inspection, or stop, before running discovery, evaluation, improvement, edits, or commits."
         }
       ],

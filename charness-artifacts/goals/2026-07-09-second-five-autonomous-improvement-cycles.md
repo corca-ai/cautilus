@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 4 — add a schema marker to the `first_bounded_run` doctor guide.
-- Current slice intent: make the ready doctor payload's embedded first bounded-run guide easier for agents to consume as a packet-like structure.
-- Next action: add schemaVersion to `FirstBoundedRunGuide` and focused CLI smoke assertion.
+- Current slice: Cycle 5 — pin CI specdown installation instead of using `latest`.
+- Current slice intent: close the run with a small workflow determinism hardening slice, then run final broad proof and closeout.
+- Next action: inspect GitHub workflow specdown install commands, add a guard test, and update workflows to a pinned version.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -84,8 +84,8 @@ Each cycle should be locally decidable, scoped to the product boundary, verified
 | 1 | Expand generated drift coverage for specdown projection outputs. | Start by making the pre-push guard cover generated files verify already checks. | Focused tests, critique, commit. | complete |
 | 2 | Harden claim status report summary consistency. | Prevent stale status snapshots from silently shaping the status report scoreboard. | Focused tests, critique, commit. | complete |
 | 3 | Show cross-cutting signal sample IDs in evidence-state Markdown. | JSON already preserves sample IDs, but the human projection omits them. | Focused tests, generated projection check, critique, commit. | complete |
-| 4 | Add a schema marker to `first_bounded_run`. | Keep agent-facing doctor guide payloads structured and durable. | Focused CLI smoke test, critique, commit. | in-progress |
-| 5 | Close with a final small hardening slice and broad bundle verification. | Finish with useful code plus final proof. | Focused tests, fresh-eye review, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | pending |
+| 4 | Add a schema marker to `first_bounded_run`. | Keep agent-facing doctor guide payloads structured and durable. | Focused CLI smoke test, critique, commit. | complete |
+| 5 | Pin CI specdown installation. | Finish with deterministic workflow tooling plus final proof. | Focused workflow tests, fresh-eye review, `npm run verify`, `npm run hooks:check`, goal closeout, commit. | in-progress |
 
 ## Operator Decision Queue
 
@@ -180,6 +180,20 @@ applies.
 - Critique: Fresh-eye review 019f46f7-712d-7133-97bb-4969f9943def: OK, no findings.
 - Off-goal findings: none
 - Lessons carried forward: When JSON projections preserve bounded action samples, human Markdown mirrors should expose the same bounded pointers instead of hiding the next inspection target.
+- Metrics:
+
+### Slice 4: Cycle 4 — First Bounded Run Guide Schema
+
+- Objective: Add a schema marker to the ready doctor payload's first_bounded_run guide.
+- Why this approach: The guide is an agent-consumed structured handoff inside the doctor ready payload; schemaVersion makes it easier to consume as a packet-like structure without guessing shape.
+- Commits:
+- What changed: Added cautilus.first_bounded_run_guide.v1, emitted it from FirstBoundedRunGuide, asserted it in CLI smoke, added executable spec expectation, and refreshed claim packets because the spec is a claim source.
+- Alternatives rejected: Rejected a new command registry entry because no command was added; this is an additive field on an existing doctor payload object.
+- Targeted verification: go test ./internal/app -run TestCLIDoctorReportsReadyWithExecutionSurface; npm run lint:specs; npm run claims:source-freshness:check; npm run claims:canonical-map:check; npm run claims:evidence-state:check; npm run claims:review-drops:check; npm run claims:status-report:check; npm run lint:eslint; git diff --check
+- Test duplication pressure: One existing CLI smoke test gained a schema assertion; executable spec gained the same JSON path expectation.
+- Critique: Fresh-eye review 019f46fb-b9e7-76a2-91a4-ce89681bd3f7: OK, no findings.
+- Off-goal findings: none
+- Lessons carried forward: When a doctor payload object becomes agent handoff material, additive schema markers are useful but should be paired with the existing user-facing executable spec path.
 - Metrics:
 
 ## Context Sources
