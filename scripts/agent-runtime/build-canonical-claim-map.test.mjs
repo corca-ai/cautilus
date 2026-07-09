@@ -231,8 +231,11 @@ test("parseUserCatalog reads only same-directory claim pages from spec index", (
 		const indexMarkdown = [
 			"# User Index",
 			"",
-			"- [Claim Discovery](claim-discovery.spec.md)",
-			"- [Evaluation](evaluation.spec.md)",
+			"- [Claim Discovery](claim-discovery.spec.md#proof-route)",
+			"- [Evaluation](evaluation.spec.md?view=review)",
+			"- [Evaluation Duplicate](evaluation.spec.md#duplicate)",
+			"- [Root Relative](/claim-discovery.spec.md#wrong-root)",
+			"- [External](https://example.com/evaluation.spec.md)",
 			"- [Maintainer](../contracts/index.spec.md)",
 			"- [Root](../index.spec.md)",
 			"",

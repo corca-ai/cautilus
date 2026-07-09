@@ -175,9 +175,23 @@ function h1Title(markdown, fallback) {
 
 function specIndexLinks(markdown, indexPath) {
 	const indexDir = path.dirname(indexPath);
-	return markdownLinks(markdown)
-		.map((target) => path.normalize(path.join(indexDir, target)))
+	const links = markdownLinks(markdown)
+		.map((target) => normalizeSpecIndexTarget(target, indexDir))
+		.filter(Boolean)
 		.filter((target) => target.endsWith(".spec.md") && path.dirname(target) === indexDir);
+	return [...new Set(links)];
+}
+
+function normalizeSpecIndexTarget(target, indexDir) {
+	const stripped = stripLinkSuffix(target);
+	if (!stripped || path.isAbsolute(stripped) || /^[a-z][a-z0-9+.-]*:/iu.test(stripped)) {
+		return null;
+	}
+	return path.normalize(path.join(indexDir, stripped));
+}
+
+function stripLinkSuffix(target) {
+	return String(target ?? "").split(/[?#]/u, 1)[0];
 }
 
 function parseUserSpecTree(markdown, filePath) {

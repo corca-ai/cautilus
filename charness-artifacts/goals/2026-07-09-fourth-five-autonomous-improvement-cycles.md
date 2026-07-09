@@ -9,9 +9,9 @@ The current host goal is already active for this artifact.
 
 ## Active Operating Frame
 
-- Current slice: Cycle 4 — canonical spec index link normalization.
-- Current slice intent: keep canonical spec-tree catalog discovery complete when index links include fragment or query suffixes.
-- Next action: commit Cycle 3, then implement Cycle 4.
+- Current slice: Cycle 5 — Node standing test script parity.
+- Current slice intent: lock package-script Node test globs so standing spec and coverage variants keep the same exclusions.
+- Next action: commit Cycle 4, then implement Cycle 5.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at closeout.
 - Gate cadence: pre-lock slices use `run_slice_closeout.py --skip-broad-pytest`; final/bundle proof records the verification lock and uses `--verification-lock`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -74,8 +74,8 @@ Each cycle should improve the standalone Cautilus product boundary or Cautilus A
 | 1 | Align claim status report review-result projection with apply-current claim identity semantics. | The report mixed current-claim field equality with review-result identity and could misclassify active/superseded updates. | Focused Node tests, generated report check, critique, commit. | complete |
 | 2 | Reject missing values for explicit generated artifact drift `--path`. | Explicit path mode should fail on malformed CLI input instead of silently falling back to the default artifact set. | Focused Node tests, critique, commit. | complete |
 | 3 | Reject non-review-input packets in the claim review input summary renderer. | A readable projection should not silently summarize the wrong JSON packet shape. | Focused Node tests, critique, commit. | complete |
-| 4 | Normalize fragment and query suffixes in canonical spec index links. | Spec index links can point at `.spec.md#section` or `.spec.md?view=...`; catalog parsing should still discover the same local spec page once. | Focused Node tests, generated check if affected, critique, commit. | in progress |
-| 5 | Harden a second locally discoverable CLI/report/packet edge and close the goal. | Finish with an independent product-quality slice plus final broad gates and retro. | Focused tests, final gates, closeout artifacts, commit. | planned |
+| 4 | Normalize fragment and query suffixes in canonical spec index links. | Spec index links can point at `.spec.md#section` or `.spec.md?view=...`; catalog parsing should still discover the same local spec page once. | Focused Node tests, generated check if affected, critique, commit. | complete |
+| 5 | Lock Node standing test glob parity across spec and coverage scripts. | Script drift can accidentally pull heavier on-demand tests into standing gates or make spec and coverage variants test different files. | Focused tests, final gates, closeout artifacts, commit. | in progress |
 
 ## Operator Decision Queue
 
@@ -153,6 +153,17 @@ Required only when a trigger fires (live/prod proof, issue close/split, broad sc
 - Critique: Fresh-eye review `019f4735-ef2b-7781-a717-2d69222426ca` returned OK and confirmed the guard runs before file writes.
 - Off-goal findings: none.
 - Lessons carried forward: Human-readable packet projections should validate their exact packet schema before producing operator-facing Markdown.
+
+### Slice 4: Cycle 4 — Canonical Spec Index Link Normalization
+
+- Objective: Make canonical spec-tree parsing discover same-directory `.spec.md` links with fragment or query suffixes while rejecting root-relative and external links.
+- Why this approach: Markdown indexes often link directly to headings, and those links should still map to the owning spec file without broadening catalog discovery outside the index directory.
+- What changed: Added target suffix stripping, same-directory dedupe, absolute/root-relative/scheme target rejection, and regression coverage for fragment, query, duplicate, root-relative, external, and parent-directory links.
+- Alternatives rejected: Rejected following arbitrary relative paths because the spec-tree fallback intentionally reads only same-directory claim pages from an index.
+- Targeted verification: `node --test --test-reporter=spec --test-reporter-destination=stdout scripts/agent-runtime/build-canonical-claim-map.test.mjs`; `npm run claims:canonical-map:check`; `npm run lint:eslint`; `git diff --check`.
+- Critique: Fresh-eye review `019f4738-9081-7e12-9b9b-ed437a9a6cef` found root-relative links were incorrectly accepted; fixed and re-reviewed OK by `019f473b-5f5e-71b2-8dc5-6fda30be8ce2`.
+- Off-goal findings: none.
+- Lessons carried forward: Link normalization should validate the raw target before joining it to a local directory; suffix stripping alone can accidentally reinterpret absolute or external links as local.
 
 ## Context Sources
 
