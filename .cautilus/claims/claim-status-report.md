@@ -9,7 +9,7 @@ Use the JSON packets as the audit source; use this report to decide what to insp
 - Status packet: .cautilus/claims/status-summary.json
 - Candidate count: 567
 - Source count: 76
-- Packet source commit: 39a6bfe3d0f143c645754613ec559a1889189775
+- Packet source commit: 935bd5126ffbda321ecdc6f84787d981c57b53c7
 - Snapshot notice: gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.
 - Git state snapshot: fresh; stale=no
 - Changed-file scope: committed-diff-between-packet-and-current-head; working tree=excluded
@@ -63,13 +63,13 @@ Maintainer semantic sampling queue:
 | M3 | Binary And Skill Boundary | claim-agents-md-144 (medium), claim-docs-contracts-adapter-contract-md-558 (medium), claim-docs-contracts-adapter-contract-md-567 (low), claim-docs-internal-working-patterns-md-63 (medium) |
 | M4 | Adapter And Host Ownership | claim-agents-md-12 (medium), claim-agents-md-29 (low), claim-agents-md-95 (medium), claim-agents-md-96 (medium) |
 | M5 | Evaluation Surfaces And Runners | claim-docs-contracts-adapter-contract-md-223 (medium), claim-docs-contracts-adapter-contract-md-304 (medium), claim-docs-specs-index-spec-md-55 (medium), claim-docs-specs-index-spec-md-77 (medium) |
-| M6 | Evidence State And Review Artifacts | claim-docs-specs-index-spec-md-168 (low), claim-docs-contracts-acceptance-risk-tier-md-70 (low), claim-docs-contracts-acceptance-risk-tier-md-130 (medium), claim-docs-contracts-claim-discovery-workflow-md-755 (medium) |
+| M6 | Evidence State And Review Artifacts | claim-docs-specs-index-spec-md-168 (low), claim-docs-contracts-acceptance-risk-tier-md-70 (low), claim-docs-contracts-acceptance-risk-tier-md-130 (medium), claim-docs-contracts-claim-discovery-workflow-md-756 (medium) |
 | M7 | Improvement Loop | claim-agents-md-32 (medium), claim-docs-contracts-claim-discovery-workflow-md-420 (medium), claim-docs-contracts-final-acceptance-set-md-68 (medium), claim-docs-contracts-final-acceptance-set-md-78 (low) |
 | M8 | Readiness And Runtime Status | claim-docs-contracts-adapter-contract-md-565 (medium), claim-docs-contracts-acceptance-risk-tier-md-8 (medium), claim-docs-contracts-acceptance-risk-tier-md-129 (medium), claim-docs-contracts-claim-discovery-workflow-md-18 (medium) |
 | M9 | Active Run And Workspace Lifecycle | claim-docs-contracts-acceptance-risk-tier-md-76 (medium), claim-docs-contracts-active-run-md-59 (medium), claim-docs-contracts-active-run-md-158 (medium), claim-docs-contracts-cli-output-format-md-31 (medium) |
 | M10 | Live Invocation Runtime | claim-docs-master-plan-md-94 (medium), claim-docs-specs-index-spec-md-48 (medium), claim-docs-contracts-claim-discovery-workflow-md-306 (medium), claim-docs-contracts-live-run-invocation-batch-md-28 (medium) |
 | M11 | Reporting And Review Variants | claim-docs-contracts-adapter-contract-md-234 (medium), claim-docs-master-plan-md-74 (medium), claim-docs-master-plan-md-190 (medium), claim-docs-master-plan-md-193 (medium) |
-| M12 | Scenario History And Proposal Normalization | claim-agents-md-68 (medium), claim-docs-contracts-claim-discovery-workflow-md-691 (medium), claim-docs-contracts-scenario-history-md-3 (medium), claim-docs-contracts-improvement-search-md-45 (medium) |
+| M12 | Scenario History And Proposal Normalization | claim-agents-md-68 (medium), claim-docs-contracts-claim-discovery-workflow-md-692 (medium), claim-docs-contracts-scenario-history-md-3 (medium), claim-docs-contracts-improvement-search-md-45 (medium) |
 
 Catalog review needed for 129 raw claim(s): claim-readme-md-6, claim-readme-md-8, claim-readme-md-9, claim-readme-md-12, claim-readme-md-19, claim-readme-md-49, claim-readme-md-61, claim-readme-md-63, ...
 
@@ -160,7 +160,7 @@ Full bucket detail is shown because this bucket is not ready for proof.
 | claim-docs-contracts-claim-discovery-workflow-md-128 | docs/contracts/claim-discovery-workflow.md:128 | human-auditable | needs-alignment | heuristic | unknown | Those findings should be recorded as narrative, catalog, alignment, or documentation work before expecting `discover claims` to emit them by default. |
 | claim-docs-contracts-claim-discovery-workflow-md-506 | docs/contracts/claim-discovery-workflow.md:506 | human-auditable | needs-alignment | heuristic | unknown | The binary may provide helper flags such as `discover claims --previous <packet> --refresh-plan`, but the public user-level workflow remains `discover`. |
 | claim-docs-contracts-claim-discovery-workflow-md-560 | docs/contracts/claim-discovery-workflow.md:560 | human-auditable | needs-alignment | heuristic | unknown | That block should separate in-scope false negatives from out-of-scope narrative gaps: a declared promise inside the boundary that discovery missed is a binary bug, while undeclared user-facing behavior outside the boundary is an entry-surface or catalog gap rather than a discoverable claim. |
-| claim-docs-contracts-claim-discovery-workflow-md-697 | docs/contracts/claim-discovery-workflow.md:697 | human-auditable | needs-alignment | heuristic | unknown | The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters. |
+| claim-docs-contracts-claim-discovery-workflow-md-698 | docs/contracts/claim-discovery-workflow.md:698 | human-auditable | needs-alignment | heuristic | unknown | The binary/skill boundary stays clean enough that consumer repos can use the binary plus Cautilus Agent without Cautilus importing host-specific prompts or adapters. |
 | claim-docs-contracts-facet-decomposition-md-59 | docs/contracts/facet-decomposition.md:59 | human-auditable | needs-alignment | heuristic | unknown | So the concrete, highest-measured-value form of this "Next step" is now: bring R6/R12 into the engine baseline (portable defaults plus an adapter-owned routing-hint extension family, mirroring the `non_claim_section_headings` default+extension pattern), kept deterministic; true per-facet decomposition for the whole population stays the deeper end-state gated behind it. |
 | claim-docs-contracts-final-acceptance-set-md-18 | docs/contracts/final-acceptance-set.md:18 | human-auditable | needs-alignment | heuristic | unknown | Repeatedly querying the same valset through the selection channel turns it into a de facto training signal over many generations, so the selected finalist's held-out score can drift away from true generalization. |
 | claim-docs-contracts-final-acceptance-set-md-78 | docs/contracts/final-acceptance-set.md:78 | human-auditable | needs-alignment | heuristic | unknown | Splitting a scarce, expensive-to-author held-out set three ways thins each split and trades known selection power for a noisy detector; authoring fresh boundary cases after search keeps the "never queried" guarantee and leaves held-out selection power intact. |
@@ -239,7 +239,7 @@ Full bucket detail is shown because this bucket is not ready for proof.
 | claim-docs-contracts-claim-discovery-workflow-md-308 | docs/contracts/claim-discovery-workflow.md:308 | human-auditable | blocked | agent-reviewed | unknown | Command, packet, runner, and readiness statements should prefer deterministic proof unless they explicitly depend on model or agent behavior. |
 | claim-docs-contracts-claim-discovery-workflow-md-311 | docs/contracts/claim-discovery-workflow.md:311 | human-auditable | blocked | heuristic | unknown | Historical observation and provider-caveat statements can inform future scenarios, but they should stay `human-auditable` and `blocked` until promoted into a concrete regression claim. |
 | claim-docs-contracts-claim-discovery-workflow-md-371 | docs/contracts/claim-discovery-workflow.md:371 | human-auditable | blocked | agent-reviewed | unknown | `verificationReadiness=needs-alignment` means at least two truth surfaces must be reconciled before proof would be honest. |
-| claim-docs-contracts-claim-discovery-workflow-md-722 | docs/contracts/claim-discovery-workflow.md:722 | human-auditable | blocked | agent-reviewed | unknown | The binary should remain deterministic and provider-neutral. |
+| claim-docs-contracts-claim-discovery-workflow-md-723 | docs/contracts/claim-discovery-workflow.md:723 | human-auditable | blocked | agent-reviewed | unknown | The binary should remain deterministic and provider-neutral. |
 | claim-docs-contracts-runner-readiness-md-55 | docs/contracts/runner-readiness.md:55 | human-auditable | blocked | agent-reviewed | unknown | A runner is a bounded headless command that takes product-readable input and writes a Cautilus-readable observed packet. |
 | claim-docs-contracts-runner-readiness-md-348 | docs/contracts/runner-readiness.md:348 | human-auditable | blocked | agent-reviewed | unknown | The skill may guide runner creation, but reusable deterministic behavior belongs in code, adapters, packets, and tests. |
 | claim-docs-contracts-workbench-instance-discovery-md-100 | docs/contracts/workbench-instance-discovery.md:100 | human-auditable | blocked | agent-reviewed | unknown | The product can render a human-facing instance chooser without learning consumer-native labels itself. |
@@ -259,20 +259,19 @@ Active updates still match the current claim packet; superseded updates are hist
 | .cautilus/claims/review-result-contract-binary-preflight-review-boundary-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-contract-canonical-spec-curation-before-hitl-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-contract-claim-discovery-proof-plan-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-contract-claim-workflow-helper-packets-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-contract-compact-status-summary-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-contract-reporting-telemetry-packets-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | needs-alignment: 1, ready-for-proof: 4 |
 | .cautilus/claims/review-result-contract-runner-readiness-packets-2026-05-17.json | - | - | 1 | 5 | 0 | deterministic: 5 | ready-for-proof: 5 |
 | .cautilus/claims/review-result-current-deterministic-proof-batch-2026-05-03.json | - | - | 1 | 4 | 2 | deterministic: 2, human-auditable: 2 | blocked: 2, ready-for-proof: 2 |
 | .cautilus/claims/review-result-current-dev-skill-dogfood-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-deterministic-gates-2026-05-01.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-deterministic-proof-batch-2026-05-04.json | - | - | 1 | 3 | 0 | deterministic: 3 | ready-for-proof: 3 |
-| .cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json | - | - | 3 | 6 | 6 | deterministic: 5, human-auditable: 1 | blocked: 1, ready-for-proof: 5 |
+| .cautilus/claims/review-result-deterministic-ready-heuristic-2026-05-03.json | - | - | 3 | 6 | 5 | deterministic: 5, human-auditable: 1 | blocked: 1, ready-for-proof: 5 |
 | .cautilus/claims/review-result-eval-bucket-user-c-2026-05-03.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-eval-heuristic-batch-2026-05-03.json | - | - | 1 | 1 | 4 | human-auditable: 1 | needs-alignment: 1 |
 | .cautilus/claims/review-result-evidence-active-run-and-claim-discover-2026-05-03.json | - | - | 1 | 1 | 1 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-claim-eval-plan-2026-05-01.json | - | - | 0 | 0 | 1 | - | - |
-| .cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json | - | - | 1 | 2 | 1 | deterministic: 2 | ready-for-proof: 2 |
+| .cautilus/claims/review-result-evidence-claim-review-prepare-input-contract-2026-05-04.json | - | - | 0 | 0 | 1 | - | - |
+| .cautilus/claims/review-result-evidence-claim-workflow-canonical-review-input-2026-05-11.json | - | - | 1 | 2 | 0 | deterministic: 2 | ready-for-proof: 2 |
 | .cautilus/claims/review-result-evidence-consumer-adoption-readiness-and-intent-vocabulary-2026-05-17.json | - | - | 0 | 0 | 1 | - | - |
 | .cautilus/claims/review-result-evidence-consumer-doctor-onboarding-2026-05-03.json | - | - | 1 | 1 | 0 | deterministic: 1 | ready-for-proof: 1 |
 | .cautilus/claims/review-result-evidence-dev-skill-routing-install.json | - | - | 0 | 0 | 1 | - | - |

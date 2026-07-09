@@ -1,0 +1,250 @@
+{
+  "schemaVersion": "cautilus.claim_review_drop_summary.v1",
+  "packetNotice": "Diagnostic projection over aggregate review replay drops; this packet does not recover or infer-match dropped updates.",
+  "sourceClaimPacket": {
+    "path": ".cautilus/claims/evidenced-typed-runners.json",
+    "schemaVersion": "cautilus.claim_proof_plan.v1",
+    "gitCommit": "935bd5126ffbda321ecdc6f84787d981c57b53c7",
+    "candidateCount": 567
+  },
+  "replaySummary": {
+    "appliedResultCount": 90,
+    "skippedResultCount": 50,
+    "keptUpdateCount": 223,
+    "rewrittenUpdateCount": 152,
+    "droppedUpdateCount": 305,
+    "droppedUpdateReasonCounts": {
+      "missing-fingerprint": 165,
+      "missing-live-fingerprint": 140
+    },
+    "recordedSampleCount": 20,
+    "recordedSampleReasonCounts": {
+      "missing-fingerprint": 20
+    }
+  },
+  "sampleCoverage": [
+    {
+      "reason": "missing-fingerprint",
+      "count": 165,
+      "recordedSampleCount": 20,
+      "sampleStatus": "represented"
+    },
+    {
+      "reason": "missing-live-fingerprint",
+      "count": 140,
+      "recordedSampleCount": 0,
+      "sampleStatus": "not-represented"
+    }
+  ],
+  "actionClasses": [
+    {
+      "reason": "missing-fingerprint",
+      "count": 165,
+      "recordedSampleCount": 20,
+      "sampleStatus": "represented",
+      "actionClass": "unrecoverable",
+      "recommendedAction": "Do not infer-match this update; regenerate or re-review against the current claim packet so the update carries claimFingerprint.",
+      "queueHint": "Prepare fresh review-input for the currently live claims instead of carrying the stale update forward."
+    },
+    {
+      "reason": "missing-live-fingerprint",
+      "count": 140,
+      "recordedSampleCount": 0,
+      "sampleStatus": "not-represented",
+      "actionClass": "stale-fingerprint",
+      "recommendedAction": "This packet proves 140 count-level dropped update(s) for this reason but records no samples; run a reason-targeted diagnostic or improve upstream sampling before selecting a focused re-review queue.",
+      "queueHint": "No bounded queue can be selected from this packet for this reason because no dropped samples were recorded."
+    }
+  ],
+  "reviewResultBuckets": [
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "droppedSampleCount": 8,
+      "reasonCounts": {
+        "missing-fingerprint": 8
+      },
+      "sampleClaimIds": [
+        "claim-readme-md-13",
+        "claim-readme-md-149",
+        "claim-readme-md-7",
+        "claim-readme-md-137",
+        "claim-readme-md-91"
+      ]
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "droppedSampleCount": 7,
+      "reasonCounts": {
+        "missing-fingerprint": 7
+      },
+      "sampleClaimIds": [
+        "claim-readme-md-13",
+        "claim-readme-md-149",
+        "claim-readme-md-7",
+        "claim-readme-md-3",
+        "claim-readme-md-153"
+      ]
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+      "droppedSampleCount": 5,
+      "reasonCounts": {
+        "missing-fingerprint": 5
+      },
+      "sampleClaimIds": [
+        "claim-readme-md-148",
+        "claim-readme-md-232",
+        "claim-readme-md-171",
+        "claim-readme-md-159",
+        "claim-readme-md-211"
+      ]
+    }
+  ],
+  "droppedUpdateSamples": [
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-13",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-149",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-7",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-137",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-91",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-95",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-148",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-a.json",
+      "claimId": "claim-readme-md-232",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+      "claimId": "claim-readme-md-148",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+      "claimId": "claim-readme-md-232",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+      "claimId": "claim-readme-md-171",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+      "claimId": "claim-readme-md-159",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop1-lane-b.json",
+      "claimId": "claim-readme-md-211",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "claimId": "claim-readme-md-13",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "claimId": "claim-readme-md-149",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "claimId": "claim-readme-md-7",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "claimId": "claim-readme-md-3",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "claimId": "claim-readme-md-153",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "claimId": "claim-readme-md-231",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    },
+    {
+      "reviewResultPath": ".cautilus/claims/review-result-loop2-lane-a.json",
+      "claimId": "claim-readme-md-9",
+      "claimFingerprint": "",
+      "reason": "missing-fingerprint",
+      "actionClass": "unrecoverable"
+    }
+  ],
+  "nextAction": "Use represented dropped-update samples only when selecting a bounded re-review queue; treat unsampled reason classes as count-level diagnostic debt.",
+  "nextActions": [
+    "missing-fingerprint: Regenerate or re-review current live claims so new updates carry claimFingerprint; do not infer-match fingerprintless drops.",
+    "missing-live-fingerprint: Treat 140 dropped update(s) as count-level review debt only; run reason-targeted diagnostics or improve replay sampling before selecting a queue."
+  ]
+}

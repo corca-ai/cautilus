@@ -19,6 +19,7 @@ export const PHASES = [
 	{ id: "claims:source-freshness:check", label: "lint · claim source freshness" },
 	{ id: "release:claim-freshness", label: "lint · release claim freshness" },
 	{ id: "claims:status-report:check", label: "lint · claim status report" },
+	{ id: "claims:review-drops:check", label: "lint · claim review drops" },
 	{ id: "lint:links", label: "lint · links" },
 	{ id: "lint:skill-disclosure", label: "lint · skill disclosure" },
 	{ id: "lint:go", label: "lint · golangci-lint" },
