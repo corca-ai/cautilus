@@ -138,7 +138,7 @@ applies.
 
 ## Slice Log
 
-### 2026-07-11T23:09+09:00 — v0.19.3 release critique
+### 2026-07-11T22:42+09:00 — v0.19.3 release critique
 
 - Release surface packet reported both registered sections ready for their enumerated rule families with no deterministic finding.
 - Two parent-delegated angles covered operational sequencing and first-reader/audience accuracy; a separate counterweight triaged every concern into the four required bins.
@@ -148,7 +148,7 @@ applies.
 - Deferred with explicit non-claims: native macOS proof under the current adapter and public provenance-notes redesign.
 - Critique artifact: `charness-artifacts/critique/2026-07-11-v0-19-3-release-critique.md`.
 
-### 2026-07-11T23:22+09:00 — v0.19.3 release preparation
+### 2026-07-11T22:44+09:00 — v0.19.3 release preparation
 
 - Release dry-run selected compatible patch target `0.19.3`; update-instruction prep reported the adapter instructions version-agnostic and not stale.
 - `npm run release:prepare -- 0.19.3` synchronized package, lockfile, Claude marketplace, Claude plugin, Codex plugin, and packaged Agent tree, then passed release claim freshness.
@@ -156,7 +156,7 @@ applies.
 - Recorded malformed-input recovery, one-line diagnostic boundaries, update and `v0.19.2` rollback, provenance-only public notes, no macOS proof, and no provider/global-speed claims.
 - Pending: commit exact prepared tree, broad/requested/fresh-checkout gates, and publish dry-run.
 
-### 2026-07-11T22:46+09:00 — parallel detailed coverage reporting
+### 2026-07-11T22:35+09:00 — parallel detailed coverage reporting
 
 - The detailed `test:coverage:spec` command remained serial after the standard coverage path gained isolated orchestration.
 - Three warm serial samples were 4.24, 4.40, and 4.31 seconds (median 4.31s).
@@ -174,7 +174,7 @@ applies.
 - `Boundary Ownership: owned-correctly` — the orchestrator selects only existing coverage producers, each child retains report ownership, and aggregation remains the final consumer.
 - Pending: scoped commit.
 
-### 2026-07-11T22:38+09:00 — preserve shell startup diagnostics
+### 2026-07-11T22:28+09:00 — preserve shell startup diagnostics
 
 - Delegated triage identified that non-timeout, non-`ExitError` command failures produced `status: failed` without `error` or `exitCode`, leaving review and quiet evaluation callers silent.
 - A deterministic nonexistent working-directory test failed against old code with empty durable captures but no cause.
@@ -187,7 +187,7 @@ applies.
 - Full coverage and floor checks passed; the directly exercised command runner floor was promoted to the policy-buffered observed value.
 - Pending: scoped commit.
 
-### 2026-07-11T22:24+09:00 — sanitize deployment semantic failures
+### 2026-07-11T22:22+09:00 — sanitize deployment semantic failures
 
 - Delegated triage and independent real-process reproduction showed syntactically valid but contract-invalid packets emitted source excerpts, five stack frames, Node version text, and internal absolute paths from both deployment executables.
 - Added one semantic-invalid process case per executable alongside existing valid, malformed-value, and syntax-invalid cases; both failed against old code.
@@ -200,7 +200,7 @@ applies.
 - Full coverage and floor checks passed; both materially exercised executable floors were promoted to policy-buffered observed values.
 - Pending: scoped commit.
 
-### 2026-07-11T22:13+09:00 — fail-closed scenario input parity
+### 2026-07-11T22:15+09:00 — fail-closed scenario input parity
 
 - Delegated quality triage reproduced Go success versus JavaScript failure for malformed scenario registry/coverage input.
 - Direct old-code tables confirmed both Go final builders accepted non-array, null, non-object, empty-key, non-numeric, and negative coverage shapes; JavaScript additionally coerced numeric strings despite the documented number-only contract.
