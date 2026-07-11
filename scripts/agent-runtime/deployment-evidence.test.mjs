@@ -12,8 +12,14 @@ import {
 } from "./deployment-evidence.mjs";
 
 const BUILD_SCRIPT_PATH = fileURLToPath(new URL("./build-deployment-evidence.mjs", import.meta.url));
+const PREPARE_SCRIPT_PATH = fileURLToPath(
+	new URL("./prepare-deployment-evidence-input.mjs", import.meta.url),
+);
 const EXAMPLE_INPUT_PATH = fileURLToPath(
 	new URL("../../fixtures/deployment-evidence/example-input.json", import.meta.url),
+);
+const SCENARIO_RESULTS_PATH = fileURLToPath(
+	new URL("../../fixtures/scenario-results/example-results.json", import.meta.url),
 );
 
 function snapshotFiles(path) {
@@ -66,6 +72,88 @@ test("build deployment evidence CLI rejects malformed required values before fil
 				[BUILD_SCRIPT_PATH, ...testCase.prefix, testCase.option, testCase.value],
 				{ cwd: sandboxCwd, encoding: "utf-8" },
 			);
+			assert.notEqual(result.status, 0, `${testCase.option} accepted ${JSON.stringify(testCase.value)}`);
+			assert.match(result.stderr, new RegExp(`Missing value for ${testCase.option}`));
+			assert.deepEqual(snapshotFiles(sandboxCwd), before);
+		} finally {
+			rmSync(sandboxCwd, { recursive: true, force: true });
+		}
+	}
+});
+
+function prepareArgs(outputPath) {
+	return [
+		"--surface",
+		"workflow",
+		"--runtime",
+		"codex",
+		"--source-kind",
+		"scenario_results",
+		"--input",
+		SCENARIO_RESULTS_PATH,
+		"--output",
+		outputPath,
+	];
+}
+
+function replaceOptionValue(args, option, value) {
+	const next = [...args];
+	const index = next.indexOf(option);
+	assert.notEqual(index, -1, `missing test option ${option}`);
+	next[index + 1] = value;
+	return next;
+}
+
+test("prepare deployment evidence input CLI accepts valid values", () => {
+	const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-input-valid-"));
+	try {
+		const outputPath = join(sandboxCwd, "input.json");
+		const result = spawnSync(process.execPath, [PREPARE_SCRIPT_PATH, ...prepareArgs(outputPath)], {
+			cwd: sandboxCwd,
+			encoding: "utf-8",
+		});
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stderr, "");
+		const packet = JSON.parse(readFileSync(outputPath, "utf-8"));
+		assert.equal(packet.schemaVersion, "cautilus.deployment_evidence_inputs.v1");
+		assert.equal(packet.rows.length, 1);
+		assert.equal(packet.rows[0].runtime, "codex");
+	} finally {
+		rmSync(sandboxCwd, { recursive: true, force: true });
+	}
+});
+
+test("prepare deployment evidence input CLI rejects malformed values before side effects", () => {
+	const cases = [
+		{ option: "--surface", value: "--help" },
+		{ option: "--runtime", value: "--help" },
+		{ option: "--source-kind", value: "--help" },
+		{ option: "--input", value: "--help", seedInput: true },
+		{ option: "--pass-status", value: "--help", append: true },
+		{ option: "--output", value: "--help" },
+		{ option: "--output", value: " \t\n" },
+	];
+
+	for (const testCase of cases) {
+		const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-input-invalid-"));
+		try {
+			if (testCase.seedInput) {
+				writeFileSync(
+					join(sandboxCwd, testCase.value),
+					readFileSync(SCENARIO_RESULTS_PATH, "utf-8"),
+					"utf-8",
+				);
+			}
+			const outputPath = join(sandboxCwd, "input.json");
+			const baseArgs = prepareArgs(outputPath);
+			const args = testCase.append
+				? [...baseArgs, testCase.option, testCase.value]
+				: replaceOptionValue(baseArgs, testCase.option, testCase.value);
+			const before = snapshotFiles(sandboxCwd);
+			const result = spawnSync(process.execPath, [PREPARE_SCRIPT_PATH, ...args], {
+				cwd: sandboxCwd,
+				encoding: "utf-8",
+			});
 			assert.notEqual(result.status, 0, `${testCase.option} accepted ${JSON.stringify(testCase.value)}`);
 			assert.match(result.stderr, new RegExp(`Missing value for ${testCase.option}`));
 			assert.deepEqual(snapshotFiles(sandboxCwd), before);

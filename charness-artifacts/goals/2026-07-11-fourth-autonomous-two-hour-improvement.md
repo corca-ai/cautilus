@@ -111,6 +111,20 @@ none — no operator-only decision blocks the initial local inventory and implem
 - Boundary Ownership: single-surface — the independently executable source-checkout helper owns its argv parser and output side effect; no binary, schema, docs, or Cautilus Agent surface moved.
 - Critique: short parent-delegated fresh-eye PASS after one fail/fix cycle; final rerun found no blocking, actionable, or advisory findings.
 
+### 2026-07-11T20:55+09:00 — deployment-evidence input preparer safety
+
+- Independently reproduced the adjacent wrapper from a disposable cwd: valid scenario input plus `--output --help` exited 0 and created a literal `--help` one-row packet.
+- Archived the completed builder debug record and opened a fresh root-cause artifact rather than broadening the prior diagnosis by syntax alone.
+- Added a valid real-process control and a seven-case malformed table covering option-looking values for all six options, whitespace output, seeded malformed input, option-specific diagnostics, and unchanged file snapshots.
+- Confirmed the malformed test failed against old code at downstream domain normalization, then repaired the single owning required-value guard; focused tests pass 7/7 in about 0.72s and focused eslint passes.
+- Non-claims: no generic parser abstraction, no coverage-speed claim from this sub-second focused suite, and no diagnosis of unrelated copied parsers.
+- Full coverage passed and made the wrapper visible at 101 statements/80.20%; floor policy correctly leaves this first observation in the advisory warn band, so no baseline was added.
+- Boundary escalation was false and no docs/spec surface moved.
+- Delegated fresh-eye review passed runtime behavior, all test oracles, cleanup, sub-second focused cost, and advisory coverage disposition after correcting stale current-tense artifact wording.
+- Critique: short parent-delegated fresh-eye PASS after the artifact honesty correction; no remaining code, test, boundary, or docs finding.
+- `bash .githooks/pre-push` passed the complete 39-second verify and generated-drift sequence; coverage stayed below its 10-second budget at 8.86s and `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: single-surface — the independently executable preparer owns its argv parser; its shared data schema and public docs remain unchanged.
+
 ## Context Sources
 
 - User request: another two-hour autonomous improvement pass across bug fixes, test speed, and code quality.
