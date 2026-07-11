@@ -13,9 +13,9 @@ The user's explicit two-hour autonomous implementation request activates pursuit
 
 ## Active Operating Frame
 
-- Current slice: shell command capture persistence truth.
-- Current slice intent: make execution success imply both declared capture files exist while preserving subprocess exit and inline repair evidence.
-- Next action: verify all caller branches, direct race/full app tests, artifact/boundary checks, and delegated fresh-eye review of the result-map semantics.
+- Current slice: parallel isolated coverage orchestration.
+- Current slice intent: shorten the coverage critical path by overlapping independent Go and Node processes without sharing their test processes or output files.
+- Next action: validate failure/aggregation order, coverage-set equivalence and runtime measurements, then run boundary checks and delegated fresh-eye review.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad proof at closeout.
 - Gate cadence: pre-lock slices use focused owner tests and structural pressure checks; final proof uses `npm run verify` and `npm run hooks:check`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -222,6 +222,28 @@ none — no operator-only decision blocks the initial local inventory and implem
 - `Lint Gate: ran-pass bash .githooks/pre-push`.
 - Boundary Ownership: owned-correctly — command execution owns durable capture truth, review owns packet reason normalization, and evaluation callers own operator stderr even under quiet progress mode.
 - Critique: short parent-delegated fresh-eye PASS after caller and artifact corrections; no remaining blocking, actionable, or advisory code finding.
+
+### 2026-07-11T21:43+09:00 — parallel isolated coverage orchestration
+
+- Measured the unchanged serial `test:coverage` command five times: 11.23, 6.86, 6.12, 5.77, and 4.39 seconds; median 6.12s, with visible Go cache warm-up variance.
+- Added a small Node orchestrator that starts the existing isolated Go and Node coverage scripts together, waits for both, and aggregates only after both succeed; package test processes and separate `go.json`/`node.json` ownership remain unchanged.
+- Added executable orchestration tests proving both scripts start before aggregation and any child failure suppresses aggregation.
+- The first parallel real run completed in 5.36s and produced 198 files: the previous 197 surfaces plus the new orchestrator itself.
+- Existing coverage entries matched the serial baseline except `internal/app/review_feedback_command.go`, whose Go coverage is already runtime-variable across repeated runs; no floor failure occurred.
+- Five subsequent parallel measurements were 5.52, 5.45, 5.41, 5.46, and 4.75 seconds; their 5.45s median was only an initial directional signal because all serial samples ran first and showed strong warm-up trend.
+- Focused orchestrator tests and eslint pass.
+- Broad coverage initially made the new orchestrator visible at 42.59%; registered only its policy-buffered floor rather than adding tests for child-process mechanics already exercised by real coverage runs.
+- Fresh-eye review found first-failure `Promise.all` returned before the sibling child settled and challenged the serial-then-parallel timing order; changed failure coordination to await both outcomes and added a delayed-sibling regression before re-measuring in alternating order.
+- The first attempted alternating harness used a zsh whitespace string as an array, so it ran parallel-only and its five 3.69–3.85s samples were excluded from comparison.
+- Corrected warm alternating pairs measured serial at 8.57, 8.61, 4.37, 8.84, and 4.21 seconds (median 8.57) and parallel at 5.38, 3.83, 5.34, 3.82, and 5.57 seconds (median 5.34), a 3.23s (37.7%) median critical-path reduction under the corrected protocol.
+- The delayed-failure branch raised the now-61-statement orchestrator to 49.18% coverage, so its floor was promoted to the policy-buffered 48.93%.
+- Non-claims: no shared-process test execution, no global verify percentage, no claim that Go coverage is bit-for-bit deterministic, and no change to the spec-reporter coverage command.
+- Boundary escalation was not required: the orchestrator only coordinates existing repo-owned coverage commands and report ownership remains isolated.
+- Failure-semantics review and delegated fresh-eye re-review passed after the all-settled correction, including a direct check that Node coverage preserves a preseeded Go report sentinel.
+- `bash .githooks/pre-push` passed all 41 verify phases in 42 seconds and the generated-artifact drift check was clean; its parallel coverage phase stayed within the local budget.
+- `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: owned-correctly — the package-level coverage command owns cross-runtime sequencing, while each existing child command retains its report files and aggregation remains a distinct final consumer.
+- Critique: parent-delegated fresh-eye PASS after correcting early failure return and biased timing evidence; no remaining blocking, actionable, or advisory finding.
 
 ## Context Sources
 
