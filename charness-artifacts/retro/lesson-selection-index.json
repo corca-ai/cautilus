@@ -11,8 +11,8 @@
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
   "as_of_source_date": "2026-07-11",
-  "source_artifact_count": 24,
-  "candidate_count": 86,
+  "source_artifact_count": 25,
+  "candidate_count": 88,
   "top_candidates": [
     {
       "candidate_id": "current_focus:da53b9b85470",
@@ -31,6 +31,46 @@
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
           "date": "2026-07-11",
           "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "current_focus:fb2a1651c621",
+      "kind": "current_focus",
+      "lesson": "The user requested another autonomous Cautilus improvement pass across bugs, test speed, and code quality without push.",
+      "normalized_key": "the user requested another autonomous cautilus improvement pass across bugs test speed and code",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:268f7f193174",
+      "kind": "next_improvement",
+      "lesson": "applied — code-point semantics and malformed JavaScript-string handling now have deterministic cross-language tests.",
+      "normalized_key": "applied code point semantics and malformed javascript string handling now have deterministic cross language",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
         }
       ]
     },
@@ -223,46 +263,6 @@
           "section": "Context"
         }
       ]
-    },
-    {
-      "candidate_id": "current_focus:55dc041b8187",
-      "kind": "current_focus",
-      "lesson": "This session designed, implemented, verified, pushed, and released the `cli-default-yaml-format-release` goal.",
-      "normalized_key": "this session designed implemented verified pushed and released the cli default yaml format release",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
-      "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
-      "alpha": 0.07,
-      "selection_weight": 0.9057,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
-          "date": "2026-07-09",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:3edf3a9dd615",
-      "kind": "current_focus",
-      "lesson": "This session swept Cautilus for release-blocking bugs, repaired stale release-readiness probes and Cautilus Agent command guidance, prepared `v0.18.3`, pushed the branch and tag, and verified the public release.",
-      "normalized_key": "this session swept cautilus for release blocking bugs repaired stale release readiness probes and",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
-      "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
-      "alpha": 0.07,
-      "selection_weight": 0.9057,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
-          "date": "2026-07-09",
-          "section": "Context"
-        }
-      ]
     }
   ],
   "candidates": [
@@ -283,6 +283,46 @@
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
           "date": "2026-07-11",
           "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "current_focus:fb2a1651c621",
+      "kind": "current_focus",
+      "lesson": "The user requested another autonomous Cautilus improvement pass across bugs, test speed, and code quality without push.",
+      "normalized_key": "the user requested another autonomous cautilus improvement pass across bugs test speed and code",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:268f7f193174",
+      "kind": "next_improvement",
+      "lesson": "applied — code-point semantics and malformed JavaScript-string handling now have deterministic cross-language tests.",
+      "normalized_key": "applied code point semantics and malformed javascript string handling now have deterministic cross language",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
         }
       ]
     },

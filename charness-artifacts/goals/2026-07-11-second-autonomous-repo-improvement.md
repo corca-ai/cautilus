@@ -1,6 +1,6 @@
 # Achieve Goal: Second autonomous Cautilus improvement sweep
 
-Status: active
+Status: complete
 Created: 2026-07-11
 Activation: `/goal @charness-artifacts/goals/2026-07-11-second-autonomous-repo-improvement.md`
 
@@ -9,9 +9,9 @@ The user's explicit request to improve the repository again authorizes local imp
 
 ## Active Operating Frame
 
-- Current slice: Unicode review-boundary slice ready to commit.
-- Current slice intent: preserve code-point-safe Go/Node producers, focused scenario-to-render proof, and the completed review dispositions.
-- Next action: run focused lint/test gates and commit the implementation slice.
+- Current slice: closeout verification and durable evidence synchronization.
+- Current slice intent: preserve code-point-safe Go/Node producers, focused scenario-to-render proof, and honest runtime non-claims in one auditable closeout.
+- Next action: validate and commit the quality, retro, goal, and handoff artifacts after the disposition review.
 - Verification cadence: focused checks at commit boundaries, broader quality proof at slice boundaries, and `npm run verify` plus `npm run hooks:check` at closeout.
 - Gate cadence: reuse existing gates; add no heuristic floor without a low-noise invariant and structural response.
 - Slice review packet: each substantial change gets intent, changed files, invariants, proof, non-claims, and out-of-scope lines.
@@ -69,7 +69,7 @@ The user can inspect small scoped commits from distinct improvement dimensions, 
 | 1 | Inventory bug, speed, and quality candidates | Select from current evidence instead of prior-memory ranking | quality plan, runtime summary, focused advisories, fresh-eye recommendation | completed |
 | 2 | Fix Unicode review excerpt correctness and strengthen scenario-to-render confidence | Correctness and observable behavior proof share one packet boundary | debug artifact, focused Go/Node regression tests, scoped commit | completed |
 | 3 | Fold cross-language parity review and prove exact boundaries | Prevent a local fix from leaving sibling semantic drift | lone-surrogate, exact-limit, and prefix-selection tests | completed |
-| 4 | Run final verification, review, retro, and atomic handoff closeout | Make the result auditable and resumable | broad gates, artifact validators, clean commits | pending |
+| 4 | Run final verification, review, retro, and atomic handoff closeout | Make the result auditable and resumable | broad gates, artifact validators, clean commits | completed |
 
 ## Operator Decision Queue
 
@@ -104,31 +104,45 @@ none — the user authorized autonomous local improvement and no external side e
 
 ### Slice 2: Make review excerpts Unicode-safe
 
-- Objective: Fix cross-language review excerpt truncation and add focused scenario-to-render confidence
-- Why this approach:
-- Commits:
-- What changed:
-- Alternatives rejected:
+- Objective: Fix cross-language review excerpt truncation and add focused scenario-to-render confidence.
+- Why this approach: The reproduced byte-boundary corruption affected the review packet itself, and one scenario-to-render test exercised the adjacent operator-visible contract without snapshot coupling.
+- Commits: `c72891f5 Keep review excerpts Unicode-safe`.
+- What changed: Go and Node now count and truncate code points; focused tests cover exact and overflow boundaries, multilingual prefix selection, and scenario-to-render content.
+- Alternatives rejected: byte-count relabeling would preserve corruption risk; grapheme, token, and byte budgets require a separate product contract.
 - Targeted verification: Go focused tests and Node review-prompt-flow tests passed; Go review scenario/render paths rose from 0% to 73.3%/85.4% in focused coverage; structural-waste inventory found zero findings
 - Test duplication pressure: three Go table cases, one Go scenario-to-render test, and one Node Unicode case; no broad discovery or duplicated stable-file reads reported
-- Critique:
-- Off-goal findings:
-- Lessons carried forward:
-- Metrics:
+- Critique: the fresh-eye reviewer found lone-surrogate parity and exact-prefix proof gaps, which were incorporated before the implementation commit.
+- Off-goal findings: none.
+- Lessons carried forward: cross-language packet producers need one named semantic unit and boundary fixtures in both implementations.
+- Metrics: focused scenario builder 73.3% and renderer 85.4% statement coverage.
 
 ### Slice 3: Close Unicode parity review
 
-- Objective: Normalize lone surrogates and prove exact-limit and prefix-selection behavior across Go and Node
-- Why this approach:
-- Commits:
-- What changed:
-- Alternatives rejected:
+- Objective: Normalize lone surrogates and prove exact-limit and prefix-selection behavior across Go and Node.
+- Why this approach: JavaScript strings can contain unpaired surrogates even after code-point-safe slicing, so well-formed normalization was required for parity with Go's valid text boundary.
+- Commits: `c72891f5 Keep review excerpts Unicode-safe`.
+- What changed: Node normalizes input with `toWellFormed()` and both test suites assert exact selected prefixes at the 12,000-code-point boundary.
+- Alternatives rejected: accepting language-specific malformed-text behavior would leave the shared packet contract ambiguous.
 - Targeted verification: Focused Go tests and six Node review-prompt-flow tests passed after should-fix changes
 - Test duplication pressure: extended existing boundary fixtures only; no new broad runner or stable-file duplication
-- Critique:
-- Off-goal findings:
-- Lessons carried forward:
-- Metrics:
+- Critique: reviewer verdict became ready after the technical fixes and Slice Plan/Log numbering alignment.
+- Off-goal findings: none.
+- Lessons carried forward: parity review must include malformed native-string inputs, not only encoded UTF-8 examples.
+- Metrics: six Node prompt-flow tests plus focused and full Go runtime tests passed.
+
+### Slice 4: Verify and synchronize closeout
+
+- Objective: Prove the implementation broadly and leave quality, retro, goal, and handoff state synchronized.
+- Why this approach: the implementation commit was already stable, so closeout changed only audit and continuation surfaces.
+- Commits: the audit-only closeout commit containing this completed artifact.
+- What changed: final verification results, quality non-claims, fresh-eye dispositions, retro lessons, and the next-session pointer were aligned.
+- Alternatives rejected: another broad product change would reopen triage after the selected correctness and confidence slice was complete.
+- Targeted verification: `npm run verify` passed in 60.38s; `npm run hooks:check` reported ready; quality, debug, and retro validators passed before the complete flip.
+- Test duplication pressure: the broad verify reported 65.4% total Go statement coverage and no structural-waste finding was introduced by the focused boundary tests.
+- Critique: the bounded disposition reviewer verified or corrected every applied improvement before completion.
+- Off-goal findings: report-packet coverage and historical claim-evidence warnings remain passive quality candidates.
+- Lessons carried forward: runtime measurement can justify an explicit deferral without forcing a low-confidence optimization.
+- Metrics: one implementation commit plus one audit closeout commit; no push, release, or live proof.
 
 ## Context Sources
 
@@ -168,15 +182,28 @@ none at activation.
 
 ## Final Verification
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+Retro: charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md
+Host log probe: skipped: host-log-not-exposed: no goal-window session file was exposed, so repository commands and wall-clock samples are the only efficiency evidence.
+Disposition review: charness-artifacts/critique/2026-07-11-second-autonomous-repo-improvement-disposition-review.md
+
+- Focused Go runtime tests and six Node review-prompt-flow tests passed.
+- `npm run lint:eslint` passed after the cross-language implementation.
+- `npm run verify` passed in 60.38s with 65.4% total Go statement coverage.
+- `npm run hooks:check` reported the checked-in hooks ready.
+- The quality, debug, and retro artifact validators passed before the complete flip.
+- High-cost or live verification not run: evaluator, provider, release, publish, and push proof were outside this local deterministic goal.
+- Residual risks: the generic report-packet `BuildReviewPromptInput` entry point remains at 0% coverage, and historical claim-evidence audit warnings remain advisory.
+- Non-claims: code-point safety does not promise grapheme preservation, prompt token budgeting, or a fixed UTF-8 byte budget.
+- Efficiency evidence: measured gate samples were 32.97s for read-only quality and 60.38s for final verify; proxy evidence attributes the latter variance to the cold Go/race path, while host token and tool-call counts are unavailable.
 
 ## User Verification Instructions
 
-Pending until selected slices and final proof complete.
+1. Run `go test ./internal/runtime -count=1`.
+2. Run `node --test scripts/agent-runtime/review-prompt-flow.test.mjs`.
+3. Run `npm run verify` and `npm run hooks:check`.
+4. Inspect commit `c72891f5` and the final closeout commit; no push is required.
 
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement before complete
-Structural follow-up: TODO — classify transferable waste if the retro names any
+Retro dispositions: applied: commit `c72891f5` added code-point-safe Go/Node producers and deterministic Unicode boundary tests.
+Structural follow-up: applied: commit `c72891f5` changed both sibling producers and added exact-limit, prefix-selection, and malformed-string parity tests.
