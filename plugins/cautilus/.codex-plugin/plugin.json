@@ -1,6 +1,6 @@
 {
   "name": "cautilus",
-  "version": "0.19.1",
+  "version": "0.19.2",
   "description": "Standalone CLI and Cautilus Agent for discovering, evaluating, and improving agent behavior.",
   "author": {
     "name": "Corca",

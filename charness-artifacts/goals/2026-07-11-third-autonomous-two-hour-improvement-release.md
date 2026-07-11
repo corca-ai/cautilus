@@ -128,6 +128,7 @@ per the bullets above when that boundary is crossed):
 
 - Routing: find-skills -> achieve + quality + impl + debug when triggered + critique + retro + release — the run needs timeboxed lifecycle, evidence selection, bounded implementation, disciplined diagnosis, fresh-eye review, reflection, and publication proof.
 - Gather: n/a — no external source is required to select or implement the initial local slices.
+- Release: `charness-artifacts/release/latest.md` — target `v0.19.2` preparation, scoped narrative, and pending public/install proof ledger.
 - Issue closeout: n/a — no tracked GitHub issue is currently the source of this goal.
 
 ## Discuss Before Activation
