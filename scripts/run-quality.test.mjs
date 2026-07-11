@@ -54,7 +54,7 @@ test("run-quality --read-only skips artifact-writing dogfood", () => {
 	});
 });
 
-test("run-quality default runs verify and self dogfood", () => {
+test("run-quality default records runtime evidence before self dogfood", () => {
 	withFakeNpm(({ npmPath, logPath }) => {
 		const result = runQuality([], { npmPath, logPath });
 		assert.equal(result.status, 0, result.stderr);
