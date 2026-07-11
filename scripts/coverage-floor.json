@@ -136,7 +136,7 @@
   "scripts/release/sync-packaged-skill.mjs": 85.8,
   "scripts/release/verify-public-release.mjs": 63.96,
   "scripts/resolve_adapter.mjs": 65.76,
-  "scripts/run-coverage.mjs": 48.93,
+  "scripts/run-coverage.mjs": 59.75,
   "scripts/run-govulncheck.mjs": 90.66,
   "scripts/run-self-dogfood-eval.mjs": 75.96,
   "scripts/run-self-dogfood-skill-refresh-flow-eval.mjs": 75.34,

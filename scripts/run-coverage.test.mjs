@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import { runCoverage } from "./run-coverage.mjs";
+
+const SCRIPT_PATH = fileURLToPath(new URL("./run-coverage.mjs", import.meta.url));
 
 test("runCoverage starts isolated Go and Node coverage before aggregating", async () => {
 	const started = [];
@@ -54,4 +58,28 @@ test("runCoverage waits for both commands and skips aggregation when either fail
 	assert.match(error.message, /test:node:coverage: node coverage failed/);
 	assert.equal(rejectionObserved, true);
 	assert.equal(aggregateCalls, 0);
+});
+
+test("runCoverage can select the detailed Node coverage reporter without changing Go isolation", async () => {
+	const started = [];
+	await runCoverage({
+		nodeScript: "test:node:coverage:spec",
+		runScript: async (name) => {
+			started.push(name);
+		},
+		aggregate: async () => {},
+	});
+	assert.deepEqual(started, ["test:go:coverage", "test:node:coverage:spec"]);
+});
+
+test("runCoverage rejects non-coverage npm scripts before starting child commands", () => {
+	const result = spawnSync(process.execPath, [SCRIPT_PATH, "--node-script", "test"], {
+		encoding: "utf-8",
+	});
+	assert.notEqual(result.status, 0);
+	assert.equal(result.stdout, "");
+	assert.equal(
+		result.stderr,
+		"--node-script must be test:node:coverage or test:node:coverage:spec\n",
+	);
 });

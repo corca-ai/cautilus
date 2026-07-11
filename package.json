@@ -118,7 +118,7 @@
     "test:node:coverage": "mkdir -p \"${COVERAGE_DIR:-coverage}\" && c8 --reporter=lcov --reports-dir=\"${COVERAGE_DIR:-coverage}\" --include='scripts/**' --include='bin/**' --exclude='**/*.test.mjs' --exclude='scripts/on-demand/**' node --test --test-reporter=dot --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs && node scripts/summarize-node-coverage.mjs",
     "test:node:coverage:spec": "mkdir -p \"${COVERAGE_DIR:-coverage}\" && c8 --reporter=lcov --reports-dir=\"${COVERAGE_DIR:-coverage}\" --include='scripts/**' --include='bin/**' --exclude='**/*.test.mjs' --exclude='scripts/on-demand/**' node --test --test-reporter=spec --test-reporter-destination=stdout bin/*.test.mjs scripts/*.test.mjs scripts/agent-runtime/*.test.mjs scripts/release/*.test.mjs && node scripts/summarize-node-coverage.mjs",
     "test:coverage": "node scripts/run-coverage.mjs",
-    "test:coverage:spec": "npm run test:go:coverage && npm run test:node:coverage:spec && node scripts/aggregate-coverage.mjs",
+    "test:coverage:spec": "node scripts/run-coverage.mjs --node-script test:node:coverage:spec",
     "coverage:floor:check": "./scripts/coverage-floor-quality-gate.sh",
     "coverage:floor:write": "node scripts/write-coverage-floor.mjs",
     "test": "npm run test:go && npm run test:node",

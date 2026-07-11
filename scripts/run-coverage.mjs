@@ -6,6 +6,7 @@ import { pathToFileURL } from "node:url";
 
 const REPO_ROOT = resolve(import.meta.dirname, "..");
 const NPM_COMMAND = process.platform === "win32" ? "npm.cmd" : "npm";
+const NODE_COVERAGE_SCRIPTS = new Set(["test:node:coverage", "test:node:coverage:spec"]);
 
 function runCommand(command, args, label) {
 	return new Promise((resolvePromise, rejectPromise) => {
@@ -34,15 +35,23 @@ function aggregateCoverage() {
 	);
 }
 
+function parseArgs(argv) {
+	if (argv.length === 0) {
+		return {};
+	}
+	if (argv.length === 2 && argv[0] === "--node-script" && NODE_COVERAGE_SCRIPTS.has(argv[1])) {
+		return { nodeScript: argv[1] };
+	}
+	throw new Error("--node-script must be test:node:coverage or test:node:coverage:spec");
+}
+
 export async function runCoverage(options = {}) {
 	const runScript = options.runScript ?? runNpmScript;
 	const aggregate = options.aggregate ?? aggregateCoverage;
-	const results = await Promise.allSettled([
-		runScript("test:go:coverage"),
-		runScript("test:node:coverage"),
-	]);
+	const scriptNames = ["test:go:coverage", options.nodeScript ?? "test:node:coverage"];
+	const results = await Promise.allSettled(scriptNames.map((name) => runScript(name)));
 	const failures = results
-		.map((result, index) => ({ result, name: ["test:go:coverage", "test:node:coverage"][index] }))
+		.map((result, index) => ({ result, name: scriptNames[index] }))
 		.filter(({ result }) => result.status === "rejected")
 		.map(({ result, name }) => `${name}: ${result.reason?.message ?? result.reason}`);
 	if (failures.length > 0) {
@@ -53,7 +62,7 @@ export async function runCoverage(options = {}) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
 	try {
-		await runCoverage();
+		await runCoverage(parseArgs(process.argv.slice(2)));
 	} catch (error) {
 		process.stderr.write(`${error.message}\n`);
 		process.exitCode = 1;

@@ -138,6 +138,24 @@ applies.
 
 ## Slice Log
 
+### 2026-07-11T22:46+09:00 — parallel detailed coverage reporting
+
+- The detailed `test:coverage:spec` command remained serial after the standard coverage path gained isolated orchestration.
+- Three warm serial samples were 4.24, 4.40, and 4.31 seconds (median 4.31s).
+- The existing orchestrator now accepts one explicit Node npm-script selector, keeps Go coverage unchanged, waits for both isolated children, and aggregates last.
+- Added an in-process orchestration test for the detailed reporter selection; no test process sharing or report-file ownership changed.
+- Focused orchestration tests and eslint pass; three first parallel samples were 5.45, 3.76, and 3.80 seconds (median 3.80s), with one cold spike.
+- Four corrected alternating pairs measured serial at 4.19, 8.47, 4.09, and 8.75 seconds (median 6.33s) and parallel at 5.35, 3.61, 5.33, and 3.65 seconds (median 4.49s), a 1.83-second or 28.9% median reduction under that local protocol.
+- The strong order effect is disclosed as cache/host variability; no global verify speed or portable benchmark claim is made.
+- Boundary escalation was not triggered because only the package test command and its existing orchestration owner changed.
+- Initial delegated critique found the selector allowed arbitrary npm scripts, which could aggregate stale Node coverage or run mutating work under a coverage command.
+- The selector now accepts only the two repo-owned Node coverage producers, and a real-process negative test proves rejection before any child output.
+- Parent-delegated re-review returned PASS after the allowlist, with clean rail-1 boundary verification and no remaining actionable finding.
+- A real detailed coverage run produced the same 198-file aggregate and the floor gate passed; the directly exercised orchestrator floor was promoted to the policy-buffered observed value.
+- `Critique: short parallel detailed coverage orchestration PASS`.
+- `Boundary Ownership: owned-correctly` — the orchestrator selects only existing coverage producers, each child retains report ownership, and aggregation remains the final consumer.
+- Pending: scoped commit.
+
 ### 2026-07-11T22:38+09:00 — preserve shell startup diagnostics
 
 - Delegated triage identified that non-timeout, non-`ExitError` command failures produced `status: failed` without `error` or `exitCode`, leaving review and quiet evaluation callers silent.
