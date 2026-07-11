@@ -148,6 +148,14 @@ applies.
 - Deferred with explicit non-claims: native macOS proof under the current adapter and public provenance-notes redesign.
 - Critique artifact: `charness-artifacts/critique/2026-07-11-v0-19-3-release-critique.md`.
 
+### 2026-07-11T23:22+09:00 — v0.19.3 release preparation
+
+- Release dry-run selected compatible patch target `0.19.3`; update-instruction prep reported the adapter instructions version-agnostic and not stale.
+- `npm run release:prepare -- 0.19.3` synchronized package, lockfile, Claude marketplace, Claude plugin, Codex plugin, and packaged Agent tree, then passed release claim freshness.
+- Replaced the prior public-proof record with a target-specific prepared record that separates binary, source-checkout, maintainer, and unchanged Agent audiences.
+- Recorded malformed-input recovery, one-line diagnostic boundaries, update and `v0.19.2` rollback, provenance-only public notes, no macOS proof, and no provider/global-speed claims.
+- Pending: commit exact prepared tree, broad/requested/fresh-checkout gates, and publish dry-run.
+
 ### 2026-07-11T22:46+09:00 — parallel detailed coverage reporting
 
 - The detailed `test:coverage:spec` command remained serial after the standard coverage path gained isolated orchestration.
