@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -86,6 +86,45 @@ test("build deployment evidence CLI reports invalid JSON without a stack trace",
 		assert.doesNotMatch(result.stderr, /SECRET_SENTINEL/);
 		assert.doesNotMatch(result.stderr, /SyntaxError|\n\s+at /);
 		assert.equal(existsSync(outputPath), false);
+	} finally {
+		rmSync(sandboxCwd, { recursive: true, force: true });
+	}
+});
+
+test("build deployment evidence CLI reports semantic errors without a stack trace", () => {
+	const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-evidence-semantic-"));
+	try {
+		const inputPath = join(sandboxCwd, "invalid-contract.json");
+		const outputPath = join(sandboxCwd, "evidence.json");
+		writeFileSync(inputPath, JSON.stringify({ schemaVersion: "wrong", rows: [] }), "utf-8");
+		const result = spawnSync(
+			process.execPath,
+			[SCRIPT_PATH, "--input", inputPath, "--output", outputPath],
+			{ cwd: sandboxCwd, encoding: "utf-8" },
+		);
+		assert.notEqual(result.status, 0);
+		assert.equal(result.stderr, "schemaVersion must be cautilus.deployment_evidence_inputs.v1\n");
+		assert.doesNotMatch(result.stderr, /file:\/\/|\n\s+at |Node\.js/);
+		assert.equal(existsSync(outputPath), false);
+	} finally {
+		rmSync(sandboxCwd, { recursive: true, force: true });
+	}
+});
+
+test("build deployment evidence CLI keeps write errors on one line", () => {
+	const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-evidence-write-"));
+	try {
+		const outputPath = join(sandboxCwd, "output\nINJECTED");
+		mkdirSync(outputPath);
+		const result = spawnSync(
+			process.execPath,
+			[SCRIPT_PATH, "--input", EXAMPLE_INPUT_PATH, "--output", outputPath],
+			{ cwd: sandboxCwd, encoding: "utf-8" },
+		);
+		assert.notEqual(result.status, 0);
+		assert.equal(result.stderr.split("\n").length, 2, result.stderr);
+		assert.match(result.stderr, /output INJECTED/);
+		assert.doesNotMatch(result.stderr, /file:\/\/|\n\s+at |Node\.js/);
 	} finally {
 		rmSync(sandboxCwd, { recursive: true, force: true });
 	}

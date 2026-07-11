@@ -17,7 +17,7 @@ function usage(exitCode = 0) {
 }
 
 function fail(message) {
-	process.stderr.write(`${message}\n`);
+	process.stderr.write(`${String(message).replace(/[\r\n]+/g, " ")}\n`);
 	process.exit(1);
 }
 
@@ -73,8 +73,16 @@ function writeJson(path, value) {
 	writeJsonOutput(path, value);
 }
 
+function main(argv = process.argv.slice(2)) {
+	try {
+		const options = parseArgs(argv);
+		const packet = buildDeploymentEvidence(readJson(options.input));
+		writeJson(options.output, packet);
+	} catch (error) {
+		fail(error instanceof Error ? error.message : String(error));
+	}
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-	const options = parseArgs(process.argv.slice(2));
-	const packet = buildDeploymentEvidence(readJson(options.input));
-	writeJson(options.output, packet);
+	main();
 }

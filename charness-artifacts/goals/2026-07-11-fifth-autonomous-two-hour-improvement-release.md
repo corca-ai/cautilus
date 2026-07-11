@@ -138,6 +138,19 @@ applies.
 
 ## Slice Log
 
+### 2026-07-11T22:24+09:00 — sanitize deployment semantic failures
+
+- Delegated triage and independent real-process reproduction showed syntactically valid but contract-invalid packets emitted source excerpts, five stack frames, Node version text, and internal absolute paths from both deployment executables.
+- Added one semantic-invalid process case per executable alongside existing valid, malformed-value, and syntax-invalid cases; both failed against old code.
+- Wrapped the full build/read/write main body at each executable boundary and retained rich library errors while rendering only `error.message` to CLI stderr.
+- Initial delegated review found path-controlled newlines could split caught write errors; final renderers now collapse CR/LF while retaining useful path text.
+- Both focused process suites pass ten cases, eslint passes, and invalid runs create no output file.
+- Test pressure: four cases extend executable-owned files without adding a new process file or duplicating valid fixtures.
+- Non-claims: no structured stderr schema, library error redesign, or host-terminal redaction guarantee.
+- Parent-delegated re-review returned PASS after newline sanitation, with a clean rail-1 boundary verify and no remaining actionable finding.
+- Full coverage and floor checks passed; both materially exercised executable floors were promoted to policy-buffered observed values.
+- Pending: scoped commit.
+
 ### 2026-07-11T22:13+09:00 — fail-closed scenario input parity
 
 - Delegated quality triage reproduced Go success versus JavaScript failure for malformed scenario registry/coverage input.
