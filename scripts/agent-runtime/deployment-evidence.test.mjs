@@ -1,10 +1,79 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import {
 	buildDeploymentEvidence,
 	prepareDeploymentEvidenceInput,
 } from "./deployment-evidence.mjs";
+
+const BUILD_SCRIPT_PATH = fileURLToPath(new URL("./build-deployment-evidence.mjs", import.meta.url));
+const EXAMPLE_INPUT_PATH = fileURLToPath(
+	new URL("../../fixtures/deployment-evidence/example-input.json", import.meta.url),
+);
+
+function snapshotFiles(path) {
+	return Object.fromEntries(
+		readdirSync(path).map((name) => [name, readFileSync(join(path, name), "utf-8")]),
+	);
+}
+
+test("build deployment evidence CLI accepts valid input and output paths", () => {
+	const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-evidence-valid-"));
+	try {
+		const outputPath = join(sandboxCwd, "evidence.json");
+		const result = spawnSync(
+			process.execPath,
+			[BUILD_SCRIPT_PATH, "--input", EXAMPLE_INPUT_PATH, "--output", outputPath],
+			{ cwd: sandboxCwd, encoding: "utf-8" },
+		);
+		assert.equal(result.status, 0, result.stderr);
+		assert.equal(result.stderr, "");
+		assert.equal(existsSync(outputPath), true);
+		const packet = JSON.parse(readFileSync(outputPath, "utf-8"));
+		assert.equal(packet.schemaVersion, "cautilus.deployment_evidence.v1");
+		assert.equal(packet.overall.rowCount, 2);
+	} finally {
+		rmSync(sandboxCwd, { recursive: true, force: true });
+	}
+});
+
+test("build deployment evidence CLI rejects malformed required values before filesystem access", () => {
+	const cases = [
+		{ option: "--input", value: "--help", prefix: [], seedInput: true },
+		{ option: "--input", value: " \t\n", prefix: [], seedInput: true },
+		{ option: "--output", value: "--help", prefix: ["--input", EXAMPLE_INPUT_PATH] },
+		{ option: "--output", value: " \t\n", prefix: ["--input", EXAMPLE_INPUT_PATH] },
+	];
+
+	for (const testCase of cases) {
+		const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-evidence-invalid-"));
+		try {
+			if (testCase.seedInput) {
+				writeFileSync(
+					join(sandboxCwd, testCase.value),
+					readFileSync(EXAMPLE_INPUT_PATH, "utf-8"),
+					"utf-8",
+				);
+			}
+			const before = snapshotFiles(sandboxCwd);
+			const result = spawnSync(
+				process.execPath,
+				[BUILD_SCRIPT_PATH, ...testCase.prefix, testCase.option, testCase.value],
+				{ cwd: sandboxCwd, encoding: "utf-8" },
+			);
+			assert.notEqual(result.status, 0, `${testCase.option} accepted ${JSON.stringify(testCase.value)}`);
+			assert.match(result.stderr, new RegExp(`Missing value for ${testCase.option}`));
+			assert.deepEqual(snapshotFiles(sandboxCwd), before);
+		} finally {
+			rmSync(sandboxCwd, { recursive: true, force: true });
+		}
+	}
+});
 
 test("prepareDeploymentEvidenceInput extracts repeated skill rows from skill summaries", () => {
 	const packet = prepareDeploymentEvidenceInput({

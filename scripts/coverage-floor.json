@@ -62,6 +62,7 @@
   "scripts/agent-runtime/audit-claim-evidence-hashes.mjs": 68.84,
   "scripts/agent-runtime/behavior-intent.mjs": 93.04,
   "scripts/agent-runtime/build-canonical-claim-map.mjs": 88.01,
+  "scripts/agent-runtime/build-deployment-evidence.mjs": 73.08,
   "scripts/agent-runtime/build-evidence-bundle.mjs": 70.5,
   "scripts/agent-runtime/build-evidence-input.mjs": 84.92,
   "scripts/agent-runtime/build-improve-input.mjs": 85.72,

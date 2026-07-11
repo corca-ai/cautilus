@@ -1,82 +1,86 @@
-# Debug Review
+# Debug Review: build-deployment-evidence option-like output mutation
 Date: 2026-07-11
 
 ## Problem
 
-The release orchestrator ran the adapter-declared install readback immediately after confirming the new GitHub release page, before the tag workflow had attached binary assets, so the first `v0.19.2` installer download returned HTTP 404.
+The independently executable deployment-evidence builder accepts option-looking or whitespace-only tokens as required path values.
+With valid input, `--output --help` exits successfully and creates a file literally named `--help` in the current working directory.
 
 ## Correct Behavior
 
-Given a tag workflow that creates the release record before uploading assets, post-publish install readback must run only after the expected binary asset is publicly downloadable or must retry the bounded eventual-consistency window.
+Given `--input` or `--output` followed by another option token or semantic emptiness, parsing must fail with an option-specific diagnostic before reading input or writing output.
 
 ## Observed Facts
 
-- The ordered publisher confirmed the release URL with HTTP 200 and immediately invoked `npm run release:smoke-install:current -- --skip-update`.
-- The command failed after 0.82s because the `v0.19.2` Linux archive URL returned HTTP 404.
-- `gh release view v0.19.2` at that moment reported a published, non-draft release with an empty assets list.
-- GitHub Actions run `29150460445` was still executing `npm run verify` and had not reached artifact build or upload.
-- After the workflow completed successfully, the same install readback installed and reported `0.19.2`, and the public verifier found all seven expected assets with valid checksums.
+- `readRequiredValue` at `scripts/agent-runtime/build-deployment-evidence.mjs:24` rejects only absent or falsey tokens.
+- The parser consumes the next token and skips it, so `--help` is treated as an output path rather than help.
+- From a disposable cwd, valid fixture input plus `--output --help` exited 0 and created a JSON packet in a literal `--help` file.
+- `writeJsonOutput` resolves the accepted path, creates its parent directory, and writes without a second semantic path check.
+- Existing deployment-evidence tests exercise pure preparation and aggregation behavior but not the executable parser boundary.
 
 ## Reproduction
 
-- Publish a tag through the current ordered helper while the workflow creates the GitHub release record before binary upload.
-- Observe URL-level distinct-channel confirmation followed by an immediate install smoke against an asset URL that does not exist yet.
+- Run `node <repo>/scripts/agent-runtime/build-deployment-evidence.mjs --input <repo>/fixtures/deployment-evidence/example-input.json --output --help` from a disposable cwd.
+- Observe exit 0, empty stderr, and a new `--help` JSON file.
 
 ## Candidate Causes
 
-- The release page was treated as sufficient readiness for asset-dependent proof.
-- The install smoke was expected to retry 404 responses internally.
-- The workflow was expected to upload assets before making the release record visible.
+- A present argv token was assumed to be valid path data.
+- Intentional leading-dash filenames were meant to be supported without a documented escape contract.
+- The public caller or output writer was expected to validate direct helper invocations.
+- Pure function coverage was mistaken for process-boundary parser coverage.
 
 ## Hypothesis
 
-- Falsifiable claim: the failure is an eventual-consistency ordering gap rather than a broken archive or installer; waiting for workflow asset publication makes the unchanged install command pass | disconfirmer: rerun the same command after workflow success and observe another 404 or an integrity/version failure.
+- Falsifiable claim: `readRequiredValue` is the sole pre-side-effect gap for both path options; process tests will reproduce option-like and whitespace-only acceptance on old code, and rejecting semantic emptiness plus option tokens there will make every case fail before cwd mutation | disconfirmer: run the process table against old code and observe that malformed output is already rejected without a file.
 
 ## Verification
 
-- confirmed — the unchanged install command passed after workflow success, installed the Linux archive, and returned `0.19.2` from both version readbacks.
+- confirmed — the smallest old-code reproduction exited 0 and wrote `--help`; after repair, all four malformed process probes exit nonzero, name the affected option, and leave their watched cwd unchanged, while a valid input/output control still writes the expected two-row packet.
 
 ## Root Cause
 
-The release orchestration readiness signal covered release-page visibility but not the asset dependency required by the adapter's post-publish command.
-The release workflow intentionally publishes the record before its binary upload step finishes, leaving a bounded window where page verification is true and install readiness is false.
+The command's required-value contract equates token presence with semantic validity.
+Because parsing is the only boundary before input resolution and output creation, malformed option tokens can cross into filesystem operations.
 
 ## Invariant Proof
 
-- Invariant: install readback is complete only after the target archive is publicly downloadable and its installed binary reports the target version.
-- Producer Proof: GitHub Actions run `29150460445` completed artifact build, attestation, release upload, and public verification.
-- Final-Consumer Proof: the unchanged install-sh smoke downloaded `cautilus_0.19.2_linux_x64.tar.gz` and both `--version` and `version --verbose` reported `0.19.2`.
-- Interface-Shape Sibling Scan: release-page verification and asset-dependent install verification are distinct channels with different readiness requirements.
-- Non-Claims: the retry does not prove native macOS installation or update behavior because this readback used Linux and `--skip-update`.
+- Invariant: `build-deployment-evidence` rejects malformed required path values before input reads or output writes.
+- Producer Proof: real-process probes cover both `--input` and `--output` with option-like and whitespace-only tokens; malformed input filenames are pre-seeded with valid JSON so old code would reach the read branch.
+- Final-Consumer Proof: every malformed invocation must exit nonzero, identify the affected option, and leave the watched cwd unchanged.
+- Interface-Shape Sibling Scan: the adjacent deployment-evidence input preparer and other JSON output builders have independently copied required-value parsers; they require separate reproduction before repair.
+- Non-Claims: this slice does not add `--option=value`, a positional `--` escape, or support for intentional leading-dash paths.
 
 ## Detection Gap
 
-- Charness release orchestration plus `.agents/release-adapter.yaml` | URL confirmation did not check the adapter command's asset dependency | gate post-publish install refresh on the workflow/public asset verifier or add bounded 404 retry to the owning install-readback seam.
+- `scripts/agent-runtime/deployment-evidence.test.mjs` | pure data contracts passed while the executable parser could mutate on malformed argv | add table-driven process-boundary failure tests with cwd side-effect assertions.
+- `scripts/coverage-floor.json` | the previously unexecuted CLI file had no registered floor, so adding honest process coverage surfaced a 73.33% unfloored-file failure | register only this file at the policy-owned 0.25 percentage-point buffer rather than generating coverage-only cases or rewriting unrelated floors.
 
 ## Sibling Search
 
-- Mental model: a published release page implies every attached asset is immediately ready.
-- same layer axis: distinct URL confirmation versus public asset verifier | decision: different readiness contracts, factor later | proof: URL 200 and empty assets coexisted.
-- abstraction up axis: installed Charness release sequencing | decision: upstream-owned follow-up | proof: the orchestrator schedules the adapter command immediately after URL confirmation.
-- specialization down axis: Cautilus install smoke | decision: retry closed this release, monitor before repo-local retry policy | proof: unchanged command passed after workflow success.
-- cross-file: `.github/workflows/release-artifacts.yml` owns asset timing; `.agents/release-adapter.yaml` declares the asset-dependent post-publish command.
+- Mental model: any present token after a value-taking option is necessarily data.
+- same layer axis: `--input` and `--output` in `build-deployment-evidence.mjs` | decision: same bug, fix now | proof: one shared parser helper owns both.
+- abstraction up axis: independently executable Node JSON writers | decision: same class, diagnostic-only for this slice | proof: static scan finds copied parsers; no action needed because copied syntax alone does not prove a reachable write mutation and this goal requires a disposable-cwd reproduction before repair.
+- specialization down axis: `writeJsonOutput` parent creation and file write | decision: same bug, fix now | proof: disposable cwd contains the literal malformed output.
+- mental-model axis: intentional leading-dash path values | decision: intentional plain-text or non-rendering boundary | proof: callers can spell such paths with `./` or an absolute path and no direct-token escape is documented.
+- cross-file: `scripts/agent-runtime/prepare-deployment-evidence-input.mjs` is the nearest copied parser sibling; `scripts/agent-runtime/output-files.mjs` owns the downstream write.
 
 ## Seam Risk
 
-- Interrupt ID: release-page-before-asset-readiness
+- Interrupt ID: build-deployment-evidence-option-like-output-mutation
 - Risk Class: none
-- Seam: public release visibility to asset-dependent install refresh
-- Disproving Observation: the orchestrator waits for the public asset verifier or the install command retries 404 until the configured deadline.
-- What Local Reasoning Cannot Prove: whether the Charness publisher should own workflow waiting generically or the Cautilus adapter command should own download retry.
+- Seam: CLI argument parsing to input/output filesystem operations
+- Disproving Observation: the four-case malformed process table passes while every watched cwd remains unchanged.
+- What Local Reasoning Cannot Prove: all independently executable copied parser siblings.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
 - Resolution: resolved
-- Critique Required: no
+- Critique Required: yes
 - Next Step: impl
 - Handoff Artifact: none
 
 ## Prevention
 
-Keep release-page and asset-readiness states distinct, retain the first failure in the release ledger, and carry the ownership decision as an explicit follow-up rather than calling URL visibility install readiness.
+Reject semantic emptiness and option tokens at the owning parser boundary, pin both value-taking options with real-process no-side-effect tests, lock the newly visible CLI coverage baseline, and triage copied siblings only from fresh reproduction evidence.
