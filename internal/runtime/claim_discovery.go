@@ -3573,8 +3573,11 @@ func truncateReviewSourceRefs(refs []any, excerptChars int) []any {
 			"line": ref["line"],
 		}
 		excerpt := stringFromAny(ref["excerpt"])
-		if excerptChars > 0 && len(excerpt) > excerptChars {
-			excerpt = excerpt[:excerptChars]
+		if excerptChars > 0 {
+			codePoints := []rune(excerpt)
+			if len(codePoints) > excerptChars {
+				excerpt = string(codePoints[:excerptChars])
+			}
 		}
 		rendered["excerpt"] = excerpt
 		result = append(result, rendered)

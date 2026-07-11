@@ -1479,6 +1479,30 @@ func TestBuildClaimReviewInputClustersAndSkipsDeterministically(t *testing.T) {
 	}
 }
 
+func TestTruncateReviewSourceRefsPreservesUnicodePrefix(t *testing.T) {
+	refs := truncateReviewSourceRefs([]any{
+		map[string]any{"path": "README.md", "line": 1, "excerpt": "a가나"},
+	}, 2)
+	excerpt := stringFromAny(asMap(refs[0])["excerpt"])
+	if !utf8.ValidString(excerpt) {
+		t.Fatalf("expected valid UTF-8 excerpt, got %q", excerpt)
+	}
+	if excerpt != "a가" {
+		t.Fatalf("expected exact two-code-point prefix, got %q", excerpt)
+	}
+	rendered, err := json.Marshal(refs)
+	if err != nil {
+		t.Fatalf("expected review refs to marshal: %v", err)
+	}
+	var roundTrip []any
+	if err := json.Unmarshal(rendered, &roundTrip); err != nil {
+		t.Fatalf("expected review refs to unmarshal: %v", err)
+	}
+	if got := stringFromAny(asMap(roundTrip[0])["excerpt"]); got != "a가" {
+		t.Fatalf("expected JSON roundtrip to preserve exact prefix, got %q", got)
+	}
+}
+
 func TestBuildClaimReviewInputSkipsSatisfiedClaims(t *testing.T) {
 	packet := map[string]any{
 		"schemaVersion": contracts.ClaimProofPlanSchema,
