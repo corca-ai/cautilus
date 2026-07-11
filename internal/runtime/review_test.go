@@ -169,6 +169,59 @@ func TestBuildReviewPromptInputFromScenarioRendersRealizedOutput(t *testing.T) {
 	}
 }
 
+func TestRenderReviewPromptFailsWhenDeclaredConsumerPromptIsUnreadable(t *testing.T) {
+	missingPath := filepath.Join(t.TempDir(), "missing-review-prompt.md")
+	promptInput := minimalReviewPromptInput()
+	promptInput["defaultPromptFile"] = map[string]any{
+		"absolutePath": missingPath,
+		"exists":       true,
+	}
+	_, err := RenderReviewPrompt(promptInput)
+	if err == nil {
+		t.Fatal("expected declared consumer prompt read failure")
+	}
+	if !strings.Contains(err.Error(), missingPath) {
+		t.Fatalf("expected error to identify consumer prompt path, got %v", err)
+	}
+}
+
+func TestRenderReviewPromptOmitsOptionalConsumerPromptStates(t *testing.T) {
+	emptyPath := filepath.Join(t.TempDir(), "empty-review-prompt.md")
+	writeRuntimeTestFile(t, emptyPath, " \n\t")
+	tests := []struct {
+		name   string
+		record any
+	}{
+		{name: "record absent"},
+		{name: "record says missing", record: map[string]any{"absolutePath": filepath.Join(t.TempDir(), "missing.md"), "exists": false}},
+		{name: "readable file is empty", record: map[string]any{"absolutePath": emptyPath, "exists": true}},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			promptInput := minimalReviewPromptInput()
+			if test.record != nil {
+				promptInput["defaultPromptFile"] = test.record
+			}
+			prompt, err := RenderReviewPrompt(promptInput)
+			if err != nil {
+				t.Fatalf("RenderReviewPrompt returned error: %v", err)
+			}
+			if strings.Contains(prompt, "## Consumer Prompt Addendum") {
+				t.Fatalf("optional prompt state rendered an addendum:\n%s", prompt)
+			}
+		})
+	}
+}
+
+func minimalReviewPromptInput() map[string]any {
+	return map[string]any{
+		"metaPrompt": map[string]any{
+			"objective":    "Review the candidate.",
+			"instructions": []any{},
+		},
+	}
+}
+
 func writeRuntimeTestFile(t *testing.T, path string, payload string) {
 	t.Helper()
 	if err := os.WriteFile(path, []byte(payload), 0o644); err != nil {

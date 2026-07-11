@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: fail-closed consumer prompt read-error parity across Go and Node renderers.
-- Current slice intent: reproduce the stale `exists:true` prompt record failure, preserve omission only for absent records, and propagate real read errors through both product paths.
-- Next action: archive the completed Unicode claim-review slice, reproduce the reviewer-reported prompt failure, and route it through debug before repair.
+- Current slice: measured Node standing-test isolation economics and the next structural quality seam.
+- Current slice intent: compare the current per-file isolation cost with an explicit shared-process experiment without weakening the standing bar or changing it unless the full suite remains deterministic.
+- Next action: commit the reviewed fail-closed prompt slice, read the testability guidance, and run repeated current-versus-shared-process measurements before deciding.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -84,8 +84,8 @@ The user can inspect scoped commits spanning more than one quality dimension, re
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Inventory current correctness, runtime, maintainability, and release-readiness candidates | Avoid memory-anchored churn and select from current evidence | quality plan, runtime/gate packets, fresh-eye triage | completed |
-| 2 | Land the highest-value bounded correctness or failure-path improvement | Bugs outrank cosmetic cleanup when reproducible | debug artifact, focused regression tests, scoped commit | in progress |
-| 3 | Improve test/runtime economics or structural code quality without proof loss | The user explicitly requested multiple dimensions | measured before/after or structural simplification, focused tests, scoped commit | pending |
+| 2 | Preserve multilingual claim-review excerpt fidelity | A byte/code-point mismatch was reproducible at a packet boundary | debug artifact, focused regression tests, scoped commit | completed |
+| 3 | Fail closed when a declared consumer prompt cannot be read | A reviewer reproduced silent loss of behavior-steering input in both renderers | cross-language failure tests, parity review, scoped commit | completed |
 | 4 | Continue with the next safe evidence-backed improvement until the closeout reserve | Honor the two-hour done-early policy | candidate ledger, slice proof, scoped commits | pending |
 | 5 | Final quality review, release preparation, push, publication, and public verification | Ship one coherent verified bundle | broad gates, release artifact, tag/release/install readback | pending |
 
@@ -170,6 +170,20 @@ applies.
 - Off-goal findings: none.
 - Lessons carried forward: Every field named chars at a packet boundary must be checked against Go byte slicing, even when nearby text paths were already repaired.
 - Metrics: One production branch changed and one focused regression test added; package test completed in 1.40s.
+
+### Slice 3: Fail closed on declared consumer prompt read errors
+
+- Objective: Preserve declared behavior-steering consumer prompt input or surface a path-bearing failure across Go and Node renderers.
+- Why this approach: Both implementations silently omitted a captured-present prompt after a file read failure, so evaluator input could shrink without diagnosis.
+- Commits: the scoped correctness commit containing this slice.
+- What changed: Go now returns wrapped consumer-prompt read errors; Node throws a matching path-bearing error; both retain optional omission for absent, exists-false, and readable-empty states.
+- Alternatives rejected: Rejected silent fallback, CLI-specific policy, and full OS-error snapshot parity.
+- Targeted verification: Old-code stale-record tests failed in both languages; focused and full runtime tests, eight Node flow tests with subtests, eslint, debug validator, structural inventory, and diff checks passed after repair.
+- Test duplication pressure: One Go failure test plus one three-case omission table, and one Node failure test plus three omission subtests were added to existing files; structural inventory reported zero findings.
+- Critique: Clean parent-delegated review found two state-contract proof gaps and one wording overclaim; both were fixed, final verdict READY, and reviewer-boundary verify reported no drift.
+- Off-goal findings: none.
+- Lessons carried forward: Optional capture state must remain distinct from a declared dependency that later becomes unreadable; renderer parity includes failure semantics, not only successful output.
+- Metrics: Go package test 0.94s; Node review flow 11 assertions in 0.12s; no provider call.
 
 ## Context Sources
 

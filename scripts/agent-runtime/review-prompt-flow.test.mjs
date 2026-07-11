@@ -273,6 +273,41 @@ test("renderReviewPrompt turns review prompt inputs into a portable meta-prompt"
 	}
 });
 
+test("renderReviewPrompt fails when a declared consumer prompt becomes unreadable", () => {
+	const { root, reviewPacketPath } = createReviewPacketFixture();
+	try {
+		const packet = buildReviewPromptInput(["--review-packet", reviewPacketPath]);
+		rmSync(packet.defaultPromptFile.absolutePath);
+		assert.throws(() => renderReviewPrompt(packet), {
+			message: new RegExp(packet.defaultPromptFile.absolutePath.replaceAll("/", "\\/")),
+		});
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("renderReviewPrompt omits optional consumer prompt states", async (t) => {
+	for (const state of ["record absent", "record says missing", "readable file is empty"]) {
+		await t.test(state, () => {
+			const { root, reviewPacketPath } = createReviewPacketFixture();
+			try {
+				const packet = buildReviewPromptInput(["--review-packet", reviewPacketPath]);
+				if (state === "record absent") {
+					delete packet.defaultPromptFile;
+				} else if (state === "record says missing") {
+					packet.defaultPromptFile = { absolutePath: join(root, "missing.md"), exists: false };
+				} else {
+					writeFileSync(packet.defaultPromptFile.absolutePath, " \n\t", "utf-8");
+				}
+				const prompt = renderReviewPrompt(packet);
+				assert.doesNotMatch(prompt, /## Consumer Prompt Addendum/);
+			} finally {
+				rmSync(root, { recursive: true, force: true });
+			}
+		});
+	}
+});
+
 test("buildReviewPromptInput can switch into output-under-test mode", () => {
 	const { root, reviewPacketPath, schemaPath } = createReviewPacketFixture();
 	const outputUnderTestPath = join(root, "artifacts", "analysis-output.json");

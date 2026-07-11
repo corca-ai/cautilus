@@ -240,7 +240,11 @@ func RenderReviewPrompt(promptInput map[string]any) (string, error) {
 		lines = append(lines, "", "## Output Contract", "- schema file: "+stringOrEmpty(defaultSchema["absolutePath"]))
 	}
 	lines = append(lines, "", "Return a verdict that follows the provided output schema. If the provided evidence is insufficient for a bounded review, return the schema-compliant blocked payload with a concrete reason code and reason instead of prose.")
-	if consumerPrompt, err := maybeReadConsumerPrompt(asMap(promptInput["defaultPromptFile"])); err == nil && strings.TrimSpace(consumerPrompt) != "" {
+	consumerPrompt, err := maybeReadConsumerPrompt(asMap(promptInput["defaultPromptFile"]))
+	if err != nil {
+		return "", err
+	}
+	if strings.TrimSpace(consumerPrompt) != "" {
 		lines = append(lines, "", "## Consumer Prompt Addendum", consumerPrompt)
 	}
 	return strings.TrimRight(strings.Join(lines, "\n"), "\n") + "\n", nil
@@ -539,7 +543,7 @@ func maybeReadConsumerPrompt(defaultPromptFile map[string]any) (string, error) {
 	}
 	payload, err := os.ReadFile(path)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to read consumer prompt %s: %w", path, err)
 	}
 	return strings.TrimSpace(string(payload)), nil
 }

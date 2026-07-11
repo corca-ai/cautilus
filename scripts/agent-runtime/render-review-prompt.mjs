@@ -254,8 +254,8 @@ function maybeReadConsumerPrompt(promptInput) {
 	try {
 		const text = readFileSync(path, "utf-8").trim();
 		return text ? `\n## Consumer Prompt Addendum\n${text}\n` : "";
-	} catch {
-		return "";
+	} catch (error) {
+		throw new Error(`failed to read consumer prompt ${path}: ${error.message}`, { cause: error });
 	}
 }
 
