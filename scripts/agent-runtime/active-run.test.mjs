@@ -66,6 +66,12 @@ test("readActiveRunDir returns null when the env var is unset", () => {
 	assert.equal(readActiveRunDir({ env: {} }), null);
 });
 
+test("readActiveRunDir treats a whitespace-only env var as unset", () => {
+	for (const value of ["   ", "\t\n"]) {
+		assert.equal(readActiveRunDir({ env: { [ACTIVE_RUN_ENV_VAR]: value } }), null);
+	}
+});
+
 test("readActiveRunDir resolves an existing env var directory to an absolute path", () => {
 	withTempBase((base) => {
 		const active = join(base, "active-from-env");
@@ -186,6 +192,40 @@ test("explicit outputDir overrides an active env var", () => {
 		});
 		assert.equal(result.source, "explicit");
 		assert.equal(result.runDir, resolve(explicit));
+	});
+});
+
+test("whitespace-only path options fall back to auto-materialization", () => {
+	for (const options of [
+		{ outputDir: "   ", env: {} },
+		{ outputDir: "\t\n", env: {} },
+		{ env: { [ACTIVE_RUN_ENV_VAR]: "   " } },
+		{ env: { [ACTIVE_RUN_ENV_VAR]: "\t\n" } },
+	]) {
+		withTempBase((base) => {
+			const result = resolveRunDir({
+				...options,
+				cwd: base,
+				label: "whitespace-fallback",
+				now: new Date("2026-07-11T10:32:15.000Z"),
+			});
+			assert.equal(result.source, "auto");
+			assert.equal(result.runDir, resolve(base, DEFAULT_RUNS_ROOT, "20260711T103215000Z-whitespace-fallback"));
+			assert.equal(existsSync(join(base, "   ")), false);
+		});
+	}
+});
+
+test("non-empty path text with spaces is preserved", () => {
+	withTempBase((base) => {
+		const explicit = " explicit path ";
+		const explicitResult = resolveRunDir({ outputDir: explicit, cwd: base, env: {} });
+		assert.equal(explicitResult.runDir, resolve(base, explicit));
+
+		const active = join(base, " active path ");
+		mkdirSync(active, { recursive: true });
+		const activeResult = resolveRunDir({ cwd: base, env: { [ACTIVE_RUN_ENV_VAR]: " active path " } });
+		assert.equal(activeResult.runDir, resolve(base, " active path "));
 	});
 });
 

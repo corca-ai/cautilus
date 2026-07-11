@@ -18,8 +18,15 @@ function ensureExistingDirectory(path, label) {
 	}
 }
 
+function optionalPath(value) {
+	if (!value || (typeof value === "string" && !value.trim())) {
+		return null;
+	}
+	return value;
+}
+
 export function readActiveRunDir({ env = process.env } = {}) {
-	const fromEnv = env?.[ACTIVE_RUN_ENV_VAR];
+	const fromEnv = optionalPath(env?.[ACTIVE_RUN_ENV_VAR]);
 	if (!fromEnv) {
 		return null;
 	}
@@ -36,8 +43,9 @@ export function resolveRunDir({
 	now = new Date(),
 	cwd = process.cwd(),
 } = {}) {
-	if (outputDir) {
-		const resolved = resolve(cwd, outputDir);
+	const explicitOutputDir = optionalPath(outputDir);
+	if (explicitOutputDir) {
+		const resolved = resolve(cwd, explicitOutputDir);
 		mkdirSync(resolved, { recursive: true });
 		return {
 			runDir: resolved,
@@ -48,7 +56,7 @@ export function resolveRunDir({
 		};
 	}
 
-	const fromEnv = env?.[ACTIVE_RUN_ENV_VAR];
+	const fromEnv = optionalPath(env?.[ACTIVE_RUN_ENV_VAR]);
 	if (fromEnv) {
 		const runDir = readActiveRunDir({ env: { [ACTIVE_RUN_ENV_VAR]: resolve(cwd, fromEnv) } });
 		return {

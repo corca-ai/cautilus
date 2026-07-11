@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: measured Node standing-test isolation economics and the next structural quality seam.
-- Current slice intent: compare the current per-file isolation cost with an explicit shared-process experiment without weakening the standing bar or changing it unless the full suite remains deterministic.
-- Next action: commit the reviewed fail-closed prompt slice, read the testability guidance, and run repeated current-versus-shared-process measurements before deciding.
+- Current slice: direct Go active-run contract proof and the next small structural quality seam.
+- Current slice intent: keep cross-language active-run precedence locally testable without turning coverage percentage into the objective.
+- Next action: commit the reviewed Node whitespace parity fix, then decide whether focused Go active-run tests materially strengthen the shared contract before release closeout.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -184,6 +184,34 @@ applies.
 - Off-goal findings: none.
 - Lessons carried forward: Optional capture state must remain distinct from a declared dependency that later becomes unreadable; renderer parity includes failure semantics, not only successful output.
 - Metrics: Go package test 0.94s; Node review flow 11 assertions in 0.12s; no provider call.
+
+### Slice 4: Node standing-test isolation experiment
+
+- Objective: Determine whether shared-process Node tests can reduce standing runtime without proof loss.
+- Why this approach: The economics inventory flagged unknown isolation cost, so measurement was required before any runner change.
+- Commits: none — evidence rejected the change.
+- What changed: No repository files changed for the experiment; the standing isolated runner remains authoritative.
+- Alternatives rejected: Explicit shared-process mode was rejected because it ran about three to nine times slower and executed CLI main guards inside the test process while still exiting zero.
+- Targeted verification: Alternating isolated/shared full-glob runs passed isolated in 4.87s cold and 1.67s warm; shared took 15.42s and 15.34s and emitted an unrequested missing-input stack trace.
+- Test duplication pressure: No tests added and no standing command changed.
+- Critique: Quality reviewer had already rejected speculative isolation/parallelism without proof; measurement confirmed that decision.
+- Off-goal findings: Shared-process contamination is not a shipped-mode bug because the standing suite intentionally uses process isolation.
+- Lessons carried forward: Test isolation is buying real module-main containment in this repo; do not optimize it away from timing alone.
+- Metrics: isolated 4.87s/1.67s versus shared 15.42s/15.34s on this machine.
+
+### Slice 5: Normalize Node active-run optional paths
+
+- Objective: Treat all-whitespace output and active-run paths as absent while preserving existing non-empty Node path identity.
+- Why this approach: Node created a space-only output directory where Go followed auto-materialization, violating shared precedence semantics.
+- Commits: the scoped parity commit containing this slice.
+- What changed: A small optionalPath helper now normalizes absence in all three Node branches; tests cover spaces, tab/newline, auto fallback, filesystem non-creation, and valid paths with spaces.
+- Alternatives rejected: Rejected trimming every non-empty path, changing Go surrounding-space identity, and rejecting internal spaces.
+- Targeted verification: Old focused cases failed; all 18 active-run tests, eslint, debug validation, and diff checks passed after repair.
+- Test duplication pressure: Two focused test blocks extend the owning active-run test file; no new runner or fixture layer.
+- Critique: Two clean parent-delegated reviews narrowed parity and expanded whitespace/preservation proof; final code/test verdict ready after updating the artifact test count; both fingerprints were clean.
+- Off-goal findings: none.
+- Lessons carried forward: Cross-language parity must name which semantic is shared; absence detection can align even when surrounding-space path identity does not.
+- Metrics: 18 focused tests complete in about 0.10s.
 
 ## Context Sources
 

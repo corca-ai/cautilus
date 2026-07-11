@@ -3,72 +3,72 @@ Date: 2026-07-11
 
 ## Problem
 
-Both Go and Node review-prompt renderers silently omit a declared consumer prompt when its recorded file exists but the file read fails, shrinking behavior-steering evaluator input without an error.
+The Node active-run resolver treats whitespace-only `outputDir` and `CAUTILUS_RUN_DIR` values as real paths, while the Go implementation trims them as absent; Node can create or target a directory whose name is only spaces.
 
 ## Correct Behavior
 
-Given a `defaultPromptFile` record with `exists: true`, when the renderer cannot read its `absolutePath`, then rendering must fail with a path-bearing error; omission is valid only when the record has no path, records `exists: false`, or the readable file is empty.
+Given a whitespace-only explicit output or active-run environment value, when Cautilus resolves a run directory, then both language implementations should treat the value as absent and continue through the documented precedence to active or auto materialization.
 
 ## Observed Facts
 
-- Go `RenderReviewPrompt` discards `maybeReadConsumerPrompt` errors inside `err == nil && ...`.
-- Node `maybeReadConsumerPrompt` catches every `readFileSync` error and returns an empty addendum.
-- Both renderers include a readable non-empty consumer prompt in existing happy-path tests.
-- A stale file record can occur when prompt input is captured before a file is moved, removed, or loses permissions.
+- Node `resolveRunDir` checks raw `outputDir` and environment string truthiness.
+- Node `readActiveRunDir` also checks raw truthiness before `resolve`.
+- Go checks `strings.TrimSpace` for all three branches.
+- The active-run contract calls these values paths and documents explicit, active, then auto precedence; it does not describe whitespace directory names.
 
 ## Reproduction
 
-- Node: call `renderReviewPrompt` with `defaultPromptFile.absolutePath=/definitely/missing/cautilus.prompt.md` and `exists=true`; current code returns a prompt without the addendum instead of throwing.
-- Go: add a focused test with the same stale record; current `RenderReviewPrompt` returns `nil` error and omits the addendum.
+- In a temporary cwd, call Node `resolveRunDir({outputDir:"   ", env:{}})`; current code returns `source:"explicit"` and creates a directory named three spaces.
+- Focused Node tests for whitespace output and env values should fail on the old implementation and align with existing Go behavior after repair.
 
 ## Candidate Causes
 
-- Missing consumer prompts were intentionally treated as optional regardless of the captured `exists` state.
-- The renderer assumed the file record and filesystem could not diverge between capture and render.
-- Error suppression was added to keep rendering resilient but erased a behavior-steering dependency.
-- Go and Node implementations copied the same fail-open policy independently.
+- Whitespace was intentionally accepted as a legal filesystem path segment.
+- Node path selection copied JavaScript truthiness while Go later added trim normalization.
+- Only normal non-empty and missing values were covered by active-run tests.
+- CLI parsing was expected to reject whitespace before the runtime helper.
 
 ## Hypothesis
 
-- Falsifiable claim: both renderers confuse an absent optional record with a failed declared dependency; stale-record tests will succeed silently on the old code, and propagating read errors only for `exists:true` will make them fail closed while absent/readable cases remain unchanged | disconfirmer: run focused stale-record tests against both current implementations before repair.
+- Falsifiable claim: the Node implementation lacks the trim normalization already present in Go; whitespace tests will select explicit/active paths on old code, and normalizing once per branch will restore auto fallback without changing non-empty precedence | disconfirmer: run focused whitespace cases against the current Node helper before repair.
 
 ## Verification
 
-- confirmed — focused Go and Node tests both failed on the old implementations because rendering returned successfully instead of surfacing the missing declared prompt.
+- confirmed — both focused tests failed against raw truthiness checks, then all 18 active-run tests passed after shared optional-path normalization.
 
 ## Root Cause
 
-Both renderers collapsed two distinct states—an optional prompt record that is absent and a prompt record declared present whose read fails—into the same empty-addendum result.
-That fail-open policy discarded a behavior-steering dependency and its diagnostic path.
+The reusable Node helper used JavaScript truthiness as path-presence validation in three branches, while the Go sibling used trimmed emptiness.
+That divergence let all-whitespace values bypass the documented optional-path fallback and reach filesystem resolution.
 
 ## Invariant Proof
 
-- Invariant: a consumer prompt declared present is either included as readable text after the existing whitespace trim or causes rendering to fail with its path.
-- Producer Proof: focused stale-record tests failed against both old suppression branches; readable prompt inclusion remains covered by existing tests.
-- Final-Consumer Proof: the repaired Go renderer returns a path-bearing error, the exported Node renderer throws a path-bearing error, and Node `main` already maps thrown renderer errors to process failure.
-- Interface-Shape Sibling Scan: both language implementations own the same prompt-input contract and must carry the same absent-versus-unreadable distinction.
-- Non-Claims: the fix does not validate prompt semantics, file freshness after a successful read, or provider use of the rendered prompt.
+- Invariant: Node path-selection branches use trimmed emptiness consistently with Go for absence detection while preserving Node's pre-existing non-empty path text for resolution.
+- Producer Proof: focused tests assert `readActiveRunDir` returns null and both resolver branches select `source:auto` for whitespace-only values.
+- Final-Consumer Proof: the resolver test asserts the expected auto run directory and proves no space-only directory is created; production consumers reuse this helper.
+- Interface-Shape Sibling Scan: explicit output and active env branches share the same truthiness mistake; Go is the safe contract sibling.
+- Non-Claims: parity is claimed only for all-whitespace absence; Go's surrounding-space env-path identity differs, and this fix does not reject internal whitespace or change label normalization.
 
 ## Detection Gap
 
-- Go/Node review prompt tests | happy-path prompt inclusion did not exercise a captured-present/file-missing race | add one stale-record failure case per implementation and retain existing absent/readable proof.
+- `scripts/agent-runtime/active-run.test.mjs` | precedence tests covered null and ordinary paths but not whitespace-only values | add output/env whitespace cases that assert auto fallback and no space-only directory.
 
 ## Sibling Search
 
-- Mental model: optional at capture time means read failures remain optional after the record declares the dependency present.
-- same layer axis: Go `maybeReadConsumerPrompt` and Node `maybeReadConsumerPrompt` | decision: same bug, fix now | proof: static branches plus focused stale-record reproductions.
-- abstraction up axis: packet file records consumed after capture | decision: same class, diagnostic-only for this slice | proof: artifact/report file readers already propagate errors; no action needed because only consumer prompt readers suppress declared-file failures.
-- specialization down axis: CLI renderer entrypoints | decision: same bug, fix now | proof: Go returns an error channel and Node `main` catches thrown errors, so producer propagation reaches the operator boundary.
-- mental-model axis: truly absent or empty optional prompts | decision: intentional plain-text or non-rendering boundary | proof: missing path, `exists:false`, and readable empty files do not declare behavior text to preserve.
-- cross-file: `internal/runtime/review.go` and `scripts/agent-runtime/render-review-prompt.mjs` are the two contract implementations.
+- Mental model: JavaScript truthiness is equivalent to normalized optional path presence.
+- same layer axis: `outputDir`, `resolveRunDir` env branch, and `readActiveRunDir` env branch | decision: same bug, fix now | proof: static truthiness checks and temporary-directory reproduction.
+- abstraction up axis: optional path normalization in Node runtime helpers | decision: same class, diagnostic-only for this slice | proof: search is limited to active-run precedence; no action needed because other helpers validate through their owning parsers rather than this reusable optional-path API.
+- specialization down axis: space-only directory creation | decision: same bug, fix now | proof: direct filesystem observation in a disposable cwd.
+- mental-model axis: valid paths containing internal or surrounding spaces | decision: intentional plain-text or non-rendering boundary | proof: only all-whitespace values are absent; non-empty path content remains unchanged.
+- cross-file: `internal/runtime/active_run.go` provides the established trimmed behavior used as parity evidence.
 
 ## Seam Risk
 
-- Interrupt ID: consumer-prompt-read-failure-suppression
+- Interrupt ID: node-active-run-whitespace-path-presence
 - Risk Class: none
-- Seam: captured prompt file record to rendered evaluator prompt
-- Disproving Observation: either stale-record renderer already returns an error, or a declared missing prompt is intentionally documented as optional after capture.
-- What Local Reasoning Cannot Prove: provider behavior after receiving the rendered prompt.
+- Seam: optional CLI/runtime path input to filesystem materialization
+- Disproving Observation: focused Node cases already treat all-whitespace output/env values as absent.
+- What Local Reasoning Cannot Prove: host shells that intentionally pass a space-only directory as a desired path.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -80,4 +80,4 @@ That fail-open policy discarded a behavior-steering dependency and its diagnosti
 
 ## Prevention
 
-Make absent and unreadable states distinct in both renderers, prove language parity with focused failure cases, and reuse existing error channels instead of adding a new gate.
+Normalize optional path presence explicitly in the reusable Node active-run helper and pin cross-language precedence with focused filesystem tests.
