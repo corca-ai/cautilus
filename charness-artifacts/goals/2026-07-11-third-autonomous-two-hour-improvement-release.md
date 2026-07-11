@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: test/runtime economics follow-up after closing the reproduced mutating-parser family.
-- Current slice intent: use measured evidence for one bounded speed or maintainability move, then enter final verification before the closeout reserve.
-- Next action: commit the reviewed prune guard, measure the focused process-test fixture cost, and either land one proof-preserving optimization or record the rejection before release closeout.
+- Current slice: final bundle verification and release readiness.
+- Current slice intent: freeze implementation after the measured fixture reuse improvement and spend the remaining budget on broad gates, fresh-eye release review, artifacts, and public proof.
+- Next action: commit the reviewed test-economics slice, run the required broad/on-demand gates, then prepare patch release `v0.19.2` if the release contract confirms compatibility.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -86,8 +86,8 @@ The user can inspect scoped commits spanning more than one quality dimension, re
 | 1 | Inventory current correctness, runtime, maintainability, and release-readiness candidates | Avoid memory-anchored churn and select from current evidence | quality plan, runtime/gate packets, fresh-eye triage | completed |
 | 2 | Preserve multilingual claim-review excerpt fidelity | A byte/code-point mismatch was reproducible at a packet boundary | debug artifact, focused regression tests, scoped commit | completed |
 | 3 | Fail closed when a declared consumer prompt cannot be read | A reviewer reproduced silent loss of behavior-steering input in both renderers | cross-language failure tests, parity review, scoped commit | completed |
-| 4 | Continue with the next safe evidence-backed improvement until the closeout reserve | Honor the two-hour done-early policy | candidate ledger, slice proof, scoped commits | in progress |
-| 5 | Final quality review, release preparation, push, publication, and public verification | Ship one coherent verified bundle | broad gates, release artifact, tag/release/install readback | pending |
+| 4 | Continue with the next safe evidence-backed improvement until the closeout reserve | Honor the two-hour done-early policy | candidate ledger, slice proof, scoped commits | completed |
+| 5 | Final quality review, release preparation, push, publication, and public verification | Ship one coherent verified bundle | broad gates, release artifact, tag/release/install readback | in progress |
 
 ## Operator Decision Queue
 
@@ -268,6 +268,20 @@ applies.
 - Off-goal findings: No repo-wide argument parser was introduced; other non-mutating helper parsers remain outside this reproduced destructive family.
 - Lessons carried forward: A dry-run flag consumed as data can invert safety; destructive CLI tests need a sentinel at the exact old-code victim path, and parser hardening should preserve owning type diagnostics.
 - Metrics: One old-code sentinel deletion reproduced; six invalid-value probes; nine focused tests in 0.48s; zero sentinel deletions after repair.
+
+### Slice 10: Reuse the compare-parser Git fixture
+
+- Objective: Reduce standing process-test cost without weakening malformed-input or mutation-state proof.
+- Why this approach: The new five-case regression table recreated and committed an identical Git repository per case, making fixture setup a measurable share of the focused suite.
+- Commits: the scoped test-economics commit containing this slice.
+- What changed: The parent test now owns one committed source repository while each sequential subtest retains a unique sandbox; regression cleanup removes the sandbox and prunes stale worktree metadata before the next case.
+- Alternatives rejected: Rejected shared cwd, parallel subtests, removing state assertions, and global fixture caching because each would weaken isolation or failure diagnosis.
+- Targeted verification: Three before runs measured 1.88/1.85/1.79s; three after runs measured 1.57/1.56/1.59s; every run, eslint, diff checks, delegated fresh-eye review, and clean fingerprint verification passed.
+- Test duplication pressure: No assertion or case was added; repeated setup was removed while per-case filesystem and Git metadata oracles remained.
+- Critique: Parent-delegated reviewer returned READY and confirmed sequential execution, pre-cleanup state checks, cleanup ordering, regression containment, and proportionality.
+- Off-goal findings: This is a focused-suite improvement of about 0.28s median, not a claim that total verification runtime falls by 15 percent.
+- Lessons carried forward: Share immutable expensive fixtures only when mutable outputs remain case-local and a failed case has an explicit metadata cleanup path.
+- Metrics: Focused median 1.85s to 1.57s, about 15.1% faster; one repository initialization instead of five; five cases unchanged.
 
 ## Context Sources
 
