@@ -48,7 +48,11 @@ run_phase() {
 }
 
 cd "$ROOT"
-run_phase "verify" "$NPM_CMD" run verify
+VERIFY_TARGET="verify"
+if [ "$READ_ONLY" -eq 0 ]; then
+	VERIFY_TARGET="verify:runtime"
+fi
+run_phase "verify" "$NPM_CMD" run "$VERIFY_TARGET"
 
 if [ "$READ_ONLY" -eq 0 ]; then
 	run_phase "self dogfood" "$NPM_CMD" run dogfood:self

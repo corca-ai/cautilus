@@ -58,7 +58,8 @@ test("run-quality default runs verify and self dogfood", () => {
 	withFakeNpm(({ npmPath, logPath }) => {
 		const result = runQuality([], { npmPath, logPath });
 		assert.equal(result.status, 0, result.stderr);
-		assert.deepEqual(readLog(logPath), ["run verify", "run dogfood:self"]);
+		assert.deepEqual(readLog(logPath), ["run verify:runtime", "run dogfood:self"]);
+		assert.match(result.stdout, /quality: verify started/);
 		assert.match(result.stdout, /quality: self dogfood started/);
 	});
 });
