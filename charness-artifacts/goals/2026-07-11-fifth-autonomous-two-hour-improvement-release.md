@@ -138,6 +138,19 @@ applies.
 
 ## Slice Log
 
+### 2026-07-11T22:38+09:00 — preserve shell startup diagnostics
+
+- Delegated triage identified that non-timeout, non-`ExitError` command failures produced `status: failed` without `error` or `exitCode`, leaving review and quiet evaluation callers silent.
+- A deterministic nonexistent working-directory test failed against old code with empty durable captures but no cause.
+- The unmatched result branch now uses exitCode `-1`, retains the operating-system error under `command execution failed`, and composes with existing timeout and capture diagnostics.
+- Initial delegated review found CR/LF injection through startup and capture path errors; composed error messages now collapse line breaks before reaching result, review, or caller stderr.
+- Direct and race tests pass startup, capture, timeout, success, and environment-isolation branches; review normalization and caller stderr both surface one physical path-bearing cause line.
+- Test pressure: one direct in-process test extends the existing shell-command seam without a subprocess or new file.
+- Non-claims: exitCode `-1` is a no-child-process sentinel, not a portable OS exit status; error wording below the stable prefix remains platform-owned.
+- Parent-delegated re-review returned PASS after CR/LF sanitation, with a clean rail-1 boundary verify and no remaining actionable finding.
+- Full coverage and floor checks passed; the directly exercised command runner floor was promoted to the policy-buffered observed value.
+- Pending: scoped commit.
+
 ### 2026-07-11T22:24+09:00 — sanitize deployment semantic failures
 
 - Delegated triage and independent real-process reproduction showed syntactically valid but contract-invalid packets emitted source excerpts, five stack frames, Node version text, and internal absolute paths from both deployment executables.

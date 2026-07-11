@@ -1662,6 +1662,48 @@ func TestRunShellCommandFailsWhenCaptureCannotBeWritten(t *testing.T) {
 	}
 }
 
+func TestRunShellCommandPreservesStartupFailure(t *testing.T) {
+	missingRepoRoot := filepath.Join(t.TempDir(), "missing\nINJECTED")
+	stdoutFile := filepath.Join(t.TempDir(), "stdout.txt")
+	stderrFile := filepath.Join(t.TempDir(), "stderr.txt")
+	result := runShellCommand(
+		missingRepoRoot,
+		"printf unreachable",
+		stdoutFile,
+		stderrFile,
+		func(string) {},
+		"startup failure",
+		time.Second,
+	)
+
+	if status := result["status"]; status != "failed" {
+		t.Fatalf("expected failed status, got %#v", result)
+	}
+	if exitCode := result["exitCode"]; exitCode != -1 {
+		t.Fatalf("expected startup failure exitCode -1, got %#v", result)
+	}
+	errorText := anyString(result["error"])
+	if strings.ContainsAny(errorText, "\r\n") || !strings.Contains(errorText, "missing INJECTED") {
+		t.Fatalf("expected path-bearing startup error, got %#v", result)
+	}
+	for _, capturePath := range []string{stdoutFile, stderrFile} {
+		if info, err := os.Stat(capturePath); err != nil || info.Size() != 0 {
+			t.Fatalf("expected empty capture %s, info=%v err=%v", capturePath, info, err)
+		}
+	}
+	var callerStderr bytes.Buffer
+	if shellCommandPassed(result, &callerStderr) {
+		t.Fatalf("expected evaluation caller to stop on startup failure")
+	}
+	if strings.Count(callerStderr.String(), "\n") != 1 || !strings.Contains(callerStderr.String(), "missing INJECTED") {
+		t.Fatalf("expected caller to surface startup error, got %q", callerStderr.String())
+	}
+	normalized := normalizeReviewVariantResult("startup-failure", "test", result, nil, nil)
+	if reason := anyString(normalized["reason"]); strings.ContainsAny(reason, "\r\n") || !strings.Contains(reason, "missing INJECTED") {
+		t.Fatalf("expected review result to surface startup error, got %#v", normalized)
+	}
+}
+
 func TestRunShellCommandTimesOutLongRunningProcess(t *testing.T) {
 	stdoutFile := filepath.Join(t.TempDir(), "stdout.txt")
 	stderrFile := filepath.Join(t.TempDir(), "stderr.txt")

@@ -1579,13 +1579,20 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 		result["exitCode"] = 0
 	} else if timedOut {
 		result["exitCode"] = -1
+	} else {
+		result["exitCode"] = -1
 	}
 	errorMessages := []string{}
 	if timedOut {
 		errorMessages = append(errorMessages, fmt.Sprintf("command timed out after %s", timeout))
+	} else if err != nil && !errors.As(err, &exitErr) {
+		errorMessages = append(errorMessages, fmt.Sprintf("command execution failed: %s", err))
 	}
 	errorMessages = append(errorMessages, captureErrors...)
 	if len(errorMessages) > 0 {
+		for index := range errorMessages {
+			errorMessages[index] = strings.NewReplacer("\r\n", " ", "\r", " ", "\n", " ").Replace(errorMessages[index])
+		}
 		result["error"] = strings.Join(errorMessages, "; ")
 	}
 	log(fmt.Sprintf("%s %s in %dms", label, result["status"], result["durationMs"]))
