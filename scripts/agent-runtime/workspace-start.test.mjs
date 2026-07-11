@@ -5,6 +5,7 @@ import {
 	mkdirSync,
 	mkdtempSync,
 	readFileSync,
+	readdirSync,
 	rmSync,
 	writeFileSync,
 } from "node:fs";
@@ -221,6 +222,25 @@ test("workspace-start CLI emits JSON when --json is passed", () => {
 		assert.equal(existsSync(payload.runDir), true);
 		assert.equal(existsSync(join(payload.runDir, RUN_MANIFEST_NAME)), true);
 	});
+});
+
+test("workspace-start CLI rejects invalid required values before mutation", () => {
+	for (const [option, value] of [
+		["--root", "--json"],
+		["--label", "--json"],
+		["--root", " \t\n"],
+		["--label", " \t\n"],
+	]) {
+		withTempBase((base) => {
+			const result = spawnSync("node", [SCRIPT_PATH, option, value], {
+				cwd: base,
+				encoding: "utf-8",
+			});
+			assert.notEqual(result.status, 0);
+			assert.match(result.stderr, new RegExp(`Missing value for ${option}`));
+			assert.deepEqual(readdirSync(base), []);
+		});
+	}
 });
 
 test("workspace-start CLI integrates with prune-workspace-artifacts recognition", () => {

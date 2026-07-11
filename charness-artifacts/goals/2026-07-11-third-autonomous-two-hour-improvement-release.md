@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: next evidence-backed failure-path or structural quality candidate after active-run testability.
+- Current slice: next evidence-backed failure-path or structural quality candidate after workspace-start parser safety.
 - Current slice intent: continue within the timebox without reopening rejected specdown, claim-warning, or large mechanical test-split work.
-- Next action: commit the reviewed direct Go active-run tests, then inspect small uncovered failure seams and current release-risk packets for the next bounded slice.
+- Next action: commit the reviewed workspace-start required-value guard, then inspect current release-risk packets and small uncovered mutation seams for the next bounded slice.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -226,6 +226,20 @@ applies.
 - Off-goal findings: none.
 - Lessons carried forward: Sibling-language tests inform contract intent but do not replace language-local proof at filesystem boundaries.
 - Metrics: Focused tests about 0.01s; no subprocess or provider cost.
+
+### Slice 7: Reject unsafe workspace-start required values
+
+- Objective: Prevent option-like or whitespace-only required values from being interpreted as paths or labels before a mutating CLI command runs.
+- Why this approach: A direct Node entrypoint bypassed the Go parser and created a --json directory when --root lacked a value, while whitespace-only roots also mutated the filesystem.
+- Commits: the scoped CLI-safety commit containing this slice.
+- What changed: The Node required-value parser now rejects missing, whitespace-only, and option-like values; a subprocess table proves all invalid root and label cases fail before creating files.
+- Alternatives rejected: Rejected relying on the Go front door, generic parser replacement, and post-parse cleanup because the Node entrypoint is a supported runtime surface and mutation must be prevented before dispatch.
+- Targeted verification: Old-code reproduction exited zero and created --json/<run>; the four-case regression table, full 16-test workspace-start suite, eslint, debug validation, structural inventory, and clean reviewer-boundary verification passed after repair.
+- Test duplication pressure: One table-driven subprocess test extends the owning test file and asserts the empty working directory as the side-effect oracle; no new fixture framework or runner was added.
+- Critique: The first parent-delegated review found a whitespace-only sibling gap; after adding root and label whitespace probes, the clean follow-up verdict was READY with no blocker or should-fix.
+- Off-goal findings: The generic CLI side-effect contract remains unconfigured; the concrete supported entrypoint now has checked-in pre-mutation proof without inventing a repo-wide fixture surface.
+- Lessons carried forward: Every independently executable mutating parser must reject option tokens and semantic emptiness locally, even when a higher-level wrapper already validates them.
+- Metrics: Four invalid-value subprocess probes; 16 focused tests complete in about 0.53s; zero files created in each failure case.
 
 ## Context Sources
 
