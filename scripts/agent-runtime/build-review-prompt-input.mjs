@@ -254,12 +254,13 @@ function buildOutputUnderTestText(outputUnderTestFile, outputTextKey) {
 	if (value === undefined) {
 		throw new Error(`output-under-test file ${outputUnderTestFile.absolutePath} does not contain key ${outputTextKey}`);
 	}
-	const fullText = coerceOutputText(value);
+	const fullText = coerceOutputText(value).toWellFormed();
+	const codePoints = Array.from(fullText);
 	return {
 		key: outputTextKey,
-		text: fullText.slice(0, OUTPUT_UNDER_TEST_TEXT_LIMIT),
-		charCount: fullText.length,
-		truncated: fullText.length > OUTPUT_UNDER_TEST_TEXT_LIMIT,
+		text: codePoints.slice(0, OUTPUT_UNDER_TEST_TEXT_LIMIT).join(""),
+		charCount: codePoints.length,
+		truncated: codePoints.length > OUTPUT_UNDER_TEST_TEXT_LIMIT,
 	};
 }
 

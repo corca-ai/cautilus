@@ -1,79 +1,82 @@
-# Debug Review
+# Debug Review: Review excerpt Unicode boundary
 Date: 2026-07-11
 
 ## Problem
 
-Quality closeout failed with `python3: can't open file '.../skills/quality/scripts/validate_quality_artifact.py': [Errno 2] No such file or directory`.
+The bounded review excerpt claims a 12,000-character limit but the Go runtime truncates and counts bytes, which can create invalid UTF-8 and misreport `charCount` for multilingual output.
 
 ## Correct Behavior
 
-Given a scaffolded quality artifact, when closeout validation starts, then the runner must execute the scaffold payload's emitted `validator_command` and validate the current artifact.
+Given a JSON output value containing non-ASCII text, when Cautilus extracts and truncates it for bounded review, then the excerpt remains valid Unicode, contains at most 12,000 code points, and reports the full code-point count consistently across the Go and Node helper surfaces.
 
 ## Observed Facts
 
-- The attempted path under `skills/quality/scripts/` does not exist.
-- `/tmp/cautilus-quality-scaffold.json` emits `python3 /home/hwidong/.codex/plugins/cache/local/charness/0.66.1/scripts/validate_quality_artifact.py --repo-root .`.
-- The emitted validator exists under the installed package's top-level `scripts/` directory.
-- Web search was skipped because the failure is a local installed-layout path mismatch and the scaffold packet is the authoritative disconfirmer.
+- `internal/runtime/review.go` uses `len(text)` and `text[:outputUnderTestTextLimit]`, both byte-based for Go strings.
+- The rendered prompt labels the value `extracted chars` and says the excerpt is truncated to 12,000 chars.
+- The sibling Node helper uses JavaScript `length` and `slice`, which count UTF-16 code units and can split a surrogate pair.
+- Web search was skipped because the failure is reproduced directly from the local language/runtime operations used by both implementations; no unstable external fact is needed.
 
 ## Reproduction
 
-- Running the guessed skill-local validator path reproduces `[Errno 2]`; inspecting the already-emitted scaffold payload returns the existing top-level validator path.
+- `/tmp/repro-review-utf8.go` builds `"a" + strings.Repeat("가", 4000)` and applies the current 12,000-byte slice.
+  It reports `sourceBytes=12001 sourceRunes=4001 excerptBytes=12000 excerptRunes=4002 validUTF8=false decodedLastRune=U+FFFD`.
 
 ## Candidate Causes
 
-- The installed package omitted the validator during packaging.
-- The installed 0.66.1 layout moved the validator from the skill directory to the package-level scripts directory.
-- The caller ignored the scaffold payload and guessed a skill-local validator path.
+- The limit was intentionally byte-based but user-facing fields and prose were mislabeled as characters.
+- The implementation assumed Go string indices and `len` count Unicode characters.
+- JSON marshaling or file decoding introduced the replacement character independently of truncation.
 
 ## Hypothesis
 
-- The failure is caller path guessing, not missing packaging; if true, the scaffold-emitted command points at an existing file and validates the artifact.
-  Disconfirmer: read `.validator_command` from the scaffold JSON and locate matching files with `rg --files`.
+- The defect is direct byte-boundary truncation: if the limit is applied to `[]rune` instead, the same input remains valid UTF-8, reports 4,001 characters, and does not create `U+FFFD`.
+  Disconfirmer: reproduce the current slice before any JSON file or prompt renderer is involved.
 
 ## Verification
 
-- confirmed — the emitted command points at `/home/hwidong/.codex/plugins/cache/local/charness/0.66.1/scripts/validate_quality_artifact.py`, which exists; no validator exists at the guessed skill-local path.
+- confirmed — the smallest reproduction creates invalid UTF-8 before JSON serialization; JSON serialization only makes the corruption visible as a replacement rune.
 
 ## Root Cause
 
-The caller violated the skill contract by constructing a validator path from the skill directory instead of using the scaffold helper's emitted `validator_command`.
+The shared contract says characters, but the Go implementation used byte-oriented string length and slicing while the Node sibling used UTF-16 code-unit semantics.
+Neither implementation defined or tested a cross-language Unicode code-point boundary.
 
 ## Invariant Proof
 
-- Invariant: artifact producers emit the canonical installed-layout validator command and consumers execute that command without path reconstruction.
-- Producer Proof: `/tmp/cautilus-quality-scaffold.json` contains the existing top-level validator path.
-- Final-Consumer Proof: the emitted validator command is run during this closeout and its result is recorded in the goal.
-- Interface-Shape Sibling Scan: debug scaffolding follows the same emitted-command contract and also resolves its validator under package-level `scripts/`.
-- Non-Claims: this does not prove every installed skill package has complete validator packaging.
+- Invariant: every review output-text extractor counts and truncates Unicode code points, never encoded bytes or UTF-16 code units.
+- Producer Proof: focused Go and Node tests will feed multibyte text through each extractor and assert the full count, bounded excerpt, and valid terminal code point.
+- Final-Consumer Proof: a Go scenario-to-render test will assert the rendered review prompt carries the intact multilingual excerpt and correct count.
+- Interface-Shape Sibling Scan: Go runtime and Node agent-runtime helper are both active producers of the same `outputUnderTestText` shape and must change together.
+- Non-Claims: code-point safety does not guarantee grapheme-cluster preservation, Markdown-fence isolation, or a fixed byte-size prompt budget.
 
 ## Detection Gap
 
-- quality closeout invocation | the scaffold payload was partially displayed without its validator command, so manual path reconstruction bypassed the contract | always include and execute `.validator_command` from scaffold output.
+- review prompt tests | existing Go coverage only exercised packet collection and Node tests used ASCII fixtures, so no cross-language Unicode boundary could fail | add focused multibyte boundary tests to both existing suites.
 
 ## Sibling Search
 
-- Mental model: a skill's helper scripts and its artifact validator share one directory.
-- cross-skill axis: debug scaffold | decision: use emitted package-level validator command | proof: `/tmp/cautilus-debug-scaffold.json`.
-- installed-layout axis: quality scaffold | decision: use emitted package-level validator command | proof: `/tmp/cautilus-quality-scaffold.json` plus `rg --files`.
-- cross-file: `skills/debug/references/adapter-contract.md` explicitly says not to assume a consumer-local or skill-local validator path.
+- Mental model: string length equals user-visible character count across Go and JavaScript.
+- Go axis: `internal/runtime/review.go` | decision: fix in current slice | proof: invalid UTF-8 reproduction.
+- Node axis: `scripts/agent-runtime/build-review-prompt-input.mjs` | decision: fix in current slice | proof: `length`/`slice` use UTF-16 code units and share the same packet field.
+- renderer axis: Go and Node renderers | decision: keep | proof: both consume the corrected count/text without additional truncation.
+- cross-file: `scripts/agent-runtime/review-prompt-flow.test.mjs` is the sibling regression surface for the Node producer.
 
 ## Seam Risk
 
-- Interrupt ID: quality-validator-path-guess
+- Interrupt ID: review-excerpt-unicode-boundary
 - Risk Class: none
-- Seam: local installed skill layout
-- Disproving Observation: scaffold output resolved an existing validator.
-- What Local Reasoning Cannot Prove: whether other package versions preserve the same physical location; callers do not need that fact when they consume the emitted command.
+- Seam: Go string bytes and JavaScript UTF-16 code units to a shared review packet meaning
+- Disproving Observation: both implementations currently disagree with Unicode code-point semantics.
+- What Local Reasoning Cannot Prove: whether downstream providers prefer a byte/token budget; this slice preserves the explicitly documented character contract.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
 
 - Resolution: resolved
-- Critique Required: no
+- Critique Required: yes
 - Next Step: impl
 - Handoff Artifact: none
 
 ## Prevention
 
-Consume scaffold payloads as contracts: surface `validator_command` in the first scaffold read and execute it verbatim instead of deriving paths from package structure.
+Define bounded human-text fields in Unicode code points at cross-language packet seams and keep one non-ASCII boundary fixture in every active producer implementation.

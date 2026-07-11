@@ -564,16 +564,16 @@ func buildOutputUnderTestText(outputUnderTestFile string, outputTextKey *string)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read output-under-test text at %s: %w", strings.TrimSpace(*outputTextKey), err)
 	}
-	text := fullText
-	truncated := false
-	if len(text) > outputUnderTestTextLimit {
-		text = text[:outputUnderTestTextLimit]
-		truncated = true
+	codePoints := []rune(fullText)
+	charCount := len(codePoints)
+	truncated := charCount > outputUnderTestTextLimit
+	if truncated {
+		codePoints = codePoints[:outputUnderTestTextLimit]
 	}
 	return map[string]any{
 		"key":       strings.TrimSpace(*outputTextKey),
-		"text":      text,
-		"charCount": len(fullText),
+		"text":      string(codePoints),
+		"charCount": charCount,
 		"truncated": truncated,
 	}, nil
 }

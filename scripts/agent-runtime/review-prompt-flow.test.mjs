@@ -303,6 +303,49 @@ test("buildReviewPromptInput can switch into output-under-test mode", () => {
 	}
 });
 
+test("buildReviewPromptInput truncates output text by Unicode code point", () => {
+	const { root, reviewPacketPath } = createReviewPacketFixture();
+	const outputUnderTestPath = join(root, "artifacts", "unicode-output.json");
+	try {
+		const text = `a${"😀".repeat(12000)}`;
+		writeFileSync(outputUnderTestPath, `${JSON.stringify({ summary: text })}\n`, "utf-8");
+		const packet = buildReviewPromptInput(
+			["--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output-text-key", "summary"],
+			{ now: new Date("2026-07-11T00:00:00.000Z") },
+		);
+		assert.equal(packet.outputUnderTestText.charCount, 12001);
+		assert.equal(Array.from(packet.outputUnderTestText.text).length, 12000);
+		assert.equal(packet.outputUnderTestText.text, `a${"😀".repeat(11999)}`);
+		assert.equal(packet.outputUnderTestText.truncated, true);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
+test("buildReviewPromptInput preserves exact Unicode limit and normalizes lone surrogates", () => {
+	const { root, reviewPacketPath } = createReviewPacketFixture();
+	const outputUnderTestPath = join(root, "artifacts", "unicode-edge-output.json");
+	try {
+		const exact = "😀".repeat(12000);
+		writeFileSync(outputUnderTestPath, `${JSON.stringify({ summary: exact })}\n`, "utf-8");
+		const exactPacket = buildReviewPromptInput(
+			["--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output-text-key", "summary"],
+		);
+		assert.equal(exactPacket.outputUnderTestText.text, exact);
+		assert.equal(exactPacket.outputUnderTestText.charCount, 12000);
+		assert.equal(exactPacket.outputUnderTestText.truncated, false);
+
+		writeFileSync(outputUnderTestPath, `${JSON.stringify({ summary: "\ud800" })}\n`, "utf-8");
+		const surrogatePacket = buildReviewPromptInput(
+			["--review-packet", reviewPacketPath, "--output-under-test", outputUnderTestPath, "--output-text-key", "summary"],
+		);
+		assert.equal(surrogatePacket.outputUnderTestText.text, "�");
+		assert.equal(surrogatePacket.outputUnderTestText.charCount, 1);
+	} finally {
+		rmSync(root, { recursive: true, force: true });
+	}
+});
+
 test("buildReviewPromptInput can build direct output review inputs from a scenario file", () => {
 	const { root, scenarioPath, schemaPath } = createScenarioFixture();
 	const outputUnderTestPath = join(root, "artifacts", "analysis-output.json");
