@@ -3,72 +3,71 @@ Date: 2026-07-11
 
 ## Problem
 
-The Node workspace-start helper accepts option-looking and whitespace-only tokens as values of `--root` or `--label`; `--root --json` and `--root "   "` can mutate the filesystem instead of rejecting before side effects.
+The mutating `prepare-compare-worktrees` entrypoint accepts option-looking and whitespace-only tokens as required values; `--output-dir --force` succeeds and creates Git worktrees under a directory literally named `--force`.
 
 ## Correct Behavior
 
-Given a value-taking workspace-start option followed by another option token or an all-whitespace value, when the helper parses arguments, then it must fail before creating a root, run directory, or manifest and identify the option whose value is missing.
+Given any value-taking option followed by another option token or semantic emptiness, argument parsing must fail before creating directories, adding worktrees, or changing Git worktree metadata.
 
 ## Observed Facts
 
-- `readRequiredValue` rejects only falsey or absent values and returns `--json` as ordinary text.
-- `applyArgument` advances past the consumed token, so the real `--json` flag is never interpreted.
-- The public Go CLI rejects `init run --root --json` with `--root requires a value`, exits 1, and creates nothing.
-- The direct Node helper exited 0, created `--json/<timestamp>-run/run.json`, and printed a shell export.
+- `readRequiredValue` rejects only absent or falsey tokens.
+- `--output-dir --force` consumes the boolean flag as the output path, so `force` remains false.
+- In a disposable repository, the command exited 0 and created `--force/baseline`, `--force/candidate`, and matching `.git/worktrees` metadata.
+- The existing tests cover valid explicit, inherited, automatic, retry, and force behavior but no malformed required values.
 
 ## Reproduction
 
-- Run the Node helper inside a disposable cwd with `--root --json`; observe exit 0 and a new `--json` directory.
-- Add subprocess tests for `--root --json` and `--label --json` that require nonzero exit and an unchanged cwd before repair.
+- Initialize and commit a disposable Git repository.
+- From that repository, run `prepare-compare-worktrees.mjs --repo-root <repo> --output-dir --force --baseline-ref HEAD`.
+- Observe exit 0 plus new `--force/baseline` and `--force/candidate` worktrees.
 
 ## Candidate Causes
 
-- Dash-prefixed path and label values were intentionally supported without a `--` separator.
-- The parser treats required-value presence as JavaScript truthiness rather than option-token classification.
-- Only valid CLI paths were tested, leaving parser failure order unobserved.
-- The public Go parser and Node helper drifted because they do not share one argument parser.
+- A present argv token was assumed to be a valid value.
+- Dash-prefixed refs and paths were intentionally supported without an escape contract.
+- Validation after `resolveRunDir` was assumed sufficient.
 
 ## Hypothesis
 
-- Falsifiable claim: `readRequiredValue` is the single pre-mutation gap for both value-taking options; option-like subprocess tests fail on old code, and rejecting leading-dash tokens there will align both options with Go while preserving valid paths/labels | disconfirmer: run the new subprocess tests against current code before repair.
+- Falsifiable claim: the shared `readRequiredValue` is the pre-mutation gap for every value-taking option; a subprocess table will reproduce option-like and whitespace-only acceptance on old code, and normalized/token-class rejection there will fail all cases with an untouched disposable repository | disconfirmer: run the table against old code before repair.
 
 ## Verification
 
-- confirmed — the focused subprocess test failed against the old parser because `--root --json` exited 0 and mutated the cwd; both option cases pass after shared required-value rejection.
+- confirmed — the isolated old-code command exited 0 and materialized both worktrees under `--force`; after repair, all five malformed-value probes fail before mutation and the full 12-assertion test suite passes.
 
 ## Root Cause
 
-The shared required-value parser checked token truthiness but not normalized emptiness or whether the token was the next option.
-Because parsing precedes filesystem creation but accepted malformed tokens as data, the mutator crossed its side-effect boundary with invalid arguments.
+The parser equated token presence with semantic validity and advanced past a real option as though it were data.
+The worktree mutator therefore received a malformed path before any guard could stop filesystem and Git metadata changes.
 
 ## Invariant Proof
 
-- Invariant: workspace-start parses and rejects missing/option-looking required values before any filesystem mutation.
-- Producer Proof: one process-boundary table exercises both value-taking options with option-looking and whitespace-only values and requires a `Missing value for <option>` diagnostic.
-- Final-Consumer Proof: the subprocess test requires nonzero exit and an empty watched cwd for all four malformed invocations.
-- Interface-Shape Sibling Scan: both value-taking options share `readRequiredValue`; the Go CLI already enforces the desired failure order.
-- Non-Claims: this fix does not add `--option=value`, a `--` positional escape, or support for intentional dash-prefixed root/label values.
+- Invariant: malformed required values are rejected before `resolveRunDir` or any Git worktree command.
+- Producer Proof: exercise each value-taking option at the real process boundary with an option-like token, plus the output path's whitespace normalization seam.
+- Final-Consumer Proof: require nonzero exit and assert that the disposable repository has no added worktree records or output directory.
+- Interface-Shape Sibling Scan: all four value-taking options share `readRequiredValue`; the destructive prune sibling is tracked as the next separate slice.
+- Non-Claims: this does not add `--option=value`, positional `--`, or intentional leading-dash value support.
 
 ## Detection Gap
 
-- `workspace-start.test.mjs` | valid invocations proved creation but no option-looking positional case checked pre-mutation safety | add subprocess failures with watched cwd state for every value-taking option.
+- `prepare-compare-worktrees.test.mjs` | only valid parser shapes reached the mutator | add a table-driven process-boundary failure test with Git and filesystem side-effect assertions.
 
 ## Sibling Search
 
-- Mental model: a present argv token is necessarily a value rather than the next option.
-- same layer axis: `--root` and `--label` through `readRequiredValue` | decision: same bug, fix now | proof: shared parser path plus direct root mutation reproduction.
-- abstraction up axis: mutating Node CLI helpers with value-taking options | decision: same class, diagnostic-only for this slice | proof: current quality inventory lacks an executable side-effect contract; no action needed beyond workspace-start because this slice owns the reproduced mutator and broader contract authoring remains a separate quality move.
-- specialization down axis: root/run/manifest writes after parsing | decision: same bug, fix now | proof: disposable cwd contains the new `--json` tree on old code.
-- mental-model axis: intentional dash-prefixed values | decision: intentional plain-text or non-rendering boundary | proof: no documented escape contract exists and the public Go CLI rejects the same shape.
-- cross-file: `internal/app/app.go` owns the safe Go parser sibling and `scripts/agent-runtime/workspace-start.mjs` owns the affected Node helper.
+- Mental model: any present token after a value option is data.
+- same layer axis: repo root, baseline ref, candidate ref, and output dir | decision: same bug, fix now | proof: one shared parser helper owns all four.
+- abstraction up axis: independently executable mutating Node helpers | decision: same bug exists in prune, fix next | proof: its root parser can consume `--dry-run` before recursive deletion.
+- specialization down axis: output directory creation and Git worktree registration | decision: same bug, fix now | proof: disposable reproduction observed both side effects.
+- cross-file: `prune-workspace-artifacts.mjs` has the destructive sibling; `workspace-start.mjs` now demonstrates the intended required-value guard.
 
 ## Seam Risk
 
-- Interrupt ID: workspace-start-option-like-value-mutation
+- Interrupt ID: compare-worktrees-option-like-output-mutation
 - Risk Class: none
-- Seam: CLI argument parsing to filesystem creation
-- Disproving Observation: focused subprocess probes already reject both shapes and leave cwd unchanged.
-- What Local Reasoning Cannot Prove: every other mutating helper without a declared side-effect probe contract.
+- Seam: CLI argument parsing to filesystem and Git worktree mutation
+- Disproving Observation: five malformed subprocess probes fail and leave both the watched cwd and Git worktree list unchanged.
+- What Local Reasoning Cannot Prove: all other independently executable mutating parsers.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -80,4 +79,4 @@ Because parsing precedes filesystem creation but accepted malformed tokens as da
 
 ## Prevention
 
-Reject option-looking required values in the shared parser helper, prove both value-taking options at the real process boundary, and consider an executable side-effect probe contract after this concrete fixture exists.
+Reject semantic emptiness and option tokens in the shared parser before dispatch, then pin failure order at the real process boundary.

@@ -259,3 +259,46 @@ test("prepare-compare-worktrees explicit --output-dir overrides an inherited CAU
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("prepare-compare-worktrees rejects invalid required values before mutation", async (t) => {
+	const cases = [
+		{ option: "--repo-root", value: "--force" },
+		{ option: "--baseline-ref", value: "--force" },
+		{ option: "--candidate-ref", value: "--force" },
+		{ option: "--output-dir", value: "--force" },
+		{ option: "--output-dir", value: " \t\n" },
+	];
+	for (const testCase of cases) {
+		await t.test(`${testCase.option} rejects ${JSON.stringify(testCase.value)}`, () => {
+			const { root } = createRepo();
+			const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-compare-invalid-"));
+			try {
+				const args = [
+					SCRIPT_PATH,
+					"--repo-root",
+					root,
+					"--baseline-ref",
+					"HEAD",
+					"--candidate-ref",
+					"HEAD",
+					"--output-dir",
+					join(sandboxCwd, "expected-output"),
+				];
+				const optionIndex = args.indexOf(testCase.option);
+				args.splice(optionIndex + 1, 1, testCase.value);
+				const beforeWorktrees = git(root, ["worktree", "list", "--porcelain"]);
+				const result = spawnSync("node", args, {
+					cwd: sandboxCwd,
+					encoding: "utf-8",
+				});
+				assert.notEqual(result.status, 0);
+				assert.match(result.stderr, new RegExp(`Missing value for ${testCase.option}`));
+				assert.equal(git(root, ["worktree", "list", "--porcelain"]), beforeWorktrees);
+				assert.deepEqual(readdirSync(sandboxCwd), []);
+			} finally {
+				rmSync(sandboxCwd, { recursive: true, force: true });
+				rmSync(root, { recursive: true, force: true });
+			}
+		});
+	}
+});

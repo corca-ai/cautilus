@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: next evidence-backed failure-path or structural quality candidate after workspace-start parser safety.
-- Current slice intent: continue within the timebox without reopening rejected specdown, claim-warning, or large mechanical test-split work.
-- Next action: commit the reviewed workspace-start required-value guard, then inspect current release-risk packets and small uncovered mutation seams for the next bounded slice.
+- Current slice: destructive prune parser safety after compare-worktree pre-mutation validation.
+- Current slice intent: close the reproduced `--root --dry-run` deletion sibling without broad parser refactoring.
+- Next action: commit the reviewed compare-worktrees guard, then reproduce and repair prune required-value validation with deletion-state proof.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -240,6 +240,20 @@ applies.
 - Off-goal findings: The generic CLI side-effect contract remains unconfigured; the concrete supported entrypoint now has checked-in pre-mutation proof without inventing a repo-wide fixture surface.
 - Lessons carried forward: Every independently executable mutating parser must reject option tokens and semantic emptiness locally, even when a higher-level wrapper already validates them.
 - Metrics: Four invalid-value subprocess probes; 16 focused tests complete in about 0.53s; zero files created in each failure case.
+
+### Slice 8: Guard compare-worktree mutation inputs
+
+- Objective: Reject malformed required values before creating output directories or changing Git worktree metadata.
+- Why this approach: The direct helper consumed --force as --output-dir, exited zero, and registered baseline and candidate worktrees under a literal --force directory.
+- Commits: the scoped worktree-safety commit containing this slice.
+- What changed: The shared required-value parser now rejects semantic emptiness and option tokens; a five-case subprocess table covers all four value options and output whitespace while watching cwd and git worktree state.
+- Alternatives rejected: Rejected wrapper-only validation, post-mutation cleanup, and a repository-wide parser abstraction because the independent entrypoint owns this concrete side-effect boundary.
+- Targeted verification: Old-code disposable reproduction created both worktrees; after repair the full 12-assertion suite, eslint, debug validation, diff checks, delegated fresh-eye review, and clean fingerprint verification passed.
+- Test duplication pressure: One table-driven subprocess test extends the existing owning file; it reuses a small repository fixture and adds no runner or abstraction.
+- Critique: Parent-delegated reviewer returned READY with no blocker or should-fix and confirmed the splice construction, diagnostic oracle, cwd oracle, worktree-list oracle, and compatibility non-claim.
+- Off-goal findings: The destructive prune parser sibling is separately reproduced and queued next rather than hidden inside this commit.
+- Lessons carried forward: For Git helpers, pre-mutation proof must watch repository metadata as well as output directories; a failed command can otherwise leave a partial worktree registration.
+- Metrics: Five malformed probes; 12 focused assertions in 1.74s; zero post-fix cwd or worktree-list drift.
 
 ## Context Sources
 
