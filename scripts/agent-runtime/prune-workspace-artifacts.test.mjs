@@ -74,3 +74,45 @@ test("prune-workspace-artifacts supports age-based dry runs without deleting art
 		rmSync(root, { recursive: true, force: true });
 	}
 });
+
+test("prune-workspace-artifacts rejects invalid required values before deletion", async (t) => {
+	const cases = [
+		{ option: "--root", value: "--dry-run", diagnostic: "Missing value for --root" },
+		{ option: "--root", value: " \t\n", diagnostic: "Missing value for --root" },
+		{ option: "--keep-last", value: "--dry-run", diagnostic: "Missing value for --keep-last" },
+		{ option: "--max-age-days", value: "--dry-run", diagnostic: "Missing value for --max-age-days" },
+		{ option: "--keep-last", value: "-1", diagnostic: "--keep-last must be a non-negative integer" },
+		{ option: "--max-age-days", value: "-1", diagnostic: "--max-age-days must be a non-negative number" },
+	];
+	for (const testCase of cases) {
+		await t.test(`${testCase.option} rejects ${JSON.stringify(testCase.value)}`, () => {
+			const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-prune-invalid-"));
+			try {
+				const artifactRoot = testCase.option === "--root"
+					? join(sandboxCwd, testCase.value)
+					: join(sandboxCwd, "artifacts");
+				const sentinel = makeRunDir(artifactRoot, "run-sentinel", "run.json", 1);
+				const args = [
+					SCRIPT_PATH,
+					"--root",
+					artifactRoot,
+					"--keep-last",
+					"0",
+					"--max-age-days",
+					"0",
+				];
+				const optionIndex = args.indexOf(testCase.option);
+				args.splice(optionIndex + 1, 1, testCase.value);
+				const result = spawnSync("node", args, {
+					cwd: sandboxCwd,
+					encoding: "utf-8",
+				});
+				assert.notEqual(result.status, 0);
+				assert.match(result.stderr, new RegExp(testCase.diagnostic));
+				assert.equal(existsSync(sentinel), true);
+			} finally {
+				rmSync(sandboxCwd, { recursive: true, force: true });
+			}
+		});
+	}
+});

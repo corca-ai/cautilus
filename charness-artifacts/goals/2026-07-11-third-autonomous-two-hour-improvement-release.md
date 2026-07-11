@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: destructive prune parser safety after compare-worktree pre-mutation validation.
-- Current slice intent: close the reproduced `--root --dry-run` deletion sibling without broad parser refactoring.
-- Next action: commit the reviewed compare-worktrees guard, then reproduce and repair prune required-value validation with deletion-state proof.
+- Current slice: test/runtime economics follow-up after closing the reproduced mutating-parser family.
+- Current slice intent: use measured evidence for one bounded speed or maintainability move, then enter final verification before the closeout reserve.
+- Next action: commit the reviewed prune guard, measure the focused process-test fixture cost, and either land one proof-preserving optimization or record the rejection before release closeout.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -254,6 +254,20 @@ applies.
 - Off-goal findings: The destructive prune parser sibling is separately reproduced and queued next rather than hidden inside this commit.
 - Lessons carried forward: For Git helpers, pre-mutation proof must watch repository metadata as well as output directories; a failed command can otherwise leave a partial worktree registration.
 - Metrics: Five malformed probes; 12 focused assertions in 1.74s; zero post-fix cwd or worktree-list drift.
+
+### Slice 9: Keep malformed prune commands from deleting artifacts
+
+- Objective: Reject malformed required values before recursive workspace-artifact deletion while preserving numeric validation diagnostics.
+- Why this approach: The parser consumed --dry-run as --root, disabled the intended safety mode, exited zero, and deleted a recognized artifact sentinel.
+- Commits: the scoped deletion-safety commit containing this slice.
+- What changed: The required-value helper rejects whitespace, help, and long-option tokens before dispatch while leaving negative numbers to owning validators; six subprocess probes pin deletion-sentinel preservation and diagnostics.
+- Alternatives rejected: Rejected relying on root existence checks, post-deletion reporting, blanket leading-dash rejection that changed negative-number diagnostics, and a broad shared parser refactor.
+- Targeted verification: Old-code disposable reproduction removed the sentinel; after repair the full nine-test suite, eslint, debug validation, diff checks, two-round delegated review, and clean final fingerprint verification passed.
+- Test duplication pressure: One table-driven process test extends the two existing owning tests; six small disposable fixtures cover the destructive boundary without a new framework.
+- Critique: First review found two artifact overclaims and a diagnostic compatibility nit; wording was narrowed, negative-number routing was preserved and pinned, and the clean follow-up returned READY.
+- Off-goal findings: No repo-wide argument parser was introduced; other non-mutating helper parsers remain outside this reproduced destructive family.
+- Lessons carried forward: A dry-run flag consumed as data can invert safety; destructive CLI tests need a sentinel at the exact old-code victim path, and parser hardening should preserve owning type diagnostics.
+- Metrics: One old-code sentinel deletion reproduced; six invalid-value probes; nine focused tests in 0.48s; zero sentinel deletions after repair.
 
 ## Context Sources
 

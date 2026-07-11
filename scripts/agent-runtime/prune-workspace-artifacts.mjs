@@ -43,7 +43,7 @@ function usage(exitCode = 0) {
 
 function readRequiredValue(argv, index, option) {
 	const value = argv[index];
-	if (!value) {
+	if (!value || !value.trim() || value === "-h" || value.startsWith("--")) {
 		fail(`Missing value for ${option}`);
 	}
 	return value;

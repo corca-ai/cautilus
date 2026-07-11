@@ -3,71 +3,71 @@ Date: 2026-07-11
 
 ## Problem
 
-The mutating `prepare-compare-worktrees` entrypoint accepts option-looking and whitespace-only tokens as required values; `--output-dir --force` succeeds and creates Git worktrees under a directory literally named `--force`.
+The destructive `prune-workspace-artifacts` entrypoint accepts `--dry-run` as the value of `--root`, disables the intended safety flag, and deletes recognized artifacts under a literal `--dry-run` directory.
 
 ## Correct Behavior
 
-Given any value-taking option followed by another option token or semantic emptiness, argument parsing must fail before creating directories, adding worktrees, or changing Git worktree metadata.
+Given a value-taking prune option followed by another option token or semantic emptiness, parsing must fail before inspecting or deleting any artifact directory.
 
 ## Observed Facts
 
 - `readRequiredValue` rejects only absent or falsey tokens.
-- `--output-dir --force` consumes the boolean flag as the output path, so `force` remains false.
-- In a disposable repository, the command exited 0 and created `--force/baseline`, `--force/candidate`, and matching `.git/worktrees` metadata.
-- The existing tests cover valid explicit, inherited, automatic, retry, and force behavior but no malformed required values.
+- `--root --dry-run --keep-last 0` consumes `--dry-run` as a root value, leaving `dryRun` false.
+- In a disposable cwd containing `--dry-run/run-1/run.json`, the command exited 0 and removed `run-1` recursively.
+- Numeric option parsers reject option tokens indirectly, but only after consuming them and with a type diagnostic rather than a missing-value diagnostic.
 
 ## Reproduction
 
-- Initialize and commit a disposable Git repository.
-- From that repository, run `prepare-compare-worktrees.mjs --repo-root <repo> --output-dir --force --baseline-ref HEAD`.
-- Observe exit 0 plus new `--force/baseline` and `--force/candidate` worktrees.
+- Create a disposable `--dry-run/run-1` directory containing `run.json`.
+- Run `prune-workspace-artifacts.mjs --root --dry-run --keep-last 0` from its parent.
+- Observe exit 0, `dryRun: false`, and deletion of the recognized run directory.
 
 ## Candidate Causes
 
-- A present argv token was assumed to be a valid value.
-- Dash-prefixed refs and paths were intentionally supported without an escape contract.
-- Validation after `resolveRunDir` was assumed sufficient.
+- A present argv token was assumed to be a valid required value.
+- The later root existence check was assumed to provide sufficient safety.
+- The boolean `--dry-run` option was not tested adjacent to a missing root value.
 
 ## Hypothesis
 
-- Falsifiable claim: the shared `readRequiredValue` is the pre-mutation gap for every value-taking option; a subprocess table will reproduce option-like and whitespace-only acceptance on old code, and normalized/token-class rejection there will fail all cases with an untouched disposable repository | disconfirmer: run the table against old code before repair.
+- Falsifiable claim: shared required-value token classification is the only pre-deletion gap; malformed process probes fail on old code, and rejecting normalized emptiness or option tokens there makes all value-taking options fail before mutation while preserving valid pruning | disconfirmer: add and run a subprocess table against old code before repair.
 
 ## Verification
 
-- confirmed — the isolated old-code command exited 0 and materialized both worktrees under `--force`; after repair, all five malformed-value probes fail before mutation and the full 12-assertion test suite passes.
+- confirmed — the isolated old-code command exited 0 and recursively deleted the recognized artifact directory; after repair, all six invalid-value probes preserve their sentinel and the full nine-test suite passes.
 
 ## Root Cause
 
-The parser equated token presence with semantic validity and advanced past a real option as though it were data.
-The worktree mutator therefore received a malformed path before any guard could stop filesystem and Git metadata changes.
+The parser treated the safety flag as path data and advanced over it.
+Because deletion policy then saw `dryRun: false`, a malformed command crossed directly into recursive removal.
 
 ## Invariant Proof
 
-- Invariant: malformed required values are rejected before `resolveRunDir` or any Git worktree command.
-- Producer Proof: exercise each value-taking option at the real process boundary with an option-like token, plus the output path's whitespace normalization seam.
-- Final-Consumer Proof: require nonzero exit and assert that the disposable repository has no added worktree records or output directory.
-- Interface-Shape Sibling Scan: all four value-taking options share `readRequiredValue`; the destructive prune sibling is tracked as the next separate slice.
-- Non-Claims: this does not add `--option=value`, positional `--`, or intentional leading-dash value support.
+- Invariant: malformed required values fail before artifact classification or recursive removal.
+- Producer Proof: process-boundary probes cover root, keep-last, and max-age-days option-token values, root whitespace, and both negative numeric diagnostics.
+- Final-Consumer Proof: the recognized deletion sentinel remains present for every malformed invocation.
+- Interface-Shape Sibling Scan: all three value-taking options share `readRequiredValue`; workspace-start and compare-worktrees now carry the same pre-mutation rule.
+- Non-Claims: this does not add positional `--`, `--option=value`, or intentional leading-dash root support.
 
 ## Detection Gap
 
-- `prepare-compare-worktrees.test.mjs` | only valid parser shapes reached the mutator | add a table-driven process-boundary failure test with Git and filesystem side-effect assertions.
+- `prune-workspace-artifacts.test.mjs` | valid pruning and valid dry-run were covered, but malformed adjacency never exercised the safety boundary | add a table-driven subprocess failure test with a deletion sentinel.
 
 ## Sibling Search
 
-- Mental model: any present token after a value option is data.
-- same layer axis: repo root, baseline ref, candidate ref, and output dir | decision: same bug, fix now | proof: one shared parser helper owns all four.
-- abstraction up axis: independently executable mutating Node helpers | decision: same bug exists in prune, fix next | proof: its root parser can consume `--dry-run` before recursive deletion.
-- specialization down axis: output directory creation and Git worktree registration | decision: same bug, fix now | proof: disposable reproduction observed both side effects.
-- cross-file: `prune-workspace-artifacts.mjs` has the destructive sibling; `workspace-start.mjs` now demonstrates the intended required-value guard.
+- Mental model: a safety flag can safely appear wherever a value token is expected.
+- same layer axis: root and numeric retention values | decision: same bug, fix now | proof: one shared required-value helper owns all three.
+- abstraction up axis: mutating runtime parsers | decision: fixed in the two reproduced siblings, monitor elsewhere | proof: workspace-start and compare-worktrees now reject the same shapes.
+- specialization down axis: recursive `rmSync` | decision: same bug, fix now | proof: the disposable sentinel was removed on old code.
+- cross-file: `workspace-start.mjs` and `prepare-compare-worktrees.mjs` demonstrate the intended guard at sibling mutating boundaries.
 
 ## Seam Risk
 
-- Interrupt ID: compare-worktrees-option-like-output-mutation
+- Interrupt ID: prune-dry-run-consumed-as-root
 - Risk Class: none
-- Seam: CLI argument parsing to filesystem and Git worktree mutation
-- Disproving Observation: five malformed subprocess probes fail and leave both the watched cwd and Git worktree list unchanged.
-- What Local Reasoning Cannot Prove: all other independently executable mutating parsers.
+- Seam: CLI parsing to recursive artifact deletion
+- Disproving Observation: six invalid-value subprocess probes fail while their recognized deletion sentinels remain.
+- What Local Reasoning Cannot Prove: every parser outside the reproduced mutating helper family.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -79,4 +79,4 @@ The worktree mutator therefore received a malformed path before any guard could 
 
 ## Prevention
 
-Reject semantic emptiness and option tokens in the shared parser before dispatch, then pin failure order at the real process boundary.
+Reject option tokens and semantic emptiness in the shared required-value helper, and keep a real-process deletion sentinel in the owning tests.
