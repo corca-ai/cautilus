@@ -57,7 +57,12 @@ function readJson(path) {
 	if (!existsSync(resolved)) {
 		fail(`input file not found: ${resolved}`);
 	}
-	return JSON.parse(readFileSync(resolved, "utf-8"));
+	const text = readFileSync(resolved, "utf-8");
+	try {
+		return JSON.parse(text);
+	} catch {
+		fail(`invalid JSON in input file: ${resolved}`);
+	}
 }
 
 function writeJson(path, value) {

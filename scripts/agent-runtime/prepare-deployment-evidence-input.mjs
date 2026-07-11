@@ -72,9 +72,16 @@ function readJson(path) {
 	if (!existsSync(resolved)) {
 		fail(`input file not found: ${resolved}`);
 	}
+	const text = readFileSync(resolved, "utf-8");
+	let packet;
+	try {
+		packet = JSON.parse(text);
+	} catch {
+		fail(`invalid JSON in input file: ${resolved}`);
+	}
 	return {
 		path: resolved,
-		packet: JSON.parse(readFileSync(resolved, "utf-8")),
+		packet,
 	};
 }
 

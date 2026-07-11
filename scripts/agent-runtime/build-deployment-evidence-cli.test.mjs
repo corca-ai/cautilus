@@ -69,3 +69,24 @@ test("build deployment evidence CLI rejects malformed required values before fil
 		}
 	}
 });
+
+test("build deployment evidence CLI reports invalid JSON without a stack trace", () => {
+	const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-evidence-json-"));
+	try {
+		const inputPath = join(sandboxCwd, "invalid.json");
+		const outputPath = join(sandboxCwd, "evidence.json");
+		writeFileSync(inputPath, "SECRET_SENTINEL\nX", "utf-8");
+		const result = spawnSync(
+			process.execPath,
+			[SCRIPT_PATH, "--input", inputPath, "--output", outputPath],
+			{ cwd: sandboxCwd, encoding: "utf-8" },
+		);
+		assert.notEqual(result.status, 0);
+		assert.equal(result.stderr, `invalid JSON in input file: ${inputPath}\n`);
+		assert.doesNotMatch(result.stderr, /SECRET_SENTINEL/);
+		assert.doesNotMatch(result.stderr, /SyntaxError|\n\s+at /);
+		assert.equal(existsSync(outputPath), false);
+	} finally {
+		rmSync(sandboxCwd, { recursive: true, force: true });
+	}
+});

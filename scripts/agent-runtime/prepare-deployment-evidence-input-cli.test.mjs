@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -98,5 +98,26 @@ test("prepare deployment evidence input CLI rejects malformed values before side
 		} finally {
 			rmSync(sandboxCwd, { recursive: true, force: true });
 		}
+	}
+});
+
+test("prepare deployment evidence input CLI reports invalid JSON without a stack trace", () => {
+	const sandboxCwd = mkdtempSync(join(tmpdir(), "cautilus-deployment-input-json-"));
+	try {
+		const inputPath = join(sandboxCwd, "invalid.json");
+		const outputPath = join(sandboxCwd, "input.json");
+		writeFileSync(inputPath, "SECRET_SENTINEL\nX", "utf-8");
+		const args = replaceOptionValue(validArgs(outputPath), "--input", inputPath);
+		const result = spawnSync(process.execPath, [SCRIPT_PATH, ...args], {
+			cwd: sandboxCwd,
+			encoding: "utf-8",
+		});
+		assert.notEqual(result.status, 0);
+		assert.equal(result.stderr, `invalid JSON in input file: ${inputPath}\n`);
+		assert.doesNotMatch(result.stderr, /SECRET_SENTINEL/);
+		assert.doesNotMatch(result.stderr, /SyntaxError|\n\s+at /);
+		assert.equal(existsSync(outputPath), false);
+	} finally {
+		rmSync(sandboxCwd, { recursive: true, force: true });
 	}
 });

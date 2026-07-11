@@ -13,9 +13,9 @@ The user's explicit two-hour autonomous implementation request activates pursuit
 
 ## Active Operating Frame
 
-- Current slice: measured deployment-evidence test parallelization.
-- Current slice intent: improve focused test feedback and ownership without changing cases, isolation, failure oracles, or product behavior.
-- Next action: run boundary escalation and delegated fresh-eye review over the split, then retain it only if the measured gain and maintainability tradeoff hold.
+- Current slice: deployment-evidence malformed JSON diagnostics.
+- Current slice intent: replace raw Node stack traces with concise path-bearing CLI failures without changing valid, missing-file, or domain-validation behavior.
+- Next action: validate the debug record and boundary probe, then run delegated fresh-eye review over both wrappers and their process tests.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad proof at closeout.
 - Gate cadence: pre-lock slices use focused owner tests and structural pressure checks; final proof uses `npm run verify` and `npm run hooks:check`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -138,6 +138,24 @@ none — no operator-only decision blocks the initial local inventory and implem
 - `bash .githooks/pre-push` passed the complete 34-second verify and generated-drift sequence; coverage was 4.52s and `Lint Gate: ran-pass bash .githooks/pre-push`.
 - Boundary Ownership: single-surface — only test ownership/layout changed; production behavior and docs/spec surfaces did not move.
 - Critique: short parent-delegated fresh-eye PASS with no blocking, actionable, or advisory findings.
+
+### 2026-07-11T21:07+09:00 — malformed JSON diagnostics
+
+- Reproduced both wrappers with existing empty `/dev/null` input: each exited 1 with raw `SyntaxError`, `JSON.parse`, wrapper, module-loader, and async entrypoint frames; neither wrote output.
+- Archived the completed preparer-parser debug record and opened a fresh syntax-diagnostic investigation.
+- Added one malformed-file real-process test per executable owner, requiring nonzero exit, a resolved input path, no `SyntaxError` or stack frame, and absent output.
+- Confirmed both tests failed against old code, then translated only local `JSON.parse` errors through each wrapper's existing concise `fail` boundary.
+- Focused process tests pass 6/6 and focused eslint passes.
+- Initial fresh-eye review failed the proposed diagnostic because forwarding `error.message` can echo malformed input content and embedded newlines.
+- Removed parser reason text from operator stderr and strengthened both owner tests with a newline-bearing secret sentinel plus exact one-line equality.
+- Non-claims: filesystem read errors, schema/domain validation errors, and unrelated JSON consumers retain their existing contracts.
+- Debug validation and boundary checks passed; boundary escalation was false.
+- Delegated fresh-eye re-review passed after the disclosure fix with no remaining findings.
+- `bash .githooks/pre-push` passed the complete 34-second verify and generated-drift sequence; coverage was 4.49s.
+- Broad coverage raised the already-floored builder from 73.33% to 75.00%, so its policy-buffered floor was promoted from 73.08% to 74.75%; the newly visible preparer remains an unfloored 81.48% advisory until stable.
+- `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: owned-correctly — each source-checkout CLI translates only its local parse failure; no shared schema, binary, Agent, or docs contract moved.
+- Critique: short parent-delegated fresh-eye PASS after one security fail/fix cycle; no remaining blocking, actionable, or advisory findings.
 
 ## Context Sources
 
