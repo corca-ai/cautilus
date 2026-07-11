@@ -11,8 +11,8 @@
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
   "as_of_source_date": "2026-07-11",
-  "source_artifact_count": 26,
-  "candidate_count": 89,
+  "source_artifact_count": 27,
+  "candidate_count": 93,
   "top_candidates": [
     {
       "candidate_id": "next_improvement:a4fd08fcd3e9",
@@ -135,6 +135,26 @@
       ]
     },
     {
+      "candidate_id": "current_focus:a0cef53e4c4c",
+      "kind": "current_focus",
+      "lesson": "This retro reviews goal `third-autonomous-two-hour-improvement-release`: a measured autonomous pass that landed correctness, mutation-safety, direct-testability, and focused test-economics changes, then published and verified `v0.19.2`.",
+      "normalized_key": "this retro reviews goal third autonomous two hour improvement release a measured autonomous pass",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:268f7f193174",
       "kind": "next_improvement",
       "lesson": "applied — code-point semantics and malformed JavaScript-string handling now have deterministic cross-language tests.",
@@ -149,6 +169,26 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:9f31a76096e7",
+      "kind": "next_improvement",
+      "lesson": "applied — `docs/maintainers/releasing.md` now preserves an early 404, waits for both workflow jobs, reruns the same install readback, and forbids page-only readiness claims.",
+      "normalized_key": "applied docs maintainers releasing md now preserves an early 404 waits for both workflow",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
           "date": "2026-07-11",
           "section": "Next Improvements"
         }
@@ -175,6 +215,46 @@
       ]
     },
     {
+      "candidate_id": "next_improvement:2d525a810930",
+      "kind": "next_improvement",
+      "lesson": "applied — real-process mutation sentinels now protect workspace creation, Git worktree registration, and recursive artifact pruning before malformed input crosses a side-effect boundary.",
+      "normalized_key": "applied real process mutation sentinels now protect workspace creation git worktree registration and recursive",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:d700567bbb29",
+      "kind": "next_improvement",
+      "lesson": "applied — release, quality, debug, and handoff pointers keep the `v0.19.2` proof and the remaining PATH-level version skew explicit.",
+      "normalized_key": "applied release quality debug and handoff pointers keep the v0 19 2 proof and",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:e8bb161b5ba7",
       "kind": "next_improvement",
       "lesson": "applied — the debug artifact preserves the validator-command invariant and the handoff points at canonical current state.",
@@ -191,86 +271,6 @@
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
           "date": "2026-07-11",
           "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:dcaf5a1c60c0",
-      "kind": "next_improvement",
-      "lesson": "display and execute every scaffold payload's `validator_command` before attempting any manually constructed path.",
-      "normalized_key": "display and execute every scaffold payload s validator command before attempting any manually constructed",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-          "date": "2026-07-11",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:3570f243fa29",
-      "kind": "current_focus",
-      "lesson": "This retro reviews the goal `five-autonomous-improvement-cycles`.",
-      "normalized_key": "this retro reviews the goal five autonomous improvement cycles",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
-      "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
-      "alpha": 0.07,
-      "selection_weight": 0.9057,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
-          "date": "2026-07-09",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:3b1141072b18",
-      "kind": "current_focus",
-      "lesson": "This retro reviews the goal `fourth-five-autonomous-improvement-cycles`.",
-      "normalized_key": "this retro reviews the goal fourth five autonomous improvement cycles",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
-      "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
-      "alpha": 0.07,
-      "selection_weight": 0.9057,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
-          "date": "2026-07-09",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:921769129b52",
-      "kind": "current_focus",
-      "lesson": "This retro reviews the goal `second-five-autonomous-improvement-cycles`.",
-      "normalized_key": "this retro reviews the goal second five autonomous improvement cycles",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
-      "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
-      "alpha": 0.07,
-      "selection_weight": 0.9057,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
-          "date": "2026-07-09",
-          "section": "Context"
         }
       ]
     }
@@ -397,6 +397,26 @@
       ]
     },
     {
+      "candidate_id": "current_focus:a0cef53e4c4c",
+      "kind": "current_focus",
+      "lesson": "This retro reviews goal `third-autonomous-two-hour-improvement-release`: a measured autonomous pass that landed correctness, mutation-safety, direct-testability, and focused test-economics changes, then published and verified `v0.19.2`.",
+      "normalized_key": "this retro reviews goal third autonomous two hour improvement release a measured autonomous pass",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:268f7f193174",
       "kind": "next_improvement",
       "lesson": "applied — code-point semantics and malformed JavaScript-string handling now have deterministic cross-language tests.",
@@ -417,6 +437,26 @@
       ]
     },
     {
+      "candidate_id": "next_improvement:9f31a76096e7",
+      "kind": "next_improvement",
+      "lesson": "applied — `docs/maintainers/releasing.md` now preserves an early 404, waits for both workflow jobs, reruns the same install readback, and forbids page-only readiness claims.",
+      "normalized_key": "applied docs maintainers releasing md now preserves an early 404 waits for both workflow",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:57d893ecf72a",
       "kind": "next_improvement",
       "lesson": "applied — normal durable quality runs now refresh existing runtime evidence before self-dogfood.",
@@ -431,6 +471,46 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:2d525a810930",
+      "kind": "next_improvement",
+      "lesson": "applied — real-process mutation sentinels now protect workspace creation, Git worktree registration, and recursive artifact pruning before malformed input crosses a side-effect boundary.",
+      "normalized_key": "applied real process mutation sentinels now protect workspace creation git worktree registration and recursive",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:d700567bbb29",
+      "kind": "next_improvement",
+      "lesson": "applied — release, quality, debug, and handoff pointers keep the `v0.19.2` proof and the remaining PATH-level version skew explicit.",
+      "normalized_key": "applied release quality debug and handoff pointers keep the v0 19 2 proof and",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
           "date": "2026-07-11",
           "section": "Next Improvements"
         }

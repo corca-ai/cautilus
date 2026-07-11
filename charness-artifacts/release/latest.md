@@ -3,7 +3,10 @@ Date: 2026-07-11
 
 ## Scope
 
-Advanced `cautilus` toward release `0.19.2` (tag `v0.19.2`) through the repo-owned release helper.
+Released `cautilus` `v0.19.2` through the repo-owned ordered publisher.
+This patch improves review-input fidelity, failure-path correctness, workspace mutation safety, and proof-preserving maintainer test economics.
+Installed binaries receive Unicode-safe claim-review excerpts and fail-closed consumer-prompt reads; source-checkout workflows additionally receive active-run whitespace normalization and pre-mutation guards in `workspace-start`, `prepare-compare-worktrees`, and `prune-workspace-artifacts`.
+It does not change packet schemas, structured stdout, install mechanisms, or the Cautilus Agent behavior contract, and it does not claim repo-wide parser hardening or a global verification-speed percentage.
 
 ## Current Version
 
@@ -11,6 +14,12 @@ Advanced `cautilus` toward release `0.19.2` (tag `v0.19.2`) through the repo-own
 - target version: `0.19.2`
 - git branch: `main`
 - git remote: `origin`
+
+## Behavior and Recovery
+
+- A consumer prompt recorded as present but later unreadable now returns a path-bearing error in Go and Node; restore the referenced prompt or regenerate the prompt-input/review packet, then rerun.
+- All-whitespace optional active-run paths mean absent, while non-empty path identity remains unchanged.
+- The focused compare-worktree parser suite median changed from `1.85s` to `1.57s` on this machine with cases and mutation oracles unchanged; no total-suite percentage is claimed.
 
 ## Verification
 
@@ -29,14 +38,18 @@ Advanced `cautilus` toward release `0.19.2` (tag `v0.19.2`) through the repo-own
 
 ## Public Release Verification
 
-- GitHub release publication: verified by the release backend.
+- GitHub Actions run `29150460445` completed successfully.
+- `release-artifacts` passed in 4m02s, including verify, asset build, binary attestations, and GitHub release upload.
+- `verify-public-release` passed in 12s.
+- Local `verify-public-release.mjs` passed on its first post-workflow attempt with all seven expected assets, a complete four-binary checksum manifest, and matching source-archive checksum `4211d19ba2b38fe2478c1a14ea9f7fd93815b06eb2d78202308d5661bcf09c97`.
+- `gh attestation verify` passed for `cautilus_0.19.2_linux_x64.tar.gz`.
 
 ## Distinct-Channel Verification
 
 - Rung-2 distinct-channel verdict: `confirmed` via `https-fetch` (a channel distinct from `gh release view`).
 - Channel URL: `https://github.com/corca-ai/cautilus/releases/tag/v0.19.2`
 - HTTP status: `200`
-- Rung-1 floor: a per-surface verdict is recorded (presence), so issue closeout was not silent; the honesty of this verdict is the human rung-2 disposition review.
+- The verdict confirms only release-page visibility; no tracked issue closeout was requested or implied.
 
 ## Release Adapter Preflight
 
@@ -100,18 +113,17 @@ Advanced `cautilus` toward release `0.19.2` (tag `v0.19.2`) through the repo-own
 
 ## Post-Publish Proof
 
-- Public release check: `gh release view v0.19.2`.
+- Public release check: workflow and local verifier passed with the complete asset matrix.
+- Distinct install readback: passed after asset publication.
+- Timing incident: `charness-artifacts/debug/latest.md` records the release-page-before-asset-readiness window and the unchanged-command retry proof.
 
 ## Install Refresh
 
-- Post-publish install refresh status: `failed`.
-- Command: `npm run release:smoke-install:current -- --skip-update`
-- Return code: `1`
-- Elapsed seconds: `0.82`
-- Stdout tail: `> cautilus@0.19.2 release:smoke-install:current
-> node scripts/release/run-install-smoke-current.mjs --skip-update`
-- Stderr tail: `sh /home/hwidong/.cache/tmp/cautilus-install-smoke-CZVleg/install.sh failed with exit 22
-curl: (22) The requested URL returned error: 404`
+- Initial post-publish install refresh status: `failed` after 0.82s because the release page was visible before workflow assets existed; the Linux archive URL returned HTTP 404 while `gh release view` showed an empty asset list.
+- Final post-workflow install readback status: `passed` through `npm run release:smoke-install:current -- --skip-update`.
+- The installer downloaded `cautilus_0.19.2_linux_x64.tar.gz`; `--version` and `version --verbose` both reported `0.19.2` with `installKind: install_sh_binary`.
+- Full Linux install/update smoke also passed through `npm run release:smoke-install -- --channel install_sh --version v0.19.2`; `cautilus update` reported `status: current`, `updated: false`, and latest version `0.19.2`.
+- The adapter command uses an isolated install root and does not refresh the maintainer's PATH-level binary; that local binary remains an explicit environment-skew observation, not a release failure.
 
 ## Release Runtime
 
@@ -140,4 +152,6 @@ curl: (22) The requested URL returned error: 404`
 ## User Update Steps
 
 - Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
-- Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo.
+- Roll back by rerunning the installer with `CAUTILUS_VERSION=v0.19.1`, then verify `cautilus --version`.
+- Source-checkout users move their checkout or tag to receive or roll back the Node helper changes.
+- Claude Code and Codex plugin consumers need no Agent behavior migration; use `charness update` or rerun `cautilus init` only when refreshing repo-local surfaces.

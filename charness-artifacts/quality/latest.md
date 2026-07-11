@@ -36,7 +36,7 @@ Ambient repo findings: standing gates were green before implementation; claim ev
 ## Weak
 
 - Claim evidence audit remains warning-only with 47 historical checked-in evidence warnings: 26 hash mismatches and 21 unreadable objects.
-- The maintainer-installed binary was `0.18.0` while the prepared repo binary reported `0.19.2`; post-publish install refresh must close this skew.
+- The maintainer PATH-level binary remains `0.18.0`; the adapter's post-publish command proved an isolated `0.19.2` install but does not refresh that global path, so local tooling skew remains visible.
 - The generated public release-notes asset is provenance-heavy and does not carry the full operator story from the checked-in release record.
 
 ## Missing
@@ -75,7 +75,7 @@ Ambient repo findings: standing gates were green before implementation; claim ev
 
 ## Recommended Next Quality Moves
 
-- active post-publish release proof — capability_needed=operator-install confidence; next_center=`v0.19.2` GitHub workflow and installed-version readback; transformation=verify assets/checksums/attestations then refresh the maintainer install; proof_boundary=repo-owned publisher plus install smoke; enforcement_posture=release blocker until public and distinct-channel proof pass.
+- active maintainer install alignment — capability_needed=local-tool version consistency; next_center=the PATH-level `cautilus` installation; transformation=use the operator-approved update channel when desired and verify `0.19.2`; proof_boundary=`cautilus --version` plus `version --verbose`; enforcement_posture=advisory because isolated public install proof already passed and global host mutation was not separately authorized.
 - passive claim-evidence provenance triage because warning records need source classification before policy changes; capability_needed=trustworthy historical evidence references; next_center=47 warning records; transformation=classify stale bundles without changing warn semantics; proof_boundary=current audit plus immutable objects; enforcement_posture=no-gate because classifications do not yet exist.
 - passive public-note role review because the current asset is valid provenance but thin operator communication; capability_needed=durable public release narrative; next_center=release-notes workflow template; transformation=decide whether to embed target scope or explicitly name the checked-in narrative; proof_boundary=release workflow contract tests; enforcement_posture=no-gate because this patch retains an honest checked-in release record.
 

@@ -16,8 +16,8 @@
 
 - Release helper auto-persisted this bounded retro trigger closeout; no additional follow-up is needed for this trigger instance. (source: `charness-artifacts/retro/2026-07-11-v0-19-2-release-auto-retro.md`; sources: 3)
 - applied — code-point semantics and malformed JavaScript-string handling now have deterministic cross-language tests. (source: `charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md`)
+- applied — `docs/maintainers/releasing.md` now preserves an early 404, waits for both workflow jobs, reruns the same install readback, and forbids page-only readiness claims. (source: `charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md`)
 - applied — normal durable quality runs now refresh existing runtime evidence before self-dogfood. (source: `charness-artifacts/retro/2026-07-11-session-retro.md`)
-- applied — the debug artifact preserves the validator-command invariant and the handoff points at canonical current state. (source: `charness-artifacts/retro/2026-07-11-session-retro.md`)
 
 ## Selection Policy
 
@@ -32,4 +32,5 @@
 - `charness-artifacts/retro/2026-07-08-v0-18-1-release-auto-retro.md`
 - `charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md`
 - `charness-artifacts/retro/2026-07-11-session-retro.md`
+- `charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md`
 - `charness-artifacts/retro/2026-07-11-v0-19-2-release-auto-retro.md`

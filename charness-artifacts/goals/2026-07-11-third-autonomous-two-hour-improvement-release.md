@@ -1,6 +1,6 @@
 # Achieve Goal: Two-hour autonomous Cautilus improvement and release
 
-Status: active
+Status: complete
 Created: 2026-07-11
 Activation: `/goal @charness-artifacts/goals/2026-07-11-third-autonomous-two-hour-improvement-release.md`
 
@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: final bundle verification and release readiness.
-- Current slice intent: freeze implementation after the measured fixture reuse improvement and spend the remaining budget on broad gates, fresh-eye release review, artifacts, and public proof.
-- Next action: commit the reviewed test-economics slice, run the required broad/on-demand gates, then prepare patch release `v0.19.2` if the release contract confirms compatibility.
+- Current slice: closeout-only after verified `v0.19.2` publication.
+- Current slice intent: synchronize final proof, retro dispositions, handoff, and goal state without changing the released runtime.
+- Next action: incorporate the final disposition review, validate all closeout artifacts, commit the audit-doc-only closeout, and push `main`.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -87,7 +87,7 @@ The user can inspect scoped commits spanning more than one quality dimension, re
 | 2 | Preserve multilingual claim-review excerpt fidelity | A byte/code-point mismatch was reproducible at a packet boundary | debug artifact, focused regression tests, scoped commit | completed |
 | 3 | Fail closed when a declared consumer prompt cannot be read | A reviewer reproduced silent loss of behavior-steering input in both renderers | cross-language failure tests, parity review, scoped commit | completed |
 | 4 | Continue with the next safe evidence-backed improvement until the closeout reserve | Honor the two-hour done-early policy | candidate ledger, slice proof, scoped commits | completed |
-| 5 | Final quality review, release preparation, push, publication, and public verification | Ship one coherent verified bundle | broad gates, release artifact, tag/release/install readback | in progress |
+| 5 | Final quality review, release preparation, push, publication, and public verification | Ship one coherent verified bundle | broad gates, release artifact, tag/release/install readback | completed |
 
 ## Operator Decision Queue
 
@@ -128,7 +128,7 @@ per the bullets above when that boundary is crossed):
 
 - Routing: find-skills -> achieve + quality + impl + debug when triggered + critique + retro + release — the run needs timeboxed lifecycle, evidence selection, bounded implementation, disciplined diagnosis, fresh-eye review, reflection, and publication proof.
 - Gather: n/a — no external source is required to select or implement the initial local slices.
-- Release: `charness-artifacts/release/latest.md` — target `v0.19.2` preparation, scoped narrative, and pending public/install proof ledger.
+- Release: `charness-artifacts/release/latest.md` — published `v0.19.2`, successful workflow/public asset/attestation proof, and final install/update readback ledger.
 - Issue closeout: n/a — no tracked GitHub issue is currently the source of this goal.
 
 ## Discuss Before Activation
@@ -321,18 +321,37 @@ none at activation.
 
 ## Final Verification
 
-Closeout evidence — replace each `TODO` with a bound `<path>` (a checked-in
-retro / host-log probe / disposition-review artifact) or an explicit
-`skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
-`TODO` / `<path>` / `TBD` until you do.
+Retro: charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md
+Host log probe: skipped: host-log-not-exposed: the host exposes goal elapsed time and token totals but no stable session file path for a clone-safe scoped probe artifact.
+Disposition review: charness-artifacts/critique/2026-07-11-third-autonomous-two-hour-improvement-release-disposition-review.md
+Early close report: charness-artifacts/goals/2026-07-11-third-autonomous-two-hour-improvement-release-early-close-report.md
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+- Prepared-tree `npm run verify` passed in 58.99s; `npm run hooks:check`, history secrets, publisher policy, on-demand tests, surface packets, and declared fresh-checkout probes passed.
+- GitHub Actions run `29150460445` completed successfully; artifact build, attestations, release upload, and public verifier all passed.
+- Local public verification found all seven expected assets, complete checksums, and matching source-archive hash; Linux attestation verification passed.
+- Isolated Linux install and update smoke downloaded `v0.19.2`, reported `0.19.2` through both version surfaces, and reported update status `current`.
+- Release checkpoint: tag `v0.19.2` points at `e96a8b4cac6d773e59c626a996cdda4af4dbc03c`.
+- Post-checkpoint commit `a5ae672c4f25e91836db8303be03ec41c90c7219` is audit-doc-only release verification; the final closeout commit is also audit-doc-only and does not require another binary release.
+- Closeout state: pushed-ci plus public asset and isolated install verification; live provider/model behavior was not required and is not claimed.
+
+Early close rationale: the requested coherent release is already public and verified, while another implementation slice would create an unreleased delta or force an unplanned second patch release.
+Next slice candidate: asset-readiness retry ownership | decision: defer | reason: generic Charness orchestration and the Cautilus adapter command are both plausible owners, so implementation needs a separate boundary decision.
+Next slice candidate: public release-notes operator story | decision: defer | reason: the current asset is valid provenance and changing its role would reopen release infrastructure after this patch is complete.
+Next slice candidate: historical claim-evidence warning classification | decision: out-of-scope | reason: the 47 warning records require provenance classification before any warning-policy or evidence rewrite.
+Outcome sufficiency check: sufficient: seven scoped implementation commits, broad and focused proof, ordered publication, public assets, attestation, and install/update readback satisfy the user's requested improvement and release outcome.
 
 ## User Verification Instructions
 
+- Inspect `https://github.com/corca-ai/cautilus/releases/tag/v0.19.2` and confirm the seven expected assets.
+- Run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`, then `cautilus --version` and `cautilus version --verbose`.
+- For source-checkout behavior, rerun the focused Node owner suites or `npm run verify` from this repository.
+- Roll back the binary with `CAUTILUS_VERSION=v0.19.1` on the installer command if needed.
+
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: `docs/maintainers/releasing.md` now separates release-page visibility from asset readiness and requires unchanged-command retry after workflow/public verification.
+Retro dispositions: applied: real-process mutation sentinels protect workspace creation, Git worktree registration, and recursive artifact pruning.
+Retro dispositions: applied: release, quality, debug, retro, and handoff artifacts preserve proof boundaries and remaining environment skew.
+Retro dispositions: accepted-risk: bounded reviewer duration varied with judgment scope, stop reminders worked, and no deterministic repo-side gate can classify useful judgment without false positives.
+Structural follow-up: applied: maintainer release contract now owns the page-before-asset readiness recovery sequence.
+Structural follow-up: none — reviewer-duration variance has no stable repo-local structural destination beyond explicit coordinator timeboxing in this run.

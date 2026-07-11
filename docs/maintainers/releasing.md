@@ -120,6 +120,10 @@ The adapter-recorded readback verifies only:
 - `cautilus --version`
 - `cautilus version --verbose`
 
+A visible GitHub release page can precede binary asset upload while the tag workflow is still running.
+If the ordered publisher's immediate install readback returns HTTP 404 and the release workflow is still in progress, preserve that first failure, wait for `release-artifacts` and `verify-public-release` to succeed, then rerun the same readback.
+Do not treat page visibility alone as install readiness or close the release until the retry passes.
+
 7. Verify the supported install smoke matrix before treating the release line as closed:
 
 - native macOS + `install.sh`
