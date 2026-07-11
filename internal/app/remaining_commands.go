@@ -1447,7 +1447,9 @@ func installBundledSkill(repoRoot string, overwrite bool, log io.Writer) (*bundl
 		return nil, fmt.Errorf("%s already exists\nhint: use --overwrite to replace existing files", destinationSkill)
 	}
 	if overwrite {
-		_ = os.RemoveAll(destinationDir)
+		if err := os.RemoveAll(destinationDir); err != nil {
+			return nil, fmt.Errorf("failed to replace bundled skill at %s: %w", destinationDir, err)
+		}
 	}
 	if err := os.MkdirAll(destinationDir, 0o755); err != nil {
 		return nil, err

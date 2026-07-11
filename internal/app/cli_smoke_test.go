@@ -1865,6 +1865,48 @@ func TestCLIInstallCreatesRepoLocalCanonicalSkillAndReportsCurrentCLI(t *testing
 	}
 }
 
+func TestCLIInstallOverwriteFailsWhenExistingSkillCannotBeRemoved(t *testing.T) {
+	if runtime.GOOS == "windows" || os.Geteuid() == 0 {
+		t.Skip("test requires permission-respecting non-root Unix removal semantics")
+	}
+	root := t.TempDir()
+	_, stderr, exitCode := runCLI(t, root, "init", "--repo-root", ".", "--json")
+	if exitCode != 0 {
+		t.Fatalf("initial install failed: %s", stderr)
+	}
+	destinationDir := filepath.Join(root, ".agents", "skills", "cautilus-agent")
+	staleDir := filepath.Join(destinationDir, "stale-locked")
+	staleFile := filepath.Join(staleDir, "old.txt")
+	if err := os.MkdirAll(staleDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(staleFile, []byte("stale\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.Chmod(staleDir, 0o555); err != nil {
+		t.Fatalf("Chmod returned error: %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chmod(staleDir, 0o755); err != nil && !os.IsNotExist(err) {
+			t.Errorf("restore stale directory permissions: %v", err)
+		}
+	})
+
+	stdout, stderr, exitCode := runCLI(t, root, "init", "--repo-root", ".", "--overwrite", "--json")
+	if exitCode == 0 {
+		t.Fatalf("expected overwrite failure, got stdout=%s", stdout)
+	}
+	if !strings.Contains(stderr, destinationDir) {
+		t.Fatalf("expected path-bearing overwrite error, got %q", stderr)
+	}
+	if stdout != "" {
+		t.Fatalf("expected no install summary, got %q", stdout)
+	}
+	if _, err := os.Stat(staleFile); err != nil {
+		t.Fatalf("expected locked stale file to remain for operator repair: %v", err)
+	}
+}
+
 func TestCLIInstallMigratesLegacyClaudeSkills(t *testing.T) {
 	root := t.TempDir()
 	legacyDir := filepath.Join(root, ".claude", "skills", "legacy")

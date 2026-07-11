@@ -13,9 +13,9 @@ The user's explicit two-hour autonomous implementation request activates pursuit
 
 ## Active Operating Frame
 
-- Current slice: artifact-prune truthful failure reporting.
-- Current slice intent: make the Go CLI report a path as pruned only after filesystem deletion succeeds.
-- Next action: validate the corrected permission-bound oracle, run boundary checks and delegated fresh-eye review, then commit if successful-prune behavior remains intact.
+- Current slice: install overwrite stale-tree integrity.
+- Current slice intent: make complete prior-tree removal a checked precondition for reporting the Cautilus Agent as reinstalled.
+- Next action: run full owner tests, debug/boundary checks, install/Agent progressive-disclosure probes, and delegated fresh-eye review.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad proof at closeout.
 - Gate cadence: pre-lock slices use focused owner tests and structural pressure checks; final proof uses `npm run verify` and `npm run hooks:check`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -173,6 +173,22 @@ none — no operator-only decision blocks the initial local inventory and implem
 - Boundary Ownership: owned-correctly — the pruning loop owns deletion truth and the existing handler owns nonzero stderr; docs already promise pruning, not best-effort selection.
 - Critique: short parent-delegated fresh-eye PASS after one platform-oracle fail/fix cycle; no remaining blocking, actionable, or advisory findings.
 
+### 2026-07-11T21:18+09:00 — install overwrite stale-tree integrity
+
+- Reproduced after a normal disposable install: a mode-`0555` `stale-locked/old.txt` subtree caused destination removal to fail, but `init --overwrite --json` exited 0, reported `reinstalled`/`overwrote: true`, and retained the unknown stale file.
+- Archived the completed prune incident and opened an install-specific debug record because this seam requires packaged Agent and install quality proof.
+- Added an adjacent non-root Unix CLI regression requiring nonzero status, destination-path stderr, no install summary, and a retained locked stale file; Windows/root explicitly skip the permission semantic.
+- Confirmed the test failed against old code, then made full destination removal a checked precondition before directory recreation and bundled installation.
+- Focused initial install, overwrite failure, and legacy migration controls pass.
+- Non-claims: no transactional rollback after partial removal, no Agent content change, and no generic destructive-command refactor.
+- Full `internal/app` and focused install race tests passed; debug validation and boundary checks passed with no escalation.
+- Skill disclosure/source-package parity, release surface packet, temporary install plus `doctor --scope agent-surface`, command discovery, and scenario discovery passed, proving the Agent/binary progressive-disclosure surfaces remain aligned.
+- `npm run test:on-demand` passed.
+- Delegated fresh-eye review passed partial-deletion/retry semantics, diagnostic ownership, permission-test portability, install contract, and Agent parity with no findings.
+- `bash .githooks/pre-push` passed the complete 48-second verify and generated-drift sequence; coverage was 9.71s against its 10-second budget and `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: owned-correctly — binary install owns destination replacement truth; Agent source/package content and discovery behavior remain unchanged.
+- Critique: short parent-delegated fresh-eye PASS with no blocking, actionable, or advisory findings.
+
 ## Context Sources
 
 - User request: another two-hour autonomous improvement pass across bug fixes, test speed, and code quality.
@@ -202,7 +218,6 @@ none — no operator-only decision blocks the initial local inventory and implem
 
 ## Off-Goal Findings
 
-- Deferred install-overwrite truthfulness: `init --overwrite` can ignore tree removal failure and leave stale Agent files while reporting `reinstalled`; this crosses install, packaged-Agent parity, and install-quality proof, so it needs a separate authorized slice rather than piggybacking on artifact prune.
 - Deferred scenario proposal panic boundary: malformed registry data can panic inside runtime validation but the CLI currently recovers cleanly; library error-contract work needs a separate design slice.
 - Deferred review capture-write failures: ignored stdout/stderr capture write errors can leave packet paths without files; multiple callers and packet status semantics need a dedicated causal review.
 
