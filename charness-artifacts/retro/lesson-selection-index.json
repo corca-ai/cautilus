@@ -11,8 +11,8 @@
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
   "as_of_source_date": "2026-07-11",
-  "source_artifact_count": 27,
-  "candidate_count": 93,
+  "source_artifact_count": 28,
+  "candidate_count": 98,
   "top_candidates": [
     {
       "candidate_id": "next_improvement:a4fd08fcd3e9",
@@ -129,6 +129,26 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "current_focus:d261c72495ac",
+      "kind": "current_focus",
+      "lesson": "The user requested another two-hour autonomous pass across bugs, test speed, and code quality without publication.",
+      "normalized_key": "the user requested another two hour autonomous pass across bugs test speed and code",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
           "date": "2026-07-11",
           "section": "Context"
         }
@@ -253,26 +273,6 @@
           "section": "Next Improvements"
         }
       ]
-    },
-    {
-      "candidate_id": "next_improvement:e8bb161b5ba7",
-      "kind": "next_improvement",
-      "lesson": "applied — the debug artifact preserves the validator-command invariant and the handoff points at canonical current state.",
-      "normalized_key": "applied the debug artifact preserves the validator command invariant and the handoff points at",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-          "date": "2026-07-11",
-          "section": "Next Improvements"
-        }
-      ]
     }
   ],
   "candidates": [
@@ -391,6 +391,26 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "current_focus:d261c72495ac",
+      "kind": "current_focus",
+      "lesson": "The user requested another two-hour autonomous pass across bugs, test speed, and code quality without publication.",
+      "normalized_key": "the user requested another two hour autonomous pass across bugs test speed and code",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
           "date": "2026-07-11",
           "section": "Context"
         }
@@ -551,6 +571,86 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:f4f24666b991",
+      "kind": "next_improvement",
+      "lesson": "keep child lifecycle settlement as an executable orchestration test whenever parallel jobs can write durable reports.",
+      "normalized_key": "keep child lifecycle settlement as an executable orchestration test whenever parallel jobs can write",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:2567e21958a7",
+      "kind": "next_improvement",
+      "lesson": "none — reviewer-duration variance is accepted for this run because stop reminders worked and no deterministic repo-side gate can distinguish useful judgment from unbounded exploration without false positives.",
+      "normalized_key": "none reviewer duration variance is accepted for this run because stop reminders worked and",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:612dea91f522",
+      "kind": "next_improvement",
+      "lesson": "retain rejected measurements and non-claims in the goal artifact so later summaries cannot promote them accidentally.",
+      "normalized_key": "retain rejected measurements and non claims in the goal artifact so later summaries cannot",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:3dfc9061dde9",
+      "kind": "next_improvement",
+      "lesson": "state the comparative timing protocol before collecting performance evidence, including warm-up and alternating order.",
+      "normalized_key": "state the comparative timing protocol before collecting performance evidence including warm up and alternating",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
           "date": "2026-07-11",
           "section": "Next Improvements"
         }
