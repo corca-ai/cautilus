@@ -1,77 +1,77 @@
-# Debug Review: scenario builder registry validation panic
+# Debug Review: shell command capture write false success
 Date: 2026-07-11
 
 ## Problem
 
-`BuildScenarioProposalPacket` and `BuildScenarioConversationReview` return `(map[string]any, error)` but shared validation panics when an existing scenario registry entry has an empty `scenarioKey`.
-The CLI masks this with global panic recovery, while direct runtime callers cannot handle the validation failure through the advertised error channel.
+`runShellCommand` ignores failures while writing captured stdout and stderr files.
+A command can therefore return `status: passed` and advertise evidence paths that were never materialized, causing review/evaluation consumers to trust missing audit evidence.
 
 ## Correct Behavior
 
-Malformed existing registry data must return a field-indexed error from both scenario builders without panic.
-Valid packet generation and the CLI's concise error behavior must remain unchanged.
+The result may report `passed` only when the command succeeds and both declared capture files are written successfully.
+A capture write failure must set `status: failed`, preserve inline output and the command exit code, and include a path-bearing capture error.
 
 ## Observed Facts
 
-- `readScenarioKeys` panics at an empty normalized `scenarioKey`.
-- Both scenario builders invoke it inline before calling `GenerateScenarioProposals`, despite returning an error.
-- `app.invokeHandler` globally recovers panics and makes the CLI exit 1, so current operator output is bounded.
-- Direct runtime callers have no local recovery contract and would unwind unexpectedly.
-- Other proposal candidate validation in `GenerateScenarioProposals` returns indexed errors normally.
+- Both `os.WriteFile` returns are assigned to `_`.
+- Result status depends only on `command.Run()`.
+- Review variant summaries propagate `executionStatus`, `stdoutFile`, and `stderrFile` from this result.
+- Evaluation preflight and test loops stop only when result status is not `passed`.
+- Existing tests cover environment isolation and timeout status but not capture persistence failure.
 
 ## Reproduction
 
-- Call either scenario builder with the correct input schema and `existingScenarioRegistry: [{"scenarioKey":" "}]`.
-- Observe a panic with `existingScenarioRegistry[0].scenarioKey must be a non-empty string` instead of a returned error.
+- Call `runShellCommand` with a successful `printf` command and a stdout capture path that is an existing directory.
+- Observe `status: passed`, `exitCode: 0`, inline stdout present, and no stdout capture file.
 
 ## Candidate Causes
 
-- Panic was used as a shortcut because `readScenarioKeys` originally returned only a slice.
-- CLI global recovery was treated as the validation contract.
-- Empty keys were considered impossible after upstream schema validation.
-- Registry entries with invalid shapes were intentionally skipped, and empty strings accidentally received stricter handling.
+- Capture files were treated as best-effort diagnostics while inline output remained authoritative.
+- The caller was expected to check file existence independently.
+- Write failure was considered impossible because output directories are normally pre-created.
+- Command status and evidence persistence were intentionally separate but the result has no field representing that distinction.
 
 ## Hypothesis
 
-- Falsifiable claim: `readScenarioKeys` is the only panic source for this input; changing it to return `([]string, error)` and propagating the error from both scenario builders will make direct unit tests pass without altering valid generation | disconfirmer: add the direct malformed-registry table and observe another panic after error propagation.
+- Falsifiable claim: the ignored write returns are the sole false-success gap; a deterministic directory-as-file test passes on old code with `status: passed`, while incorporating capture errors into result status and error text will make callers stop without changing successful commands or timeout behavior | disconfirmer: add the direct failure test and observe a caller-independent check already marks the result failed.
 
 ## Verification
 
-- confirmed — the proposal-builder test panicked against old code; after typing the shared helper's failure and updating both compile-time consumers, the two-builder table returns the indexed error and focused valid runtime/CLI scenario tests pass.
+- confirmed — the deterministic directory-as-file test returned `status: passed` against old code; after repair it returns failed with exitCode 0, preserves inline stdout, records a path-bearing capture error, writes the independent stderr capture, and the review normalizer surfaces the capture error as its failure reason.
 
 ## Root Cause
 
-A validation helper's return type cannot represent failure, so one malformed branch bypasses the surrounding error-based API.
-The CLI's broad recovery hides the contract mismatch from process-level smoke tests.
+The result model conflates subprocess success with complete execution evidence.
+Capture persistence is part of the declared result contract, but its authoritative filesystem errors are discarded before status construction.
 
 ## Invariant Proof
 
-- Invariant: every deterministic input validation failure in both `BuildScenarioProposalPacket` and `BuildScenarioConversationReview` returns an error and never panics.
-- Producer Proof: direct runtime table covers both scenario builders with an indexed empty registry key.
-- Final-Consumer Proof: both direct runtime calls return the expected field path; existing proposal/conversation CLI and valid generation tests continue to pass.
-- Interface-Shape Sibling Scan: scenario coverage intentionally skips missing keys and proposal candidate validation already returns errors; neither shares the required registry identity contract.
-- Non-Claims: this slice does not reject non-object registry entries, tighten scenario coverage validation, or remove CLI global panic recovery.
+- Invariant: `runShellCommand.status == passed` implies command success and successful materialization of both declared capture files.
+- Producer Proof: deterministic stdout capture path points to an existing directory while the command itself exits 0.
+- Final-Consumer Proof: result is failed with exitCode 0, inline stdout preserved, review normalization retains the path-bearing reason, and evaluation callers emit the same error independently of progress quiet mode before stopping.
+- Interface-Shape Sibling Scan: both stdout and stderr writes share the same contract and must be handled together; unrelated output writers already return errors directly.
+- Non-Claims: this slice does not change command exit codes, make capture writes atomic, remove attempted path fields, or redesign review summary schemas.
 
 ## Detection Gap
 
-- proposal runtime tests and CLI smoke | valid packets and candidate validation were covered, but malformed existing registry identity was not sampled directly | add a direct non-panic error test.
+- `internal/app/app_test.go` shell-command tests | command env and timeout branches were covered but evidence persistence was assumed | add direct capture failure plus existing success/timeout regressions.
 
 ## Sibling Search
 
-- Mental model: upstream schema validation makes registry keys impossible to omit.
-- same layer axis: both callers of `readScenarioKeys` | decision: same bug, fix now | proof: the compile-time consumer inventory exposed both error-returning builders.
-- abstraction up axis: runtime builders returning errors | decision: same bug, fix now | proof: this builder already advertises error and candidate validation follows it.
-- specialization down axis: non-object registry entries | decision: intentional plain-text or non-rendering boundary | proof: existing helper intentionally skips them and this slice does not redefine that contract.
-- mental-model axis: `readScenarioCoverage` missing keys | decision: intentional plain-text or non-rendering boundary | proof: coverage is optional enrichment rather than registry identity.
-- cross-file: `internal/runtime/proposals.go` owns validation and `internal/runtime/proposals_test.go` owns direct runtime proof; `internal/app/app.go` recovery remains unchanged.
+- Mental model: pre-created output directories make capture writes infallible.
+- same layer axis: stdout and stderr capture writes | decision: same bug, fix now | proof: both errors are discarded before one shared status.
+- abstraction up axis: review/eval execution summaries | decision: same bug, fix now | proof: all callers gate on `result.status` and propagate file paths.
+- specialization down axis: simultaneous command and capture failure | decision: same bug, fix now | proof: combine capture diagnostic with timeout text while preserving command exit semantics.
+- mental-model axis: inline output as fallback | decision: intentional plain-text or non-rendering boundary | proof: preserve inline stdout/stderr for repair, but do not call missing durable evidence passed.
+- cross-file: `internal/app/remaining_commands.go` owns execution/result construction and `internal/app/app_test.go` owns direct branch proof.
 
 ## Seam Risk
 
-- Interrupt ID: scenario-proposal-registry-validation-panic
+- Interrupt ID: shell-command-capture-write-false-success
 - Risk Class: none
-- Seam: structured proposal input validation to runtime error API
-- Disproving Observation: malformed registry returns the indexed error from both builders without recover, and valid runtime/CLI scenario tests pass.
-- What Local Reasoning Cannot Prove: all panic sources across unrelated runtime builders.
+- Seam: subprocess completion to durable capture evidence and result status
+- Disproving Observation: capture failure yields failed status/path error while success and timeout tests pass.
+- What Local Reasoning Cannot Prove: external filesystem recovery or atomic persistence of both capture files.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -83,4 +83,4 @@ The CLI's broad recovery hides the contract mismatch from process-level smoke te
 
 ## Prevention
 
-Represent registry validation failure in the helper's type, propagate it through the builder's existing error return, and pin the direct call rather than relying on CLI-wide panic recovery.
+Treat capture persistence as part of execution success, retain inline repair evidence, and pin the result-map semantics directly.

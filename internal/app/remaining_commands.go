@@ -625,7 +625,7 @@ func runEvalTestPipeline(
 				fmt.Sprintf("preflight %d/%d", index+1, len(stringArray(adapterPayload.Data["preflight_commands"]))),
 				commandTimeout,
 			)
-			if anyString(result["status"]) != "passed" {
+			if !shellCommandPassed(result, stderr) {
 				commandsPassed = false
 				break
 			}
@@ -649,7 +649,7 @@ func runEvalTestPipeline(
 				fmt.Sprintf("%s %d/%d", progressLabel, index+1, len(templates)),
 				commandTimeout,
 			)
-			if anyString(result["status"]) != "passed" {
+			if !shellCommandPassed(result, stderr) {
 				commandsPassed = false
 				break
 			}
@@ -1554,8 +1554,13 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 	err := command.Run()
 	completedAt := time.Now()
 	timedOut := timeout > 0 && ctx.Err() == context.DeadlineExceeded
-	_ = os.WriteFile(stdoutFile, stdoutBuffer.Bytes(), 0o644)
-	_ = os.WriteFile(stderrFile, stderrBuffer.Bytes(), 0o644)
+	captureErrors := []string{}
+	if writeErr := os.WriteFile(stdoutFile, stdoutBuffer.Bytes(), 0o644); writeErr != nil {
+		captureErrors = append(captureErrors, fmt.Sprintf("write stdout capture %s: %s", stdoutFile, writeErr))
+	}
+	if writeErr := os.WriteFile(stderrFile, stderrBuffer.Bytes(), 0o644); writeErr != nil {
+		captureErrors = append(captureErrors, fmt.Sprintf("write stderr capture %s: %s", stderrFile, writeErr))
+	}
 	result := map[string]any{
 		"startedAt":   startedAt.UTC().Format(time.RFC3339Nano),
 		"completedAt": completedAt.UTC().Format(time.RFC3339Nano),
@@ -1564,7 +1569,7 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 		"stderr":      stderrBuffer.String(),
 		"stdoutFile":  stdoutFile,
 		"stderrFile":  stderrFile,
-		"status":      ternaryString(err == nil, "passed", "failed"),
+		"status":      ternaryString(err == nil && len(captureErrors) == 0, "passed", "failed"),
 		"timedOut":    timedOut,
 	}
 	var exitErr *exec.ExitError
@@ -1575,14 +1580,29 @@ func runShellCommand(repoRoot string, commandText string, stdoutFile string, std
 	} else if timedOut {
 		result["exitCode"] = -1
 	}
+	errorMessages := []string{}
 	if timedOut {
-		result["error"] = fmt.Sprintf("command timed out after %s", timeout)
+		errorMessages = append(errorMessages, fmt.Sprintf("command timed out after %s", timeout))
+	}
+	errorMessages = append(errorMessages, captureErrors...)
+	if len(errorMessages) > 0 {
+		result["error"] = strings.Join(errorMessages, "; ")
 	}
 	log(fmt.Sprintf("%s %s in %dms", label, result["status"], result["durationMs"]))
 	if timedOut {
 		log(fmt.Sprintf("%s timeout: command timed out after %s", label, timeout))
 	}
 	return result
+}
+
+func shellCommandPassed(result map[string]any, stderr io.Writer) bool {
+	if anyString(result["status"]) == "passed" {
+		return true
+	}
+	if errorText := strings.TrimSpace(anyString(result["error"])); errorText != "" {
+		_, _ = fmt.Fprintln(stderr, errorText)
+	}
+	return false
 }
 
 func parsePositiveTimeoutDuration(envName string) (time.Duration, bool) {
@@ -1862,6 +1882,7 @@ func normalizeReviewVariantResult(variantID string, tool any, execution map[stri
 		reason = firstNonEmptyString(
 			strings.TrimSpace(anyString(rawOutput["reason"])),
 			strings.TrimSpace(anyString(rawOutput["message"])),
+			strings.TrimSpace(anyString(execution["error"])),
 			strings.TrimSpace(anyString(execution["stderr"])),
 			strings.TrimSpace(anyString(execution["stdout"])),
 			"review variant command failed",

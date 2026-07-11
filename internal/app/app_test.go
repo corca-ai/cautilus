@@ -1620,6 +1620,48 @@ func TestRunShellCommandDoesNotLeakShimContextEnv(t *testing.T) {
 	}
 }
 
+func TestRunShellCommandFailsWhenCaptureCannotBeWritten(t *testing.T) {
+	stdoutFile := t.TempDir()
+	stderrFile := filepath.Join(t.TempDir(), "stderr.txt")
+	result := runShellCommand(
+		t.TempDir(),
+		"printf captured",
+		stdoutFile,
+		stderrFile,
+		func(string) {},
+		"capture failure",
+		time.Second,
+	)
+
+	if status := result["status"]; status != "failed" {
+		t.Fatalf("expected failed status, got %#v", result)
+	}
+	if exitCode := result["exitCode"]; exitCode != 0 {
+		t.Fatalf("expected successful command exit code, got %#v", result)
+	}
+	if stdout := result["stdout"]; stdout != "captured" {
+		t.Fatalf("expected inline stdout to remain available, got %#v", result)
+	}
+	errorText := anyString(result["error"])
+	if !strings.Contains(errorText, "write stdout capture") || !strings.Contains(errorText, stdoutFile) {
+		t.Fatalf("expected path-bearing capture error, got %#v", result["error"])
+	}
+	if _, err := os.Stat(stderrFile); err != nil {
+		t.Fatalf("expected independent stderr capture to be written: %v", err)
+	}
+	normalized := normalizeReviewVariantResult("capture-failure", "test", result, nil, nil)
+	if reason := anyString(normalized["reason"]); !strings.Contains(reason, "write stdout capture") {
+		t.Fatalf("expected review result to surface capture error, got %#v", normalized)
+	}
+	var callerStderr bytes.Buffer
+	if shellCommandPassed(result, &callerStderr) {
+		t.Fatalf("expected evaluation caller to stop on capture failure")
+	}
+	if !strings.Contains(callerStderr.String(), "write stdout capture") {
+		t.Fatalf("expected quiet-independent caller stderr, got %q", callerStderr.String())
+	}
+}
+
 func TestRunShellCommandTimesOutLongRunningProcess(t *testing.T) {
 	stdoutFile := filepath.Join(t.TempDir(), "stdout.txt")
 	stderrFile := filepath.Join(t.TempDir(), "stderr.txt")

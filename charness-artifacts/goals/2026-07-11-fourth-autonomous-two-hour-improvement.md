@@ -13,9 +13,9 @@ The user's explicit two-hour autonomous implementation request activates pursuit
 
 ## Active Operating Frame
 
-- Current slice: scenario builder non-panic validation.
-- Current slice intent: align shared registry validation with both builders' explicit error-returning APIs.
-- Next action: run full runtime/app tests, race and artifact/boundary checks, then delegated fresh-eye review of the two-consumer signature change.
+- Current slice: shell command capture persistence truth.
+- Current slice intent: make execution success imply both declared capture files exist while preserving subprocess exit and inline repair evidence.
+- Next action: verify all caller branches, direct race/full app tests, artifact/boundary checks, and delegated fresh-eye review of the result-map semantics.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad proof at closeout.
 - Gate cadence: pre-lock slices use focused owner tests and structural pressure checks; final proof uses `npm run verify` and `npm run hooks:check`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -206,6 +206,23 @@ none — no operator-only decision blocks the initial local inventory and implem
 - Boundary Ownership: owned-correctly — shared registry validation now uses the error API already owned by both runtime builders; CLI recovery and docs/schema surfaces remain unchanged.
 - Critique: short parent-delegated fresh-eye PASS after one artifact-honesty fail/fix cycle; no remaining blocking, actionable, or advisory code finding.
 
+### 2026-07-11T21:33+09:00 — shell command capture persistence
+
+- Confirmed `runShellCommand` discarded both capture write errors and derived `status` only from subprocess exit, while review/evaluation callers trust status and propagate capture paths.
+- Archived the scenario-builder incident and added a deterministic direct test using an existing directory as the stdout file target; old code reported `passed`/exitCode 0 with inline stdout and no capture file.
+- Capture both write errors, make `passed` require command plus both writes, preserve command exitCode and inline output, and combine timeout/capture error text without changing ordinary command failures.
+- Added capture errors ahead of inline stdout/stderr in review variant failure normalization so the durable consumer does not explain a missing evidence file with arbitrary command output.
+- Focused success, timeout, and capture-failure tests pass; the failure case also proves the independent stderr file is still written and the review result surfaces the path-bearing capture reason.
+- Fresh-eye review found preflight/eval-test callers discarded `result.error`, especially hiding the cause under `--quiet`; routed both through a common status consumer that always emits non-empty failure causes and added a quiet-independent caller stderr assertion.
+- Non-claims: capture writes are not atomic, attempted path fields remain for repair, and subprocess exit codes still describe only the command.
+- Full app and focused race tests passed; debug validation and boundary checks passed without escalation.
+- Delegated fresh-eye re-review passed all three caller flows, quiet-independent failure cause, timeout/ordinary-command compatibility, review normalization, result semantics, and artifact queue cleanup after one caller-operability and one stale-artifact fail/fix cycle.
+- `bash .githooks/pre-push` passed the complete 52-second verify and generated-drift sequence; coverage was 9.80s against its 10-second budget.
+- The three directly tested `remaining_commands.go` failure seams in this run raised coverage to 70.45%, so its existing floor was promoted from 69.28% to the policy-buffered 70.20%.
+- `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: owned-correctly — command execution owns durable capture truth, review owns packet reason normalization, and evaluation callers own operator stderr even under quiet progress mode.
+- Critique: short parent-delegated fresh-eye PASS after caller and artifact corrections; no remaining blocking, actionable, or advisory code finding.
+
 ## Context Sources
 
 - User request: another two-hour autonomous improvement pass across bug fixes, test speed, and code quality.
@@ -235,8 +252,7 @@ none — no operator-only decision blocks the initial local inventory and implem
 
 ## Off-Goal Findings
 
-- Deferred scenario proposal panic boundary: malformed registry data can panic inside runtime validation but the CLI currently recovers cleanly; library error-contract work needs a separate design slice.
-- Deferred review capture-write failures: ignored stdout/stderr capture write errors can leave packet paths without files; multiple callers and packet status semantics need a dedicated causal review.
+none currently — both previously deferred findings were promoted and resolved in the scenario-builder and shell-capture slices above.
 
 ## Final Verification
 

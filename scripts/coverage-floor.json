@@ -1,6 +1,6 @@
 {
   "internal/app/app.go": 53.62,
-  "internal/app/remaining_commands.go": 69.28,
+  "internal/app/remaining_commands.go": 70.2,
   "internal/app/review_feedback_command.go": 83.08,
   "internal/app/workbench_batch_command.go": 67.63,
   "internal/app/workbench_commands.go": 61.67,
