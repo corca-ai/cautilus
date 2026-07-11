@@ -1,77 +1,77 @@
-# Debug Review: shell command capture write false success
+# Debug Review: scenario input parity fails open
 Date: 2026-07-11
 
 ## Problem
 
-`runShellCommand` ignores failures while writing captured stdout and stderr files.
-A command can therefore return `status: passed` and advertise evidence paths that were never materialized, causing review/evaluation consumers to trust missing audit evidence.
+The Go scenario proposal path silently drops malformed registry and coverage entries that the maintained JavaScript producer rejects.
+Malformed host-owned scenario state can therefore produce a proposal packet instead of a path-bearing validation error, and the two official producer surfaces disagree.
 
 ## Correct Behavior
 
-The result may report `passed` only when the command succeeds and both declared capture files are written successfully.
-A capture write failure must set `status: failed`, preserve inline output and the command exit code, and include a path-bearing capture error.
+Given the same `existingScenarioRegistry` and `scenarioCoverage` payload, both maintained producers must either accept it with the same normalized keys and counts or reject the same malformed entry before packet generation.
 
 ## Observed Facts
 
-- Both `os.WriteFile` returns are assigned to `_`.
-- Result status depends only on `command.Run()`.
-- Review variant summaries propagate `executionStatus`, `stdoutFile`, and `stderrFile` from this result.
-- Evaluation preflight and test loops stop only when result status is not `passed`.
-- Existing tests cover environment isolation and timeout status but not capture persistence failure.
+- `readScenarioKeys` continues past non-object entries while the JavaScript producer rejects `existingScenarioRegistry[i] must be an object`.
+- `readScenarioCoverage` silently skips non-object or empty-key entries and accepts failed numeric conversion as zero.
+- The JavaScript producer rejects non-object coverage entries, empty keys, non-finite counts, and negative counts.
+- Both Go proposal and conversation-review builders consume these shared readers.
 
 ## Reproduction
 
-- Call `runShellCommand` with a successful `printf` command and a stdout capture path that is an existing directory.
-- Observe `status: passed`, `exitCode: 0`, inline stdout present, and no stdout capture file.
+- Table-driven calls against both Go builders returned packets for scalar registry/coverage entries, empty coverage keys, non-numeric counts, and negative counts.
+- The JavaScript producer rejected those cases but accepted a numeric string despite the documented number-only contract.
+- A delegated parity review additionally reproduced explicit JSON `null`: both Go builders accepted it as an empty array while JavaScript rejected it.
 
 ## Candidate Causes
 
-- Capture files were treated as best-effort diagnostics while inline output remained authoritative.
-- The caller was expected to check file existence independently.
-- Write failure was considered impossible because output directories are normally pre-created.
-- Command status and evidence persistence were intentionally separate but the result has no field representing that distinction.
+- The Go readers were intentionally permissive for partially populated historical packets.
+- `arrayOrEmpty` and `toFloat` were reused as convenience normalizers even though this boundary requires validation.
+- JavaScript validation tightened independently and no cross-producer parity test covered malformed inputs.
+- The new registry-key error return fixed only the panic path and retained prior skip semantics for other shapes.
 
 ## Hypothesis
 
-- Falsifiable claim: the ignored write returns are the sole false-success gap; a deterministic directory-as-file test passes on old code with `status: passed`, while incorporating capture errors into result status and error text will make callers stop without changing successful commands or timeout behavior | disconfirmer: add the direct failure test and observe a caller-independent check already marks the result failed.
+- Falsifiable claim: shared permissive readers are the sole parity gap; direct malformed-input tests will succeed on old Go code, and strict indexed validation shared by both Go consumers will make every case fail without changing valid fixtures | disconfirmer: an existing upstream schema validator already rejects the malformed payload before either builder.
 
 ## Verification
 
-- confirmed — the deterministic directory-as-file test returned `status: passed` against old code; after repair it returns failed with exitCode 0, preserves inline stdout, records a path-bearing capture error, writes the independent stderr capture, and the review normalizer surfaces the capture error as its failure reason.
+- confirmed — every malformed Go case returned no error before repair, the JavaScript numeric-string assertion failed before repair, and the delegated review independently reproduced the explicit-null mismatch.
+- after repair, focused Go tests pass both final consumers, JavaScript schema tests pass eight cases, and eslint passes the changed scripts.
 
 ## Root Cause
 
-The result model conflates subprocess success with complete execution evidence.
-Capture persistence is part of the declared result contract, but its authoritative filesystem errors are discarded before status construction.
+The maintained producers drifted because shared Go convenience coercions were used at a typed packet boundary while JavaScript validation evolved independently.
+The earlier empty-key repair changed error propagation but preserved permissive non-object, non-array, and coverage-domain semantics, and neither suite carried a malformed-input parity table.
 
 ## Invariant Proof
 
-- Invariant: `runShellCommand.status == passed` implies command success and successful materialization of both declared capture files.
-- Producer Proof: deterministic stdout capture path points to an existing directory while the command itself exits 0.
-- Final-Consumer Proof: result is failed with exitCode 0, inline stdout preserved, review normalization retains the path-bearing reason, and evaluation callers emit the same error independently of progress quiet mode before stopping.
-- Interface-Shape Sibling Scan: both stdout and stderr writes share the same contract and must be handled together; unrelated output writers already return errors directly.
-- Non-Claims: this slice does not change command exit codes, make capture writes atomic, remove attempted path fields, or redesign review summary schemas.
+- Invariant: when host-owned scenario registry or coverage input is malformed, both Go final packet builders and the maintained JavaScript producer must refuse the indexed entry before claiming a valid proposal or conversation-review packet.
+- Producer Proof: the table proves indexed array, object, key, numeric-type, finite-domain, and non-negative validation, including explicit null while retaining missing-field compatibility.
+- Final-Consumer Proof: the same Go table invokes proposal and conversation-review builders; the JavaScript table pins the maintained sibling producer.
+- Interface-Shape Sibling Scan: registry and coverage readers, both Go builder consumers, and the JavaScript producer share the same payload fields.
+- Non-Claims: no schema expansion, historical packet migration, or provider/live behavior proof.
 
 ## Detection Gap
 
-- `internal/app/app_test.go` shell-command tests | command env and timeout branches were covered but evidence persistence was assumed | add direct capture failure plus existing success/timeout regressions.
+- `internal/runtime/proposals_test.go` | only empty registry keys exercised error propagation | add malformed shape and numeric-domain cases across both typed consumers.
 
 ## Sibling Search
 
-- Mental model: pre-created output directories make capture writes infallible.
-- same layer axis: stdout and stderr capture writes | decision: same bug, fix now | proof: both errors are discarded before one shared status.
-- abstraction up axis: review/eval execution summaries | decision: same bug, fix now | proof: all callers gate on `result.status` and propagate file paths.
-- specialization down axis: simultaneous command and capture failure | decision: same bug, fix now | proof: combine capture diagnostic with timeout text while preserving command exit semantics.
-- mental-model axis: inline output as fallback | decision: intentional plain-text or non-rendering boundary | proof: preserve inline stdout/stderr for repair, but do not call missing durable evidence passed.
-- cross-file: `internal/app/remaining_commands.go` owns execution/result construction and `internal/app/app_test.go` owns direct branch proof.
+- Mental model: optional array fields may use permissive coercion inside a final packet builder even when another maintained producer treats their entries as typed.
+- same layer axis: `readScenarioKeys` and `readScenarioCoverage` | decision: same bug, fix now | proof: static producer-parity comparison.
+- abstraction up axis: proposal and conversation-review builders | decision: same bug, fix now | proof: both call the shared readers.
+- specialization down axis: non-array/null fields, non-object entries, empty keys, non-numeric/non-finite counts, and negative counts | decision: same bug, fix now | proof: direct parity tables pass after repair.
+- mental-model axis: absent optional arrays versus present malformed arrays | decision: intentional plain-text or non-rendering boundary | proof: both runtimes keep missing fields compatible as empty arrays while explicit null remains malformed.
+- cross-file: `scripts/agent-runtime/generate-scenario-proposals.mjs` is the maintained parity sibling outside the Go subject file.
 
 ## Seam Risk
 
-- Interrupt ID: shell-command-capture-write-false-success
+- Interrupt ID: scenario-input-parity-fails-open
 - Risk Class: none
-- Seam: subprocess completion to durable capture evidence and result status
-- Disproving Observation: capture failure yields failed status/path error while success and timeout tests pass.
-- What Local Reasoning Cannot Prove: external filesystem recovery or atomic persistence of both capture files.
+- Seam: host-owned JSON payload to maintained Go and JavaScript scenario packet producers
+- Disproving Observation: both Go consumers and the JavaScript producer now reject the malformed table while valid schema fixtures remain green.
+- What Local Reasoning Cannot Prove: compatibility of unknown external callers that intentionally send malformed present fields.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -83,4 +83,5 @@ Capture persistence is part of the declared result contract, but its authoritati
 
 ## Prevention
 
-Treat capture persistence as part of execution success, retain inline repair evidence, and pin the result-map semantics directly.
+Pin malformed-input parity at the shared reader boundary and both Go final consumers before releasing the accumulated bundle.
+Keep generic `assertArray` optional semantics unchanged and distinguish missing from explicit null only at the scenario input call sites.

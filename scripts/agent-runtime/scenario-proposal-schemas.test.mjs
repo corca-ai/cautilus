@@ -124,6 +124,31 @@ test("scenario proposal output schema matches the generated proposal packet", ()
 	validateAgainstSchema(outputSchema, proposalPacket);
 });
 
+test("scenario proposal packet rejects malformed registry and coverage", () => {
+	const base = {
+		schemaVersion: "cautilus.scenario_proposal_inputs.v1",
+		families: [],
+		proposalCandidates: [],
+		existingScenarioRegistry: [],
+		scenarioCoverage: [],
+	};
+	const cases = [
+		["registry must be array", { existingScenarioRegistry: "bad" }, /existingScenarioRegistry must be an array/],
+		["registry null must be array", { existingScenarioRegistry: null }, /existingScenarioRegistry must be an array/],
+		["registry entry must be object", { existingScenarioRegistry: ["bad"] }, /existingScenarioRegistry\[0\] must be an object/],
+		["coverage must be array", { scenarioCoverage: "bad" }, /scenarioCoverage must be an array/],
+		["coverage null must be array", { scenarioCoverage: null }, /scenarioCoverage must be an array/],
+		["coverage entry must be object", { scenarioCoverage: ["bad"] }, /scenarioCoverage\[0\] must be an object/],
+		["coverage key must be non-empty", { scenarioCoverage: [{ scenarioKey: " " }] }, /scenarioCoverage\[0\]\.scenarioKey must be a non-empty string/],
+		["coverage count must be numeric", { scenarioCoverage: [{ scenarioKey: "scenario-a", recentResultCount: "bad" }] }, /scenarioCoverage\[0\]\.recentResultCount must be a non-negative number/],
+		["coverage count must be a number", { scenarioCoverage: [{ scenarioKey: "scenario-a", recentResultCount: "3" }] }, /scenarioCoverage\[0\]\.recentResultCount must be a non-negative number/],
+		["coverage count must be non-negative", { scenarioCoverage: [{ scenarioKey: "scenario-a", recentResultCount: -1 }] }, /scenarioCoverage\[0\]\.recentResultCount must be a non-negative number/],
+	];
+	for (const [name, override, expected] of cases) {
+		assert.throws(() => buildScenarioProposalPacket({ ...base, ...override }), expected, name);
+	}
+});
+
 test("scenario proposal evidence schema bounds portable provenance fields", () => {
 	const inputSchema = readJson("input.schema.json");
 	const outputSchema = readJson("proposals.schema.json");

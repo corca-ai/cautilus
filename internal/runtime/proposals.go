@@ -111,14 +111,26 @@ func BuildScenarioProposalPacket(input map[string]any) (map[string]any, error) {
 		return nil, fmt.Errorf("schemaVersion must be %s", contracts.ScenarioProposalInputsSchema)
 	}
 	families := stringSliceValue(input["families"])
-	existingScenarioKeys, err := readScenarioKeys(arrayOrEmpty(input["existingScenarioRegistry"]))
+	registry, err := scenarioInputArray(input, "existingScenarioRegistry")
+	if err != nil {
+		return nil, err
+	}
+	existingScenarioKeys, err := readScenarioKeys(registry)
+	if err != nil {
+		return nil, err
+	}
+	coverage, err := scenarioInputArray(input, "scenarioCoverage")
+	if err != nil {
+		return nil, err
+	}
+	recentCoverage, err := readScenarioCoverage(coverage)
 	if err != nil {
 		return nil, err
 	}
 	return GenerateScenarioProposals(
 		arrayOrEmpty(input["proposalCandidates"]),
 		existingScenarioKeys,
-		readScenarioCoverage(arrayOrEmpty(input["scenarioCoverage"])),
+		recentCoverage,
 		families,
 		intValueOrDefault(input["windowDays"], 14),
 		parseOptionalNow(input["now"]),
@@ -1100,7 +1112,7 @@ func readScenarioKeys(registry []any) ([]string, error) {
 	for index, rawEntry := range registry {
 		entry, ok := rawEntry.(map[string]any)
 		if !ok {
-			continue
+			return nil, fmt.Errorf("existingScenarioRegistry[%d] must be an object", index)
 		}
 		key := strings.TrimSpace(stringOrEmpty(entry["scenarioKey"]))
 		if key == "" {
@@ -1111,19 +1123,37 @@ func readScenarioKeys(registry []any) ([]string, error) {
 	return keys, nil
 }
 
-func readScenarioCoverage(coverage []any) map[string]float64 {
+func scenarioInputArray(input map[string]any, field string) ([]any, error) {
+	value, exists := input[field]
+	if !exists {
+		return []any{}, nil
+	}
+	if value == nil {
+		return nil, fmt.Errorf("%s must be an array", field)
+	}
+	return assertArray(value, field)
+}
+
+func readScenarioCoverage(coverage []any) (map[string]float64, error) {
 	result := map[string]float64{}
-	for _, rawEntry := range coverage {
+	for index, rawEntry := range coverage {
 		entry, ok := rawEntry.(map[string]any)
 		if !ok {
-			continue
+			return nil, fmt.Errorf("scenarioCoverage[%d] must be an object", index)
 		}
 		key := strings.TrimSpace(stringOrEmpty(entry["scenarioKey"]))
 		if key == "" {
-			continue
+			return nil, fmt.Errorf("scenarioCoverage[%d].scenarioKey must be a non-empty string", index)
 		}
-		value, _ := toFloat(entry["recentResultCount"])
+		value := float64(0)
+		if rawValue, exists := entry["recentResultCount"]; exists && rawValue != nil {
+			parsed, valid := toFloat(rawValue)
+			if !valid || math.IsNaN(parsed) || math.IsInf(parsed, 0) || parsed < 0 {
+				return nil, fmt.Errorf("scenarioCoverage[%d].recentResultCount must be a non-negative number", index)
+			}
+			value = parsed
+		}
 		result[key] = value
 	}
-	return result
+	return result, nil
 }

@@ -52,6 +52,63 @@ func TestScenarioBuildersRejectEmptyRegistryKeyWithoutPanic(t *testing.T) {
 	}
 }
 
+func TestScenarioBuildersRejectMalformedRegistryAndCoverage(t *testing.T) {
+	tests := []struct {
+		name          string
+		registry      any
+		coverage      any
+		wantErrorText string
+	}{
+		{name: "registry must be array", registry: "bad", coverage: []any{}, wantErrorText: "existingScenarioRegistry must be an array"},
+		{name: "registry null must be array", registry: nil, coverage: []any{}, wantErrorText: "existingScenarioRegistry must be an array"},
+		{name: "registry entry must be object", registry: []any{"bad"}, coverage: []any{}, wantErrorText: "existingScenarioRegistry[0] must be an object"},
+		{name: "coverage must be array", registry: []any{}, coverage: "bad", wantErrorText: "scenarioCoverage must be an array"},
+		{name: "coverage null must be array", registry: []any{}, coverage: nil, wantErrorText: "scenarioCoverage must be an array"},
+		{name: "coverage entry must be object", registry: []any{}, coverage: []any{"bad"}, wantErrorText: "scenarioCoverage[0] must be an object"},
+		{name: "coverage key must be non-empty", registry: []any{}, coverage: []any{map[string]any{"scenarioKey": " "}}, wantErrorText: "scenarioCoverage[0].scenarioKey must be a non-empty string"},
+		{name: "coverage count must be numeric", registry: []any{}, coverage: []any{map[string]any{"scenarioKey": "scenario-a", "recentResultCount": "bad"}}, wantErrorText: "scenarioCoverage[0].recentResultCount must be a non-negative number"},
+		{name: "coverage count must be non-negative", registry: []any{}, coverage: []any{map[string]any{"scenarioKey": "scenario-a", "recentResultCount": -1}}, wantErrorText: "scenarioCoverage[0].recentResultCount must be a non-negative number"},
+	}
+	builders := []struct {
+		name  string
+		build func(input map[string]any) error
+	}{
+		{
+			name: "proposal packet",
+			build: func(input map[string]any) error {
+				_, err := BuildScenarioProposalPacket(input)
+				return err
+			},
+		},
+		{
+			name: "conversation review",
+			build: func(input map[string]any) error {
+				input["schemaVersion"] = contracts.ScenarioConversationReviewInputsSchema
+				input["conversationSummaries"] = []any{}
+				_, err := BuildScenarioConversationReview(input, time.Now())
+				return err
+			},
+		},
+	}
+	for _, tc := range tests {
+		for _, builder := range builders {
+			t.Run(tc.name+"/"+builder.name, func(t *testing.T) {
+				input := map[string]any{
+					"schemaVersion":            contracts.ScenarioProposalInputsSchema,
+					"families":                 []any{},
+					"proposalCandidates":       []any{},
+					"existingScenarioRegistry": tc.registry,
+					"scenarioCoverage":         tc.coverage,
+				}
+				err := builder.build(input)
+				if err == nil || !strings.Contains(err.Error(), tc.wantErrorText) {
+					t.Fatalf("builder error: got %v, want containing %q", err, tc.wantErrorText)
+				}
+			})
+		}
+	}
+}
+
 // TestNormalizeChatbotProposalCandidatesRespectsWordBoundary asserts that the
 // review-clarification candidate is produced only when the first user message
 // actually mentions "review" or "repo" as whole words (or the Korean

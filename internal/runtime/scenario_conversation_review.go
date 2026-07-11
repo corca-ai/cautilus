@@ -43,14 +43,26 @@ func BuildScenarioConversationReview(input map[string]any, now time.Time) (map[s
 		effectiveNow = parseOptionalNow(rawNow)
 	}
 
-	existingScenarioKeys, err := readScenarioKeys(arrayOrEmpty(input["existingScenarioRegistry"]))
+	registry, err := scenarioInputArray(input, "existingScenarioRegistry")
+	if err != nil {
+		return nil, err
+	}
+	existingScenarioKeys, err := readScenarioKeys(registry)
+	if err != nil {
+		return nil, err
+	}
+	coverage, err := scenarioInputArray(input, "scenarioCoverage")
+	if err != nil {
+		return nil, err
+	}
+	recentCoverage, err := readScenarioCoverage(coverage)
 	if err != nil {
 		return nil, err
 	}
 	proposalPacket, err := GenerateScenarioProposals(
 		arrayOrEmpty(input["proposalCandidates"]),
 		existingScenarioKeys,
-		readScenarioCoverage(arrayOrEmpty(input["scenarioCoverage"])),
+		recentCoverage,
 		families,
 		windowDays,
 		effectiveNow,

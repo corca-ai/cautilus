@@ -93,8 +93,8 @@ function readScenarioCoverage(scenarioCoverage) {
 			if (!scenarioKey) {
 				throw new Error(`scenarioCoverage[${index}].scenarioKey must be a non-empty string`);
 			}
-			const recentResultCount = Number(entry.recentResultCount ?? 0);
-			if (!Number.isFinite(recentResultCount) || recentResultCount < 0) {
+			const recentResultCount = entry.recentResultCount ?? 0;
+			if (typeof recentResultCount !== "number" || !Number.isFinite(recentResultCount) || recentResultCount < 0) {
 				throw new Error(`scenarioCoverage[${index}].recentResultCount must be a non-negative number`);
 			}
 			return [scenarioKey, recentResultCount];
