@@ -10,17 +10,17 @@ mention-only 픽업이면 `charness:handoff`로 이 baton과 최신 goal/release
 ## Current State
 
 - 현재 활성 구현 트랙은 없다.
-- 공개 릴리스는 `v0.19.2`이며 workflow, asset/checksum, Linux attestation, install/update readback이 통과했다.
+- 공개 릴리스는 `v0.19.3`이며 workflow, 7개 asset/checksum, Linux x64 attestation, latest/pinned install 및 update-current readback이 통과했다.
 - canonical 릴리스 증거와 초기 asset-readiness 404의 최종 disposition은 `charness-artifacts/release/latest.md`가 소유한다.
 - 최근 자율 개선의 품질 상태, warning-only 부채, runtime 비주장은 `charness-artifacts/quality/latest.md`가 소유한다.
 - release page가 asset보다 먼저 보일 수 있다는 재발 방지 순서는 `docs/maintainers/releasing.md`에 반영됐다.
-- PATH의 `cautilus`는 이 세션에서 전역 갱신하지 않았으며 관찰 당시 `0.18.0`이었다.
-  격리된 public installer proof는 `0.19.2`를 확인했지만 둘을 같은 상태로 주장하지 않는다.
+- PATH의 `cautilus`는 이 세션에서 전역 갱신하지 않았다.
+  격리된 public installer proof는 `0.19.3`을 확인했지만 이를 사용자 전역 설치 상태와 같다고 주장하지 않는다.
 - `cautilus doctor --repo-root .`는 adapter readiness를 통과했지만 dev/repo runner assessment가 현재 source hashes보다 오래됐다고 안내한다.
 
 ## Next Session
 
-1. `git status --short --branch`, `charness-artifacts/goals/2026-07-11-third-autonomous-two-hour-improvement-release.md`, `charness-artifacts/release/latest.md`를 확인한다.
+1. `git status --short --branch`, `charness-artifacts/goals/2026-07-11-fifth-autonomous-two-hour-improvement-release.md`, `charness-artifacts/release/latest.md`를 확인한다.
 2. 구체적인 사용자 요청이 없으면 dormant roadmap 트랙을 자동으로 시작하지 않는다.
 3. evaluation/self-dogfood를 재개한다면 먼저 doctor의 `refresh_runner_assessment` 경로를 따른다.
 4. release infrastructure를 다시 건드린다면 release-page readiness와 asset readiness의 소유권을 먼저 정하고, `charness-artifacts/debug/latest.md`의 재현을 읽는다.
@@ -34,12 +34,12 @@ mention-only 픽업이면 `charness:handoff`로 이 baton과 최신 goal/release
 
 ## References
 
-- [Latest completed goal](../../charness-artifacts/goals/2026-07-11-third-autonomous-two-hour-improvement-release.md)
+- [Latest completed goal](../../charness-artifacts/goals/2026-07-11-fifth-autonomous-two-hour-improvement-release.md)
 - [Release proof](../../charness-artifacts/release/latest.md)
 - [Quality evidence](../../charness-artifacts/quality/latest.md)
-- [Session retro](../../charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md)
+- [Session retro](../../charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md)
 - [Release timing debug](../../charness-artifacts/debug/latest.md)
 - [Product direction](../master-plan.md)
 
-Refresh kept: `v0.19.2` public proof, no-active-track boundary, stale runner-assessment cue, PATH-level version skew, and release asset-readiness ownership because each changes the next operator's first action.
+Refresh kept: `v0.19.3` public proof, no-active-track boundary, stale runner-assessment cue, PATH-level non-claim, and release asset-readiness ownership because each changes the next operator's first action.
 Refresh non-claims: per-slice chronology, exact test outputs, and reviewer dialogue remain in git history and the owning goal, quality, critique, debug, retro, and release artifacts.

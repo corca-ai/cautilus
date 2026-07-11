@@ -11,8 +11,8 @@
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
   "as_of_source_date": "2026-07-11",
-  "source_artifact_count": 29,
-  "candidate_count": 99,
+  "source_artifact_count": 30,
+  "candidate_count": 103,
   "top_candidates": [
     {
       "candidate_id": "next_improvement:a4fd08fcd3e9",
@@ -185,6 +185,26 @@
       ]
     },
     {
+      "candidate_id": "current_focus:a63835378585",
+      "kind": "current_focus",
+      "lesson": "This retro reviews four bounded reliability and runtime-economics slices plus the publication and public verification of Cautilus `v0.19.3`.",
+      "normalized_key": "this retro reviews four bounded reliability and runtime economics slices plus the publication and",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
       "candidate_id": "current_focus:a0cef53e4c4c",
       "kind": "current_focus",
       "lesson": "This retro reviews goal `third-autonomous-two-hour-improvement-release`: a measured autonomous pass that landed correctness, mutation-safety, direct-testability, and focused test-economics changes, then published and verified `v0.19.2`.",
@@ -259,26 +279,6 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-          "date": "2026-07-11",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:2d525a810930",
-      "kind": "next_improvement",
-      "lesson": "applied — real-process mutation sentinels now protect workspace creation, Git worktree registration, and recursive artifact pruning before malformed input crosses a side-effect boundary.",
-      "normalized_key": "applied real process mutation sentinels now protect workspace creation git worktree registration and recursive",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
           "date": "2026-07-11",
           "section": "Next Improvements"
         }
@@ -451,6 +451,26 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "current_focus:a63835378585",
+      "kind": "current_focus",
+      "lesson": "This retro reviews four bounded reliability and runtime-economics slices plus the publication and public verification of Cautilus `v0.19.3`.",
+      "normalized_key": "this retro reviews four bounded reliability and runtime economics slices plus the publication and",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
           "date": "2026-07-11",
           "section": "Context"
         }
@@ -637,6 +657,46 @@
       ]
     },
     {
+      "candidate_id": "next_improvement:5695ab0e24a0",
+      "kind": "next_improvement",
+      "lesson": "keep the current prepare-then-`publish-current` planning readback and asset-readiness retry sequence unchanged.",
+      "normalized_key": "keep the current prepare then publish current planning readback and asset readiness retry sequence",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:13dc28f672a0",
+      "kind": "next_improvement",
+      "lesson": "no additional capability change is justified; the existing helper and public verifier caught both transitional states honestly.",
+      "normalized_key": "no additional capability change is justified the existing helper and public verifier caught both",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
       "candidate_id": "next_improvement:2567e21958a7",
       "kind": "next_improvement",
       "lesson": "none — reviewer-duration variance is accepted for this run because stop reminders worked and no deterministic repo-side gate can distinguish useful judgment from unbounded exploration without false positives.",
@@ -691,6 +751,26 @@
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
+          "date": "2026-07-11",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:5a2187ef6122",
+      "kind": "next_improvement",
+      "lesson": "update the release record and handoff with the successful post-workflow install and attestation proof.",
+      "normalized_key": "update the release record and handoff with the successful post workflow install and attestation",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
+      "latest_source_date": "2026-07-11",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
           "date": "2026-07-11",
           "section": "Next Improvements"
         }

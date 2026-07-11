@@ -3,7 +3,7 @@ Date: 2026-07-11
 
 ## Scope
 
-Advanced `cautilus` toward release `0.19.3` (tag `v0.19.3`) through the repo-owned release helper.
+Released Cautilus `v0.19.3` through the repo-owned release helper.
 
 ## Current Version
 
@@ -100,18 +100,19 @@ Advanced `cautilus` toward release `0.19.3` (tag `v0.19.3`) through the repo-own
 
 ## Post-Publish Proof
 
-- Public release check: `gh release view v0.19.3`.
+- GitHub Actions run `29155090420` completed successfully.
+- The release-artifact job completed in 3m16s and its separate public-release verifier completed in 9s.
+- Public release check: `node scripts/release/verify-public-release.mjs --version v0.19.3` returned `status: ok`.
+- Seven expected assets were uploaded: four platform archives, the binary checksum manifest, the source checksum, and provenance release notes.
+- Linux x64 archive digest: `00ec10045fd080476961994fadb4ab7ae67d460525e1fb7da401e4ed37b74de2`.
+- `gh attestation verify` bound that archive to tag `v0.19.3`, workflow `release-artifacts`, and commit `50aa62c594ecbd166bba3026f74dbc41fc15b056`.
 
 ## Install Refresh
 
-- Post-publish install refresh status: `failed`.
-- Command: `npm run release:smoke-install:current -- --skip-update`
-- Return code: `1`
-- Elapsed seconds: `0.808`
-- Stdout tail: `> cautilus@0.19.3 release:smoke-install:current
-> node scripts/release/run-install-smoke-current.mjs --skip-update`
-- Stderr tail: `sh /home/hwidong/.cache/tmp/cautilus-install-smoke-iG0tzS/install.sh failed with exit 22
-curl: (22) The requested URL returned error: 404`
+- The helper's immediate post-publication refresh failed truthfully with HTTP 404 because the release page preceded workflow-owned asset readiness.
+- After workflow completion, `npm run release:smoke-install:current -- --skip-update` passed and the installed binary returned `0.19.3`.
+- `npm run release:smoke-install -- --channel install_sh --version v0.19.3` also passed.
+- The explicit smoke's update command reported `status: current`, `updated: false`, and latest version `0.19.3`.
 
 ## Release Runtime
 
@@ -139,5 +140,14 @@ curl: (22) The requested URL returned error: 404`
 
 ## User Update Steps
 
-- Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
-- Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo.
+- Binary operators update by re-running `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
+- Binary operators roll back by setting `CAUTILUS_VERSION=v0.19.2` when running that installer, then checking `cautilus --version`.
+- Source-checkout operators move to tag `v0.19.3` to receive the deployment-helper and coverage-runner changes, or return to `v0.19.2` to roll them back.
+- Cautilus Agent and plugin behavior content did not change in this patch, so Agent-only consumers do not need `charness update` or `cautilus init` for these fixes.
+
+## Non-Claims
+
+- The GitHub release-notes asset is provenance-oriented and is not claimed to carry this operator narrative.
+- No native macOS execution proof was run; Linux/current-host install proof does not substitute for it.
+- The detailed coverage timing is a local alternating-sample result with strong order effects, not a portable or global speed claim.
+- No provider-backed or live evaluator behavior was exercised for this patch.
