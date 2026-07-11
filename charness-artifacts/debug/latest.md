@@ -1,79 +1,77 @@
-# Debug Review: install overwrite false success on stale-tree removal failure
+# Debug Review: scenario builder registry validation panic
 Date: 2026-07-11
 
 ## Problem
 
-`cautilus init --overwrite` ignores failure to remove the existing Cautilus Agent skill tree, reinstalls bundled files over the partial tree, and reports `status: reinstalled`.
-Stale or untrusted files can therefore survive an operation whose explicit contract is replacement.
+`BuildScenarioProposalPacket` and `BuildScenarioConversationReview` return `(map[string]any, error)` but shared validation panics when an existing scenario registry entry has an empty `scenarioKey`.
+The CLI masks this with global panic recovery, while direct runtime callers cannot handle the validation failure through the advertised error channel.
 
 ## Correct Behavior
 
-When overwrite cannot remove the existing Cautilus Agent destination tree completely, installation must stop with a path-bearing nonzero error and no install-summary success packet.
-A successful overwrite must begin from an absent destination so the installed tree contains only current bundled content.
+Malformed existing registry data must return a field-indexed error from both scenario builders without panic.
+Valid packet generation and the CLI's concise error behavior must remain unchanged.
 
 ## Observed Facts
 
-- `installBundledSkill` assigns `_ = os.RemoveAll(destinationDir)` whenever overwrite is true, then recreates the same directory and installs bundled files.
-- A normal disposable install was augmented with `stale-locked/old.txt`; the stale directory was changed to mode `0555`.
-- `cautilus init --overwrite --json` exited 0, reported `status: reinstalled` and `overwrote: true`, while `stale-locked/old.txt` remained.
-- The reproduced stale file is outside the bundled manifest, so its survival is not a packaged-source parity issue; it is destination replacement failure.
-- Existing install smoke covers initial install, overwrite, legacy migration, update, and packaged content, but not removal failure.
+- `readScenarioKeys` panics at an empty normalized `scenarioKey`.
+- Both scenario builders invoke it inline before calling `GenerateScenarioProposals`, despite returning an error.
+- `app.invokeHandler` globally recovers panics and makes the CLI exit 1, so current operator output is bounded.
+- Direct runtime callers have no local recovery contract and would unwind unexpectedly.
+- Other proposal candidate validation in `GenerateScenarioProposals` returns indexed errors normally.
 
 ## Reproduction
 
-- Run `cautilus init --repo-root <temp> --json`.
-- Add `.agents/skills/cautilus-agent/stale-locked/old.txt` and set its parent mode to `0555`.
-- Run `cautilus init --repo-root <temp> --overwrite --json`.
-- Observe exit 0 with `reinstalled` plus the stale file still present.
+- Call either scenario builder with the correct input schema and `existingScenarioRegistry: [{"scenarioKey":" "}]`.
+- Observe a panic with `existingScenarioRegistry[0].scenarioKey must be a non-empty string` instead of a returned error.
 
 ## Candidate Causes
 
-- Overwrite was intended to refresh known files without promising removal of unknown files.
-- Existing skill trees were assumed writable because they were previously installed by Cautilus.
-- Bundled installation was expected to reconcile or reject unknown destination files.
-- Removal failure was treated as best-effort cleanup rather than a replacement precondition.
+- Panic was used as a shortcut because `readScenarioKeys` originally returned only a slice.
+- CLI global recovery was treated as the validation contract.
+- Empty keys were considered impossible after upstream schema validation.
+- Registry entries with invalid shapes were intentionally skipped, and empty strings accidentally received stricter handling.
 
 ## Hypothesis
 
-- Falsifiable claim: the ignored destination `RemoveAll` error is the only false-success gap; a permission-bound overwrite test fails on old code because it returns success with the stale file, and propagating a path-wrapped removal error before recreation will make the CLI fail without a summary while preserving normal overwrite and install parity | disconfirmer: run the failure fixture and observe bundled installation already removes or rejects the stale file downstream.
+- Falsifiable claim: `readScenarioKeys` is the only panic source for this input; changing it to return `([]string, error)` and propagating the error from both scenario builders will make direct unit tests pass without altering valid generation | disconfirmer: add the direct malformed-registry table and observe another panic after error propagation.
 
 ## Verification
 
-- confirmed — the old-code non-root Unix reproduction exited 0, reported `reinstalled`, and retained the stale file; after repair, the adjacent CLI fixture returns nonzero path-bearing stderr with no summary and retains the locked stale file for operator repair, while normal install, overwrite, and legacy migration controls pass.
+- confirmed — the proposal-builder test panicked against old code; after typing the shared helper's failure and updating both compile-time consumers, the two-builder table returns the indexed error and focused valid runtime/CLI scenario tests pass.
 
 ## Root Cause
 
-The installer treats overwrite deletion as optional cleanup even though subsequent status and operator language describe complete replacement.
-Because bundled installation only writes known files, it cannot detect unknown files left behind by a failed tree removal.
+A validation helper's return type cannot represent failure, so one malformed branch bypasses the surrounding error-based API.
+The CLI's broad recovery hides the contract mismatch from process-level smoke tests.
 
 ## Invariant Proof
 
-- Invariant: `init --overwrite` reports `reinstalled` only after the prior Cautilus Agent destination tree is completely removed and current bundled content is installed.
-- Producer Proof: permission-bound non-root Unix fixture forces removal failure inside an unknown stale subtree.
-- Final-Consumer Proof: the CLI must return nonzero path-bearing stderr, no install-summary stdout, and retain the stale target for operator repair; existing install and packaged parity probes must still pass.
-- Interface-Shape Sibling Scan: artifact prune now propagates the same filesystem authority; worktree replacement has ignored cleanup calls but no reproduced false-success in this install slice.
-- Non-Claims: this does not make overwrite atomic after deletion, roll back a partially removed tree, change legacy migration, or alter Cautilus Agent content.
+- Invariant: every deterministic input validation failure in both `BuildScenarioProposalPacket` and `BuildScenarioConversationReview` returns an error and never panics.
+- Producer Proof: direct runtime table covers both scenario builders with an indexed empty registry key.
+- Final-Consumer Proof: both direct runtime calls return the expected field path; existing proposal/conversation CLI and valid generation tests continue to pass.
+- Interface-Shape Sibling Scan: scenario coverage intentionally skips missing keys and proposal candidate validation already returns errors; neither shares the required registry identity contract.
+- Non-Claims: this slice does not reject non-object registry entries, tighten scenario coverage validation, or remove CLI global panic recovery.
 
 ## Detection Gap
 
-- install CLI smoke and packaged-skill parity | valid writable overwrite paths passed, but destination-removal failure was not sampled | add a permission-bound overwrite failure test plus existing install/Agent parity quality probes.
+- proposal runtime tests and CLI smoke | valid packets and candidate validation were covered, but malformed existing registry identity was not sampled directly | add a direct non-panic error test.
 
 ## Sibling Search
 
-- Mental model: a tree previously created by Cautilus remains fully removable.
-- same layer axis: destination tree removal before bundled installation | decision: same bug, fix now | proof: real stale-file survival with success status.
-- abstraction up axis: destructive replacement commands | decision: same class, diagnostic-only for this slice | proof: no action needed beyond install because worktree replacement ownership and Git metadata recovery require independent reproduction.
-- specialization down axis: partial deletion before failure | decision: intentional plain-text or non-rendering boundary | proof: fail closed without rollback; operators retain the path-bearing cause and may repair permissions before retry.
-- mental-model axis: artifact prune ignored removal | decision: already handled | proof: the immediately preceding slice now fails before reporting `pruned`.
-- cross-file: `internal/app/remaining_commands.go` owns both resolved removal seams; `internal/app/cli_smoke_test.go` carries their process-boundary proof.
+- Mental model: upstream schema validation makes registry keys impossible to omit.
+- same layer axis: both callers of `readScenarioKeys` | decision: same bug, fix now | proof: the compile-time consumer inventory exposed both error-returning builders.
+- abstraction up axis: runtime builders returning errors | decision: same bug, fix now | proof: this builder already advertises error and candidate validation follows it.
+- specialization down axis: non-object registry entries | decision: intentional plain-text or non-rendering boundary | proof: existing helper intentionally skips them and this slice does not redefine that contract.
+- mental-model axis: `readScenarioCoverage` missing keys | decision: intentional plain-text or non-rendering boundary | proof: coverage is optional enrichment rather than registry identity.
+- cross-file: `internal/runtime/proposals.go` owns validation and `internal/runtime/proposals_test.go` owns direct runtime proof; `internal/app/app.go` recovery remains unchanged.
 
 ## Seam Risk
 
-- Interrupt ID: install-overwrite-false-success-stale-tree
+- Interrupt ID: scenario-proposal-registry-validation-panic
 - Risk Class: none
-- Seam: existing Agent destination removal to bundled reinstall summary
-- Disproving Observation: failure fixture returns nonzero/no summary and normal install, overwrite, skill parity, and agent-surface probes pass.
-- What Local Reasoning Cannot Prove: atomic recovery after partial removal or unreproduced worktree cleanup failures.
+- Seam: structured proposal input validation to runtime error API
+- Disproving Observation: malformed registry returns the indexed error from both builders without recover, and valid runtime/CLI scenario tests pass.
+- What Local Reasoning Cannot Prove: all panic sources across unrelated runtime builders.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -85,4 +83,4 @@ Because bundled installation only writes known files, it cannot detect unknown f
 
 ## Prevention
 
-Make complete destination removal a checked overwrite precondition and retain both failure proof and packaged Agent/install parity in the quality gate.
+Represent registry validation failure in the helper's type, propagate it through the builder's existing error return, and pin the direct call rather than relying on CLI-wide panic recovery.

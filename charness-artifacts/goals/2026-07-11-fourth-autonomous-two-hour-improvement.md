@@ -13,9 +13,9 @@ The user's explicit two-hour autonomous implementation request activates pursuit
 
 ## Active Operating Frame
 
-- Current slice: install overwrite stale-tree integrity.
-- Current slice intent: make complete prior-tree removal a checked precondition for reporting the Cautilus Agent as reinstalled.
-- Next action: run full owner tests, debug/boundary checks, install/Agent progressive-disclosure probes, and delegated fresh-eye review.
+- Current slice: scenario builder non-panic validation.
+- Current slice intent: align shared registry validation with both builders' explicit error-returning APIs.
+- Next action: run full runtime/app tests, race and artifact/boundary checks, then delegated fresh-eye review of the two-consumer signature change.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad proof at closeout.
 - Gate cadence: pre-lock slices use focused owner tests and structural pressure checks; final proof uses `npm run verify` and `npm run hooks:check`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -188,6 +188,23 @@ none — no operator-only decision blocks the initial local inventory and implem
 - `bash .githooks/pre-push` passed the complete 48-second verify and generated-drift sequence; coverage was 9.71s against its 10-second budget and `Lint Gate: ran-pass bash .githooks/pre-push`.
 - Boundary Ownership: owned-correctly — binary install owns destination replacement truth; Agent source/package content and discovery behavior remain unchanged.
 - Critique: short parent-delegated fresh-eye PASS with no blocking, actionable, or advisory findings.
+
+### 2026-07-11T21:25+09:00 — scenario builder non-panic validation
+
+- Confirmed `BuildScenarioProposalPacket` panicked on an indexed empty `existingScenarioRegistry[].scenarioKey` despite its `(packet, error)` API and CLI-only global recovery.
+- Archived the install-overwrite incident and added a direct runtime error test; it failed against old code with a recovered/repanicked stack.
+- Changed `readScenarioKeys` to return `([]string, error)` and propagated the indexed validation error from the proposal builder.
+- Compile verification exposed a second consumer, `BuildScenarioConversationReview`; expanded the test into a two-builder table and propagated the same error there rather than applying a compile-only patch.
+- Focused valid runtime proposal/conversation and CLI scenario tests pass.
+- Fresh-eye review found the durable invariant still named only the proposal builder; corrected Correct Behavior, Invariant, and Final-Consumer Proof to cover both typed consumers.
+- Non-claims: non-object registry entries and optional coverage rows keep their existing permissive semantics; global CLI panic recovery remains.
+- Full runtime/app and focused race tests passed; debug validation and boundary checks passed without escalation.
+- Delegated fresh-eye re-review passed both-consumer coverage, error propagation, validation-order compatibility, and direct non-panic proof after the durable invariant correction.
+- `bash .githooks/pre-push` passed the complete 57-second verify and generated-drift sequence; its coverage phase took 11.00s, 1.00s over the local 10-second budget.
+- An immediate warm rerun of the identical coverage command took 8.95s, so the single over-budget observation is recorded as runtime variability rather than a claimed regression or a reason to weaken isolation.
+- `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: owned-correctly — shared registry validation now uses the error API already owned by both runtime builders; CLI recovery and docs/schema surfaces remain unchanged.
+- Critique: short parent-delegated fresh-eye PASS after one artifact-honesty fail/fix cycle; no remaining blocking, actionable, or advisory code finding.
 
 ## Context Sources
 

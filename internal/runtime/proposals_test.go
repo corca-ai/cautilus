@@ -8,6 +8,50 @@ import (
 	"github.com/corca-ai/cautilus/internal/contracts"
 )
 
+func TestScenarioBuildersRejectEmptyRegistryKeyWithoutPanic(t *testing.T) {
+	registry := []any{map[string]any{"scenarioKey": " \t"}}
+	tests := []struct {
+		name  string
+		build func() error
+	}{
+		{
+			name: "proposal packet",
+			build: func() error {
+				_, err := BuildScenarioProposalPacket(map[string]any{
+					"schemaVersion":            contracts.ScenarioProposalInputsSchema,
+					"families":                 []any{},
+					"proposalCandidates":       []any{},
+					"existingScenarioRegistry": registry,
+					"scenarioCoverage":         []any{},
+				})
+				return err
+			},
+		},
+		{
+			name: "conversation review",
+			build: func() error {
+				_, err := BuildScenarioConversationReview(map[string]any{
+					"schemaVersion":            contracts.ScenarioConversationReviewInputsSchema,
+					"conversationSummaries":    []any{},
+					"families":                 []any{},
+					"proposalCandidates":       []any{},
+					"existingScenarioRegistry": registry,
+					"scenarioCoverage":         []any{},
+				}, time.Now())
+				return err
+			},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			err := tc.build()
+			if err == nil || !strings.Contains(err.Error(), "existingScenarioRegistry[0].scenarioKey must be a non-empty string") {
+				t.Fatalf("builder error: got %v", err)
+			}
+		})
+	}
+}
+
 // TestNormalizeChatbotProposalCandidatesRespectsWordBoundary asserts that the
 // review-clarification candidate is produced only when the first user message
 // actually mentions "review" or "repo" as whole words (or the Korean

@@ -111,9 +111,13 @@ func BuildScenarioProposalPacket(input map[string]any) (map[string]any, error) {
 		return nil, fmt.Errorf("schemaVersion must be %s", contracts.ScenarioProposalInputsSchema)
 	}
 	families := stringSliceValue(input["families"])
+	existingScenarioKeys, err := readScenarioKeys(arrayOrEmpty(input["existingScenarioRegistry"]))
+	if err != nil {
+		return nil, err
+	}
 	return GenerateScenarioProposals(
 		arrayOrEmpty(input["proposalCandidates"]),
-		readScenarioKeys(arrayOrEmpty(input["existingScenarioRegistry"])),
+		existingScenarioKeys,
 		readScenarioCoverage(arrayOrEmpty(input["scenarioCoverage"])),
 		families,
 		intValueOrDefault(input["windowDays"], 14),
@@ -1091,7 +1095,7 @@ func intValueOrDefault(value any, fallback int) int {
 	return int(number)
 }
 
-func readScenarioKeys(registry []any) []string {
+func readScenarioKeys(registry []any) ([]string, error) {
 	keys := make([]string, 0, len(registry))
 	for index, rawEntry := range registry {
 		entry, ok := rawEntry.(map[string]any)
@@ -1100,11 +1104,11 @@ func readScenarioKeys(registry []any) []string {
 		}
 		key := strings.TrimSpace(stringOrEmpty(entry["scenarioKey"]))
 		if key == "" {
-			panic(fmt.Sprintf("existingScenarioRegistry[%d].scenarioKey must be a non-empty string", index))
+			return nil, fmt.Errorf("existingScenarioRegistry[%d].scenarioKey must be a non-empty string", index)
 		}
 		keys = append(keys, key)
 	}
-	return keys
+	return keys, nil
 }
 
 func readScenarioCoverage(coverage []any) map[string]float64 {
