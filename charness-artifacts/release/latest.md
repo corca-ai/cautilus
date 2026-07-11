@@ -1,74 +1,119 @@
 # Release Surface Check
 Date: 2026-07-11
 
-## Release Scope
+## Scope
 
-Released Cautilus `v0.19.3`.
-This target is prepared as a compatible patch for fail-closed scenario inputs, truthful filesystem and command failures, sanitized deployment diagnostics, and proof-preserving maintainer test orchestration.
-
-Installed binaries receive strict scenario registry/coverage validation and truthful artifact-prune, Agent-overwrite, command-capture, and command-startup failures.
-Source-checkout workflows additionally receive deployment-evidence argument, JSON, semantic, and write-error sanitation.
-Maintainers receive isolated parallel standard and detailed Go/Node coverage collection.
+Advanced `cautilus` toward release `0.19.3` (tag `v0.19.3`) through the repo-owned release helper.
 
 ## Current Version
 
 - previous version: `0.19.2`
 - target version: `0.19.3`
-- tag: `v0.19.3`
-- branch: `main`
-- remote: `origin`
-
-## Behavior and Recovery
-
-- Malformed scenario registry or coverage fields now fail consistently in both Go consumers and the maintained JavaScript producer.
-  Packet schema versions are unchanged and valid packets need no migration.
-  Repair explicit null/non-array fields, non-object entries, empty keys, or non-number/negative counts to the documented array, object, and non-negative-number contract, then rerun.
-- Artifact prune, Agent overwrite cleanup, command capture persistence, and command startup no longer report success without completing their required filesystem or process evidence.
-  Startup failures use exitCode `-1` only as a no-child-process sentinel and preserve one actionable cause line.
-- Deployment-evidence executables reject malformed required values before filesystem access and render syntax, semantic, and write failures as one physical line without Node stacks.
-  This is not a structured stderr schema or path-redaction guarantee.
-- Standard and detailed coverage commands overlap their isolated Go and Node producers, await both outcomes, and aggregate only fresh successful reports.
-  Local measurements show cache/order variability; no global or portable speed percentage is claimed.
+- git branch: `main`
+- git remote: `origin`
 
 ## Verification
 
-- Four implementation slices passed focused owner tests, Go race where applicable, eslint, full coverage, coverage floors, and parent-delegated fresh-eye review.
-- Release surface packet checks passed for the enumerated release-packaging and CLI/Agent parity rule families.
-- Standalone release critique passed two distinct angles plus a separate counterweight: `charness-artifacts/critique/2026-07-11-v0-19-3-release-critique.md`.
-- `npm run release:prepare -- 0.19.3` synchronized all five versioned manifests and packaged Agent content.
-- Final exact-tree pre-push, hooks, on-demand, history-secret, publisher-policy, fresh-checkout, and dry-run proof remains required before tag publication.
+- `npm run verify` passed before publish.
+- `current_release.py` reported no version drift across packaging and generated install surfaces.
+- initial release push carried the release branch update and tag from the release helper.
 
 ## Release State
 
-- local release mutation: prepared
-- release narrative: target-specific and committed with the release preparation slice
-- branch/tag push: pending ordered publisher
-- workflow publication: pending tag
-- public release verification: pending workflow and asset readiness
-- install/update readback: pending public assets
-- attestation verification: pending one published binary
+- local release mutation: complete
+- branch/tag push: complete
+- GitHub release record: target URL `https://github.com/corca-ai/cautilus/releases/tag/v0.19.3`; creation runs after the branch/tag push
+- public release surface verification: not checked by this helper
+- audit narrative: durable record written to `charness-artifacts/release/latest.md` and committed with this slice
 
-## Review Proof
+## Public Release Verification
 
-- Critique: `charness-artifacts/critique/2026-07-11-v0-19-3-release-critique.md`
-- Packet: `charness-artifacts/critique/2026-07-11-133548-packet.md`
-- Fresh-eye satisfaction: parent-delegated with clean rail-1 verification.
+- GitHub release publication: expected after branch/tag push; not verified yet.
+
+## Release Adapter Preflight
+
+- Release adapter focused preflight status: `not_required`.
+- Reason: release adapter did not change in the release delta
+- Focused preflight commands: none executed.
+
+## Retro Trigger Evaluation
+
+- Triggered: `True`.
+- Evaluated at: `final_release_paths`.
+- Input mode: `explicit_paths`.
+- Reason: Changed surfaces hit configured install/update/support/export/discovery retro triggers.
+- Closeout status: `written`.
+- Retro artifact: `charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md`.
+- Recent lessons: `charness-artifacts/retro/recent-lessons.md`.
+- Surface hits: 1.
+  - `release-packaging`
+- Path hits: 0.
+- Evaluated changed paths: 48.
+  - `.claude-plugin/marketplace.json`
+  - `charness-artifacts/critique/2026-07-11-133548-packet.json`
+  - `charness-artifacts/critique/2026-07-11-133548-packet.md`
+  - `charness-artifacts/critique/2026-07-11-fourth-autonomous-two-hour-improvement-disposition.md`
+  - `charness-artifacts/critique/2026-07-11-third-autonomous-two-hour-improvement-release-disposition-review.md`
+  - `charness-artifacts/critique/2026-07-11-v0-19-3-release-critique.md`
+  - `charness-artifacts/debug/2026-07-11-artifact-prune-false-success-removal-failure.md`
+  - `charness-artifacts/debug/2026-07-11-build-deployment-evidence-option-like-output-mutation.md`
+  - `charness-artifacts/debug/2026-07-11-deployment-evidence-invalid-json-stack-traces.md`
+  - `charness-artifacts/debug/2026-07-11-install-overwrite-false-success-stale-tree.md`
+  - `charness-artifacts/debug/2026-07-11-prepare-deployment-evidence-input-malformed-value-mutation.md`
+  - `charness-artifacts/debug/2026-07-11-prune-dry-run-consumed-as-root.md`
+  - `charness-artifacts/debug/2026-07-11-release-page-before-asset-readiness.md`
+  - `charness-artifacts/debug/2026-07-11-scenario-builder-registry-validation-panic.md`
+  - `charness-artifacts/debug/latest.md`
+  - `charness-artifacts/goals/2026-07-11-fifth-autonomous-two-hour-improvement-release.md`
+  - `charness-artifacts/goals/2026-07-11-fourth-autonomous-two-hour-improvement-early-close-report.md`
+  - `charness-artifacts/goals/2026-07-11-fourth-autonomous-two-hour-improvement-host-log-probe.md`
+  - `charness-artifacts/goals/2026-07-11-fourth-autonomous-two-hour-improvement.md`
+  - `charness-artifacts/goals/2026-07-11-third-autonomous-two-hour-improvement-release-early-close-report.md`
+  - ... 28 more
+
+## Real-Host Verification
+
+- No configured release-time real-host verification trigger matched this slice.
 
 ## Real-Host Proof
 
-No configured release-time real-host trigger matched this delta.
-No native macOS proof is claimed; current-host/Linux proof must not be generalized to macOS.
+- No configured release-time real-host proof trigger matched this slice.
+
+## Review Proof
+
+- Review proof: `charness-artifacts/critique/2026-07-11-v0-19-3-release-critique.md`.
+
+## Requested Review Gate
+
+- Requested-review gate status: `ok`.
+- Configuration status: `configured`.
+- Policy: `warn-if-unconfigured`.
+- Configured command count: `3`.
+
+## Install Refresh
+
+- Post-publish install refresh: pending final publish verification.
+
+## Release Runtime
+
+- `requested_review_gate`: 6.135s
+- `cli_skill_surface_gate`: 0.071s
+- `quality_command`: 32.951s
+- `fresh_checkout_probes_initial`: 7.924s
+
+## Fresh Checkout Probes
+
+- Fresh-checkout probe status: passed.
+- `git fetch --unshallow --quiet || true`
+- `npm run claims:evidence-state:check`
+- `npm run claims:status-report:check`
+- `npm run generated:drift:check`
+
+## Issue Closeout
+
+- Issue closeout verification: pending or not requested.
 
 ## User Update Steps
 
-- Binary users update by rerunning `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`, then verify `cautilus --version` and `cautilus version --verbose`.
-- Binary users roll back by rerunning the installer with `CAUTILUS_VERSION=v0.19.2`, then verify the version.
-- Source-checkout users move their checkout or tag to `v0.19.3` to receive the Node workflow changes, or back to `v0.19.2` to roll them back.
-- Claude Code and Codex plugin consumers need no Agent behavior migration for this release; refresh repo-local Agent surfaces only when otherwise desired.
-
-## Non-Claims and Deferred Work
-
-- No new public command, packet schema version, install mechanism, or Cautilus Agent behavior contract.
-- No provider/live evaluator proof and no global performance percentage.
-- The public release-notes asset remains self-contained checksum and asset provenance, not the full operator narrative.
-- Native macOS proof and public operator-notes redesign remain explicit follow-up policy/workflow slices rather than patch blockers under the current adapter.
+- Operators with an existing install refresh the binary via the install-sh channel: re-run `curl -fsSL https://raw.githubusercontent.com/corca-ai/cautilus/main/install.sh | sh`.
+- Claude Code and Codex plugin consumers pick up the Cautilus Agent refresh via `charness update` or by re-running `cautilus init` in the host repo.
