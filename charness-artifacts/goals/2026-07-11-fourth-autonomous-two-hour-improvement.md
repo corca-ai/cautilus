@@ -13,9 +13,9 @@ The user's explicit two-hour autonomous implementation request activates pursuit
 
 ## Active Operating Frame
 
-- Current slice: reproduced mutation in the adjacent deployment-evidence input preparer.
-- Current slice intent: preserve the completed builder fix as a scoped commit, then diagnose the sibling independently before deciding its full option surface.
-- Next action: commit the reviewed builder slice, archive its debug record, and open a new debug investigation for `prepare-deployment-evidence-input`.
+- Current slice: measured deployment-evidence test parallelization.
+- Current slice intent: improve focused test feedback and ownership without changing cases, isolation, failure oracles, or product behavior.
+- Next action: run boundary escalation and delegated fresh-eye review over the split, then retain it only if the measured gain and maintainability tradeoff hold.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad proof at closeout.
 - Gate cadence: pre-lock slices use focused owner tests and structural pressure checks; final proof uses `npm run verify` and `npm run hooks:check`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -124,6 +124,20 @@ none — no operator-only decision blocks the initial local inventory and implem
 - Critique: short parent-delegated fresh-eye PASS after the artifact honesty correction; no remaining code, test, boundary, or docs finding.
 - `bash .githooks/pre-push` passed the complete 39-second verify and generated-drift sequence; coverage stayed below its 10-second budget at 8.86s and `Lint Gate: ran-pass bash .githooks/pre-push`.
 - Boundary Ownership: single-surface — the independently executable preparer owns its argv parser; its shared data schema and public docs remain unchanged.
+
+### 2026-07-11T21:00+09:00 — deployment-evidence test feedback
+
+- Before changing test layout, measured the exact deployment-evidence test glob seven times: 0.89, 0.81, 0.85, 0.81, 0.81, 0.83, and 0.77 seconds; median 0.81s.
+- Moved builder CLI process tests and preparer CLI process tests into executable-owned files while leaving pure transformation and schema tests in their original owners.
+- Preserved both valid controls, all eleven malformed subprocess cases, seeded-input reachability, full file snapshots, unique temp directories, and `try/finally` cleanup.
+- After the split, the same glob passed 10/10 and measured 0.52, 0.53, 0.61, 0.53, 0.58, 0.51, and 0.54 seconds; median 0.53s, a 0.28s (34.6%) focused feedback reduction.
+- Focused eslint passes; no total `npm run test:node` or `npm run verify` speed claim is made.
+- Full Node suite passed in 2.07s; this is a post-change health observation, not a before/after total-suite claim.
+- Boundary escalation was false.
+- Delegated fresh-eye review confirmed literal case/oracle/cleanup parity, test discovery and c8 exclusion, parallel safety, and that the small duplicated snapshot helper is cheaper than a shared test abstraction at this boundary.
+- `bash .githooks/pre-push` passed the complete 34-second verify and generated-drift sequence; coverage was 4.52s and `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: single-surface — only test ownership/layout changed; production behavior and docs/spec surfaces did not move.
+- Critique: short parent-delegated fresh-eye PASS with no blocking, actionable, or advisory findings.
 
 ## Context Sources
 
