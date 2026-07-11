@@ -14,9 +14,9 @@ Done-early policy: continue_next_improvement
 
 ## Active Operating Frame
 
-- Current slice: direct Go active-run contract proof and the next small structural quality seam.
-- Current slice intent: keep cross-language active-run precedence locally testable without turning coverage percentage into the objective.
-- Next action: commit the reviewed Node whitespace parity fix, then decide whether focused Go active-run tests materially strengthen the shared contract before release closeout.
+- Current slice: next evidence-backed failure-path or structural quality candidate after active-run testability.
+- Current slice intent: continue within the timebox without reopening rejected specdown, claim-warning, or large mechanical test-split work.
+- Next action: commit the reviewed direct Go active-run tests, then inspect small uncovered failure seams and current release-risk packets for the next bounded slice.
 - Verification cadence: cheap deterministic checks at commit boundaries;
   higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at
   closeout.
@@ -86,7 +86,7 @@ The user can inspect scoped commits spanning more than one quality dimension, re
 | 1 | Inventory current correctness, runtime, maintainability, and release-readiness candidates | Avoid memory-anchored churn and select from current evidence | quality plan, runtime/gate packets, fresh-eye triage | completed |
 | 2 | Preserve multilingual claim-review excerpt fidelity | A byte/code-point mismatch was reproducible at a packet boundary | debug artifact, focused regression tests, scoped commit | completed |
 | 3 | Fail closed when a declared consumer prompt cannot be read | A reviewer reproduced silent loss of behavior-steering input in both renderers | cross-language failure tests, parity review, scoped commit | completed |
-| 4 | Continue with the next safe evidence-backed improvement until the closeout reserve | Honor the two-hour done-early policy | candidate ledger, slice proof, scoped commits | pending |
+| 4 | Continue with the next safe evidence-backed improvement until the closeout reserve | Honor the two-hour done-early policy | candidate ledger, slice proof, scoped commits | in progress |
 | 5 | Final quality review, release preparation, push, publication, and public verification | Ship one coherent verified bundle | broad gates, release artifact, tag/release/install readback | pending |
 
 ## Operator Decision Queue
@@ -212,6 +212,20 @@ applies.
 - Off-goal findings: none.
 - Lessons carried forward: Cross-language parity must name which semantic is shared; absence detection can align even when surrounding-space path identity does not.
 - Metrics: 18 focused tests complete in about 0.10s.
+
+### Slice 6: Direct Go active-run contract proof
+
+- Objective: Make Go active-run precedence and invalid-target behavior reachable through a small in-process test seam.
+- Why this approach: The Go helper had no direct tests, while Node sibling proof could not protect Go-specific filesystem and precedence behavior.
+- Commits: the testability commit containing this slice.
+- What changed: Added a focused Go test file covering explicit, active, whitespace-to-active, whitespace-to-auto, manifest creation, missing target, and non-directory behavior.
+- Alternatives rejected: Rejected percentage-only expansion and duplication of every helper error through CLI smoke.
+- Targeted verification: Focused tests passed in 0.01s; focused coverage reached 88.9% ReadActiveRunDir and 77.8% ResolveRunDir; structural inventory remained zero.
+- Test duplication pressure: One 119-line test file keeps behavior assertions visible and uses standard t.TempDir fixtures; no production branch or runner added.
+- Critique: Parent-delegated review required the middle whitespace-explicit to active-env precedence case; after addition final verdict READY and fingerprint verify clean.
+- Off-goal findings: none.
+- Lessons carried forward: Sibling-language tests inform contract intent but do not replace language-local proof at filesystem boundaries.
+- Metrics: Focused tests about 0.01s; no subprocess or provider cost.
 
 ## Context Sources
 
