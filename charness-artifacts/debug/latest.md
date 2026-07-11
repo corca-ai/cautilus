@@ -1,78 +1,78 @@
-# Debug Review: deployment-evidence invalid JSON stack traces
+# Debug Review: artifact prune false success on removal failure
 Date: 2026-07-11
 
 ## Problem
 
-Both independently executable deployment-evidence wrappers expose raw JavaScript `SyntaxError` stack traces when an existing input file is not valid JSON.
-The output is implementation-heavy, omits a stable path-bearing CLI diagnostic prefix, and leaks internal frames to operators and agents.
+`cautilus doctor artifacts prune` ignores `os.RemoveAll` failures, appends the undeleted directory to `pruned`, and exits successfully.
+Operators and automation can therefore discard retention evidence while the artifact remains on disk.
 
 ## Correct Behavior
 
-Given an existing but malformed JSON input, each wrapper must exit nonzero with one concise input-path-bearing diagnostic, omit stack frames, and leave the requested output absent.
+When deletion of any selected recognized artifact fails, prune must stop, exit nonzero with the affected path and cause, and never return a success packet that lists the preserved path as pruned.
 
 ## Observed Facts
 
-- Running either wrapper against existing empty `/dev/null` exits 1 and emits `SyntaxError: Unexpected end of JSON input` plus `JSON.parse`, wrapper, module-loader, and async entrypoint frames.
-- Neither failed invocation wrote its requested output file.
-- Both wrappers call `JSON.parse(readFileSync(...))` directly in their local `readJson` helper.
-- Missing files already route through the wrappers' concise `fail` function, so malformed existing files are the inconsistent branch.
-- Valid and malformed argv behavior is process-tested in executable-owned test files after the preceding test-layout slice.
-- Fresh-eye review showed Node parse messages can echo malformed input fragments and embedded newlines, so forwarding `error.message` would turn a stack-trace cleanup into a content-disclosure regression.
+- `pruneWorkspaceArtifacts` assigns `_ = os.RemoveAll(entry.path)` and unconditionally appends the summary to `pruned`.
+- A disposable Cautilus run under an artifact root with mode `0555` was selected by `--keep-last 0`.
+- The command exited 0 and returned one `pruned` entry, while the run directory still existed.
+- Restoring root permissions allowed cleanup, confirming the preserved directory was the permission-bound target rather than a stale path check.
+- The existing CLI smoke proves successful removal and keep-last behavior but does not exercise deletion failure.
 
 ## Reproduction
 
-- Run `build-deployment-evidence.mjs --input /dev/null --output <temp>/build.json`.
-- Run `prepare-deployment-evidence-input.mjs` with valid domain options, `--input /dev/null`, and `--output <temp>/prepare.json`.
-- Observe exit 1, raw stack traces, and no output packets.
+- Create a disposable run with `cautilus init run --root <temp>/artifacts --json`.
+- Remove parent write permission with `chmod 0555 <temp>/artifacts`.
+- Run `cautilus doctor artifacts prune --root <temp>/artifacts --keep-last 0 --format json`.
+- Observe exit 0, a `pruned` record, and the original run directory still present.
 
 ## Candidate Causes
 
-- The wrappers assumed checked-in or generated inputs were always syntactically valid.
-- Raw `JSON.parse` errors were considered sufficient CLI diagnostics.
-- A global uncaught-exception handler was expected to normalize direct helper failures.
-- Domain validators were expected to own syntax errors even though parsing precedes them.
+- Artifact deletion was intentionally best-effort and structured output meant only “selected for pruning.”
+- `RemoveAll` failure was assumed impossible after successful classification.
+- A later existence check was expected to reconcile the reported result.
+- The ignored error was copied from cleanup code where failure is non-fatal.
 
 ## Hypothesis
 
-- Falsifiable claim: the only diagnostic gap is unhandled `JSON.parse` in each local `readJson`; catching parse errors there and routing them through `fail` will produce one concise path-bearing line without changing missing-file, valid-input, or domain-validation behavior | disconfirmer: add real-process malformed-file tests and observe another uncaught frame after the local catch.
+- Falsifiable claim: the discarded `RemoveAll` return is the sole false-success gap; a permission-bound removal failure currently returns a successful `pruned` result, while propagating a path-wrapped error before append will make the handler exit nonzero and preserve successful deletion behavior | disconfirmer: run the permission fixture and observe an existing downstream check already converts it to an error.
 
 ## Verification
 
-- confirmed — both old-code commands reproduced the same raw stack-trace boundary; after repair, both executable-owned sentinel/newline tests emit exactly one path-bearing line without the sentinel, `SyntaxError`, or stack frames and leave outputs absent, while their valid and malformed-argv controls still pass.
+- confirmed — the old-code permission reproduction exited 0, reported the selected run as pruned, and left its directory on disk; after repair, the same CLI-level fixture exits nonzero with the path, emits no success packet, and the existing successful-prune regression still passes.
 
 ## Root Cause
 
-The CLI boundary distinguishes missing files but does not translate JSON syntax failures into its operator-facing error contract.
-Because `JSON.parse` throws before packet construction, Node's default uncaught-exception renderer becomes the accidental diagnostic surface.
+The pruning loop treats attempted deletion as completed deletion.
+It discards the only authoritative filesystem result before constructing the structured success packet, so selection state is mislabeled as mutation state.
 
 ## Invariant Proof
 
-- Invariant: existing malformed JSON input fails through the wrapper's concise path-bearing diagnostic before packet construction or output writing.
-- Producer Proof: real-process malformed-file probes for both wrappers use a sentinel plus embedded newline that Node's raw parser message can echo.
-- Final-Consumer Proof: each command exits nonzero, names the resolved input path, emits no stack frame, and leaves the requested output absent.
-- Interface-Shape Sibling Scan: both deployment-evidence wrappers share the direct `JSON.parse` boundary; broader JSON consumers require independent operator-contract evidence.
-- Non-Claims: this does not normalize schema/domain errors, introduce a shared JSON CLI framework, or diagnose every direct Node JSON reader.
+- Invariant: a path appears in `pruned` only after its removal succeeds; any removal failure makes the command fail with that path.
+- Producer Proof: on permission-respecting non-root Unix, the CLI fixture makes `RemoveAll` delete children but fail when unlinking the selected directory from its non-writable parent; Windows and euid 0 skip this OS-semantic proof.
+- Final-Consumer Proof: the new CLI test requires nonzero status, path-bearing stderr, no success payload, and a remaining target directory; the existing CLI smoke proves successful removal.
+- Interface-Shape Sibling Scan: install overwrite has a similar ignored tree-removal failure but crosses the Agent/install quality surface and remains a separate reviewed slice.
+- Non-Claims: this slice does not add partial-success packets, retries, rollback of children or earlier deletions, or change dry-run selection semantics.
 
 ## Detection Gap
 
-- executable-owned CLI tests | valid, malformed argv, and side-effect ordering were covered, but existing malformed JSON was not sampled | add one real-process syntax-failure control per wrapper.
+- `internal/app/cli_smoke_test.go` successful prune case | only successful filesystem mutation was sampled | add a permission-bound CLI failure proof and keep the existing real CLI success regression.
 
 ## Sibling Search
 
-- Mental model: an existing input file is parseable because it came from a trusted workflow.
-- same layer axis: builder and preparer local `readJson` helpers | decision: same bug, fix now | proof: both reproduce identical raw stack traces.
-- abstraction up axis: direct Node JSON consumers | decision: same class, diagnostic-only for this slice | proof: no action needed because CLI error ownership and output side effects differ and are not established by syntax search.
-- specialization down axis: syntax failure before packet construction/output | decision: same bug, fix now | proof: both outputs remain absent in the reproduction.
-- mental-model axis: raw exception text as operator guidance | decision: same bug, fix now | proof: omit parser reason text because it can echo malformed input content; retain only the resolved path.
-- cross-file: `scripts/agent-runtime/build-deployment-evidence.mjs` and `scripts/agent-runtime/prepare-deployment-evidence-input.mjs` are the two reproduced producers; their executable-owned tests are the final consumers.
+- Mental model: `RemoveAll` after successful classification cannot fail.
+- same layer axis: each recognized entry in the prune loop | decision: same bug, fix now | proof: one ignored error path governs every selected directory.
+- abstraction up axis: destructive CLI filesystem mutations | decision: same class, diagnostic-only for this slice | proof: no action needed beyond prune because other mutation contracts and rollback semantics require independent evidence.
+- specialization down axis: fail-fast versus partial success after prior deletions | decision: intentional plain-text or non-rendering boundary | proof: this slice stops on the first error and makes no atomicity claim for earlier successful entries.
+- mental-model axis: install overwrite ignored removal at `remaining_commands.go:1449` | decision: valid follow-up outside the slice | proof: reproduced stale-tree preservation crosses packaged Agent/install validation; follow-up: deferred `charness-artifacts/goals/2026-07-11-fourth-autonomous-two-hour-improvement.md#off-goal-findings`.
+- cross-file: `internal/app/remaining_commands.go` owns both destructive seams; install overwrite is explicitly deferred to the active goal's off-goal queue.
 
 ## Seam Risk
 
-- Interrupt ID: deployment-evidence-invalid-json-stack-traces
+- Interrupt ID: artifact-prune-false-success-removal-failure
 - Risk Class: none
-- Seam: filesystem input read to CLI error rendering
-- Disproving Observation: both malformed-file process tests pass with single-line path-bearing stderr and absent outputs.
-- What Local Reasoning Cannot Prove: error contracts of unrelated direct JSON consumers.
+- Seam: artifact selection to filesystem deletion and structured success
+- Disproving Observation: permission-bound removal failure returns a path-bearing error before any success packet, while the existing CLI success test still removes the target.
+- What Local Reasoning Cannot Prove: atomic rollback after a later entry fails or install-overwrite behavior.
 - Generalization Pressure: monitor
 
 ## Interrupt Decision
@@ -84,4 +84,4 @@ Because `JSON.parse` throws before packet construction, Node's default uncaught-
 
 ## Prevention
 
-Translate syntax failures at each owning CLI read boundary and pin the user-visible diagnostic and no-output invariant with real-process tests.
+Treat the filesystem deletion result as authoritative, fail before recording `pruned`, and preserve the permission-bound CLI reproduction as durable proof.

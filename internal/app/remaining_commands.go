@@ -2123,7 +2123,9 @@ func pruneWorkspaceArtifacts(options *workspacePruneArtifactsArgs, now time.Time
 			continue
 		}
 		if !options.dryRun {
-			_ = os.RemoveAll(entry.path)
+			if err := os.RemoveAll(entry.path); err != nil {
+				return nil, fmt.Errorf("failed to prune artifact %s: %w", entry.path, err)
+			}
 		}
 		pruned = append(pruned, summary)
 	}

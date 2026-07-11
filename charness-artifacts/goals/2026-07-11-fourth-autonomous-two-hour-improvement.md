@@ -13,9 +13,9 @@ The user's explicit two-hour autonomous implementation request activates pursuit
 
 ## Active Operating Frame
 
-- Current slice: deployment-evidence malformed JSON diagnostics.
-- Current slice intent: replace raw Node stack traces with concise path-bearing CLI failures without changing valid, missing-file, or domain-validation behavior.
-- Next action: validate the debug record and boundary probe, then run delegated fresh-eye review over both wrappers and their process tests.
+- Current slice: artifact-prune truthful failure reporting.
+- Current slice intent: make the Go CLI report a path as pruned only after filesystem deletion succeeds.
+- Next action: validate the corrected permission-bound oracle, run boundary checks and delegated fresh-eye review, then commit if successful-prune behavior remains intact.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad proof at closeout.
 - Gate cadence: pre-lock slices use focused owner tests and structural pressure checks; final proof uses `npm run verify` and `npm run hooks:check`.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -157,6 +157,22 @@ none — no operator-only decision blocks the initial local inventory and implem
 - Boundary Ownership: owned-correctly — each source-checkout CLI translates only its local parse failure; no shared schema, binary, Agent, or docs contract moved.
 - Critique: short parent-delegated fresh-eye PASS after one security fail/fix cycle; no remaining blocking, actionable, or advisory findings.
 
+### 2026-07-11T21:12+09:00 — artifact prune truthfulness
+
+- Reproduced with a Cautilus-created disposable run under a mode-`0555` artifact root: `doctor artifacts prune --keep-last 0` exited 0 and returned one `pruned` entry while the selected directory remained.
+- Root cause is the owning loop's discarded `os.RemoveAll` error followed by unconditional append to the structured `pruned` result.
+- Added an adjacent CLI failure regression that restores permissions in cleanup, requires nonzero status, path-bearing stderr, no success payload, and a remaining target directory; confirmed it failed against old code.
+- Propagated a path-wrapped removal error before the append; both the new failure case and existing successful removal case pass.
+- The first post-fix oracle incorrectly required a child marker file to remain; corrected it because `RemoveAll` may delete children before parent unlink fails and this slice makes no rollback claim.
+- Fresh-eye review found the permission oracle would fail under Unix euid 0; the CLI regression now explicitly skips Windows and root while retaining real OS-semantic proof for permission-respecting non-root Unix.
+- Non-claims: no atomic pruning, partial-success packet, retry, or rollback semantics.
+- Debug validation and boundary checks passed; boundary escalation was false.
+- Full `internal/app` tests and the focused race test passed.
+- Delegated fresh-eye re-review passed after the root/Windows portability correction with no remaining findings.
+- `bash .githooks/pre-push` passed the complete 48-second verify and generated-drift sequence; coverage was 9.75s against its 10-second budget and `Lint Gate: ran-pass bash .githooks/pre-push`.
+- Boundary Ownership: owned-correctly — the pruning loop owns deletion truth and the existing handler owns nonzero stderr; docs already promise pruning, not best-effort selection.
+- Critique: short parent-delegated fresh-eye PASS after one platform-oracle fail/fix cycle; no remaining blocking, actionable, or advisory findings.
+
 ## Context Sources
 
 - User request: another two-hour autonomous improvement pass across bug fixes, test speed, and code quality.
@@ -186,7 +202,9 @@ none — no operator-only decision blocks the initial local inventory and implem
 
 ## Off-Goal Findings
 
-none at activation.
+- Deferred install-overwrite truthfulness: `init --overwrite` can ignore tree removal failure and leave stale Agent files while reporting `reinstalled`; this crosses install, packaged-Agent parity, and install-quality proof, so it needs a separate authorized slice rather than piggybacking on artifact prune.
+- Deferred scenario proposal panic boundary: malformed registry data can panic inside runtime validation but the CLI currently recovers cleanly; library error-contract work needs a separate design slice.
+- Deferred review capture-write failures: ignored stdout/stderr capture write errors can leave packet paths without files; multiple callers and packet status semantics need a dedicated causal review.
 
 ## Final Verification
 

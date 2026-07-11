@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -2054,6 +2055,53 @@ func TestCLIWorkspacePruneArtifactsPrunesOlderRecognizedDirectories(t *testing.T
 	}
 	if _, err := os.Stat(filepath.Join(newRun, "report.json")); err != nil {
 		t.Fatalf("expected newer run to remain: %v", err)
+	}
+}
+
+func TestCLIWorkspacePruneArtifactsFailsWhenRemovalFails(t *testing.T) {
+	if runtime.GOOS == "windows" || os.Geteuid() == 0 {
+		t.Skip("test requires permission-respecting non-root Unix removal semantics")
+	}
+	root := t.TempDir()
+	artifactRoot := filepath.Join(root, "artifacts")
+	runDir := filepath.Join(artifactRoot, "run-locked")
+	if err := os.MkdirAll(runDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(runDir, "report.json"), []byte("{}\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+	if err := os.Chmod(artifactRoot, 0o555); err != nil {
+		t.Fatalf("Chmod returned error: %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chmod(artifactRoot, 0o755); err != nil && !os.IsNotExist(err) {
+			t.Errorf("restore artifact root permissions: %v", err)
+		}
+	})
+
+	stdout, stderr, exitCode := runCLI(
+		t,
+		root,
+		"doctor",
+		"artifacts",
+		"prune",
+		"--root",
+		artifactRoot,
+		"--keep-last",
+		"0",
+	)
+	if exitCode == 0 {
+		t.Fatalf("expected prune failure, got stdout=%s", stdout)
+	}
+	if !strings.Contains(stderr, runDir) {
+		t.Fatalf("expected path-bearing removal error, got %q", stderr)
+	}
+	if stdout != "" {
+		t.Fatalf("expected no success payload, got %q", stdout)
+	}
+	if _, err := os.Stat(runDir); err != nil {
+		t.Fatalf("expected failed prune target to remain: %v", err)
 	}
 }
 
