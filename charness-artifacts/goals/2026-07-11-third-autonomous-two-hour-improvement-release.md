@@ -338,7 +338,7 @@ Early close rationale: the requested coherent release is already public and veri
 Next slice candidate: asset-readiness retry ownership | decision: defer | reason: generic Charness orchestration and the Cautilus adapter command are both plausible owners, so implementation needs a separate boundary decision.
 Next slice candidate: public release-notes operator story | decision: defer | reason: the current asset is valid provenance and changing its role would reopen release infrastructure after this patch is complete.
 Next slice candidate: historical claim-evidence warning classification | decision: out-of-scope | reason: the 47 warning records require provenance classification before any warning-policy or evidence rewrite.
-Outcome sufficiency check: sufficient: seven scoped implementation commits, broad and focused proof, ordered publication, public assets, attestation, and install/update readback satisfy the user's requested improvement and release outcome.
+Outcome sufficiency check: sufficient: eight scoped implementation commits, broad and focused proof, ordered publication, public assets, attestation, and install/update readback satisfy the user's requested improvement and release outcome.
 
 ## User Verification Instructions
 

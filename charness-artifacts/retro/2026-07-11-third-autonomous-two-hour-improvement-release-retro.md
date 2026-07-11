@@ -11,7 +11,7 @@ This retro reviews goal `third-autonomous-two-hour-improvement-release`: a measu
 
 ## Evidence Summary
 
-- Ten goal slices record candidate selection, seven implementation commits, one rejected isolation experiment, and release closeout.
+- Ten goal slices record candidate selection, eight implementation commits, one rejected isolation experiment, and release closeout.
 - Prepared-tree `npm run verify` passed in 58.99s; hooks, history secrets, publisher policy, on-demand tests, fresh-checkout probes, and release surface packets also passed.
 - GitHub Actions run `29150460445` passed artifact build, attestations, upload, and public verification; post-workflow install and update smoke reported `0.19.2`.
 - Release, quality, critique, debug, and goal artifacts separate proven behavior from warning-only and live-provider non-claims.
