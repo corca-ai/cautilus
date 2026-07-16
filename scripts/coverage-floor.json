@@ -20,7 +20,6 @@
   "internal/runtime/evaluation_input.go": 85.6,
   "internal/runtime/evaluation_proof.go": 83.64,
   "internal/runtime/evidence.go": 0.96,
-  "internal/runtime/git_hooks.go": 0,
   "internal/runtime/helpers.go": 67.61,
   "internal/runtime/improve.go": 44.76,
   "internal/runtime/improve_search.go": 27.55,
