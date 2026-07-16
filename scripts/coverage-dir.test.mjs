@@ -145,3 +145,24 @@ test("coverage floor check reports floor regressions and promotion candidates", 
 		rmSync(coverageDir, { recursive: true, force: true });
 	}
 });
+
+test("coverage floor check fails when a floored file is absent from the coverage report", () => {
+	const coverageDir = mkdtempSync(join(tmpdir(), "cautilus-coverage-floor-absent-"));
+	try {
+		// The aggregate covers only app.go, but the floor also declares report.go.
+		// A file that drops out of the coverage report (deleted test, unexercised
+		// package) must fail-closed: an unmeasurable floor cannot be reported OK.
+		writeAggregate(coverageDir, {
+			"internal/app/app.go": coverageEntry({ statements: 2559, percent: 95 }),
+		});
+		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir, floorEnv(coverageDir, {
+			"internal/app/app.go": 95.0,
+			"internal/runtime/report.go": 60.0,
+		}));
+		assert.equal(result.status, 1, result.stdout + result.stderr);
+		assert.match(result.stderr, /FAIL: floored files absent from the coverage report/);
+		assert.match(result.stderr, /internal\/runtime\/report\.go/);
+	} finally {
+		rmSync(coverageDir, { recursive: true, force: true });
+	}
+});

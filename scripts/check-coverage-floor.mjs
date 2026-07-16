@@ -71,6 +71,14 @@ const promotionCandidates = [];
 const unfloored = [];
 const warnBand = [];
 
+// Fail-closed on a floored path that dropped out of the coverage report (deleted
+// test, unexercised package). Iterating only coverage.files would leave such a
+// floor silently unenforced while the OK line still counts it — a gate that
+// hides the regression it exists to catch. Floored+exempt paths already exited
+// above via the contradiction check, so absence here is a genuine gap.
+const coveredPaths = new Set(Object.keys(coverage.files));
+const missingFloored = Object.keys(floor).filter((path) => !coveredPaths.has(path));
+
 for (const [path, entry] of Object.entries(coverage.files)) {
   if (exemptions.has(path)) continue;
   const { num_statements: stmts, percent_covered: pct } = entry.summary;
@@ -116,8 +124,15 @@ if (offenders.length > 0) {
   for (const item of offenders.sort((a, b) => a.pct - a.declared - (b.pct - b.declared)))
     process.stderr.write(`  - ${fmtLine(item)}\n`);
 }
+if (missingFloored.length > 0) {
+  process.stderr.write(
+    "FAIL: floored files absent from the coverage report " +
+      "(cannot verify floor — restore coverage or remove the floor entry):\n",
+  );
+  for (const path of missingFloored.sort()) process.stderr.write(`  - ${path}\n`);
+}
 
-if (offenders.length > 0 || unfloored.length > 0) process.exit(1);
+if (offenders.length > 0 || unfloored.length > 0 || missingFloored.length > 0) process.exit(1);
 process.stdout.write(
   `OK: ${Object.keys(floor).length} floored, ${exemptions.size} exempted, ` +
     `${warnBand.length} in warn-band, ${promotionCandidates.length} cleared drift-lock.\n`,
