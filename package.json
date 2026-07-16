@@ -122,6 +122,7 @@
     "test:coverage:spec": "node scripts/run-coverage.mjs --node-script test:node:coverage:spec",
     "coverage:floor:check": "./scripts/coverage-floor-quality-gate.sh",
     "coverage:floor:write": "node scripts/write-coverage-floor.mjs",
+    "coverage:floor:raise-stale": "node scripts/write-coverage-floor.mjs --only-stale --buffer 10 --stale-threshold 10",
     "test": "npm run test:go && npm run test:node",
     "test:on-demand": "npm run test:node:on-demand",
     "verify": "node scripts/run-verify.mjs",
