@@ -76,7 +76,7 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   추출 이슈는 [corca-ai/charness#109](https://github.com/corca-ai/charness/issues/109) 이다.
 - **specdown 은 Charness support skill 로 먼저 발견되어야 한다.**
   `docs/specs/**/*.spec.md`, `run:shell`, doctest, `check:jq`, specdown HTML report, `report.json` 같은 언어가 나오면 일반 Markdown/HITL 작업으로만 보지 않는다.
-  먼저 `find-skills` inventory 에서 `support/specdown` 을 확인하고 syntax / best-practices / cli / report reference 를 읽는다.
+  먼저 `charness catalog list --repo-root .` inventory 에서 `support/specdown` 을 확인하고 syntax / best-practices / cli / report reference 를 읽는다.
   발견성 결함은 [corca-ai/charness#108](https://github.com/corca-ai/charness/issues/108) 에 기록했다.
 
 ## Breaking Change 및 마이그레이션

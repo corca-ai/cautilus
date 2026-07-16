@@ -54,18 +54,15 @@ This repo is the standalone product boundary for `Cautilus`.
 
 ## Skill Routing
 
-At session startup in this repo, call the shared/public charness skill `find-skills` once before broader exploration.
-The canonical inventory artifact no-ops when content is unchanged, so over-applying the bootstrap is cheap and skipping it is the documented failure mode.
-
-Use its capability inventory as the default map of installed public skills, support skills, synced support surfaces, and integrations.
-
-After that bootstrap pass, choose the durable work skill that best matches the request from the installed charness surface.
+At session start, a pickup follows [docs/internal/handoff.md](./docs/internal/handoff.md) `## Workflow Trigger`; otherwise choose the durable work skill that best matches the request directly from installed skill metadata and model judgment.
+If hidden support or integration availability is unclear, run the read-only `charness catalog list --repo-root .` inventory before deciding, and treat its facts only as inventory; if the command returns nonzero, report the command failure.
+The SessionStart hook may inject this routing context when installed; this block is the fallback when it is absent.
 
 External URLs or source links that should become working context for this repo route through `gather` before summarizing, implementing, or deciding from them.
 
 Validation-shaped closeout or operator reading test requests go through `quality` validation recommendations before HITL or same-agent manual review.
 
-Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.
+Keep this block short. Detailed routing belongs in installed skill metadata and `charness catalog list` output, not in a long checked-in catalog.
 
 Before repeated fresh-eye critique on `release-packaging`, run `npm run critique:surface-packet:check` and feed the packet findings into the first review pass.
 Fix deterministic packet findings before asking for another broad subagent critique.

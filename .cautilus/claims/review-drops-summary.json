@@ -4,8 +4,8 @@
   "sourceClaimPacket": {
     "path": ".cautilus/claims/evidenced-typed-runners.json",
     "schemaVersion": "cautilus.claim_proof_plan.v1",
-    "gitCommit": "f1f9bad762f5e86ed221196b159e901e1522e458",
-    "candidateCount": 567
+    "gitCommit": "103aae2c2569d21e8470132ca182348570d77292",
+    "candidateCount": 574
   },
   "samplePolicy": {
     "selection": "bounded-reason-representation",
@@ -17,7 +17,7 @@
     "sourceReviewApplicationSamplePolicy": {
       "selection": "bounded-reason-representation",
       "maxRecordedSamples": 20,
-      "sourceDroppedUpdateCount": 305,
+      "sourceDroppedUpdateCount": 306,
       "selectedSampleCount": 20,
       "preservesDroppedReasonRepresentationWhenCapAllows": true,
       "proportionalSampling": false
@@ -26,12 +26,12 @@
   "replaySummary": {
     "appliedResultCount": 90,
     "skippedResultCount": 50,
-    "keptUpdateCount": 223,
-    "rewrittenUpdateCount": 152,
-    "droppedUpdateCount": 305,
+    "keptUpdateCount": 222,
+    "rewrittenUpdateCount": 151,
+    "droppedUpdateCount": 306,
     "droppedUpdateReasonCounts": {
       "missing-fingerprint": 165,
-      "missing-live-fingerprint": 140
+      "missing-live-fingerprint": 141
     },
     "recordedSampleCount": 20,
     "recordedSampleReasonCounts": {
@@ -48,7 +48,7 @@
     },
     {
       "reason": "missing-live-fingerprint",
-      "count": 140,
+      "count": 141,
       "recordedSampleCount": 1,
       "sampleStatus": "represented"
     }
@@ -65,7 +65,7 @@
     },
     {
       "reason": "missing-live-fingerprint",
-      "count": 140,
+      "count": 141,
       "recordedSampleCount": 1,
       "sampleStatus": "represented",
       "actionClass": "stale-fingerprint",

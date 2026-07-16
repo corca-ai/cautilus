@@ -2,9 +2,9 @@
   "schemaVersion": "cautilus.claim_evidence_state.v1",
   "sourceOfTruth": {
     "claimsPacket": ".cautilus/claims/evidenced-typed-runners.json",
-    "claimsHash": "sha256:24a256df4599386c06674501bede4d833a1af2c2ee8548e0af3e4368ae389f7c",
+    "claimsHash": "sha256:204d6237e12eb727a740533067d8192893b4b38920019db7184d45190c9da303",
     "statusSnapshot": ".cautilus/claims/status-summary.json",
-    "statusHash": "sha256:bd585543ba8099a72abb8716a66886516acb5bbf2cc4b11d680e8cf26e5d4f12",
+    "statusHash": "sha256:0893bacee7b18a49046a078e850ac69886d0477088771cfa2449eb85e6035976",
     "statusSnapshotNotice": "gitState is computed when this status packet is generated; rerun discover claims status for live checkout state.",
     "sourceRoles": {
       "claimsPacket": "audit source for candidates, labels, evidence status, and count totals",
@@ -22,55 +22,55 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "f1f9bad762f5e86ed221196b159e901e1522e458",
+    "currentGitCommit": "103aae2c2569d21e8470132ca182348570d77292",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "f1f9bad762f5e86ed221196b159e901e1522e458",
+    "packetGitCommit": "103aae2c2569d21e8470132ca182348570d77292",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
   "totals": {
-    "candidateCount": 567,
-    "sourceCount": 76,
+    "candidateCount": 574,
+    "sourceCount": 77,
     "byEvidenceStatus": {
       "satisfied": 140,
-      "unknown": 427
+      "unknown": 434
     },
     "byRecommendedProof": {
-      "cautilus-eval": 162,
-      "deterministic": 256,
+      "cautilus-eval": 167,
+      "deterministic": 258,
       "human-auditable": 149
     },
     "byVerificationReadiness": {
-      "blocked": 31,
-      "needs-alignment": 55,
+      "blocked": 30,
+      "needs-alignment": 56,
       "needs-scenario": 2,
-      "ready-for-proof": 479
+      "ready-for-proof": 486
     },
     "byReviewStatus": {
-      "agent-reviewed": 188,
-      "heuristic": 378,
+      "agent-reviewed": 187,
+      "heuristic": 386,
       "human-reviewed": 1
     }
   },
   "openCautilusEval": {
-    "total": 157,
-    "readyForProof": 155,
+    "total": 162,
+    "readyForProof": 160,
     "needsScenario": 2,
     "bySurface": {
       "(none)": 6,
       "app/chat": 4,
-      "app/prompt": 22,
+      "app/prompt": 23,
       "dev/repo": 86,
-      "dev/skill": 39
+      "dev/skill": 43
     },
     "byReadiness": {
       "needs scenario": 2,
-      "ready for proof": 155
+      "ready for proof": 160
     },
     "rawByReadiness": {
       "needs-scenario": 2,
-      "ready-for-proof": 155
+      "ready-for-proof": 160
     },
     "proofReadySamples": [
       {
@@ -83,8 +83,8 @@
         "summary": "`Cautilus` owns generic intentful behavior evaluation workflow contracts."
       },
       {
-        "claimId": "claim-agents-md-96",
-        "source": "AGENTS.md:96",
+        "claimId": "claim-agents-md-93",
+        "source": "AGENTS.md:93",
         "surface": "dev/repo",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -92,8 +92,8 @@
         "summary": "When changing the `skills/cautilus-agent/` surface or behavior-steering references, freeze the current consumer intent before broad edits by deciding whether reviewed dogfood, maintained evaluator scenarios, or checked-in scenario review proof will carry the change."
       },
       {
-        "claimId": "claim-agents-md-116",
-        "source": "AGENTS.md:116",
+        "claimId": "claim-agents-md-113",
+        "source": "AGENTS.md:113",
         "surface": "dev/repo",
         "readiness": "ready for proof",
         "rawReadiness": "ready-for-proof",
@@ -182,28 +182,28 @@
     },
     {
       "id": "agent-add-deterministic-proof",
-      "count": 119,
+      "count": 121,
       "actor": "agent",
       "evidence": {
-        "unknown": 119
+        "unknown": 121
       },
       "review": {
         "agent-reviewed": 2,
-        "heuristic": 116,
+        "heuristic": 118,
         "human-reviewed": 1
       },
       "summary": "Add or connect unit, lint, build, schema, spec, or CI proof."
     },
     {
       "id": "agent-plan-cautilus-eval",
-      "count": 155,
+      "count": 160,
       "actor": "agent",
       "evidence": {
-        "unknown": 155
+        "unknown": 160
       },
       "review": {
         "agent-reviewed": 9,
-        "heuristic": 146
+        "heuristic": 151
       },
       "summary": "Draft or select Cautilus eval scenarios for proof-ready eval claims."
     },
@@ -221,14 +221,14 @@
     },
     {
       "id": "human-align-surfaces",
-      "count": 55,
+      "count": 56,
       "actor": "human",
       "evidence": {
-        "unknown": 55
+        "unknown": 56
       },
       "review": {
         "agent-reviewed": 11,
-        "heuristic": 44
+        "heuristic": 45
       },
       "summary": "Reconcile conflicting docs, code, adapters, or ownership boundaries before proof would be honest."
     },
@@ -246,13 +246,13 @@
     },
     {
       "id": "split-or-defer",
-      "count": 31,
+      "count": 30,
       "actor": "human",
       "evidence": {
-        "unknown": 31
+        "unknown": 30
       },
       "review": {
-        "agent-reviewed": 24,
+        "agent-reviewed": 23,
         "heuristic": 7
       },
       "summary": "Split broad, historical, provider-caveated, policy-like, or otherwise blocked claims before verification."
@@ -261,15 +261,15 @@
   "crossCuttingSignals": [
     {
       "id": "heuristic-review-needed",
-      "count": 378,
+      "count": 386,
       "actor": "agent",
       "summary": "Review heuristic labels before spending proof or eval budget.",
       "sampleClaimIds": [
-        "claim-agents-md-96",
-        "claim-agents-md-116",
+        "claim-agents-md-65",
+        "claim-agents-md-93",
+        "claim-agents-md-113",
         "claim-readme-md-6",
-        "claim-readme-md-19",
-        "claim-readme-md-49"
+        "claim-readme-md-19"
       ]
     }
   ]

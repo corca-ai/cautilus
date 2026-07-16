@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:24a256df4599386c06674501bede4d833a1af2c2ee8548e0af3e4368ae389f7c"
+      "contentHash": "sha256:204d6237e12eb727a740533067d8192893b4b38920019db7184d45190c9da303"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,9 +15,9 @@
       "contentHash": "sha256:a6f61b85d4439fa76db8a8b35cfd5b0626d47614fc4611bcb4cea57827a31d91"
     }
   },
-  "claimsPacketGitCommit": "f1f9bad762f5e86ed221196b159e901e1522e458",
+  "claimsPacketGitCommit": "103aae2c2569d21e8470132ca182348570d77292",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
-  "claimsPacketCandidateCount": 567,
+  "claimsPacketCandidateCount": 574,
   "catalogs": {
     "user": {
       "path": "docs/specs/user/index.spec.md",
@@ -200,34 +200,34 @@
     }
   },
   "coverageSummary": {
-    "totalRawClaimCount": 567,
+    "totalRawClaimCount": 574,
     "userRawClaimCount": 129,
     "userMappedToCanonicalCount": 0,
     "userUnmappedCount": 129,
-    "semanticReviewRecommendedCount": 489,
+    "semanticReviewRecommendedCount": 496,
     "userSemanticReviewRecommendedCount": 129,
     "byDisposition": {
-      "mapped-to-maintainer-canonical": 438,
+      "mapped-to-maintainer-canonical": 445,
       "user-review-needed": 129
     },
     "byAudience": {
-      "developer": 438,
+      "developer": 445,
       "user": 129
     },
     "byMappingConfidence": {
       "high": 78,
       "low": 161,
-      "medium": 328
+      "medium": 335
     },
     "byUserCanonicalClaimId": {},
     "byMaintainerCanonicalClaimId": {
       "M1": 7,
-      "M10": 23,
+      "M10": 25,
       "M11": 62,
-      "M12": 12,
-      "M2": 27,
-      "M3": 107,
-      "M4": 97,
+      "M12": 11,
+      "M2": 28,
+      "M3": 111,
+      "M4": 98,
       "M5": 36,
       "M6": 13,
       "M7": 18,
@@ -303,14 +303,14 @@
       "claim-docs-guides-improve-md-15",
       "claim-docs-guides-improve-md-19",
       "claim-docs-specs-promises-evaluation-spec-md-8",
-      "claim-docs-specs-promises-evaluation-spec-md-18",
       "claim-docs-specs-promises-evaluation-spec-md-22",
-      "claim-docs-specs-promises-evaluation-spec-md-35",
-      "claim-docs-specs-promises-evaluation-spec-md-38",
-      "claim-docs-specs-promises-evaluation-spec-md-60",
-      "claim-docs-specs-promises-evaluation-spec-md-140",
-      "claim-docs-specs-promises-evaluation-spec-md-159",
-      "claim-docs-specs-promises-evaluation-spec-md-170",
+      "claim-docs-specs-promises-evaluation-spec-md-28",
+      "claim-docs-specs-promises-evaluation-spec-md-41",
+      "claim-docs-specs-promises-evaluation-spec-md-44",
+      "claim-docs-specs-promises-evaluation-spec-md-66",
+      "claim-docs-specs-promises-evaluation-spec-md-146",
+      "claim-docs-specs-promises-evaluation-spec-md-165",
+      "claim-docs-specs-promises-evaluation-spec-md-176",
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-7",
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-8",
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-14",
@@ -369,12 +369,12 @@
       "claim-agents-md-12",
       "claim-agents-md-29",
       "claim-agents-md-32",
-      "claim-agents-md-68",
-      "claim-agents-md-95",
-      "claim-agents-md-96",
-      "claim-agents-md-101",
-      "claim-agents-md-116",
-      "claim-agents-md-144",
+      "claim-agents-md-65",
+      "claim-agents-md-92",
+      "claim-agents-md-93",
+      "claim-agents-md-98",
+      "claim-agents-md-113",
+      "claim-agents-md-141",
       "claim-readme-md-6",
       "claim-readme-md-8",
       "claim-readme-md-9",
@@ -469,36 +469,36 @@
       "claim-docs-specs-contracts-index-spec-md-27",
       "claim-docs-specs-index-spec-md-16",
       "claim-docs-specs-index-spec-md-17",
-      "claim-docs-specs-index-spec-md-33",
-      "claim-docs-specs-index-spec-md-48",
-      "claim-docs-specs-index-spec-md-55",
-      "claim-docs-specs-index-spec-md-64",
-      "claim-docs-specs-index-spec-md-73",
-      "claim-docs-specs-index-spec-md-77",
-      "claim-docs-specs-index-spec-md-81",
-      "claim-docs-specs-index-spec-md-86",
-      "claim-docs-specs-index-spec-md-90",
+      "claim-docs-specs-index-spec-md-34",
+      "claim-docs-specs-index-spec-md-50",
+      "claim-docs-specs-index-spec-md-57",
+      "claim-docs-specs-index-spec-md-66",
+      "claim-docs-specs-index-spec-md-75",
+      "claim-docs-specs-index-spec-md-79",
+      "claim-docs-specs-index-spec-md-83",
+      "claim-docs-specs-index-spec-md-88",
       "claim-docs-specs-index-spec-md-92",
-      "claim-docs-specs-index-spec-md-93",
+      "claim-docs-specs-index-spec-md-94",
       "claim-docs-specs-index-spec-md-95",
-      "claim-docs-specs-index-spec-md-96",
-      "claim-docs-specs-index-spec-md-101",
-      "claim-docs-specs-index-spec-md-102",
+      "claim-docs-specs-index-spec-md-97",
+      "claim-docs-specs-index-spec-md-98",
       "claim-docs-specs-index-spec-md-103",
-      "claim-docs-specs-index-spec-md-153",
-      "claim-docs-specs-index-spec-md-160",
-      "claim-docs-specs-index-spec-md-167",
-      "claim-docs-specs-index-spec-md-168",
-      "claim-docs-specs-index-spec-md-177",
+      "claim-docs-specs-index-spec-md-104",
+      "claim-docs-specs-index-spec-md-105",
+      "claim-docs-specs-index-spec-md-155",
+      "claim-docs-specs-index-spec-md-162",
+      "claim-docs-specs-index-spec-md-169",
+      "claim-docs-specs-index-spec-md-170",
+      "claim-docs-specs-index-spec-md-179",
       "claim-docs-specs-promises-evaluation-spec-md-8",
-      "claim-docs-specs-promises-evaluation-spec-md-18",
       "claim-docs-specs-promises-evaluation-spec-md-22",
-      "claim-docs-specs-promises-evaluation-spec-md-35",
-      "claim-docs-specs-promises-evaluation-spec-md-38",
-      "claim-docs-specs-promises-evaluation-spec-md-60",
-      "claim-docs-specs-promises-evaluation-spec-md-140",
-      "claim-docs-specs-promises-evaluation-spec-md-159",
-      "claim-docs-specs-promises-evaluation-spec-md-170",
+      "claim-docs-specs-promises-evaluation-spec-md-28",
+      "claim-docs-specs-promises-evaluation-spec-md-41",
+      "claim-docs-specs-promises-evaluation-spec-md-44",
+      "claim-docs-specs-promises-evaluation-spec-md-66",
+      "claim-docs-specs-promises-evaluation-spec-md-146",
+      "claim-docs-specs-promises-evaluation-spec-md-165",
+      "claim-docs-specs-promises-evaluation-spec-md-176",
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-7",
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-8",
       "claim-docs-specs-promises-reviewable-artifacts-spec-md-14",
@@ -625,6 +625,13 @@
       "claim-docs-contracts-final-acceptance-set-md-94",
       "claim-docs-contracts-final-acceptance-set-md-164",
       "claim-docs-contracts-final-acceptance-set-md-185",
+      "claim-docs-contracts-find-skills-retirement-realign-md-11",
+      "claim-docs-contracts-find-skills-retirement-realign-md-20",
+      "claim-docs-contracts-find-skills-retirement-realign-md-22",
+      "claim-docs-contracts-find-skills-retirement-realign-md-30",
+      "claim-docs-contracts-find-skills-retirement-realign-md-46",
+      "claim-docs-contracts-find-skills-retirement-realign-md-61",
+      "claim-docs-contracts-find-skills-retirement-realign-md-69",
       "claim-docs-contracts-live-run-invocation-batch-md-28",
       "claim-docs-contracts-live-run-invocation-batch-md-77",
       "claim-docs-contracts-live-run-invocation-batch-md-166",
@@ -935,8 +942,9 @@
     {
       "canonicalClaimId": "M2",
       "title": "Claim Discovery Workflow",
-      "absorbedRawClaimCount": 27,
+      "absorbedRawClaimCount": 28,
       "absorbedRawClaimIds": [
+        "claim-agents-md-65",
         "claim-docs-contracts-adapter-contract-md-500",
         "claim-docs-master-plan-md-81",
         "claim-docs-master-plan-md-83",
@@ -966,6 +974,12 @@
         "claim-skills-cautilus-agent-skill-md-123"
       ],
       "absorbedRawClaims": [
+        {
+          "claimId": "claim-agents-md-65",
+          "claimFingerprint": "sha256:b5274b80d92f1c0ab76b161c7aa34ca7da7f48f713e753da028bfb2863980ee9",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
         {
           "claimId": "claim-docs-contracts-adapter-contract-md-500",
           "claimFingerprint": "sha256:30809430ddd6084516693e4e61aa78edcd386bf19c693df0ca749489c2df3106",
@@ -1131,29 +1145,29 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 7,
-        "unknown": 20
+        "unknown": 21
       },
       "byReviewStatus": {
         "agent-reviewed": 9,
-        "heuristic": 18
+        "heuristic": 19
       },
       "byRecommendedProof": {
-        "deterministic": 9,
+        "deterministic": 10,
         "human-auditable": 18
       },
       "byMappingConfidence": {
         "high": 5,
         "low": 6,
-        "medium": 16
+        "medium": 17
       }
     },
     {
       "canonicalClaimId": "M3",
       "title": "Binary And Skill Boundary",
-      "absorbedRawClaimCount": 107,
+      "absorbedRawClaimCount": 111,
       "absorbedRawClaimIds": [
-        "claim-agents-md-100",
-        "claim-agents-md-144",
+        "claim-agents-md-97",
+        "claim-agents-md-141",
         "claim-docs-contracts-adapter-contract-md-558",
         "claim-docs-contracts-adapter-contract-md-567",
         "claim-docs-internal-working-patterns-md-63",
@@ -1161,15 +1175,15 @@
         "claim-docs-master-plan-md-82",
         "claim-docs-specs-contracts-index-spec-md-27",
         "claim-docs-specs-index-spec-md-17",
-        "claim-docs-specs-index-spec-md-33",
-        "claim-docs-specs-index-spec-md-64",
-        "claim-docs-specs-index-spec-md-73",
-        "claim-docs-specs-index-spec-md-86",
-        "claim-docs-specs-index-spec-md-90",
+        "claim-docs-specs-index-spec-md-34",
+        "claim-docs-specs-index-spec-md-66",
+        "claim-docs-specs-index-spec-md-75",
+        "claim-docs-specs-index-spec-md-88",
         "claim-docs-specs-index-spec-md-92",
-        "claim-docs-specs-index-spec-md-93",
-        "claim-docs-specs-index-spec-md-101",
+        "claim-docs-specs-index-spec-md-94",
+        "claim-docs-specs-index-spec-md-95",
         "claim-docs-specs-index-spec-md-103",
+        "claim-docs-specs-index-spec-md-105",
         "claim-docs-contracts-acceptance-risk-tier-md-88",
         "claim-docs-contracts-claim-discovery-workflow-md-8",
         "claim-docs-contracts-claim-discovery-workflow-md-17",
@@ -1208,6 +1222,10 @@
         "claim-docs-contracts-facet-decomposition-md-67",
         "claim-docs-contracts-facet-decomposition-md-73",
         "claim-docs-contracts-final-acceptance-set-md-46",
+        "claim-docs-contracts-find-skills-retirement-realign-md-11",
+        "claim-docs-contracts-find-skills-retirement-realign-md-22",
+        "claim-docs-contracts-find-skills-retirement-realign-md-30",
+        "claim-docs-contracts-find-skills-retirement-realign-md-69",
         "claim-docs-contracts-live-run-invocation-batch-md-77",
         "claim-docs-contracts-reporting-md-48",
         "claim-docs-contracts-runner-readiness-md-29",
@@ -1262,13 +1280,13 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-agents-md-100",
+          "claimId": "claim-agents-md-97",
           "claimFingerprint": "sha256:ff43dd3472f293c1135165ce80962d3f3fb5ac2ddc54d47e5280f03e701ef028",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-agents-md-144",
+          "claimId": "claim-agents-md-141",
           "claimFingerprint": "sha256:ea6f3cae604c3d4b5379b19b8017420cc345e82362bf13c51c4424a44856efde",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1316,55 +1334,55 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-33",
+          "claimId": "claim-docs-specs-index-spec-md-34",
           "claimFingerprint": "sha256:130edc9a356722abda52c44bbb55a3a0b17a131e82e637daeafcbb1ada5a2375",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-64",
+          "claimId": "claim-docs-specs-index-spec-md-66",
           "claimFingerprint": "sha256:4ef3336bee96e8d78694634b02d769a7ad7f290928cefc70ccc35d92faf63be2",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-73",
+          "claimId": "claim-docs-specs-index-spec-md-75",
           "claimFingerprint": "sha256:b98e7a9a853b1a711857835acea325943c907530631ec6982b6aac39c3fbc6e6",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-86",
+          "claimId": "claim-docs-specs-index-spec-md-88",
           "claimFingerprint": "sha256:37b6397e0812c652dce87da090101251b8d90989ad8ca585628156e7e68ce18e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-90",
+          "claimId": "claim-docs-specs-index-spec-md-92",
           "claimFingerprint": "sha256:db7a1cc3f9138ac9bc1519d4d3d6852622f89036483e427d4e7f28076fa478df",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-92",
+          "claimId": "claim-docs-specs-index-spec-md-94",
           "claimFingerprint": "sha256:f0a53260abf1d21551b13cb9678b96db5205858d3e2757601c1a2325c2db4b1b",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-93",
+          "claimId": "claim-docs-specs-index-spec-md-95",
           "claimFingerprint": "sha256:3de2784da992cc40e1e2a01a737286e9d359148a6864a3f1bedab7410228ba6c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-101",
+          "claimId": "claim-docs-specs-index-spec-md-103",
           "claimFingerprint": "sha256:27637598becc7e7d1c4da42a8d57557b0a2a242b3f4ffb26f33eb4a23df45513",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-103",
+          "claimId": "claim-docs-specs-index-spec-md-105",
           "claimFingerprint": "sha256:4823ab1a80a04cdcb10dbe3d1dece7439de04f9a75db2a834a5dc6b8a06f543d",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -1594,6 +1612,30 @@
         {
           "claimId": "claim-docs-contracts-final-acceptance-set-md-46",
           "claimFingerprint": "sha256:65fd53ff7fbdde38a627b611415a4e6176a6dcfd1b6ee966a25ff48a70219256",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-11",
+          "claimFingerprint": "sha256:a720de500c2fdc7b5b737536fdf739a049194b0d90ac0c0d81e6dfede0d0238f",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-22",
+          "claimFingerprint": "sha256:2ba6e7b321b05f7bf4b6437ae5ac4e31ba964e097aae99308cc01997bf5d06a9",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-30",
+          "claimFingerprint": "sha256:951b444917463ef884bb86924bedff20a1471a2551447aae15bf3f0b8fc1d296",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-69",
+          "claimFingerprint": "sha256:3260b4d0c47c4e6697097d8b1cd738c8e93874a804a5904f95bcfc805bfc5e4a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -1906,34 +1948,34 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 18,
-        "unknown": 89
+        "unknown": 93
       },
       "byReviewStatus": {
         "agent-reviewed": 26,
-        "heuristic": 81
+        "heuristic": 85
       },
       "byRecommendedProof": {
-        "cautilus-eval": 31,
-        "deterministic": 60,
+        "cautilus-eval": 34,
+        "deterministic": 61,
         "human-auditable": 16
       },
       "byMappingConfidence": {
         "high": 22,
         "low": 1,
-        "medium": 84
+        "medium": 88
       }
     },
     {
       "canonicalClaimId": "M4",
       "title": "Adapter And Host Ownership",
-      "absorbedRawClaimCount": 97,
+      "absorbedRawClaimCount": 98,
       "absorbedRawClaimIds": [
         "claim-agents-md-12",
         "claim-agents-md-29",
-        "claim-agents-md-95",
-        "claim-agents-md-96",
-        "claim-agents-md-101",
-        "claim-agents-md-116",
+        "claim-agents-md-92",
+        "claim-agents-md-93",
+        "claim-agents-md-98",
+        "claim-agents-md-113",
         "claim-docs-contracts-adapter-contract-md-3",
         "claim-docs-contracts-adapter-contract-md-224",
         "claim-docs-contracts-adapter-contract-md-237",
@@ -1944,12 +1986,12 @@
         "claim-docs-master-plan-md-57",
         "claim-docs-master-plan-md-157",
         "claim-docs-specs-index-spec-md-16",
-        "claim-docs-specs-index-spec-md-45",
-        "claim-docs-specs-index-spec-md-81",
-        "claim-docs-specs-index-spec-md-95",
-        "claim-docs-specs-index-spec-md-96",
-        "claim-docs-specs-index-spec-md-153",
-        "claim-docs-specs-index-spec-md-177",
+        "claim-docs-specs-index-spec-md-46",
+        "claim-docs-specs-index-spec-md-83",
+        "claim-docs-specs-index-spec-md-97",
+        "claim-docs-specs-index-spec-md-98",
+        "claim-docs-specs-index-spec-md-155",
+        "claim-docs-specs-index-spec-md-179",
         "claim-docs-contracts-acceptance-risk-tier-md-19",
         "claim-docs-contracts-acceptance-risk-tier-md-23",
         "claim-docs-contracts-acceptance-risk-tier-md-66",
@@ -1973,6 +2015,7 @@
         "claim-docs-contracts-facet-decomposition-md-50",
         "claim-docs-contracts-facet-decomposition-md-59",
         "claim-docs-contracts-final-acceptance-set-md-185",
+        "claim-docs-contracts-find-skills-retirement-realign-md-20",
         "claim-docs-contracts-live-run-invocation-md-24",
         "claim-docs-contracts-live-run-invocation-md-59",
         "claim-docs-contracts-reporting-md-131",
@@ -2040,25 +2083,25 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-95",
+          "claimId": "claim-agents-md-92",
           "claimFingerprint": "sha256:96b7f51516ba4c8a8d89e4e5a77652f179a81105dc574ab340fab051182ee0a8",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-96",
+          "claimId": "claim-agents-md-93",
           "claimFingerprint": "sha256:4b9dc4d9b26945bbb8ead2bc95f420b6d319cfabd4d3090882175f4a5a6aa219",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-101",
+          "claimId": "claim-agents-md-98",
           "claimFingerprint": "sha256:460f483e43d6c0fbf170e58f385550bae84a4940a4f8f9a2818affbccec87cf1",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-agents-md-116",
+          "claimId": "claim-agents-md-113",
           "claimFingerprint": "sha256:a6527de134bae7ce78a10e589d1c68ee1d31b5dfecf3823fd011b4ecdfc320be",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2124,37 +2167,37 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-45",
-          "claimFingerprint": "sha256:72b69e966e426380c7da4dc5912b377bfb39797d10b85b8746e1bac2bde353a6",
+          "claimId": "claim-docs-specs-index-spec-md-46",
+          "claimFingerprint": "sha256:e558dd1667f59c0f175a7f41a59a7266619518794d48673a9bc09da954db27f2",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-81",
+          "claimId": "claim-docs-specs-index-spec-md-83",
           "claimFingerprint": "sha256:065809df07f59620399b32872ba30153d50934b36c2170bfdec9b76e0a7431db",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-95",
+          "claimId": "claim-docs-specs-index-spec-md-97",
           "claimFingerprint": "sha256:18b9c5725c10e82fee01f69115c06c7fcd032cc881ffbcb6a24b2cd98029f781",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-96",
+          "claimId": "claim-docs-specs-index-spec-md-98",
           "claimFingerprint": "sha256:93f90bf5c25afecb1ad9c37412b632bf555dfa01c6320609656f4e4d16b43d5c",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-153",
+          "claimId": "claim-docs-specs-index-spec-md-155",
           "claimFingerprint": "sha256:5fd46ccf3657e8dac686297fee7d75014e7cd05fe333e6417d44d6500d9cf550",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-177",
+          "claimId": "claim-docs-specs-index-spec-md-179",
           "claimFingerprint": "sha256:de989796dc3b153d17e7f7dc3b91cf8b7205f7add5eeb0b7205f2af3caf50a8e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2294,6 +2337,12 @@
         {
           "claimId": "claim-docs-contracts-final-acceptance-set-md-185",
           "claimFingerprint": "sha256:a77f4b7fe0431dd7aa83c3211f4f37a7f3f26687bc1cbe97b9550f50ace89f5f",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-20",
+          "claimFingerprint": "sha256:c432d7f77875ce63ac92431cd8d8e813f1d79f15f4ea37eda08b588c5e8fc0de",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2612,21 +2661,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 16,
-        "unknown": 81
+        "unknown": 82
       },
       "byReviewStatus": {
         "agent-reviewed": 27,
-        "heuristic": 70
+        "heuristic": 71
       },
       "byRecommendedProof": {
-        "cautilus-eval": 39,
+        "cautilus-eval": 40,
         "deterministic": 30,
         "human-auditable": 28
       },
       "byMappingConfidence": {
         "high": 10,
         "low": 6,
-        "medium": 81
+        "medium": 82
       }
     },
     {
@@ -2637,9 +2686,9 @@
         "claim-docs-contracts-adapter-contract-md-223",
         "claim-docs-contracts-adapter-contract-md-304",
         "claim-docs-master-plan-md-88",
-        "claim-docs-specs-index-spec-md-54",
-        "claim-docs-specs-index-spec-md-55",
-        "claim-docs-specs-index-spec-md-77",
+        "claim-docs-specs-index-spec-md-56",
+        "claim-docs-specs-index-spec-md-57",
+        "claim-docs-specs-index-spec-md-79",
         "claim-docs-contracts-acceptance-risk-tier-md-177",
         "claim-docs-contracts-claim-discovery-workflow-md-6",
         "claim-docs-contracts-claim-discovery-workflow-md-90",
@@ -2691,19 +2740,19 @@
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-54",
+          "claimId": "claim-docs-specs-index-spec-md-56",
           "claimFingerprint": "sha256:a53c898180fc6220284713ac6a877c1c0d4ef5abbcf625b0068d12bb117a08e7",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-55",
+          "claimId": "claim-docs-specs-index-spec-md-57",
           "claimFingerprint": "sha256:4e87c29b29acc1bf00b4b33ce73357ebd1f19f8f2ce61322a556138aec60e732",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-77",
+          "claimId": "claim-docs-specs-index-spec-md-79",
           "claimFingerprint": "sha256:601ef4ef8c5bc38ddfc1ece6ec707082e4de63a016ab68987406faf0118ce2b7",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -2913,7 +2962,7 @@
       "title": "Evidence State And Review Artifacts",
       "absorbedRawClaimCount": 13,
       "absorbedRawClaimIds": [
-        "claim-docs-specs-index-spec-md-168",
+        "claim-docs-specs-index-spec-md-170",
         "claim-docs-contracts-acceptance-risk-tier-md-70",
         "claim-docs-contracts-acceptance-risk-tier-md-130",
         "claim-docs-contracts-claim-discovery-workflow-md-374",
@@ -2929,7 +2978,7 @@
       ],
       "absorbedRawClaims": [
         {
-          "claimId": "claim-docs-specs-index-spec-md-168",
+          "claimId": "claim-docs-specs-index-spec-md-170",
           "claimFingerprint": "sha256:1ab96b0fe9f3873a6a1566a7f716dd22305cc69e7daa1f97e6cd09673907c27c",
           "mappingConfidence": "low",
           "requiresSemanticReview": true
@@ -3031,8 +3080,8 @@
       "absorbedRawClaimCount": 18,
       "absorbedRawClaimIds": [
         "claim-agents-md-32",
-        "claim-docs-specs-index-spec-md-61",
         "claim-docs-specs-index-spec-md-63",
+        "claim-docs-specs-index-spec-md-65",
         "claim-docs-contracts-claim-discovery-workflow-md-420",
         "claim-docs-contracts-final-acceptance-set-md-68",
         "claim-docs-contracts-final-acceptance-set-md-78",
@@ -3057,13 +3106,13 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-61",
+          "claimId": "claim-docs-specs-index-spec-md-63",
           "claimFingerprint": "sha256:145d26702b621a7483619e426b4a3f98e7cf5fa92980dfcd7455d194b5153d70",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-63",
+          "claimId": "claim-docs-specs-index-spec-md-65",
           "claimFingerprint": "sha256:66c5fc7cf274cf4e4f788aa4f237d67fb6879cec35742bf2fa0401e86060f664",
           "mappingConfidence": "high",
           "requiresSemanticReview": false
@@ -3486,11 +3535,13 @@
     {
       "canonicalClaimId": "M10",
       "title": "Live Invocation Runtime",
-      "absorbedRawClaimCount": 23,
+      "absorbedRawClaimCount": 25,
       "absorbedRawClaimIds": [
         "claim-docs-master-plan-md-94",
-        "claim-docs-specs-index-spec-md-48",
+        "claim-docs-specs-index-spec-md-50",
         "claim-docs-contracts-claim-discovery-workflow-md-306",
+        "claim-docs-contracts-find-skills-retirement-realign-md-46",
+        "claim-docs-contracts-find-skills-retirement-realign-md-61",
         "claim-docs-contracts-live-run-invocation-batch-md-3",
         "claim-docs-contracts-live-run-invocation-batch-md-10",
         "claim-docs-contracts-live-run-invocation-batch-md-28",
@@ -3520,7 +3571,7 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-48",
+          "claimId": "claim-docs-specs-index-spec-md-50",
           "claimFingerprint": "sha256:8ed9d53c5da61d48b713526459ccc74848ca282919428aa92ac2ddf19773c4d0",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -3528,6 +3579,18 @@
         {
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-306",
           "claimFingerprint": "sha256:528384ec9e2f199f3bc282643de34bbb21b998c34d9ac89ad269c8884af5f7b7",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-46",
+          "claimFingerprint": "sha256:8439050c3fd1420aa539788df767d21715cacd40d44a92d95defbc654172eb07",
+          "mappingConfidence": "medium",
+          "requiresSemanticReview": true
+        },
+        {
+          "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-61",
+          "claimFingerprint": "sha256:bf046cd97bf7231e1ee83b7b7cd05c9be260bb1780014ba15159a130309647d0",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -3654,21 +3717,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 2,
-        "unknown": 21
+        "unknown": 23
       },
       "byReviewStatus": {
         "agent-reviewed": 5,
-        "heuristic": 18
+        "heuristic": 20
       },
       "byRecommendedProof": {
-        "cautilus-eval": 15,
+        "cautilus-eval": 17,
         "deterministic": 4,
         "human-auditable": 4
       },
       "byMappingConfidence": {
         "high": 4,
         "low": 2,
-        "medium": 17
+        "medium": 19
       }
     },
     {
@@ -3686,9 +3749,9 @@
         "claim-docs-master-plan-md-190",
         "claim-docs-master-plan-md-193",
         "claim-docs-master-plan-md-203",
-        "claim-docs-specs-index-spec-md-102",
-        "claim-docs-specs-index-spec-md-160",
-        "claim-docs-specs-index-spec-md-167",
+        "claim-docs-specs-index-spec-md-104",
+        "claim-docs-specs-index-spec-md-162",
+        "claim-docs-specs-index-spec-md-169",
         "claim-docs-contracts-acceptance-risk-tier-md-15",
         "claim-docs-contracts-acceptance-risk-tier-md-16",
         "claim-docs-contracts-acceptance-risk-tier-md-141",
@@ -3801,19 +3864,19 @@
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-102",
+          "claimId": "claim-docs-specs-index-spec-md-104",
           "claimFingerprint": "sha256:2c3c71f2c8c91e1dbec54179ea4a9bb73c3d62bbaf73a5a7dc5ce659a4b7b34a",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-160",
+          "claimId": "claim-docs-specs-index-spec-md-162",
           "claimFingerprint": "sha256:831ac10a11da47176620c521e3cd218bbb059bd41d98b960dc37b7ac4129523e",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
         {
-          "claimId": "claim-docs-specs-index-spec-md-167",
+          "claimId": "claim-docs-specs-index-spec-md-169",
           "claimFingerprint": "sha256:d304fd59bc29554230c0f6e525925f28e60c8d1926dbc28052cbc0444a7476a3",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
@@ -4135,9 +4198,8 @@
     {
       "canonicalClaimId": "M12",
       "title": "Scenario History And Proposal Normalization",
-      "absorbedRawClaimCount": 12,
+      "absorbedRawClaimCount": 11,
       "absorbedRawClaimIds": [
-        "claim-agents-md-68",
         "claim-docs-contracts-claim-discovery-workflow-md-696",
         "claim-docs-contracts-scenario-history-md-3",
         "claim-docs-specs-contracts-scenario-history-normalization-spec-md-17",
@@ -4151,12 +4213,6 @@
         "claim-skills-cautilus-agent-skill-md-118"
       ],
       "absorbedRawClaims": [
-        {
-          "claimId": "claim-agents-md-68",
-          "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
-          "mappingConfidence": "medium",
-          "requiresSemanticReview": true
-        },
         {
           "claimId": "claim-docs-contracts-claim-discovery-workflow-md-696",
           "claimFingerprint": "sha256:b64603dc391e90986d777c1d616a0650bb4900a82928039d5649e49dc8c9d538",
@@ -4226,22 +4282,21 @@
       ],
       "byEvidenceStatus": {
         "satisfied": 5,
-        "unknown": 7
+        "unknown": 6
       },
       "byReviewStatus": {
-        "agent-reviewed": 7,
+        "agent-reviewed": 6,
         "heuristic": 4,
         "human-reviewed": 1
       },
       "byRecommendedProof": {
         "cautilus-eval": 3,
-        "deterministic": 8,
-        "human-auditable": 1
+        "deterministic": 8
       },
       "byMappingConfidence": {
         "high": 3,
         "low": 1,
-        "medium": 8
+        "medium": 7
       }
     }
   ],
@@ -4359,50 +4414,51 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-68",
-      "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog.",
+      "claimId": "claim-agents-md-65",
+      "summary": "Keep this block short. Detailed routing belongs in installed skill metadata and `charness catalog list` output, not in a long checked-in catalog.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 68,
-          "excerpt": "Keep this block short. Detailed routing belongs in installed skill metadata and `find-skills` output, not in a long checked-in catalog."
+          "line": 65,
+          "excerpt": "Keep this block short. Detailed routing belongs in installed skill metadata and `charness catalog list` output, not in a long checked-in catalog."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
       "mappingStatus": "heuristic-auto-map",
       "claimAudience": "developer",
-      "recommendedProof": "human-auditable",
-      "verificationReadiness": "blocked",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
-      "reviewStatus": "agent-reviewed",
-      "claimFingerprint": "sha256:15e5fbc575df9af76ba40b6ba314c6fe604ab6b50f792524416b12e01e871e42",
-      "canonicalClaimId": "M12",
-      "score": 9,
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:b5274b80d92f1c0ab76b161c7aa34ca7da7f48f713e753da028bfb2863980ee9",
+      "canonicalClaimId": "M2",
+      "score": 10,
       "runnerUpCanonicalClaimId": "M3",
-      "runnerUpScore": 8,
-      "scoreMargin": 1,
+      "runnerUpScore": 10,
+      "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
       "matchedAnchors": [],
       "matchedKeywords": [
-        "agent",
-        "check",
+        "adapter",
+        "boundary",
+        "catalog",
         "checked-in",
-        "coverage",
+        "deterministic",
+        "doc",
         "keep",
-        "maintainer",
-        "output",
         "skill",
+        "test",
         "workflow"
       ]
     },
     {
-      "claimId": "claim-agents-md-95",
+      "claimId": "claim-agents-md-92",
       "summary": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 95,
+          "line": 92,
           "excerpt": "While implementing, any bug, error, regression, or unexpected behavior routes to `charness:debug` before further fixes."
         }
       ],
@@ -4433,12 +4489,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-96",
+      "claimId": "claim-agents-md-93",
       "summary": "When changing the `skills/cautilus-agent/` surface or behavior-steering references, freeze the current consumer intent before broad edits by deciding whether reviewed dogfood, maintained evaluator scenarios, or checked-in scenario review proof will carry the change.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 96,
+          "line": 93,
           "excerpt": "When changing the `skills/cautilus-agent/` surface or behavior-steering references, freeze the current consumer intent before broad edits by deciding whether reviewed dogfood, maintained evaluator scenarios, or checked-in scenario review proof will carry the change."
         }
       ],
@@ -4470,12 +4526,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-100",
+      "claimId": "claim-agents-md-97",
       "summary": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 100,
+          "line": 97,
           "excerpt": "Cautilus Agent should own routing, sequencing, guardrails, and decision boundaries; the binary should own broad command discovery, help text, scenario catalogs, packet examples, install smoke, and doctor/readiness details."
         }
       ],
@@ -4511,12 +4567,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-101",
+      "claimId": "claim-agents-md-98",
       "summary": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 101,
+          "line": 98,
           "excerpt": "When a quality or release review asks for evaluator, review, CLI-discovery, or agent-surface proof, verify that the selected adapter can actually run that surface before treating the gate as available."
         }
       ],
@@ -4548,12 +4604,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-116",
+      "claimId": "claim-agents-md-113",
       "summary": "Do not report a task-completing goal or slice as done while meaningful implementation, workflow, or artifact work remains uncommitted, unless the deferral is explicit.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 116,
+          "line": 113,
           "excerpt": "Do not report a task-completing goal or slice as done while meaningful implementation, workflow, or artifact work remains uncommitted, unless the deferral is explicit."
         }
       ],
@@ -4586,12 +4642,12 @@
       ]
     },
     {
-      "claimId": "claim-agents-md-144",
+      "claimId": "claim-agents-md-141",
       "summary": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests.",
       "sourceRefs": [
         {
           "path": "AGENTS.md",
-          "line": 144,
+          "line": 141,
           "excerpt": "`npm run test:on-demand` currently owns the heavier self-dogfood workflow script tests."
         }
       ],
@@ -7882,12 +7938,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-33",
+      "claimId": "claim-docs-specs-index-spec-md-34",
       "summary": "CLI ↔ Agent: the CLI runs the checks and prints the verdict; the agent suggests which workflow to run next.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 33,
+          "line": 34,
           "excerpt": "CLI ↔ Agent: the CLI runs the checks and prints the verdict; the agent suggests which workflow to run next."
         }
       ],
@@ -7920,13 +7976,13 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-45",
-      "summary": "The coding agent you build with is proven live on BOTH dev surfaces: on-demand executable proofs drive the real agent (claude/Sonnet) against this repo and assert a stable invariant on a fresh capture — `npm run proof:behavior-eval:live` checks it orients on your `AGENTS.md` and routes to the find-skills bootstrap, and `npm run proof:skill-orientation:live` checks the cautilus-agent skill's no-input orientation runs the read-only `doctor status` packet, summarizes, and holds at branch selection. Each invariant held across two independent live runs whose reasoning text differed but did not, and a blind Sonnet judge graded each genuine live reasoning sound while rejecting a constructed wrong-reason control.",
+      "claimId": "claim-docs-specs-index-spec-md-46",
+      "summary": "The coding agent you build with is proven live on BOTH dev surfaces: on-demand executable proofs drive the real agent (claude/Sonnet) against this repo and assert a stable invariant on a fresh capture — `npm run proof:behavior-eval:live` checks it orients on your `AGENTS.md` and routes to its startup bootstrap, and `npm run proof:skill-orientation:live` checks the cautilus-agent skill's no-input orientation runs the read-only `doctor status` packet, summarizes, and holds at branch selection. Each invariant held across two independent live runs whose reasoning text differed but did not, and a blind Sonnet judge graded each genuine live reasoning sound while rejecting a constructed wrong-reason control.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 45,
-          "excerpt": "The coding agent you build with is proven live on BOTH dev surfaces: on-demand executable proofs drive the real agent (claude/Sonnet) against this repo and assert a stable invariant on a fresh capture — `npm run proof:behavior-eval:live` checks it orients on your `AGENTS.md` and routes to the find-skills bootstrap, and `npm run proof:skill-orientation:live` checks the cautilus-agent skill's no-input orientation runs the read-only `doctor status` packet, summarizes, and holds at branch selection. Each invariant held across two independent live runs whose reasoning text differed but did not, and a blind Sonnet judge graded each genuine live reasoning sound while rejecting a constructed wrong-reason control."
+          "line": 46,
+          "excerpt": "The coding agent you build with is proven live on BOTH dev surfaces: on-demand executable proofs drive the real agent (claude/Sonnet) against this repo and assert a stable invariant on a fresh capture — `npm run proof:behavior-eval:live` checks it orients on your `AGENTS.md` and routes to its startup bootstrap, and `npm run proof:skill-orientation:live` checks the cautilus-agent skill's no-input orientation runs the read-only `doctor status` packet, summarizes, and holds at branch selection. Each invariant held across two independent live runs whose reasoning text differed but did not, and a blind Sonnet judge graded each genuine live reasoning sound while rejecting a constructed wrong-reason control."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -7936,7 +7992,7 @@
       "verificationReadiness": "ready-for-proof",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:72b69e966e426380c7da4dc5912b377bfb39797d10b85b8746e1bac2bde353a6",
+      "claimFingerprint": "sha256:e558dd1667f59c0f175a7f41a59a7266619518794d48673a9bc09da954db27f2",
       "canonicalClaimId": "M4",
       "score": 19,
       "runnerUpCanonicalClaimId": "M3",
@@ -7961,12 +8017,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-48",
+      "claimId": "claim-docs-specs-index-spec-md-50",
       "summary": "The `app/prompt` surface now has a fresh backend probe over the checked-in tagline fixture plus a load-bearing blind intent judge over that probe: fixture and Codex live backends pass, Claude live backend exposes the current string-fragment matcher boundary by returning `reject` for a semantically close response that does not contain the exact expected fragment, and the blind intent judge grades both live backend responses sound while rejecting a constructed semantic control; product-runner proof remains deferred — see Proof Debt.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 48,
+          "line": 50,
           "excerpt": "The `app/prompt` surface now has a fresh backend probe over the checked-in tagline fixture plus a load-bearing blind intent judge over that probe: fixture and Codex live backends pass, Claude live backend exposes the current string-fragment matcher boundary by returning `reject` for a semantically close response that does not contain the exact expected fragment, and the blind intent judge grades both live backend responses sound while rejecting a constructed semantic control; product-runner proof remains deferred — see Proof Debt."
         }
       ],
@@ -8002,12 +8058,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-54",
+      "claimId": "claim-docs-specs-index-spec-md-56",
       "summary": "What stays in Proof Debt is app-ship surface coverage, not the dev judge: `app/chat` liveness (its agent run is replayed from the production log rather than re-run live, though that replay already includes one natural unsound capture) and `app/prompt` product-runner proof.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 54,
+          "line": 56,
           "excerpt": "What stays in Proof Debt is app-ship surface coverage, not the dev judge: `app/chat` liveness (its agent run is replayed from the production log rather than re-run live, though that replay already includes one natural unsound capture) and `app/prompt` product-runner proof."
         }
       ],
@@ -8043,12 +8099,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-55",
+      "claimId": "claim-docs-specs-index-spec-md-57",
       "summary": "CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 55,
+          "line": 57,
           "excerpt": "CLI ↔ Agent: the CLI runs your agent and records what it did; the agent turns that into scenarios and reads the result."
         }
       ],
@@ -8081,12 +8137,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-61",
+      "claimId": "claim-docs-specs-index-spec-md-63",
       "summary": "This is proven live on the dev/skill surface: `npm run proof:improve:live` constructs a degraded cautilus-agent orientation prompt, confirms with a live agent that the seed control FAILS the held-out orientation scenario, then runs a real bounded `cautilus improve search` (live codex mutation plus a worktree candidate eval) and asserts that a mutated candidate it was never tuned on recovers the held-out behavior (seed scores 0, the winning candidate scores 100) — producing a reviewable proposal while the working-tree prompt is restored and nothing degraded or mutated ever ships.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 61,
+          "line": 63,
           "excerpt": "This is proven live on the dev/skill surface: `npm run proof:improve:live` constructs a degraded cautilus-agent orientation prompt, confirms with a live agent that the seed control FAILS the held-out orientation scenario, then runs a real bounded `cautilus improve search` (live codex mutation plus a worktree candidate eval) and asserts that a mutated candidate it was never tuned on recovers the held-out behavior (seed scores 0, the winning candidate scores 100) — producing a reviewable proposal while the working-tree prompt is restored and nothing degraded or mutated ever ships."
         }
       ],
@@ -8122,12 +8178,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-63",
+      "claimId": "claim-docs-specs-index-spec-md-65",
       "summary": "Proof: [badges::Bounded Improvement spec](promises/improvement.spec.md) (`scripts/on-demand/improve-live-proof.mjs`, the checked-in executable spec that runs the loop live and asserts; its operator-witnessed capture is replayed deterministically by `npm run test:on-demand` and projected by the spec via `npm run lint:specs`). The live loop runs on demand — not in the default `npm run verify` — and each live rerun costs a real agent run.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 63,
+          "line": 65,
           "excerpt": "Proof: [badges::Bounded Improvement spec](promises/improvement.spec.md) (`scripts/on-demand/improve-live-proof.mjs`, the checked-in executable spec that runs the loop live and asserts; its operator-witnessed capture is replayed deterministically by `npm run test:on-demand` and projected by the spec via `npm run lint:specs`). The live loop runs on demand — not in the default `npm run verify` — and each live rerun costs a real agent run."
         }
       ],
@@ -8163,12 +8219,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-64",
+      "claimId": "claim-docs-specs-index-spec-md-66",
       "summary": "CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 64,
+          "line": 66,
           "excerpt": "CLI ↔ Agent: the CLI runs the gates and the comparison; the agent proposes the change and judges whether to keep it."
         }
       ],
@@ -8199,12 +8255,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-73",
+      "claimId": "claim-docs-specs-index-spec-md-75",
       "summary": "You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 73,
+          "line": 75,
           "excerpt": "You, the next teammate, or the next agent can reopen exactly what happened: every run leaves both a machine-readable record and a readable view to audit against."
         }
       ],
@@ -8239,12 +8295,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-77",
+      "claimId": "claim-docs-specs-index-spec-md-79",
       "summary": "CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 77,
+          "line": 79,
           "excerpt": "CLI ↔ Agent: the CLI emits the packets and renders the views; the agent reopens them to decide what to inspect or do next."
         }
       ],
@@ -8278,12 +8334,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-81",
+      "claimId": "claim-docs-specs-index-spec-md-83",
       "summary": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 81,
+          "line": 83,
           "excerpt": "Everything specific to you — your prompts, fixtures, and policy — stays in your repo and under your control; Cautilus brings only the generic workflow."
         }
       ],
@@ -8318,12 +8374,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-86",
+      "claimId": "claim-docs-specs-index-spec-md-88",
       "summary": "CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 86,
+          "line": 88,
           "excerpt": "CLI ↔ Agent: the CLI runs the onboarding and records the invariant; the agent reads it and routes the next step."
         }
       ],
@@ -8355,12 +8411,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-90",
+      "claimId": "claim-docs-specs-index-spec-md-92",
       "summary": "You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 90,
+          "line": 92,
           "excerpt": "You get a clean, invokable runner for Cautilus to run against — the kind of entry point that makes any agent testable in the first place — and the Cautilus agent helps you build it and check how testable your agent is, so that testability stays yours for good."
         }
       ],
@@ -8396,12 +8452,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-92",
+      "claimId": "claim-docs-specs-index-spec-md-94",
       "summary": "The Cautilus agent half is proven *prepared*: the `cautilus-agent` skill routes runner creation and assessment, and a checked-in dogfood fixture plus an executed audit test grade that the flow asks for readiness orientation, a headless-runner build, assessment authoring, and stop discipline.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 92,
+          "line": 94,
           "excerpt": "The Cautilus agent half is proven *prepared*: the `cautilus-agent` skill routes runner creation and assessment, and a checked-in dogfood fixture plus an executed audit test grade that the flow asks for readiness orientation, a headless-runner build, assessment authoring, and stop discipline."
         }
       ],
@@ -8437,12 +8493,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-93",
+      "claimId": "claim-docs-specs-index-spec-md-95",
       "summary": "What stays deferred is a live agent-builds-a-runner episode — named in Proof Debt — so the badge does not read as if a live agent already built and graded a runner.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 93,
+          "line": 95,
           "excerpt": "What stays deferred is a live agent-builds-a-runner episode — named in Proof Debt — so the badge does not read as if a live agent already built and graded a runner."
         }
       ],
@@ -8475,12 +8531,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-95",
+      "claimId": "claim-docs-specs-index-spec-md-97",
       "summary": "Proof: [badges::A Testable Agent spec](promises/a-testable-agent.spec.md) (live runner-readiness verdict, substantive assessment fixtures, required-runner-capability planning, controlled stale-assessment detection, and a prepared-skill check whose audit test runs in `npm run test:node`). Background: [runner readiness contract](../contracts/runner-readiness.md).",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 95,
+          "line": 97,
           "excerpt": "Proof: [badges::A Testable Agent spec](promises/a-testable-agent.spec.md) (live runner-readiness verdict, substantive assessment fixtures, required-runner-capability planning, controlled stale-assessment detection, and a prepared-skill check whose audit test runs in `npm run test:node`). Background: [runner readiness contract](../contracts/runner-readiness.md)."
         }
       ],
@@ -8516,12 +8572,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-96",
+      "claimId": "claim-docs-specs-index-spec-md-98",
       "summary": "CLI ↔ Agent: the CLI emits the readiness verdict and names the required runner capability and scaffold source; the agent sequences the build-and-assess flow and decides when the proof is strong enough.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 96,
+          "line": 98,
           "excerpt": "CLI ↔ Agent: the CLI emits the readiness verdict and names the required runner capability and scaffold source; the agent sequences the build-and-assess flow and decides when the proof is strong enough."
         }
       ],
@@ -8554,12 +8610,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-101",
+      "claimId": "claim-docs-specs-index-spec-md-103",
       "summary": "[Surface Honesty Audit](generated/audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 101,
+          "line": 103,
           "excerpt": "[Surface Honesty Audit](generated/audit.spec.md) is the navigable, runnable per-badge map: for each promise it shows the level this page CLAIMS, the level the proof route is OBSERVED to deliver (recomputed by inspecting the leaf spec's checks and evidence files), the proof class, the command that runs it, and whether the two agree."
         }
       ],
@@ -8594,12 +8650,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-102",
+      "claimId": "claim-docs-specs-index-spec-md-104",
       "summary": "The binding is semantic, not just structural: for every badge that declares evidence, each evidence file must actually be read by a `cautilus-json-file` check in its leaf spec, so a route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 102,
+          "line": 104,
           "excerpt": "The binding is semantic, not just structural: for every badge that declares evidence, each evidence file must actually be read by a `cautilus-json-file` check in its leaf spec, so a route cannot point at an unrelated spec or pad its evidence count with files the spec never asserts on."
         }
       ],
@@ -8632,12 +8688,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-103",
+      "claimId": "claim-docs-specs-index-spec-md-105",
       "summary": "Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 103,
+          "line": 105,
           "excerpt": "Run `npm run audit:surface` to regenerate it, or `npm run audit:surface:check` to fail on drift or over-claim; `npm run lint:specs` runs the leaf proofs plus the check block below."
         }
       ],
@@ -8671,12 +8727,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-153",
+      "claimId": "claim-docs-specs-index-spec-md-155",
       "summary": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 153,
+          "line": 155,
           "excerpt": "Each subclaim on a spec page must be backed by evidence that runs the claimed behavior end-to-end and asserts on the produced packet, file, or audit artifact."
         }
       ],
@@ -8710,12 +8766,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-160",
+      "claimId": "claim-docs-specs-index-spec-md-162",
       "summary": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 160,
+          "line": 162,
           "excerpt": "For each subclaim, either (a) add an executable check that runs the actual scenario and asserts on the produced packet/file, or (b) link a concrete existing evidence bundle, audit fixture, or packet path that proves that specific subclaim."
         }
       ],
@@ -8751,12 +8807,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-167",
+      "claimId": "claim-docs-specs-index-spec-md-169",
       "summary": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 167,
+          "line": 169,
           "excerpt": "`evidence` means a packet, fixture, command result, or durable artifact that supports a promise."
         }
       ],
@@ -8792,12 +8848,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-168",
+      "claimId": "claim-docs-specs-index-spec-md-170",
       "summary": "A `gap` means missing or weak evidence that stays visible.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 168,
+          "line": 170,
           "excerpt": "A `gap` means missing or weak evidence that stays visible."
         }
       ],
@@ -8827,12 +8883,12 @@
       ]
     },
     {
-      "claimId": "claim-docs-specs-index-spec-md-177",
+      "claimId": "claim-docs-specs-index-spec-md-179",
       "summary": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each.",
       "sourceRefs": [
         {
           "path": "docs/specs/index.spec.md",
-          "line": 177,
+          "line": 179,
           "excerpt": "[Promise Ledger](ledger/index.spec.md) — which behavior claims Cautilus makes, how they relate, and which workflow or contract owns each."
         }
       ],
@@ -8893,23 +8949,23 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-18",
-      "summary": "The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap.",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-22",
+      "summary": "Running `npm run proof:behavior-eval:live` now would fail loudly against the realigned `AGENTS.md`, because the live agent no longer routes to the retired `find-skills`; that failure is the drift this note discloses, not a regression.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 18,
-          "excerpt": "The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the find-skills bootstrap."
+          "line": 22,
+          "excerpt": "Running `npm run proof:behavior-eval:live` now would fail loudly against the realigned `AGENTS.md`, because the live agent no longer routes to the retired `find-skills`; that failure is the drift this note discloses, not a regression."
         }
       ],
       "disposition": "user-review-needed",
       "mappingStatus": "needs-catalog-review",
       "claimAudience": "user",
-      "recommendedProof": "cautilus-eval",
-      "verificationReadiness": "ready-for-proof",
+      "recommendedProof": "human-auditable",
+      "verificationReadiness": "needs-alignment",
       "evidenceStatus": "unknown",
       "reviewStatus": "heuristic",
-      "claimFingerprint": "sha256:f60d5bbbf8dadb92ca84c12402ad867b566df4bd2d9b928dd82735d498cbfdca",
+      "claimFingerprint": "sha256:c730e1c205af3bf781247969ee4544069db8a5234303f189ffced726102c4137",
       "canonicalClaimId": null,
       "score": 0,
       "runnerUpCanonicalClaimId": null,
@@ -8921,12 +8977,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-22",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-28",
       "summary": "The check below — run by `npm run lint:specs`, on demand rather than in the default `npm run verify` — projects two operator-witnessed live captures and their blind verdicts so the displayed invariant matches the graded one, while the live agent run stays behind `npm run proof:behavior-eval:live`.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 22,
+          "line": 28,
           "excerpt": "The check below — run by `npm run lint:specs`, on demand rather than in the default `npm run verify` — projects two operator-witnessed live captures and their blind verdicts so the displayed invariant matches the graded one, while the live agent run stays behind `npm run proof:behavior-eval:live`."
         }
       ],
@@ -8949,12 +9005,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-35",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-41",
       "summary": "The cautilus-agent skill is proven live: its no-input orientation runs the read-only status and holds.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 35,
+          "line": 41,
           "excerpt": "The cautilus-agent skill is proven live: its no-input orientation runs the read-only status and holds."
         }
       ],
@@ -8977,12 +9033,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-38",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-44",
       "summary": "`npm run proof:skill-orientation:live` (`scripts/on-demand/skill-orientation-live-proof.mjs`) drives the real cautilus-agent skill with no task detail; the agent runs the read-only `./bin/cautilus doctor status` packet, summarizes adapter/claim/scan/next-branch state, and stops at branch selection — asserted as the stable invariant (invoked + orientation passed) on a FRESH capture. A blind Sonnet judge graded the genuine live orientation sound and a constructed auto-escalation control unsound.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 38,
+          "line": 44,
           "excerpt": "`npm run proof:skill-orientation:live` (`scripts/on-demand/skill-orientation-live-proof.mjs`) drives the real cautilus-agent skill with no task detail; the agent runs the read-only `./bin/cautilus doctor status` packet, summarizes adapter/claim/scan/next-branch state, and stops at branch selection — asserted as the stable invariant (invoked + orientation passed) on a FRESH capture. A blind Sonnet judge graded the genuine live orientation sound and a constructed auto-escalation control unsound."
         }
       ],
@@ -9005,12 +9061,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-60",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-66",
       "summary": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 60,
+          "line": 66,
           "excerpt": "The agent run itself is replayed from the production log rather than re-run live; the live app re-run stays in Proof Debt."
         }
       ],
@@ -9033,12 +9089,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-140",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-146",
       "summary": "A user can choose the behavior surface that matches the evaluation intent.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 140,
+          "line": 146,
           "excerpt": "A user can choose the behavior surface that matches the evaluation intent."
         }
       ],
@@ -9061,12 +9117,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-159",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-165",
       "summary": "A user can evaluate behavior without Cautilus taking over host-owned execution.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 159,
+          "line": 165,
           "excerpt": "A user can evaluate behavior without Cautilus taking over host-owned execution."
         }
       ],
@@ -9089,12 +9145,12 @@
       "matchedKeywords": []
     },
     {
-      "claimId": "claim-docs-specs-promises-evaluation-spec-md-170",
+      "claimId": "claim-docs-specs-promises-evaluation-spec-md-176",
       "summary": "A user can reopen observed behavior and summary packets after each eval.",
       "sourceRefs": [
         {
           "path": "docs/specs/promises/evaluation.spec.md",
-          "line": 170,
+          "line": 176,
           "excerpt": "A user can reopen observed behavior and summary packets after each eval."
         }
       ],
@@ -14544,6 +14600,278 @@
         "new",
         "product",
         "remain"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-11",
+      "summary": "It is absent from the installed skill surface, from `charness catalog list`, and from this session's own skill set; the SessionStart hook now routes via `charness catalog list` instead.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/find-skills-retirement-realign.md",
+          "line": 11,
+          "excerpt": "It is absent from the installed skill surface, from `charness catalog list`, and from this session's own skill set; the SessionStart hook now routes via `charness catalog list` instead."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "deterministic",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:a720de500c2fdc7b5b737536fdf739a049194b0d90ac0c0d81e6dfede0d0238f",
+      "canonicalClaimId": "M3",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M8",
+      "runnerUpScore": 10,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "cautilu",
+        "deterministic",
+        "doctor",
+        "install",
+        "keep",
+        "route",
+        "skill",
+        "surface",
+        "thi",
+        "via"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-20",
+      "summary": "The behavior-eval flagship asserts that a live agent, reading this repo's `AGENTS.md`, routes to `find-skills`.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/find-skills-retirement-realign.md",
+          "line": 20,
+          "excerpt": "The behavior-eval flagship asserts that a live agent, reading this repo's `AGENTS.md`, routes to `find-skills`."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:c432d7f77875ce63ac92431cd8d8e813f1d79f15f4ea37eda08b588c5e8fc0de",
+      "canonicalClaimId": "M4",
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 8,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "assert",
+        "cautilu",
+        "fixture",
+        "host-owned",
+        "live",
+        "repo",
+        "run",
+        "thi",
+        "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-22",
+      "summary": "So the product currently proves — and publicly promises — that agents route to a skill that no longer exists.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/find-skills-retirement-realign.md",
+          "line": 22,
+          "excerpt": "So the product currently proves — and publicly promises — that agents route to a skill that no longer exists."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:2ba6e7b321b05f7bf4b6437ae5ac4e31ba964e097aae99308cc01997bf5d06a9",
+      "canonicalClaimId": "M3",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 8,
+      "scoreMargin": 3,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "cautilu",
+        "currently",
+        "dev/skill",
+        "fixture",
+        "promise",
+        "prove",
+        "route",
+        "run",
+        "skill",
+        "workflow"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-30",
+      "summary": "Capability delta: a session gets a startup routing instruction it can actually execute (`charness catalog list`, hook-provided or fallback), and the flagship promise asserts an invariant that matches the current convention instead of a removed skill.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/find-skills-retirement-realign.md",
+          "line": 30,
+          "excerpt": "Capability delta: a session gets a startup routing instruction it can actually execute (`charness catalog list`, hook-provided or fallback), and the flagship promise asserts an invariant that matches the current convention instead of a removed skill."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:951b444917463ef884bb86924bedff20a1471a2551447aae15bf3f0b8fc1d296",
+      "canonicalClaimId": "M3",
+      "score": 7,
+      "runnerUpCanonicalClaimId": "M5",
+      "runnerUpScore": 7,
+      "scoreMargin": 0,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "cautilu",
+        "dev/skill",
+        "fixture",
+        "promise",
+        "routing",
+        "run",
+        "skill"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-46",
+      "summary": "FD3 — The durable minimum FLOOR the proof asserts is `observationStatus === observed` AND `entryFile === AGENTS.md` AND the agent routes to the correct durable WORK skill (`workSkill === charness:impl` for the impl-task prompt).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/find-skills-retirement-realign.md",
+          "line": 46,
+          "excerpt": "FD3 — The durable minimum FLOOR the proof asserts is `observationStatus === observed` AND `entryFile === AGENTS.md` AND the agent routes to the correct durable WORK skill (`workSkill === charness:impl` for the impl-task prompt)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:8439050c3fd1420aa539788df767d21715cacd40d44a92d95defbc654172eb07",
+      "canonicalClaimId": "M10",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M3",
+      "runnerUpScore": 9,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "assert",
+        "cautilu",
+        "fixture",
+        "host-owned",
+        "observed",
+        "prompt",
+        "proof",
+        "route",
+        "run"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-61",
+      "summary": "So if the operator-gated live re-capture cannot be scheduled promptly, the fallback is to flip `AGENTS.md` AND demote the flagship badge to a disclosed-stale / historical state (the promise already uses disclosed-limitation lines for the app surfaces) rather than hold a broken instruction hostage to an unscheduled paid run.",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/find-skills-retirement-realign.md",
+          "line": 61,
+          "excerpt": "So if the operator-gated live re-capture cannot be scheduled promptly, the fallback is to flip `AGENTS.md` AND demote the flagship badge to a disclosed-stale / historical state (the promise already uses disclosed-limitation lines for the app surfaces) rather than hold a broken instruction hostage to an unscheduled paid run."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:bf046cd97bf7231e1ee83b7b7cd05c9be260bb1780014ba15159a130309647d0",
+      "canonicalClaimId": "M10",
+      "score": 11,
+      "runnerUpCanonicalClaimId": "M5",
+      "runnerUpScore": 10,
+      "scoreMargin": 1,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "app/prompt",
+        "cautilu",
+        "fixture",
+        "host-owned",
+        "live",
+        "promise",
+        "rather",
+        "run",
+        "state",
+        "than"
+      ]
+    },
+    {
+      "claimId": "claim-docs-contracts-find-skills-retirement-realign-md-69",
+      "summary": "Likely outcome, named honestly: FD2's realigned wording makes the `charness catalog list` call CONDITIONAL (\"when support/integration availability is unclear\"), and the frozen full-runner calibration capture already shows `firstToolCall: functions.exec_command` (the agent reads the docs first, not a bootstrap skill), so the fresh capture will most plausibly land on the bootstrap-DROPPED branch (`entryFile` + `workSkill` only).",
+      "sourceRefs": [
+        {
+          "path": "docs/contracts/find-skills-retirement-realign.md",
+          "line": 69,
+          "excerpt": "Likely outcome, named honestly: FD2's realigned wording makes the `charness catalog list` call CONDITIONAL (\"when support/integration availability is unclear\"), and the frozen full-runner calibration capture already shows `firstToolCall: functions.exec_command` (the agent reads the docs first, not a bootstrap skill), so the fresh capture will most plausibly land on the bootstrap-DROPPED branch (`entryFile` + `workSkill` only)."
+        }
+      ],
+      "disposition": "mapped-to-maintainer-canonical",
+      "mappingStatus": "heuristic-auto-map",
+      "claimAudience": "developer",
+      "recommendedProof": "cautilus-eval",
+      "verificationReadiness": "ready-for-proof",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:3260b4d0c47c4e6697097d8b1cd738c8e93874a804a5904f95bcfc805bfc5e4a",
+      "canonicalClaimId": "M3",
+      "score": 10,
+      "runnerUpCanonicalClaimId": "M4",
+      "runnerUpScore": 8,
+      "scoreMargin": 2,
+      "mappingConfidence": "medium",
+      "requiresSemanticReview": true,
+      "matchedAnchors": [],
+      "matchedKeywords": [
+        "agent",
+        "call",
+        "cautilu",
+        "command",
+        "dev/skill",
+        "fixture",
+        "only",
+        "run",
+        "skill",
+        "workflow"
       ]
     },
     {
