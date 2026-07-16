@@ -4,6 +4,12 @@
 // the live driver uses, so the displayed invariant and the graded invariant cannot drift. It runs no
 // live agent (it belongs to test:on-demand, never to standing verify's live cost). The live driver
 // itself is behavior-eval-live-proof.mjs (npm run proof:behavior-eval:live).
+//
+// The stable invariant is the durable floor that survived the 2026-07-16 find-skills retirement realign
+// (docs/contracts/find-skills-retirement-realign.md): the agent oriented on AGENTS.md and routed to the
+// correct durable WORK skill (charness:impl). find-skills was retired upstream 2026-07-13, so under the
+// realigned AGENTS.md the live agent issues no mandatory startup bootstrap (PQ1 Branch B: bootstrapHelper
+// =none); the bootstrap sub-assertion is dropped and the load-bearing discrimination is the blind judge.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -25,10 +31,10 @@ const rerunEvaluation = captureRerun.evaluations[0];
 const liveVerdict = verdicts.verdicts.find((v) => v.kind === "real-live-capture");
 const controlVerdict = verdicts.verdicts.find((v) => v.kind === "judge-control-semantic");
 
-test("the checked-in live capture holds the stable invariant (AGENTS.md -> find-skills bootstrap)", () => {
+test("the checked-in live capture holds the stable invariant (AGENTS.md -> charness:impl work skill)", () => {
 	const evidence = assertLiveInvariant(captureEvaluation);
 	assert.equal(evidence.entryFile, STABLE_INVARIANT.entryFile);
-	assert.equal(evidence.bootstrapHelper, STABLE_INVARIANT.bootstrapHelper);
+	assert.equal(evidence.workSkill, STABLE_INVARIANT.workSkill);
 	// The capture is a genuine live claude/Sonnet run (provenance honesty), not a fixture stand-in.
 	assert.equal(capture.provenance.kind, "live-agent-capture");
 	assert.equal(captureEvaluation.telemetry.runtime, "claude_code");
@@ -49,12 +55,12 @@ test("two independent live runs both hold the invariant with genuinely differing
 	);
 });
 
-test("assertLiveInvariant fails loudly when the agent drops the find-skills bootstrap", () => {
+test("assertLiveInvariant fails loudly when the agent routes to the wrong work skill", () => {
 	const regressed = {
 		...captureEvaluation,
-		routingDecision: { ...captureEvaluation.routingDecision, bootstrapHelper: "charness:impl" },
+		routingDecision: { ...captureEvaluation.routingDecision, workSkill: "charness:debug" },
 	};
-	assert.throws(() => assertLiveInvariant(regressed), /dropped the find-skills startup bootstrap/);
+	assert.throws(() => assertLiveInvariant(regressed), /did not route to the charness:impl work skill/);
 });
 
 test("assertLiveInvariant fails loudly when the agent does not orient on AGENTS.md", () => {
@@ -79,8 +85,9 @@ test("the blind judge graded the genuine live reasoning SOUND with no tools", ()
 test("the blind judge is load-bearing: it alone rejects a route-correct, reason-fabricated control", () => {
 	// The composite case status is (the deterministic route passes) AND (the judge verdict is sound).
 	// Modelled locally so the load-bearing property is asserted mechanically, not just narrated.
+	// Branch B (find-skills retired): the pinned route dimension is the WORK skill, not a bootstrap.
 	const compositePasses = (routePasses, judgeVerdict) => routePasses && judgeVerdict === "sound";
-	const routePasses = controlVerdict.observedRoute.bootstrapHelper === STABLE_INVARIANT.bootstrapHelper;
+	const routePasses = controlVerdict.observedRoute.workSkill === STABLE_INVARIANT.workSkill;
 
 	assert.equal(routePasses, true); // the control passes the deterministic route
 	assert.equal(controlVerdict.verdict, "unsound");
@@ -93,9 +100,10 @@ test("the blind judge is load-bearing: it alone rejects a route-correct, reason-
 	assert.equal(compositePasses(routePasses, "sound"), true); // always-sound judge => would pass
 	assert.equal(compositePasses(routePasses, controlVerdict.verdict), false); // real judge => fails
 
-	// The fabrication: find-skills "executes the test suite / validates the routing table" — a behavior
-	// the governing rules (a no-op-able inventory bootstrap) do not support.
-	assert.match(controlVerdict.reasonSummary, /executes this repo s test suite|validates that the AGENTS\.md routing table/);
+	// The fabrication: charness catalog list "executes the verify suite / regenerates the skill catalog"
+	// as a mandatory startup gate — a behavior the governing rules (a read-only, conditional inventory)
+	// do not support.
+	assert.match(controlVerdict.reasonSummary, /regenerates the installed skill catalog|executes the repo.s full verify suite/);
 });
 
 test("provenance honesty: the graded live reasoning is byte-identical to the checked-in capture", () => {

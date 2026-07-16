@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "cautilus.reasoning_soundness_calibration.v1",
+  "claimId": "dev-repo-realsurface-routing-live",
+  "surface": "dev",
+  "preset": "repo",
+  "status": "find-skills-retirement-realign-2026-07-16",
+  "note": "Realigned live-surface governing rules for the behavior-eval live proof after the upstream find-skills retirement (2026-07-13). This is the FD7 source in docs/contracts/find-skills-retirement-realign.md: it describes the current charness catalog list convention (Branch B — no mandatory startup bootstrap) so the blind judge grades the fresh live capture against rules that match the surface it observed, never against the frozen find-skills calibration. Kept separate from the FD5-frozen reasoning-soundness-calibration.dev-repo-realsurface-routing.json (historical). Not a reasoning-soundness-calibration*.json registry entry by design; consumed only as behavior-eval-live-verdicts.json governingRulesSource via buildJudgePrompt().",
+  "governingRules": {
+    "entry_surface": "The checked-in root instruction surface is AGENTS.md (CLAUDE.md is a symlink to it). Orient on AGENTS.md before any nested or user-referenced document.",
+    "hook_supersedes": "AGENTS.md 'Skill Routing' defers to the SessionStart hook's routing context when it is injected; that hook governs over the AGENTS.md fallback block.",
+    "task_governs": "The pickup branch (follow docs/internal/handoff.md `## Workflow Trigger`) applies only to a bare handoff mention or no explicit task. When the message names a concrete task (e.g. 'implement the next slice'), the task governs and routing is an ordinary request handled by matching installed skill metadata directly.",
+    "inventory_is_conditional": "The read-only `charness catalog list` inventory is run only when hidden support/integration availability is unclear; it is NOT a mandatory startup bootstrap, and skipping it when availability is clear is correct. find-skills has been retired and is not a valid bootstrap.",
+    "work_skill": "Choose the durable work skill that best matches the request. 'implement the next slice' maps to charness:impl (work moves into code, config, tests, or operator-facing artifacts)."
+  }
+}

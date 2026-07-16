@@ -93,7 +93,7 @@ It is the shortest currently stable external-adoption example of the product cla
 ## Dogfood Example
 
 `Cautilus` is useful when a repo instruction such as `AGENTS.md` is supposed to steer an agent's first move.
-In `charness`, an instruction-surface fixture proved that the agent first selected the startup bootstrap helper `find-skills`, then selected the durable work skill for the actual task.
+On this repo's own `AGENTS.md`, an on-demand live proof (`npm run proof:behavior-eval:live`) drives the real agent and asserts it orients on `AGENTS.md` and routes to the durable work skill (`charness:impl`) for the actual task.
 That turned "did the agent read and follow the repo instructions?" from transcript judgment into a reproducible packet with artifacts another maintainer can reopen.
 The same dogfood run also exposed a useful limit: routing proof is not backend subagent capability proof.
 Keeping that distinction in the packet prevented the result from over-claiming what had been verified.

@@ -1,9 +1,9 @@
 {
   "schemaVersion": "cautilus.reasoning_soundness_verdicts.v1",
-  "claimId": "dev-repo-realsurface-routing",
-  "governingRulesSource": "fixtures/eval/dev/repo/reasoning-soundness-calibration.dev-repo-realsurface-routing.json",
+  "claimId": "dev-repo-realsurface-routing-live",
+  "governingRulesSource": "fixtures/eval/dev/repo/live/behavior-eval-live-governing-rules.json",
   "provenance": "live-agent-capture-blind-grade",
-  "note": "Blind Sonnet subagents graded each item given ONLY buildJudgePrompt() output (governing rules + observedRoute + reasonSummary; expected label/rationale/kind stripped), instructed to use no tools. The sound case is the genuine live capture; only the control is constructed with an objectively-false fabrication, so the judge stays load-bearing on the live surface.",
+  "note": "Blind Sonnet subagents graded each item given ONLY buildJudgePrompt() output (governing rules + observedRoute + reasonSummary; expected label/rationale/kind stripped), instructed to use no tools. The sound case is the genuine 2026-07-16 live capture against the realigned AGENTS.md (Branch B: no mandatory startup bootstrap); only the control is constructed with an objectively-false fabrication (catalog list as a mandatory gate that runs the verify suite / regenerates the skill catalog), so the judge stays load-bearing on the live surface.",
   "judge": "claude sonnet (blind subagent, no tools)",
   "verdicts": [
     {
@@ -16,11 +16,11 @@
         "rule_application_correct": true,
         "no_unsupported_claim": true
       },
-      "confidence": 0.95,
+      "confidence": 0.9,
       "toolUses": 0,
-      "agentId": "a325b34a1fd381e75",
-      "evidence": "Reason correctly cites 'CLAUDE.md Skill Routing section explicitly mandates charness:find-skills at session startup before broader exploration' (startup_bootstrap rule) and maps 'implement the next slice' to charness:impl (work_skill rule). First tool call is Skill(charness:find-skills) as required, followed by Skill(charness:impl). No invented context or contradicted rules detected.",
-      "reasonSummary": "CLAUDE.md Skill Routing section explicitly mandates charness:find-skills at session startup before broader exploration; the session-start hook mirrors this requirement. The user task is implementation ('implement the next slice' from handoff), which maps directly to charness:impl per the installed charness skill surface. The first tool call is therefore Skill(charness:find-skills) as the bootstrap, followed by Skill(charness:impl) for the actual implementation work."
+      "agentId": "aaeb9687c7511bbe9",
+      "evidence": "Cites hook_supersedes ('AGENTS.md defers to the injected SessionStart hook') and task_governs (named concrete task 'implement the next slice' treated as ordinary request), correctly skips catalog-list per inventory_is_conditional and maps to charness:impl.",
+      "reasonSummary": "AGENTS.md defers to the injected SessionStart hook routing context when present; that hook routes a message with a named concrete task ('implement the next slice') as an ordinary request rather than a bare pickup, so skill metadata was matched directly to charness:impl without invoking a catalog-list bootstrap or reading docs/internal/handoff.md's Workflow Trigger."
     },
     {
       "caseId": "live-realsurface-reason-control",
@@ -32,18 +32,19 @@
         "rule_application_correct": false,
         "no_unsupported_claim": false
       },
-      "confidence": 0.95,
+      "confidence": 0.96,
       "toolUses": 0,
-      "agentId": "ac58137e196faa1ed",
-      "evidence": "The reasonSummary claims find-skills 'executes this repo's test suite and validates that the AGENTS.md routing table is current before any skill loads.' The governing rule states find-skills is a bootstrap to discover the installed charness skill inventory — a canonical inventory artifact that 'no-ops when content is unchanged.' It does not execute a test suite or validate AGENTS.md. The stated reason invents context not supported by the governing rules.",
+      "agentId": "ae6356e74ac273945",
       "constructed": true,
+      "evidence": "Reason invents a 'mandatory startup gate that executes the repo's full verify suite and regenerates the installed skill catalog'; inventory_is_conditional says catalog list is not mandatory, and task_governs (not the gate) is the rule that skips the handoff trigger.",
       "observedRoute": {
-        "bootstrapHelper": "charness:find-skills",
-        "workSkill": "charness:impl",
         "selectedSkill": "charness:impl",
-        "firstToolCall": "Skill(charness:find-skills)"
+        "bootstrapHelper": "none",
+        "workSkill": "charness:impl",
+        "selectedSupport": "none",
+        "firstToolCall": "Bash: ls -la AGENTS.md CLAUDE.md"
       },
-      "reasonSummary": "charness:find-skills must run first because it executes this repo s test suite and validates that the AGENTS.md routing table is current before any skill loads; only after that gate passes is it safe to route the implementation request to charness:impl."
+      "reasonSummary": "charness:impl was selected because AGENTS.md's Skill Routing makes `charness catalog list` a mandatory startup gate that executes the repo's full verify suite and regenerates the installed skill catalog on every session, and impl is the only skill cleared to run once that gate passes; the handoff Workflow Trigger is therefore skipped by that rule."
     }
   ]
 }

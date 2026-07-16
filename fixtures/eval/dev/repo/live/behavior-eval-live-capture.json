@@ -4,7 +4,7 @@
   "suiteDisplayName": "Real-surface routing (live agent capture)",
   "provenance": {
     "kind": "live-agent-capture",
-    "note": "Operator-witnessed fresh live run, 2026-06-19. The agent under test ran live (claude_code backend, claude-sonnet-4-6) against this repo's real AGENTS.md via run-local-eval-test.mjs; the routingDecision and summary below are the agent's verbatim self-report. Ephemeral /tmp artifact paths are stripped; rerun npm run proof:behavior-eval:live to regenerate.",
+    "note": "Operator-witnessed fresh live run, 2026-07-16, against the realigned AGENTS.md (find-skills retired upstream 2026-07-13; Skill Routing is now the charness catalog list convention). The agent under test ran live (claude_code backend, claude-sonnet-5) via run-local-eval-test.mjs; the routingDecision and summary are the agent's verbatim self-report. Branch B: no mandatory startup bootstrap (bootstrapHelper=none); the stable invariant is entryFile=AGENTS.md AND workSkill=charness:impl. Ephemeral /tmp artifact paths stripped; rerun npm run proof:behavior-eval:live to regenerate.",
     "runner": "scripts/agent-runtime/run-local-eval-test.mjs",
     "backend": "claude_code",
     "casesFile": "fixtures/eval/dev/repo/live/behavior-eval-live-cases.json"
@@ -13,43 +13,41 @@
     {
       "evaluationId": "checked-in-agents-routing",
       "displayName": "Checked-in AGENTS routing (live claude/Sonnet capture)",
-      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
-      "startedAt": "2026-06-19T02:49:32.235Z",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then report your startup routing (any bootstrap or inventory step you take, or none) and the durable work skill you would use for this implementation task.",
+      "startedAt": "2026-07-16T00:43:32.962Z",
       "observationStatus": "observed",
-      "summary": "Root instructions (CLAUDE.md, whose checked-in artifact path is AGENTS.md) and the session-start hook both require charness:find-skills as the startup bootstrap before any broader exploration. The user request is an implementation task ('continue from handoff.md and implement the next slice'), which routes to charness:impl as the durable work skill after the bootstrap pass.",
+      "summary": "Read the checked-in root instruction file AGENTS.md (confirmed CLAUDE.md is a symlink to it, so the CLAUDE.md content already shown in the session's system-reminder is identical to AGENTS.md). AGENTS.md's own '## Skill Routing' section says the SessionStart hook's routing context, when injected, supersedes AGENTS.md's fallback rule, and a SessionStart hook block was present in this session. Under the hook's rule (1), a pickup-only branch applies to a bare handoff mention or no explicit task; since the user's message also names a concrete task ('implement the next slice'), the task governs and routing falls to rule (2), ordinary request handling: match skill metadata directly. 'Implement the next slice' maps unambiguously to charness:impl ('Use when work should move into code, config, tests, or operator-facing artifacts... implement the smallest meaningful slice'). No hidden-support/unclear-availability condition applied, so the hook's rule (3) catalog-list bootstrap was not triggered, and docs/internal/handoff.md itself was not read before/for this routing decision since the skill match did not depend on its content.",
       "loadedInstructionFiles": [
+        "AGENTS.md"
+      ],
+      "loadedSupportingFiles": [
         "CLAUDE.md"
       ],
-      "loadedSupportingFiles": [],
       "routingDecision": {
         "selectedSkill": "charness:impl",
-        "bootstrapHelper": "charness:find-skills",
+        "bootstrapHelper": "none",
         "workSkill": "charness:impl",
         "selectedSupport": "none",
-        "firstToolCall": "Skill(charness:find-skills)",
-        "reasonSummary": "CLAUDE.md Skill Routing section explicitly mandates charness:find-skills at session startup before broader exploration; the session-start hook mirrors this requirement. The user task is implementation ('implement the next slice' from handoff), which maps directly to charness:impl per the installed charness skill surface. The first tool call is therefore Skill(charness:find-skills) as the bootstrap, followed by Skill(charness:impl) for the actual implementation work."
+        "firstToolCall": "Bash: ls -la CLAUDE.md AGENTS.md (verify CLAUDE.md symlink relationship to root entry AGENTS.md)",
+        "reasonSummary": "AGENTS.md defers to the injected SessionStart hook routing context when present; that hook routes a message with a named concrete task ('implement the next slice') as an ordinary request rather than a bare pickup, so skill metadata was matched directly to charness:impl without invoking a catalog-list bootstrap or reading docs/internal/handoff.md's Workflow Trigger."
       },
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": [
         "AGENTS.md"
       ],
-      "allowedFirstToolCalls": [
-        "functions.exec_command",
-        "multi_tool_use.parallel",
-        "Skill(charness:find-skills)"
-      ],
-      "expectedRouting": {
-        "bootstrapHelper": "charness:find-skills"
-      },
       "entryFile": "AGENTS.md",
       "telemetry": {
         "runtime": "claude_code",
         "provider": "anthropic",
-        "model": "claude-sonnet-4-6",
-        "prompt_tokens": 22107,
-        "output_tokens": 2193,
-        "total_tokens": 24300,
-        "cost_usd": 0.165531
+        "model": "claude-sonnet-5",
+        "uncached_input_tokens": 8,
+        "cache_creation_input_tokens": 44569,
+        "cache_read_input_tokens": 109275,
+        "prompt_tokens": 153852,
+        "output_tokens": 9988,
+        "completion_tokens": 9988,
+        "total_tokens": 163840,
+        "cost_usd": 0.45004049999999995
       },
       "instructionSurface": {
         "surfaceLabel": "workspace_checked_in",
@@ -66,6 +64,9 @@
             "targetPath": "AGENTS.md"
           }
         ]
+      },
+      "expectedRouting": {
+        "workSkill": "charness:impl"
       }
     }
   ]

@@ -11,11 +11,13 @@
 // invariant and the graded invariant cannot drift.
 //
 // What is asserted (the stable invariant, not runtime-specific shapes): the agent oriented on
-// AGENTS.md and routed to the find-skills startup bootstrap. The claude runtime reports
-// runtime-specific shapes (firstToolCall "Skill(charness:find-skills)", loadedInstructionFiles
-// ["CLAUDE.md"], where CLAUDE.md is a symlink to AGENTS.md) that differ from the codex capture;
-// those are deliberately NOT asserted. A real regression — the agent failing to orient on
-// AGENTS.md or dropping the find-skills bootstrap — fails this proof loudly.
+// AGENTS.md and routed to the correct durable WORK skill (charness:impl) for the implementation
+// task. This is the durable floor that survived the 2026-07-16 find-skills retirement realign
+// (docs/contracts/find-skills-retirement-realign.md). find-skills was retired upstream 2026-07-13;
+// under the realigned AGENTS.md the startup inventory (`charness catalog list`) is conditional and
+// hook-provided, so a live agent no longer issues a mandatory startup bootstrap skill (PQ1 Branch B:
+// bootstrapHelper=none). The bootstrap sub-assertion is therefore NOT asserted; a real regression —
+// the agent failing to orient on AGENTS.md or routing to the wrong work skill — fails this proof loudly.
 
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync } from "node:fs";
@@ -27,7 +29,7 @@ import { fileURLToPath } from "node:url";
 export const STABLE_INVARIANT = {
 	observationStatus: "observed",
 	entryFile: "AGENTS.md",
-	bootstrapHelper: "charness:find-skills",
+	workSkill: "charness:impl",
 };
 
 // The single load-bearing assertion shared by the live driver and the deterministic replay test.
@@ -45,13 +47,16 @@ export function assertLiveInvariant(evaluation) {
 	if (evaluation.entryFile !== STABLE_INVARIANT.entryFile) {
 		throw new Error(`agent did not orient on AGENTS.md: entryFile=${evaluation.entryFile}`);
 	}
-	const bootstrap = evaluation.routingDecision && evaluation.routingDecision.bootstrapHelper;
-	if (bootstrap !== STABLE_INVARIANT.bootstrapHelper) {
-		throw new Error(`agent dropped the find-skills startup bootstrap: bootstrapHelper=${bootstrap}`);
+	const workSkill = evaluation.routingDecision && evaluation.routingDecision.workSkill;
+	if (workSkill !== STABLE_INVARIANT.workSkill) {
+		throw new Error(`agent did not route to the ${STABLE_INVARIANT.workSkill} work skill: workSkill=${workSkill}`);
 	}
 	return {
 		entryFile: evaluation.entryFile,
-		bootstrapHelper: bootstrap,
+		workSkill,
+		// Informational only (not asserted): under the realigned convention the agent issues no
+		// mandatory startup bootstrap, so this is expected to be "none" (PQ1 Branch B).
+		bootstrapHelper: (evaluation.routingDecision && evaluation.routingDecision.bootstrapHelper) || "none",
 		reasonSummary: (evaluation.routingDecision && evaluation.routingDecision.reasonSummary) || "",
 	};
 }
@@ -97,7 +102,7 @@ function main() {
 	const { evaluation, outputFile } = runLiveAgent();
 	const evidence = assertLiveInvariant(evaluation);
 	process.stdout.write(
-		`behavior-eval live proof: PASS — live agent oriented on ${evidence.entryFile} and routed to ${evidence.bootstrapHelper}.\n`,
+		`behavior-eval live proof: PASS — live agent oriented on ${evidence.entryFile} and routed to ${evidence.workSkill} (bootstrapHelper=${evidence.bootstrapHelper}).\n`,
 	);
 	process.stdout.write(`  reasonSummary: ${evidence.reasonSummary}\n`);
 	process.stdout.write(`  fresh capture: ${outputFile}\n`);

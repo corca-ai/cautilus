@@ -4,7 +4,7 @@
   "suiteDisplayName": "Real-surface routing (live agent capture, independent rerun)",
   "provenance": {
     "kind": "live-agent-capture",
-    "note": "Second independent live run, 2026-06-19, via `npm run proof:behavior-eval:live`. Same operator-witnessed session as behavior-eval-live-capture.json but a separate live agent invocation (claude_code, claude-sonnet-4-6). Checked in to anchor the 'reasoning differs run to run, routing invariant holds' claim in artifacts, not narrative. Ephemeral /tmp artifact paths stripped.",
+    "note": "Second independent live run, 2026-07-16, against the realigned AGENTS.md. Separate live agent invocation (claude_code, claude-sonnet-5). Anchors the 'reasoning differs run to run, routing invariant holds' claim in artifacts, not narrative. Branch B (bootstrapHelper=none). Ephemeral /tmp artifact paths stripped.",
     "runner": "scripts/on-demand/behavior-eval-live-proof.mjs",
     "backend": "claude_code"
   },
@@ -12,24 +12,58 @@
     {
       "evaluationId": "checked-in-agents-routing",
       "displayName": "Checked-in AGENTS routing (live claude/Sonnet capture, rerun)",
-      "startedAt": "2026-06-19T03:00:16.490Z",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then report your startup routing (any bootstrap or inventory step you take, or none) and the durable work skill you would use for this implementation task.",
+      "startedAt": "2026-07-16T00:55:27.794Z",
       "observationStatus": "observed",
-      "summary": "Root instruction surface (AGENTS.md) and CLAUDE.md both direct session startup through charness:find-skills as a capability bootstrap before broader exploration. For an implementation task continuing from handoff, the durable work skill is charness:impl.",
+      "summary": "Root entry file AGENTS.md (CLAUDE.md is a symlink to it) directs session-start routing to follow docs/internal/handoff.md's `## Workflow Trigger` for pickups. That section states that mention-only pickups invoke `charness:handoff`, but when a concrete task request accompanies the handoff mention, the concrete task takes priority. The user's request names a concrete task (\"implement the next slice\"), so routing bypasses the `charness:handoff` pickup path and goes directly to `charness:impl`, the durable work skill for moving work into code/config/tests via the smallest meaningful slice. No hidden-support ambiguity existed, so the optional `charness catalog list` inventory bootstrap was not needed.",
+      "loadedInstructionFiles": [
+        "AGENTS.md",
+        "docs/internal/handoff.md"
+      ],
+      "loadedSupportingFiles": [
+        "CLAUDE.md"
+      ],
       "routingDecision": {
         "selectedSkill": "charness:impl",
-        "bootstrapHelper": "charness:find-skills",
+        "bootstrapHelper": "none",
         "workSkill": "charness:impl",
         "selectedSupport": "none",
-        "firstToolCall": "Skill(charness:find-skills)",
-        "reasonSummary": "CLAUDE.md Skill Routing section and the session-start hook both mandate calling charness:find-skills once at session startup before broader exploration to map installed capabilities. After that bootstrap pass, the user task is 'implement the next slice', which maps directly to charness:impl as the durable work skill. charness:handoff informs what to continue from, but the execution vehicle for implementation work is charness:impl."
+        "firstToolCall": "Bash: ls -la AGENTS.md CLAUDE.md && file CLAUDE.md (confirmed CLAUDE.md is a symlink to AGENTS.md, the checked-in root instruction artifact)",
+        "reasonSummary": "AGENTS.md's Skill Routing section requires checking docs/internal/handoff.md's `## Workflow Trigger` at session start. That trigger explicitly says a concrete task request accompanying a handoff mention takes priority over the mention-only `charness:handoff` pickup path. Since the user named a concrete task (\"implement the next slice\"), routing selected the durable work skill matching that task directly from skill metadata: `charness:impl`, whose own description (\"implement the smallest meaningful slice\") matches the request verbatim. No bootstrap helper or support skill was invoked; only read-only instruction files were consulted, and no implementation work was started."
       },
+      "expectedEntryFile": "AGENTS.md",
+      "requiredInstructionFiles": [
+        "AGENTS.md"
+      ],
       "entryFile": "AGENTS.md",
       "telemetry": {
         "runtime": "claude_code",
         "provider": "anthropic",
-        "model": "claude-sonnet-4-6",
-        "total_tokens": 24195,
-        "cost_usd": 0.0379575
+        "model": "claude-sonnet-5",
+        "uncached_input_tokens": 12,
+        "cache_creation_input_tokens": 12144,
+        "cache_read_input_tokens": 215014,
+        "prompt_tokens": 227170,
+        "output_tokens": 10672,
+        "completion_tokens": 10672,
+        "total_tokens": 237842,
+        "cost_usd": 0.29748420000000003
+      },
+      "instructionSurface": {
+        "surfaceLabel": "workspace_checked_in",
+        "files": [
+          {
+            "path": "AGENTS.md",
+            "kind": "file",
+            "sourceKind": "workspace_default"
+          },
+          {
+            "path": "CLAUDE.md",
+            "kind": "symlink",
+            "sourceKind": "workspace_default",
+            "targetPath": "AGENTS.md"
+          }
+        ]
       }
     }
   ]

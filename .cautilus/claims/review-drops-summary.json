@@ -4,8 +4,8 @@
   "sourceClaimPacket": {
     "path": ".cautilus/claims/evidenced-typed-runners.json",
     "schemaVersion": "cautilus.claim_proof_plan.v1",
-    "gitCommit": "103aae2c2569d21e8470132ca182348570d77292",
-    "candidateCount": 574
+    "gitCommit": "6f616c6a167190b1dba3e23c9a48b48bb74ccd08",
+    "candidateCount": 576
   },
   "samplePolicy": {
     "selection": "bounded-reason-representation",

@@ -6,16 +6,11 @@
     {
       "evaluationId": "checked-in-agents-routing",
       "displayName": "Checked-in AGENTS routing (live claude/Sonnet capture)",
-      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
+      "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then report your startup routing (any bootstrap or inventory step you take, or none) and the durable work skill you would use for this implementation task.",
       "expectedEntryFile": "AGENTS.md",
       "requiredInstructionFiles": ["AGENTS.md"],
-      "allowedFirstToolCalls": [
-        "functions.exec_command",
-        "multi_tool_use.parallel",
-        "Skill(charness:find-skills)"
-      ],
       "expectedRouting": {
-        "bootstrapHelper": "charness:find-skills"
+        "workSkill": "charness:impl"
       }
     }
   ]

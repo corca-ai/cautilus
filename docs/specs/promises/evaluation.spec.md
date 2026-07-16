@@ -15,16 +15,11 @@ The `app/chat` surface is now evaluated on an anonymized private external produc
 Governed by [governed-by::Reviewable Artifacts](../rules/reviewable-artifacts.spec.md), [governed-by::Packet Freshness](../rules/packet-freshness.spec.md), [governed-by::Cost And Proof Freshness](../rules/cost-and-proof-freshness.spec.md), and [governed-by::Host-Owned Execution](../rules/host-owned-execution.spec.md).
 Implemented by [implemented-by::Evaluation Surfaces And Runners](../contracts/evaluation-surfaces-runners.spec.md), [implemented-by::Reporting And Review Variants](../contracts/reporting-review-variants.spec.md), and [implemented-by::Live Invocation Runtime](../contracts/live-invocation-runtime.spec.md).
 
-## The coding agent on your repo was proven live orienting on AGENTS.md and routing to its startup bootstrap — disclosed-stale since 2026-07-16, pending re-capture.
+## The coding agent on your repo is proven live: it orients on AGENTS.md and routes to the charness:impl work skill.
 
-**Disclosed-stale (2026-07-16):** the `find-skills` bootstrap this invariant pins was retired upstream on 2026-07-13, and this repo's `AGENTS.md` §Skill Routing has been realigned to the successor `charness catalog list` convention.
-The two live captures projected below are genuine but HISTORICAL — they record the pre-realignment surface — so the displayed `bootstrapHelper: charness:find-skills` reflects the old `AGENTS.md`, not the current one.
-Running `npm run proof:behavior-eval:live` now would fail loudly against the realigned `AGENTS.md`, because the live agent no longer routes to the retired `find-skills`; that failure is the drift this note discloses, not a regression.
-The live invariant is pending re-capture against the realigned surface, and the coordinated flip (fixtures re-captured live, invariant repointed, judge re-graded) is specified in [find-skills-retirement-realign](../../contracts/find-skills-retirement-realign.md).
-Until that operator-gated live re-capture runs, treat this dev/repo routing proof as declared-by-historical-replay, not freshly proven on the current `AGENTS.md`.
-
-This was not a projected bundle when captured.
-`npm run proof:behavior-eval:live` (`scripts/on-demand/behavior-eval-live-proof.mjs`) drove the real agent (claude/Sonnet) against this repo's `AGENTS.md` as it stood on 2026-06-19 and asserted the stable cross-runtime routing invariant on a FRESH capture; a blind Sonnet judge graded the genuine live reasoning sound and a constructed wrong-reason control unsound, keeping the judge load-bearing.
+This is not a projected bundle.
+`npm run proof:behavior-eval:live` (`scripts/on-demand/behavior-eval-live-proof.mjs`) drives the real agent (claude/Sonnet) against this repo's own `AGENTS.md` and asserts the stable cross-runtime routing invariant on a FRESH capture — it orients on `AGENTS.md` and routes to the correct durable work skill (`charness:impl`); a blind Sonnet judge graded the genuine live reasoning sound and a constructed wrong-reason control unsound, keeping the judge load-bearing.
+The invariant is the durable floor that survived the 2026-07-16 find-skills retirement realign ([find-skills-retirement-realign](../../contracts/find-skills-retirement-realign.md)): find-skills was retired upstream 2026-07-13, so under the current `charness catalog list` convention the live agent issues no mandatory startup bootstrap (`bootstrapHelper: none`), and the pinned dimension is the work-skill route rather than a bootstrap token.
 The check below — run by `npm run lint:specs`, on demand rather than in the default `npm run verify` — projects two operator-witnessed live captures and their blind verdicts so the displayed invariant matches the graded one, while the live agent run stays behind `npm run proof:behavior-eval:live`.
 
 > check:cautilus-json-file
@@ -32,9 +27,10 @@ The check below — run by `npm run lint:specs`, on demand rather than in the de
 | --- | --- | --- |
 | fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].observationStatus | observed |
 | fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].entryFile | AGENTS.md |
-| fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].routingDecision.bootstrapHelper | charness:find-skills |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].routingDecision.workSkill | charness:impl |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].routingDecision.bootstrapHelper | none |
 | fixtures/eval/dev/repo/live/behavior-eval-live-capture.json | evaluations[0].telemetry.runtime | claude_code |
-| fixtures/eval/dev/repo/live/behavior-eval-live-capture-rerun.json | evaluations[0].routingDecision.bootstrapHelper | charness:find-skills |
+| fixtures/eval/dev/repo/live/behavior-eval-live-capture-rerun.json | evaluations[0].routingDecision.workSkill | charness:impl |
 | fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[0].verdict | sound |
 | fixtures/eval/dev/repo/live/behavior-eval-live-verdicts.json | verdicts[1].verdict | unsound |
 

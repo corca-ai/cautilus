@@ -93,7 +93,7 @@
       "id": "behavior-evaluation",
       "title": "Behavior Evaluation",
       "claimedStatus": "proven",
-      "claimedStatusPhrase": "proven on the dev coding-agent surfaces (dev/repo routing invariant disclosed-stale 2026-07-16, pending re-capture); app-ship surfaces in Proof Debt",
+      "claimedStatusPhrase": "proven on the dev coding-agent surfaces; app-ship surfaces in Proof Debt",
       "proofClass": "cautilus-eval",
       "proofClassMeaning": "the default run replays an operator-witnessed live agent capture and a blind judge verdict from the Cautilus eval tier; the live agent re-run is opt-in and costs a real agent run.",
       "proofSpec": "docs/specs/promises/evaluation.spec.md",

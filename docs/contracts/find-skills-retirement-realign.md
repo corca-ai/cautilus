@@ -1,6 +1,9 @@
 # Retire the find-skills startup-bootstrap invariant and realign to the catalog-list convention
 
-Status: build contract (drafted 2026-07-16; instruction-surface realign fixed, live re-capture deferred to an operator-gated on-demand slice).
+Status: LANDED 2026-07-16 — full flip complete.
+PQ1 resolved to Branch B (no mandatory startup bootstrap): two fresh live captures (claude-sonnet-5) against the realigned AGENTS.md returned `entryFile=AGENTS.md`, `workSkill=charness:impl`, `bootstrapHelper=none` with genuinely differing reasoning, blind-graded (real→sound, constructed control→unsound, `toolUses:0`, judge load-bearing) against the FD7 realigned governing rules.
+The harness invariant, standing test, cases prompt, live captures, verdicts, governing-rules source, and the `evaluation.spec.md` / `index.spec.md` / `README.md` / `consumer-readiness.md` promise text are realigned; the flagship badge is restored to freshly-proven.
+Deferred per FD5: the FD5-frozen codex-provenance replay claim (`reasoning-soundness-calibration.dev-repo-realsurface-routing.*`, `checked-in-agents-routing.fixture.json`, `internal-runner-fixture-results.json`) and its `emitted_find_skills_bootstrap` code facet stay as historical records of the pre-realignment surface.
 
 This is the realignment that follows the upstream removal of the `find-skills` public charness skill on 2026-07-13.
 It retires the `find-skills` startup-bootstrap invariant from Cautilus's behavior-eval flagship and realigns the dev/repo routing surface to the current `charness catalog list` inventory convention.

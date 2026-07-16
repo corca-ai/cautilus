@@ -2,6 +2,10 @@
 
 Status: build contract (decisions closed with the operator, 2026-06-19).
 
+Superseded in part on 2026-07-16 by [find-skills-retirement-realign](./find-skills-retirement-realign.md): find-skills was retired upstream (2026-07-13), so FD3's `bootstrapHelper === charness:find-skills` assertion, SC1/AC1's find-skills wording, and PQ2's find-skills fabrication are superseded.
+The live proof was re-captured against the realigned AGENTS.md; PQ1 there resolved to Branch B (no mandatory startup bootstrap), and the durable invariant is now `entryFile === AGENTS.md` AND `routingDecision.workSkill === charness:impl`.
+The find-skills references below are retained as the historical 2026-06-19 record.
+
 This is the productization follow-up that closes the LIVENESS axis the judge-tier convergence left open, and flips the apex `Behavior Evaluation` badge from `declared` to `proven` on the dev/repo coding-agent flagship.
 
 ## Problem

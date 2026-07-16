@@ -87,7 +87,7 @@ Current role: external bootstrap-heavy agent-runtime consumer pattern
 Evidence:
 
 - one real external bootstrap-heavy consumer validated the released `instruction-surface` split on `Cautilus v0.5.5` (now folded into the `dev / repo` preset under `cautilus evaluate`).
-- the consumer seam now exercises `cautilus evaluate fixture --repo-root .` (formerly `cautilus instruction-surface test`) against a routing case that expects `bootstrapHelper=find-skills` and `workSkill=impl`
+- the consumer seam now exercises `cautilus evaluate fixture --repo-root .` (formerly `cautilus instruction-surface test`) against a routing case that pins `workSkill=impl` (the historical `bootstrapHelper=find-skills` expectation predates the 2026-07-16 find-skills retirement; the live proof now pins the work-skill route — see [find-skills-retirement-realign](../contracts/find-skills-retirement-realign.md))
 - the same consumer keeps its standing repo-owned evaluator path green on the released binary:
   `python3 scripts/run-evals.py --repo-root .` passed its maintained scenario set and `pytest tests/test_cautilus_scenarios.py` stayed green
 - the checked validation artifact records `recommendation=accept-now` plus explicit `bootstrapHelperCounts` / `workSkillCounts` output instead of the older collapsed single-lane interpretation

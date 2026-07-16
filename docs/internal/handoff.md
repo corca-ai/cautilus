@@ -17,8 +17,8 @@ mention-only 픽업이면 `charness:handoff`로 이 baton과 최신 goal/release
 - PATH의 `cautilus`는 이 세션에서 전역 갱신하지 않았다.
   격리된 public installer proof는 `0.19.3`을 확인했지만 이를 사용자 전역 설치 상태와 같다고 주장하지 않는다.
 - `cautilus doctor --repo-root .`는 adapter readiness를 통과했지만 dev/repo runner assessment가 현재 source hashes보다 오래됐다고 안내한다.
-- `find-skills`(2026-07-13 상위 charness에서 public 제거) 재정렬의 무료 fallback을 반영했다: `AGENTS.md` Skill Routing을 `charness catalog list` 규약으로 바꿔 더 이상 제거된 스킬 호출을 지시하지 않고, Behavior Evaluation dev/repo routing 약속(`evaluation.spec.md`, apex `index.spec.md`)을 disclosed-stale(historical replay, 재캡처 대기)로 정직하게 강등했다. dev/skill orientation proof는 영향 없음.
-- 유료 coordinated flip(라이브 재캡처 → invariant repoint → judge 재채점)은 아직 미실행이며 계약 `docs/contracts/find-skills-retirement-realign.md`가 소유한다(FD4/FD6, First Implementation Slice).
+- `find-skills`(2026-07-13 상위 charness에서 public 제거) 재정렬 full flip을 완주했다: `AGENTS.md` Skill Routing을 `charness catalog list` 규약으로 바꾸고, 라이브 2회 재캡처(claude-sonnet-5) + blind 재채점으로 Behavior Evaluation dev/repo routing 약속을 freshly-proven으로 복원했다. 불변식은 Branch B(`AGENTS.md` orient + `charness:impl` work skill, bootstrapHelper=none); dev/skill orientation proof는 영향 없음.
+- coordinated flip은 랜딩 완료다(계약 `docs/contracts/find-skills-retirement-realign.md` status: LANDED). FD5-frozen codex-provenance replay 클레임(`reasoning-soundness-calibration.dev-repo-realsurface-routing.*`, `checked-in-agents-routing.fixture.json`)은 의도적으로 historical(find-skills)로 남겨뒀다.
 
 ## Next Session
 
@@ -32,7 +32,7 @@ mention-only 픽업이면 `charness:handoff`로 이 baton과 최신 goal/release
 - PATH-level `cautilus` 갱신은 사용자 환경 mutation이므로 다음 작업에서 필요할 때 명시적으로 결정한다.
 - Public release-notes asset에 operator story를 포함할지는 타당하지만 이 patch에서 의도적으로 미룬 release-infrastructure 결정이다.
 - Claim-evidence audit의 47개 warning과 범용 `BuildReviewPromptInput` proof는 후속 후보이지 활성 약속이 아니다.
-- Behavior Evaluation dev/repo routing 배지를 disclosed-stale에서 freshly-proven으로 되돌리려면 유료 라이브 재캡처가 필요하다(비용·백엔드 게이트). 진행 시 `docs/contracts/find-skills-retirement-realign.md`의 First Implementation Slice를 따른다.
+- FD5-frozen codex-provenance replay 클레임(`dev-repo-realsurface-routing`)은 여전히 find-skills를 historical로 담고 있다(의도적 유예; `find-skills-retirement-realign.md`의 landed note 참고). 현재 convention으로 재정렬할지는 별도 슬라이스 결정이다.
 - 현재 `lint · specs` 병목에는 proof-preserving 최적화 seam이 확인되지 않았으므로 새 측정 없이 gate를 줄이거나 병렬화하지 않는다.
 
 ## References
