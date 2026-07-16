@@ -61,15 +61,15 @@ const evalEvaluateExampleInput = `{
       "prompt": "User request: continue from docs/internal/handoff.md and implement the next slice. Read the repo instructions first, then identify both the startup bootstrap helper and the durable work skill you would use for this implementation task.",
       "startedAt": "2026-04-18T00:00:00.000Z",
       "observationStatus": "observed",
-      "summary": "Started from AGENTS.md, used discovery as the bootstrap helper, and then selected the durable work skill.",
+      "summary": "Started from AGENTS.md, oriented via read-only discovery with no mandatory bootstrap helper, and then selected the durable work skill.",
       "entryFile": "AGENTS.md",
       "loadedInstructionFiles": ["AGENTS.md"],
       "loadedSupportingFiles": ["docs/internal/handoff.md"],
       "routingDecision": {
         "selectedSkill": "impl",
-        "bootstrapHelper": "find-skills",
+        "bootstrapHelper": "none",
         "workSkill": "impl",
-        "firstToolCall": "find-skills --repo-root ."
+        "firstToolCall": "charness catalog list --repo-root ."
       },
       "instructionSurface": {
         "surfaceLabel": "compact_agents",
@@ -85,9 +85,9 @@ const evalEvaluateExampleInput = `{
       "requiredInstructionFiles": ["AGENTS.md"],
       "requiredSupportingFiles": ["docs/internal/handoff.md"],
       "expectedRouting": {
-        "bootstrapHelper": "find-skills",
+        "bootstrapHelper": "none",
         "workSkill": "impl",
-        "firstToolCallPattern": "find-skills"
+        "firstToolCallPattern": "charness catalog list"
       },
       "artifactRefs": []
     }
