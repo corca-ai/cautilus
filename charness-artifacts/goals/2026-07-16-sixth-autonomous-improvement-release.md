@@ -9,9 +9,9 @@ runs the activation command.
 
 ## Active Operating Frame
 
-- Current slice: slice 6 — prepare and critique the minor release `0.20.0`.
-- Current slice intent: all six improvement slices (Tier A 1–4 + breaking rename 5) landed, verified, and reviewed; now dry-run the release planner, prepare synced surfaces, run the delegated release critique + surface packet, then push/publish/verify (slices 7–8).
-- Next action: `npm run release:prepare` dry-run to confirm the bump target, then prepare `0.20.0` and run `critique:surface-packet:check` + a delegated release critique.
+- Current slice: slice 7 — push, publish, and verify v0.20.0.
+- Current slice intent: publish the reviewed bundle (branch + minor tag) and record real public proof; then slice 8 closeout.
+- Next action: re-run `publish-release.mjs --version 0.20.0` on a fully static tree (the first attempt fail-safed because a concurrent slice-6-log append dirtied the goal artifact mid guarded-push; nothing was pushed — origin/main still a662af99, no tag). Do NOT edit the worktree while the publish runs.
 - Note: slice-2 floor removal was folded via autosquash rebase; hashes below are post-rebase, with a final reconciliation at closeout.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at closeout.
 - Gate cadence: focused owner checks (`go test`, `node --test`, `npm run lint`) at commit boundaries; `npm run verify`, `npm run hooks:check`, release surface packet, and public proof at the final bundle boundary.
@@ -79,7 +79,7 @@ What the user can do to verify completion directly.
 | 3 | Fix SemVer prerelease lexical compare in `version.go` (`rc.10 < rc.2`) | Genuine correctness bug on an exported fn driving update/self-install; tiny, red-first | `version_test.go` red→green with identifier-wise cases | complete (691b0f53) |
 | 4 | Doc/spec self-consistency: README `skill-experiment` token + `evaluation.spec.md` current-tense | Front-door invocation drift + a user-facing promise violating the repo's own current-tense prose rule | `npm run lint` links/specs, `docs:preview:changed` snapshot | complete (7719f358) |
 | 5 | Breaking rename `workbench_instance_catalog.v1` → `live_target_catalog.v1` with actionable rejecting error | User-licensed vocab-leak fix aligning schema with `discover live-targets`; frees `workbench` for the reserved GUI name | rename tests, golden-string updates, delegated critique, `verify` | complete (61ff4f59, ae39db6a) |
-| 6 | Prepare and critique minor release `0.20.0` | Accumulated bundle includes a breaking consumer schema rename (pre-1.0 breaking = minor) | synced surfaces, surface packet, delegated critique, dry-run | pending |
+| 6 | Prepare and critique minor release `0.20.0` | Accumulated bundle includes a breaking consumer schema rename (pre-1.0 breaking = minor) | synced surfaces, surface packet, delegated critique, dry-run | complete (9b2917a9, dfcd7e2a) |
 | 7 | Push, publish, and distinctly verify the release | User explicitly requested remote completion for the bundle | branch/tag, workflow, public assets, install/readback evidence | pending |
 | 8 | Final quality, retro, handoff, and goal closeout | Preserve honest proof and remaining risks | broad gates, durable artifacts, clean synchronized state | pending |
 
@@ -172,6 +172,20 @@ model judgment — never a hard-coded phase-to-skill list here.
 - Test duplication pressure: One new cli_smoke reject test reusing the existing probe/adapter harness; no new test file.
 - Critique: PASS — parent-delegated charness:bounded-reviewer (agentId a5fadb132d37a5f6e) confirmed no missed leak, reachable+correct rejection ordering, consistent goldens/$id/const, and that claim refresh did not manufacture green proof.
 - Off-goal findings: Non-Goal premise refined: 'do not run claims:refresh:all' assumed it would launder the 47 broken evidence bindings, but the doc edits are tracked claim sources so a refresh is the repo's PRESCRIBED action (CLAUDE.md Local Checks). Empirically verified refresh regenerates the claim map from sources and does NOT re-pin the individual evidence-*.json bundles: warningCount stayed 47, no status flip. The real false-proof risk (blessing the 47) is avoided; the honest boundary is 'do not re-pin broken evidence bundles', not 'never refresh'.
+- Lessons carried forward:
+- Metrics:
+
+### Slice 6: Prepare and critique v0.20.0 (slice 6)
+
+- Objective: Prepare the minor release 0.20.0 and clear it through the deterministic packets and a delegated release critique before publish.
+- Why this approach: Minor bump for the breaking schema rename (pre-1.0 breaking = minor); the release planner and critique reconfirm before the irreversible push.
+- Commits: 9b2917a9, dfcd7e2a
+- What changed: release:prepare synced package.json, lockfile, marketplace.json, Claude+Codex plugin.json; authored charness-artifacts/release/latest.md (v0.20.0 narrative + migration note); charness-artifacts/critique/2026-07-16-v0-20-0-release-critique.md.
+- Alternatives rejected: Patch 0.19.x (rejected: understates the breaking schema rename); major (rejected: unwarranted pre-1.0).
+- Targeted verification: critique:surface-packet:check + :cli-agent:check both ready/no findings; release:publisher-policy clean; test:on-demand pass; broad verify + pre-push (verify 32.95s + generated-drift) + hooks:check ready; publish dry-run narrative audit all green.
+- Test duplication pressure: None added in this slice — release-surface sync only.
+- Critique: Delegated release critique BLOCK->PASS: flagged one record overclaim (prematurely past-tense 'critique cleared' line), corrected before publish; version/schema/migration surfaces cleared. Artifact: charness-artifacts/critique/2026-07-16-v0-20-0-release-critique.md.
+- Off-goal findings:
 - Lessons carried forward:
 - Metrics:
 
