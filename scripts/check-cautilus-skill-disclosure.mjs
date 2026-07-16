@@ -126,9 +126,12 @@ const source = read(SOURCE_SKILL);
 const packaged = read(PACKAGED_SKILL);
 const problems = [];
 
-if (source !== packaged) {
-	problems.push(`${PACKAGED_SKILL}: packaged skill is not byte-identical to ${SOURCE_SKILL}; run npm run skills:sync-packaged`);
-}
+// Source/packaged parity for the whole skill tree (SKILL.md plus every
+// reference, with upward links re-based) is owned by
+// `npm run lint:skill-packaged-sync` (scripts/release/sync-packaged-skill.mjs
+// --check). This check does not byte-compare SKILL.md, because a future upward
+// link in SKILL.md must be rewritten in the package and a byte-compare would
+// contradict the sync transform.
 
 const sourceResult = checkSkill(SOURCE_SKILL, source);
 const packagedResult = checkSkill(PACKAGED_SKILL, packaged);
