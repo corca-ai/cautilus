@@ -42,6 +42,7 @@ const (
 	LiveRunTranscriptSchema                         = "cautilus.live_run_transcript.v1"
 	LiveRunTurnRequestSchema                        = "cautilus.live_run_turn_request.v1"
 	LiveRunTurnResultSchema                         = "cautilus.live_run_turn_result.v1"
+	LiveTargetCatalogSchema                         = "cautilus.live_target_catalog.v1"
 	ImproveInputsSchema                             = "cautilus.improve_inputs.v1"
 	ImproveProposalSchema                           = "cautilus.improve_proposal.v1"
 	ImproveSearchInputsSchema                       = "cautilus.improve_search_inputs.v1"
@@ -72,7 +73,11 @@ const (
 	SkillEvaluationInputsSchema                     = "cautilus.skill_evaluation_inputs.v1"
 	SkillEvaluationSummarySchema                    = "cautilus.skill_evaluation_summary.v1"
 	SkillNormalizationInputsSchema                  = "cautilus.skill_normalization_inputs.v2"
-	WorkbenchInstanceCatalogSchema                  = "cautilus.workbench_instance_catalog.v1"
+	// Retired 2026-07-16: renamed to LiveTargetCatalogSchema so the consumer-facing
+	// discovery schema matches the `discover live-targets` verb and frees the
+	// `workbench` name for the reserved future GUI. Kept only to reject the old
+	// schemaVersion with an actionable rename error.
+	RetiredWorkbenchInstanceCatalogSchema           = "cautilus.workbench_instance_catalog.v1"
 	WorkflowNormalizationInputsSchema               = "cautilus.workflow_normalization_inputs.v1"
 	WorkspaceRunManifestSchema                      = "cautilus.workspace_run_manifest.v1"
 )

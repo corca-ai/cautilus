@@ -74,7 +74,7 @@ func TestFixtureExamplesValidateAgainstPublishedSchemas(t *testing.T) {
 		schemaAt string
 	}{
 		{
-			name:     "workbench_instance_catalog",
+			name:     "live_target_catalog",
 			example:  filepath.Join("..", "..", "fixtures", "workbench-instance-discovery", "example-catalog.json"),
 			schemaAt: filepath.Join("..", "..", "fixtures", "workbench-instance-discovery", "catalog.schema.json"),
 		},

@@ -248,7 +248,7 @@ default_schema_file: fixtures/review/review-verdict.schema.json
   Classification hints are adapter-owned because non-claim conventions and claim vocabulary differ per repo; the binary executes the hints deterministically and records them in the packet's `effectiveScanScope` (including `proofRouteHints`), while the Cautilus Agent proposes them from an initial scan for maintainer ratification instead of the product hardcoding repo-specific rules.
 - `instance_discovery`: optional local-first instance routing contract for live app eval flows.
   Use `kind: explicit` when the adapter can check in a small stable instance list directly.
-  Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.workbench_instance_catalog.v1` to stdout.
+  Use `kind: command` when the consumer must probe one or more host-local roots at runtime and print `cautilus.live_target_catalog.v1` to stdout.
 - `live_run_invocation`: optional command contract for running one bounded scenario packet against one selected live instance.
 - `executor_variants`: optional backend-specific review or simulation runners.
 - `improve_search`: optional repo-owned defaults for `cautilus improve search`.
@@ -302,7 +302,7 @@ Fixed rules:
 - Every discovered instance must expose either one `data_root`, one or more typed `paths`, or both.
 - `kind: command` is the default fit for consumers that enumerate multiple host-local instances dynamically.
 - `kind: explicit` keeps fixture-backed repos and simple single-instance adopters cheap without forcing a probe script.
-- `command_template` should print `cautilus.workbench_instance_catalog.v1` JSON to stdout.
+- `command_template` should print `cautilus.live_target_catalog.v1` JSON to stdout.
 `cautilus discover live-targets` resolves either `kind: explicit` or `kind: command` into the canonical catalog packet.
 When the adapter uses `kind: command`, point `command_template` directly at a consumer-owned probe command instead of wrapping the product command around itself.
 

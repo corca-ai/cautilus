@@ -7,7 +7,7 @@ The public command surface for this seam is now `cautilus discover live-targets`
 
 ## Current Slice
 
-`Cautilus` now defines `cautilus.workbench_instance_catalog.v1` as the neutral discovery packet for live app eval flows.
+`Cautilus` now defines `cautilus.live_target_catalog.v1` as the neutral discovery packet for live app eval flows.
 The adapter may provide that catalog either through an explicit checked-in instance list or through a local command that prints the catalog to stdout.
 Both modes normalize to the same packet so `eval live` commands can route by `instanceId` without learning consumer-specific directory rules.
 
@@ -29,7 +29,7 @@ This vocabulary started from multi-instance workbench needs, but the contract al
 
 ## Packet Shape
 
-Use `cautilus.workbench_instance_catalog.v1`.
+Use `cautilus.live_target_catalog.v1`.
 
 Required top-level fields:
 
@@ -69,7 +69,7 @@ Use `kind: command` when the consumer must probe one or more local roots at runt
 For `kind: command`:
 
 - `command_template` must be a bounded local command.
-- The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.
+- The command should print only `cautilus.live_target_catalog.v1` JSON to stdout.
 - Human-facing warnings belong on stderr.
 
 For `kind: explicit`:
@@ -108,7 +108,7 @@ For `kind: explicit`:
 
 ## Canonical Artifact
 
-The canonical artifact for this slice is `cautilus.workbench_instance_catalog.v1`.
+The canonical artifact for this slice is `cautilus.live_target_catalog.v1`.
 The checked-in example lives at [fixtures/workbench-instance-discovery/example-catalog.json](../../fixtures/workbench-instance-discovery/example-catalog.json).
 
 ## Premortem

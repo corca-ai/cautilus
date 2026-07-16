@@ -14,7 +14,7 @@ The selected instance is one live consumer target returned by `cautilus discover
 
 ## Fixed Decisions
 
-- The selected `instanceId` comes from `cautilus.workbench_instance_catalog.v1`.
+- The selected `instanceId` comes from `cautilus.live_target_catalog.v1`.
 - The adapter-owned seam still routes by one selected instance id per invocation.
 - The request packet carries product-owned scenario execution intent, not consumer route details.
 - The result packet distinguishes `completed`, `blocked`, and `failed` execution states.

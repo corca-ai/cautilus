@@ -5997,7 +5997,7 @@ func TestCLIEvalLiveDiscoverNormalizesExplicitInstances(t *testing.T) {
 		t.Fatalf("eval live discover failed: %s", stderr)
 	}
 	payload := parseJSONObject(t, stdout)
-	if payload["schemaVersion"] != contracts.WorkbenchInstanceCatalogSchema {
+	if payload["schemaVersion"] != contracts.LiveTargetCatalogSchema {
 		t.Fatalf("unexpected schemaVersion: %#v", payload["schemaVersion"])
 	}
 	instances, ok := payload["instances"].([]any)
@@ -6030,7 +6030,7 @@ func TestCLILiveEvalDiscoverExecutesConsumerProbeCommand(t *testing.T) {
 		"#!/bin/sh",
 		"cat <<'EOF'",
 		"{",
-		`  "schemaVersion": "cautilus.workbench_instance_catalog.v1",`,
+		`  "schemaVersion": "cautilus.live_target_catalog.v1",`,
 		`  "instances": [`,
 		"    {",
 		`      "instanceId": "example-app-dev",`,
@@ -6081,7 +6081,7 @@ func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 		"printf '%s\\n' '[discover-instances] skipped example-app-prod: observability.port missing' >&2",
 		"cat <<'EOF'",
 		"{",
-		`  "schemaVersion": "cautilus.workbench_instance_catalog.v1",`,
+		`  "schemaVersion": "cautilus.live_target_catalog.v1",`,
 		`  "instances": [`,
 		"    {",
 		`      "instanceId": "example-app-dev",`,
@@ -6118,6 +6118,56 @@ func TestCLILiveEvalDiscoverIgnoresProbeWarningsOnStderr(t *testing.T) {
 	instance := instances[0].(map[string]any)
 	if instance["instanceId"] != "example-app-dev" || instance["displayLabel"] != "Example App Dev" {
 		t.Fatalf("unexpected command-backed catalog when probe warns on stderr: %#v", payload)
+	}
+}
+
+func TestCLILiveEvalDiscoverRejectsRetiredWorkbenchSchemaWithRenameError(t *testing.T) {
+	root := t.TempDir()
+	adapterDir := filepath.Join(root, ".agents")
+	if err := os.MkdirAll(adapterDir, 0o755); err != nil {
+		t.Fatalf("MkdirAll returned error: %v", err)
+	}
+	// A probe still emitting the retired schemaVersion must be rejected with an
+	// actionable rename error, not silently accepted or given a generic message.
+	writeExecutableFile(t, root, "discover.sh", strings.Join([]string{
+		"#!/bin/sh",
+		"cat <<'EOF'",
+		"{",
+		`  "schemaVersion": "cautilus.workbench_instance_catalog.v1",`,
+		`  "instances": [`,
+		"    {",
+		`      "instanceId": "example-app-dev",`,
+		`      "displayLabel": "Example App Dev"`,
+		"    }",
+		"  ]",
+		"}",
+		"EOF",
+		"",
+	}, "\n"))
+	adapter := strings.Join([]string{
+		"version: 1",
+		"repo: temp",
+		"evaluation_surfaces:",
+		"  - live eval smoke",
+		"baseline_options:",
+		"  - baseline git ref via {baseline_ref}",
+		"instance_discovery:",
+		"  kind: command",
+		"  command_template: ./discover.sh",
+		"",
+	}, "\n")
+	if err := os.WriteFile(filepath.Join(adapterDir, "cautilus-adapter.yaml"), []byte(adapter), 0o644); err != nil {
+		t.Fatalf("WriteFile returned error: %v", err)
+	}
+
+	_, stderr, exitCode := runCLI(t, root, "discover", "live-targets", "--repo-root", root)
+	if exitCode == 0 {
+		t.Fatalf("expected discover live-targets to reject the retired schema, got exit 0")
+	}
+	if !strings.Contains(stderr, contracts.RetiredWorkbenchInstanceCatalogSchema) ||
+		!strings.Contains(stderr, contracts.LiveTargetCatalogSchema) ||
+		!strings.Contains(stderr, "was renamed to") {
+		t.Fatalf("expected an actionable rename error naming both schemas, got: %s", stderr)
 	}
 }
 

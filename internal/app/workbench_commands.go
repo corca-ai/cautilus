@@ -328,7 +328,7 @@ func buildExplicitWorkbenchCatalog(instanceDiscovery map[string]any, now time.Ti
 		instances = append(instances, entry)
 	}
 	return map[string]any{
-		"schemaVersion": contracts.WorkbenchInstanceCatalogSchema,
+		"schemaVersion": contracts.LiveTargetCatalogSchema,
 		"generatedAt":   now.UTC().Format(time.RFC3339Nano),
 		"instances":     instances,
 	}
@@ -368,8 +368,15 @@ func toWorkbenchCamelCase(value string) string {
 }
 
 func validateWorkbenchCatalogPacket(packet map[string]any) error {
-	if anyString(packet["schemaVersion"]) != contracts.WorkbenchInstanceCatalogSchema {
-		return fmt.Errorf("workbench catalog must use schemaVersion %s", contracts.WorkbenchInstanceCatalogSchema)
+	schemaVersion := anyString(packet["schemaVersion"])
+	if schemaVersion == contracts.RetiredWorkbenchInstanceCatalogSchema {
+		return fmt.Errorf(
+			"schemaVersion %s was renamed to %s; update the command_template output to emit the new schema",
+			contracts.RetiredWorkbenchInstanceCatalogSchema, contracts.LiveTargetCatalogSchema,
+		)
+	}
+	if schemaVersion != contracts.LiveTargetCatalogSchema {
+		return fmt.Errorf("live target catalog must use schemaVersion %s", contracts.LiveTargetCatalogSchema)
 	}
 	instances := arrayOrEmpty(packet["instances"])
 	for index, raw := range instances {

@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "cautilus.workbench_instance_catalog.v1",
+  "$id": "cautilus.live_target_catalog.v1",
   "type": "object",
   "required": ["schemaVersion", "instances"],
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "const": "cautilus.workbench_instance_catalog.v1"
+      "const": "cautilus.live_target_catalog.v1"
     },
     "generatedAt": {
       "type": "string"
