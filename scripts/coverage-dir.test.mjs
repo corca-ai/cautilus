@@ -5,12 +5,23 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-function runNode(script, coverageDir) {
+function runNode(script, coverageDir, extraEnv = {}) {
 	return spawnSync(process.execPath, [script], {
 		cwd: process.cwd(),
 		encoding: "utf-8",
-		env: { ...process.env, COVERAGE_DIR: coverageDir },
+		env: { ...process.env, COVERAGE_DIR: coverageDir, ...extraEnv },
 	});
+}
+
+// Write a hermetic floor + exemptions fixture so the floor-check assertions
+// depend on this test's declared floor, not the live scripts/coverage-floor.json
+// (which the sanctioned `coverage:floor:write` is allowed to rewrite).
+function floorEnv(coverageDir, floor = {}) {
+	const floorPath = join(coverageDir, "coverage-floor.json");
+	const exemptionsPath = join(coverageDir, "coverage-floor-exemptions.txt");
+	writeFileSync(floorPath, `${JSON.stringify(floor, null, 2)}\n`);
+	writeFileSync(exemptionsPath, "# hermetic test fixture: no exemptions\n");
+	return { COVERAGE_FLOOR_PATH: floorPath, COVERAGE_FLOOR_EXEMPTIONS_PATH: exemptionsPath };
 }
 
 function coverageEntry({ statements = 30, percent }) {
@@ -70,10 +81,10 @@ test("coverage floor check reads COVERAGE_DIR", () => {
 	const coverageDir = mkdtempSync(join(tmpdir(), "cautilus-coverage-floor-"));
 	try {
 		const files = {
-			"scripts/profile-specdown.mjs": coverageEntry({ percent: 100 }),
+			"scripts/profile-specdown.mjs": coverageEntry({ percent: 100, statements: 100 }),
 		};
 		writeAggregate(coverageDir, files);
-		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir);
+		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir, floorEnv(coverageDir));
 		assert.equal(result.status, 0, result.stderr);
 		assert.match(result.stdout, /OK:/);
 	} finally {
@@ -85,9 +96,9 @@ test("coverage floor check warns on unfloored warn-band files", () => {
 	const coverageDir = mkdtempSync(join(tmpdir(), "cautilus-coverage-floor-warn-"));
 	try {
 		writeAggregate(coverageDir, {
-			"scripts/profile-specdown.mjs": coverageEntry({ percent: 85 }),
+			"scripts/profile-specdown.mjs": coverageEntry({ percent: 85, statements: 100 }),
 		});
-		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir);
+		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir, floorEnv(coverageDir));
 		assert.equal(result.status, 0, result.stderr);
 		assert.match(result.stderr, /WARN: unfloored files in warn-band/);
 		assert.match(result.stdout, /1 in warn-band/);
@@ -100,9 +111,9 @@ test("coverage floor check fails on unfloored low-coverage files", () => {
 	const coverageDir = mkdtempSync(join(tmpdir(), "cautilus-coverage-floor-low-"));
 	try {
 		writeAggregate(coverageDir, {
-			"scripts/profile-specdown.mjs": coverageEntry({ percent: 70 }),
+			"scripts/profile-specdown.mjs": coverageEntry({ percent: 70, statements: 100 }),
 		});
-		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir);
+		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir, floorEnv(coverageDir));
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /FAIL: unfloored files below fail_below_pct/);
 		assert.match(result.stderr, /scripts\/profile-specdown\.mjs/);
@@ -118,7 +129,13 @@ test("coverage floor check reports floor regressions and promotion candidates", 
 			"internal/app/app.go": coverageEntry({ statements: 2559, percent: 55 }),
 			"internal/app/remaining_commands.go": coverageEntry({ statements: 101, percent: 68 }),
 		});
-		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir);
+		// Synthetic floors (deliberately unlike the live floor values) chosen so
+		// app.go clears drift-lock (55 >= 50 + 1) and remaining_commands.go
+		// regresses (68 < 75), independent of scripts/coverage-floor.json.
+		const result = runNode("scripts/check-coverage-floor.mjs", coverageDir, floorEnv(coverageDir, {
+			"internal/app/app.go": 50.0,
+			"internal/app/remaining_commands.go": 75.0,
+		}));
 		assert.equal(result.status, 1);
 		assert.match(result.stderr, /WARN: floored files cleared drift-lock/);
 		assert.match(result.stderr, /FAIL: floored files regressed below declared floor/);

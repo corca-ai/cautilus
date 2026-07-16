@@ -6,8 +6,13 @@ import { fileURLToPath } from "node:url";
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const COVERAGE_DIR = resolve(REPO_ROOT, process.env.COVERAGE_DIR || "coverage");
 const COVERAGE_PATH = resolve(COVERAGE_DIR, "coverage.json");
-const FLOOR_PATH = resolve(REPO_ROOT, "scripts/coverage-floor.json");
-const EXEMPTIONS_PATH = resolve(REPO_ROOT, "scripts/coverage-floor-exemptions.txt");
+// FLOOR_PATH/EXEMPTIONS_PATH are overridable so tests can inject a hermetic
+// floor fixture instead of coupling their assertions to the live floor file.
+const FLOOR_PATH = resolve(REPO_ROOT, process.env.COVERAGE_FLOOR_PATH || "scripts/coverage-floor.json");
+const EXEMPTIONS_PATH = resolve(
+  REPO_ROOT,
+  process.env.COVERAGE_FLOOR_EXEMPTIONS_PATH || "scripts/coverage-floor-exemptions.txt",
+);
 
 const MIN_STATEMENTS = 30;
 const FAIL_BELOW_PCT = 80.0;
