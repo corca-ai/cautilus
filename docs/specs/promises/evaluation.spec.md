@@ -19,7 +19,7 @@ Implemented by [implemented-by::Evaluation Surfaces And Runners](../contracts/ev
 
 This is not a projected bundle.
 `npm run proof:behavior-eval:live` (`scripts/on-demand/behavior-eval-live-proof.mjs`) drives the real agent (claude/Sonnet) against this repo's own `AGENTS.md` and asserts the stable cross-runtime routing invariant on a FRESH capture — it orients on `AGENTS.md` and routes to the correct durable work skill (`charness:impl`); a blind Sonnet judge graded the genuine live reasoning sound and a constructed wrong-reason control unsound, keeping the judge load-bearing.
-The invariant is the durable floor that survived the 2026-07-16 find-skills retirement realign ([find-skills-retirement-realign](../../contracts/find-skills-retirement-realign.md)): find-skills was retired upstream 2026-07-13, so under the current `charness catalog list` convention the live agent issues no mandatory startup bootstrap (`bootstrapHelper: none`), and the pinned dimension is the work-skill route rather than a bootstrap token.
+Under the current `charness catalog list` convention the live agent issues no mandatory startup bootstrap (`bootstrapHelper: none`), and the pinned dimension is the work-skill route (`charness:impl`); the [find-skills-retirement-realign](../../contracts/find-skills-retirement-realign.md) decision records the realign that established this durable floor.
 The check below — run by `npm run lint:specs`, on demand rather than in the default `npm run verify` — projects two operator-witnessed live captures and their blind verdicts so the displayed invariant matches the graded one, while the live agent run stays behind `npm run proof:behavior-eval:live`.
 
 > check:cautilus-json-file
