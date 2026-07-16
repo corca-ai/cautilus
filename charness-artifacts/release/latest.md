@@ -37,14 +37,20 @@ Non-breaking improvements bundled in:
 ## Release State
 
 - local release mutation: complete (version synced across package.json, lockfile, Claude marketplace, Claude plugin, Codex plugin)
-- branch/tag push: pending — to be executed and recorded in the publish slice
-- GitHub release record: pending
-- public release surface verification: pending
-- audit narrative: this durable record, finalized with the closeout slice after public readback
+- branch/tag push: complete (origin/main and tag `v0.20.0` at `d6833bf5`)
+- GitHub release record: verified URL `https://github.com/corca-ai/cautilus/releases/tag/v0.20.0`
+- public release surface verification: verified
+- audit narrative: this durable record, committed with the closeout slice
+- first publish attempt note: an earlier attempt fail-safed on the worktree-unchanged guard because a concurrent goal-artifact edit dirtied the tree mid guarded-push; nothing was pushed on that attempt (no tag, origin/main unchanged), and the clean-tree retry pushed the exact reviewed HEAD.
 
 ## Public Release Verification
 
-- pending — the workflow completion, seven assets + checksums + attestation, distinct-channel HTTPS readback, and install smoke are recorded here after publish; no public-proof claim is made until then.
+- GitHub Actions `release-artifacts` run `29486505150` completed successfully; its in-workflow `verify-public-release` job passed (12s).
+- `node scripts/release/verify-public-release.mjs --version v0.20.0` returned `status: ok`.
+- Distinct-channel verdict: HTTP `200` on the release URL via `https` (a channel distinct from `gh release view`).
+- Seven assets uploaded: four platform archives, the binary checksum manifest (`cautilus-v0.20.0-checksums.txt`), the source checksum (`cautilus-v0.20.0.sha256`), and provenance release notes.
+- Install smoke: `npm run release:smoke-install:current -- --skip-update` returned `ok: true`; the install.sh-installed binary returned `0.20.0`.
+- GitHub attestation verification succeeded for the Linux x64 archive (sha256 `691171368aee757582a0c5c90c944c32174a41c5e2e0381510ee06819ae696f1`), binding it to the release tag workflow and commit.
 
 ## Non-Claims
 
