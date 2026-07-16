@@ -1,6 +1,6 @@
 # Achieve Goal: Sixth autonomous Cautilus improvement and breaking-rename release
 
-Status: active
+Status: complete
 Created: 2026-07-16
 Activation: `/goal @charness-artifacts/goals/2026-07-16-sixth-autonomous-improvement-release.md`
 
@@ -9,10 +9,10 @@ runs the activation command.
 
 ## Active Operating Frame
 
-- Current slice: slice 7 — push, publish, and verify v0.20.0.
-- Current slice intent: publish the reviewed bundle (branch + minor tag) and record real public proof; then slice 8 closeout.
-- Next action: re-run `publish-release.mjs --version 0.20.0` on a fully static tree (the first attempt fail-safed because a concurrent slice-6-log append dirtied the goal artifact mid guarded-push; nothing was pushed — origin/main still a662af99, no tag). Do NOT edit the worktree while the publish runs.
-- Note: slice-2 floor removal was folded via autosquash rebase; hashes below are post-rebase, with a final reconciliation at closeout.
+- Current slice: slice 8 — final quality, retro, handoff, and goal closeout.
+- Current slice intent: v0.20.0 is published and publicly verified; now record final verification, run the retro, refresh the handoff, and mark the goal complete.
+- Next action: reconcile the slice-2 log hash, fill Final Verification, run `charness:retro`, update the handoff, then flip status to complete and push the audit-only closeout commits.
+- Note: slice-2 floor removal was folded via autosquash rebase; the slice-2 log Commits line is reconciled to the post-rebase hash `dff6a1cd`.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at closeout.
 - Gate cadence: focused owner checks (`go test`, `node --test`, `npm run lint`) at commit boundaries; `npm run verify`, `npm run hooks:check`, release surface packet, and public proof at the final bundle boundary.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -80,7 +80,7 @@ What the user can do to verify completion directly.
 | 4 | Doc/spec self-consistency: README `skill-experiment` token + `evaluation.spec.md` current-tense | Front-door invocation drift + a user-facing promise violating the repo's own current-tense prose rule | `npm run lint` links/specs, `docs:preview:changed` snapshot | complete (7719f358) |
 | 5 | Breaking rename `workbench_instance_catalog.v1` → `live_target_catalog.v1` with actionable rejecting error | User-licensed vocab-leak fix aligning schema with `discover live-targets`; frees `workbench` for the reserved GUI name | rename tests, golden-string updates, delegated critique, `verify` | complete (61ff4f59, ae39db6a) |
 | 6 | Prepare and critique minor release `0.20.0` | Accumulated bundle includes a breaking consumer schema rename (pre-1.0 breaking = minor) | synced surfaces, surface packet, delegated critique, dry-run | complete (9b2917a9, dfcd7e2a) |
-| 7 | Push, publish, and distinctly verify the release | User explicitly requested remote completion for the bundle | branch/tag, workflow, public assets, install/readback evidence | pending |
+| 7 | Push, publish, and distinctly verify the release | User explicitly requested remote completion for the bundle | branch/tag, workflow, public assets, install/readback evidence | complete (d6833bf5, tag v0.20.0) |
 | 8 | Final quality, retro, handoff, and goal closeout | Preserve honest proof and remaining risks | broad gates, durable artifacts, clean synchronized state | pending |
 
 ## Operator Decision Queue
@@ -98,6 +98,7 @@ model judgment — never a hard-coded phase-to-skill list here.
 
 - Routing: achieve owns the goal lifecycle; impl carries the fix/rename slices; debug fronts the two reproduced bug fixes; quality sets verification cadence; critique + `charness:bounded-reviewer` carry the breaking-rename and final-release fresh-eye passes; release owns the minor bump and publish — this run needs disciplined repair, an auditable lifecycle, and irreversible-boundary proof.
 - Gather: n/a — no external source is needed; discovery ran over local repo state only.
+- Release: `charness-artifacts/release/latest.md` records the `v0.20.0` publication, workflow run `29486505150`, 7 assets, install/attestation proof, and the breaking-change migration note.
 
 ## Discuss Before Activation
 
@@ -123,7 +124,7 @@ model judgment — never a hard-coded phase-to-skill list here.
 
 - Objective: Delete orphaned exported Go dead code and its 0% coverage floor.
 - Why this approach: CheckGitHooks/InstallGitHooks had no non-test caller; node scripts own the hook surface. fileExists lives in helpers.go so the file's deletion is self-contained.
-- Commits: 8c25e161
+- Commits: dff6a1cd (post-autosquash; the pre-rebase 8c25e161 that this log first recorded was folded)
 - What changed: Deleted internal/runtime/git_hooks.go; removed its scripts/coverage-floor.json entry (144 -> 143).
 - Alternatives rejected: Wire it into doctor/init instead (rejected: no evidence anyone wants that surface; a separate larger decision, not a ready slice).
 - Targeted verification: grep confirms callerless; go build ./... + go vet ./internal/{runtime,app}/... green; regenerated coverage.json no longer lists the file; floor gate OK 143 floored.
@@ -189,6 +190,20 @@ model judgment — never a hard-coded phase-to-skill list here.
 - Lessons carried forward:
 - Metrics:
 
+### Slice 7: Publish and verify v0.20.0 (slice 7)
+
+- Objective: Push the reviewed bundle and prove the public release surface.
+- Why this approach: User-authorized final push + minor tag; verify workflow, assets, attestation, and install readback before claiming completion.
+- Commits: d6833bf5 (tag v0.20.0), plus audit-doc-only post-tag commits
+- What changed: Pushed origin/main + tag v0.20.0; finalized charness-artifacts/release/latest.md with public proof.
+- Alternatives rejected: Wait for the publish script to poll the workflow (it returns after push by design); instead watched the run via gh and verified independently.
+- Targeted verification: gh run 29486505150 success (release-artifacts + verify-public-release 12s); verify-public-release status ok; HTTP 200 distinct channel; 7 assets; install smoke 0.20.0 ok:true; attestation verified linux x64 sha256 691171368aee.
+- Test duplication pressure: None — publish/verify slice, no test changes.
+- Critique:
+- Off-goal findings: Publish attempt 1 fail-safed on the worktree-unchanged guard because a concurrent slice-6-log append dirtied the goal artifact mid guarded-push. Root cause: editing the worktree during a guarded publish. Nothing was pushed (origin/main unchanged, no tag). Fixed by committing the tree and retrying static; captured as a next-time lesson (do not mutate the worktree while a guarded publish runs).
+- Lessons carried forward:
+- Metrics:
+
 ## Context Sources
 
 Durable references this goal was shaped from. A fresh session can reconstruct
@@ -234,9 +249,15 @@ retro / host-log probe / disposition-review artifact) or an explicit
 `skipped: <allowed-reason>: <detail>`. The complete gate rejects a literal
 `TODO` / `<path>` / `TBD` until you do.
 
-Retro: TODO — create or explicitly skip with an allowed reason before complete
-Host log probe: TODO — create or explicitly skip with an allowed reason before complete
-Disposition review: TODO — create or explicitly skip only when policy allows before complete
+Retro: charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md
+Host log probe: skipped: host-log-not-exposed: this Claude Code session exposes no codex-style host turn/token/tool-call log to bind a probe artifact to, so the prior goals' codex session-file probe is unavailable here.
+Disposition review: charness-artifacts/critique/2026-07-16-sixth-autonomous-improvement-release-disposition.md
+
+- Public proof: GitHub Actions run `29486505150` success (release-artifacts + in-workflow verify-public-release); 7 assets + checksums; independent verifier `status: ok`; distinct-channel HTTP 200; install.sh readback `0.20.0`; Linux x64 attestation verified (sha256 `691171368aee757582a0c5c90c944c32174a41c5e2e0381510ee06819ae696f1`).
+- Local proof: broad `npm run verify` green on the bundled and prepared trees; `.githooks/pre-push` (verify 32.95s + generated-drift) green; `hooks:check` ready; `test:on-demand` pass; two delegated `charness:bounded-reviewer` critiques.
+- Bundle: tag `v0.20.0` at `d6833bf5`; post-tag commits are audit-doc-only (release-record finalization, goal bookkeeping, retro, working-patterns) with no runtime-affecting post-tag change, so no re-release is required.
+- Residual risk: the schema rename is a hard break with no compat shim (disclosed via actionable error + migration note + rollback); 47 warn-only claim-evidence bindings remain (unchanged, human-triage path preserved); no native macOS or provider/live proof.
+- Non-claims: no provider/live evaluator or macOS execution proof; the SemVer prerelease fix is dormant today; the claim refresh folded only legitimate source changes and did not launder the 47 bindings.
 
 ## User Verification Instructions
 
@@ -247,5 +268,5 @@ Disposition review: TODO — create or explicitly skip only when policy allows b
 
 ## Auto-Retro
 
-Retro dispositions: TODO — disposition every surfaced improvement, or record the explicit no-improvement opt-out
-Structural follow-up: TODO — when the retro names a transferable waste item (a `## Sibling Search` trigger), classify its structural destination (`applied: <gate/hook/validator/test/contract change>` / `issue #N (recurs:|novel: <reason>)` / `repo-local guard: <path>` / `none — <reason>`); delete this line when no transferable waste was named
+Retro dispositions: applied: recorded two operating patterns (guarded external commands open a worktree-freeze window; verify staging after a multi-pathspec `git add`) in `docs/internal/working-patterns.md`, and the retro digest `charness-artifacts/retro/recent-lessons.md` was refreshed from the durable artifact.
+Structural follow-up: repo-local guard: docs/internal/working-patterns.md — the transferable "mutate the worktree during a guarded command" waste is now a durable operating pattern; no new gate is warranted because `guard-worktree-unchanged.mjs` already enforces the freeze correctly (the gap was operating discipline, not tooling).

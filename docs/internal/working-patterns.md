@@ -166,6 +166,19 @@ host 가 subagent spawning 을 막으면 same-agent pass 로 대체하지 말고
   매 커밋마다 unpushed count 를 업데이트하면 off-by-one 정정 마이크로 커밋이 쌓인다.
   슬라이스 전부 끝내고 푸시 직전 한 번 정리하거나, 아예 push 까지 세션 안에서 끝내는 것이 낫다.
 
+## 가드된 외부 명령 및 Git 스테이징
+
+2026-07-16 세션(여섯 번째 자율 개선 + `v0.20.0`)에서 실측한 두 재발 함정.
+
+- **가드된 외부 명령이 도는 동안 워크트리를 건드리지 말 것.**
+  `publish-release.mjs`, `.githooks/pre-push`, 그 밖에 `guard-worktree-unchanged.mjs` 를 감싸는 명령은 실행 전후 워크트리를 스냅샷해 변경을 감지하면 fail-safe 한다.
+  publish 도중 goal 아티팩트에 슬라이스 로그를 append 했다가 이 가드가 트립되어 첫 publish 가 실패했다(다행히 아무것도 푸시되지 않음).
+  가드된 명령은 **워크트리 freeze 창** 으로 취급한다: 모든 bookkeeping 을 그 창 이전이나 이후로 몰고, 명령이 끝날 때까지 어떤 파일도 수정하지 않는다.
+- **`git add` 는 pathspec 하나가 안 맞으면 원자적으로 실패한다.**
+  `git rm` 으로 이미 삭제-스테이징된 파일을 다시 `git add <deleted-path> <other>` 에 넣으면 add 전체가 fatal 로 죽어 `<other>` 도 스테이징되지 않는다.
+  그 상태로 커밋하면 의도한 변경(예: 삭제된 파일의 coverage-floor 엔트리 제거)이 빠진 불일치 커밋이 만들어진다.
+  다중 pathspec `git add` 뒤에는 커밋 전에 `git status --short` 로 스테이징을 확인하거나, 삭제는 `git add -A <dir>` / `git commit -a` 로 처리한다.
+
 ## Premortem Hazards
 
 항상 의식해야 하는 함정들.

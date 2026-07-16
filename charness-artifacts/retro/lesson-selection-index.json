@@ -10,9 +10,9 @@
     "recurrence_multiplier": "1 + alpha_t * max(0, source_count - 1)",
     "alpha_t": "alpha_base * min(1, source_count / warmup_n)"
   },
-  "as_of_source_date": "2026-07-11",
-  "source_artifact_count": 30,
-  "candidate_count": 103,
+  "as_of_source_date": "2026-07-16",
+  "source_artifact_count": 31,
+  "candidate_count": 111,
   "top_candidates": [
     {
       "candidate_id": "next_improvement:a4fd08fcd3e9",
@@ -22,10 +22,10 @@
       "source_count": 4,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.28,
-      "selection_weight": 1.84,
+      "selection_weight": 1.4365,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md",
@@ -57,10 +57,10 @@
       "source_count": 4,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.28,
-      "selection_weight": 1.84,
+      "selection_weight": 1.4365,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md",
@@ -85,6 +85,166 @@
       ]
     },
     {
+      "candidate_id": "current_focus:bc3fafea6075",
+      "kind": "current_focus",
+      "lesson": "Autonomous improvement run against `charness-artifacts/goals/2026-07-16-sixth-autonomous-improvement-release.md`.",
+      "normalized_key": "autonomous improvement run against charness artifacts goals 2026 07 16 sixth autonomous improvement release",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:c2eee138382b",
+      "kind": "next_improvement",
+      "lesson": "after a multi-pathspec `git add`, confirm staging with `git status --short` before committing (or stage deletions via `git add -A <dir>`/`git commit -a`); `git add` fails atomically on a missing pathspec and can silently leave intended changes unstaged.",
+      "normalized_key": "after a multi pathspec git add confirm staging with git status short before committing",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4d7706cbab86",
+      "kind": "next_improvement",
+      "lesson": "do not mutate the worktree (goal artifact or any file) while a guarded external command (`publish-release.mjs`, `.githooks/pre-push`, anything wrapping `guard-worktree-unchanged.mjs`) is running; batch all bookkeeping strictly before or after the guarded window.",
+      "normalized_key": "do not mutate the worktree goal artifact or any file while a guarded external",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:a2505124b4c2",
+      "kind": "next_improvement",
+      "lesson": "none — both are operating-discipline lessons, not gate gaps; the existing guard already caught the drift correctly.",
+      "normalized_key": "none both are operating discipline lessons not gate gaps the existing guard already caught",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:3709a8fa207c",
+      "kind": "next_improvement",
+      "lesson": "record both patterns in `docs/internal/working-patterns.md` so the next session inherits them.",
+      "normalized_key": "record both patterns in docs internal working patterns md so the next session inherits",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:55acd789c1bc",
+      "kind": "repeat_trap",
+      "lesson": "`git add` atomic-fail race: in slice 2 I ran `git add -A scripts/coverage-floor.json internal/runtime/git_hooks.go`, but `git rm` had already staged the deletion, so the bare `git_hooks.go` pathspec made `git add` fail atomically — silently leaving the floor-json removal unstaged. The resulting commit deleted the file but kept its floor entry (an inconsistent commit my own slice-1 fail-closed fix would flag), needing an autosquash rebase to fold the fix into the right commit. Root cause: not checking the staging result before committing, plus `git add`'s all-or-nothing pathspec behavior.",
+      "normalized_key": "git add atomic fail race in slice 2 i ran git add a scripts",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:b15efac4de90",
+      "kind": "repeat_trap",
+      "lesson": "Guarded-publish worktree drift: I appended a slice-6 log (a goal-artifact edit) WHILE the `publish-release.mjs` guarded push was running; `guard-worktree-unchanged.mjs` correctly detected the mid-flight change and fail-safed the push. Nothing was pushed (origin/main unchanged, no tag), but it cost one full publish retry. Root cause: mutating the worktree during a guarded external command.",
+      "normalized_key": "guarded publish worktree drift i appended a slice 6 log a goal artifact edit",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:0d69f530b8c0",
+      "kind": "repeat_trap",
+      "lesson": "Non-Goal premise error (net-positive): the plan forbade `claims:refresh:all` on the counterweight's assumption it would launder the 47 broken evidence bindings, but the doc edits are tracked claim sources so a refresh is the repo's prescribed action. This forced a mid-run investigation — which was itself valuable, empirically confirming the refresh does NOT re-pin the evidence bundles (warningCount stayed 47, no status flip).",
+      "normalized_key": "non goal premise error net positive the plan forbade claims refresh all on the",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
       "candidate_id": "current_focus:896b2569c773",
       "kind": "current_focus",
       "lesson": "Release publish triggered a configured automatic session retro for `v0.19.2`.",
@@ -92,10 +252,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-2-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-v0-19-2-release-auto-retro.md",
@@ -112,175 +272,15 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
           "date": "2026-07-11",
           "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:da53b9b85470",
-      "kind": "current_focus",
-      "lesson": "The user asked for autonomous repository improvement without push.",
-      "normalized_key": "the user asked for autonomous repository improvement without push",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-          "date": "2026-07-11",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:fb2a1651c621",
-      "kind": "current_focus",
-      "lesson": "The user requested another autonomous Cautilus improvement pass across bugs, test speed, and code quality without push.",
-      "normalized_key": "the user requested another autonomous cautilus improvement pass across bugs test speed and code",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
-          "date": "2026-07-11",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:d261c72495ac",
-      "kind": "current_focus",
-      "lesson": "The user requested another two-hour autonomous pass across bugs, test speed, and code quality without publication.",
-      "normalized_key": "the user requested another two hour autonomous pass across bugs test speed and code",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
-          "date": "2026-07-11",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:a63835378585",
-      "kind": "current_focus",
-      "lesson": "This retro reviews four bounded reliability and runtime-economics slices plus the publication and public verification of Cautilus `v0.19.3`.",
-      "normalized_key": "this retro reviews four bounded reliability and runtime economics slices plus the publication and",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
-          "date": "2026-07-11",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "current_focus:a0cef53e4c4c",
-      "kind": "current_focus",
-      "lesson": "This retro reviews goal `third-autonomous-two-hour-improvement-release`: a measured autonomous pass that landed correctness, mutation-safety, direct-testability, and focused test-economics changes, then published and verified `v0.19.2`.",
-      "normalized_key": "this retro reviews goal third autonomous two hour improvement release a measured autonomous pass",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
-          "date": "2026-07-11",
-          "section": "Context"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:268f7f193174",
-      "kind": "next_improvement",
-      "lesson": "applied — code-point semantics and malformed JavaScript-string handling now have deterministic cross-language tests.",
-      "normalized_key": "applied code point semantics and malformed javascript string handling now have deterministic cross language",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
-          "date": "2026-07-11",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:9f31a76096e7",
-      "kind": "next_improvement",
-      "lesson": "applied — `docs/maintainers/releasing.md` now preserves an early 404, waits for both workflow jobs, reruns the same install readback, and forbids page-only readiness claims.",
-      "normalized_key": "applied docs maintainers releasing md now preserves an early 404 waits for both workflow",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
-          "date": "2026-07-11",
-          "section": "Next Improvements"
-        }
-      ]
-    },
-    {
-      "candidate_id": "next_improvement:57d893ecf72a",
-      "kind": "next_improvement",
-      "lesson": "applied — normal durable quality runs now refresh existing runtime evidence before self-dogfood.",
-      "normalized_key": "applied normal durable quality runs now refresh existing runtime evidence before self dogfood",
-      "source_count": 1,
-      "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-      "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
-      "alpha": 0.07,
-      "selection_weight": 1.0,
-      "sources": [
-        {
-          "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
-          "date": "2026-07-11",
-          "section": "Next Improvements"
         }
       ]
     }
@@ -294,10 +294,10 @@
       "source_count": 4,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.28,
-      "selection_weight": 1.84,
+      "selection_weight": 1.4365,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md",
@@ -329,10 +329,10 @@
       "source_count": 4,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.28,
-      "selection_weight": 1.84,
+      "selection_weight": 1.4365,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md",
@@ -357,6 +357,166 @@
       ]
     },
     {
+      "candidate_id": "current_focus:bc3fafea6075",
+      "kind": "current_focus",
+      "lesson": "Autonomous improvement run against `charness-artifacts/goals/2026-07-16-sixth-autonomous-improvement-release.md`.",
+      "normalized_key": "autonomous improvement run against charness artifacts goals 2026 07 16 sixth autonomous improvement release",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Context"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:c2eee138382b",
+      "kind": "next_improvement",
+      "lesson": "after a multi-pathspec `git add`, confirm staging with `git status --short` before committing (or stage deletions via `git add -A <dir>`/`git commit -a`); `git add` fails atomically on a missing pathspec and can silently leave intended changes unstaged.",
+      "normalized_key": "after a multi pathspec git add confirm staging with git status short before committing",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:4d7706cbab86",
+      "kind": "next_improvement",
+      "lesson": "do not mutate the worktree (goal artifact or any file) while a guarded external command (`publish-release.mjs`, `.githooks/pre-push`, anything wrapping `guard-worktree-unchanged.mjs`) is running; batch all bookkeeping strictly before or after the guarded window.",
+      "normalized_key": "do not mutate the worktree goal artifact or any file while a guarded external",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:a2505124b4c2",
+      "kind": "next_improvement",
+      "lesson": "none — both are operating-discipline lessons, not gate gaps; the existing guard already caught the drift correctly.",
+      "normalized_key": "none both are operating discipline lessons not gate gaps the existing guard already caught",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "next_improvement:3709a8fa207c",
+      "kind": "next_improvement",
+      "lesson": "record both patterns in `docs/internal/working-patterns.md` so the next session inherits them.",
+      "normalized_key": "record both patterns in docs internal working patterns md so the next session inherits",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Next Improvements"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:55acd789c1bc",
+      "kind": "repeat_trap",
+      "lesson": "`git add` atomic-fail race: in slice 2 I ran `git add -A scripts/coverage-floor.json internal/runtime/git_hooks.go`, but `git rm` had already staged the deletion, so the bare `git_hooks.go` pathspec made `git add` fail atomically — silently leaving the floor-json removal unstaged. The resulting commit deleted the file but kept its floor entry (an inconsistent commit my own slice-1 fail-closed fix would flag), needing an autosquash rebase to fold the fix into the right commit. Root cause: not checking the staging result before committing, plus `git add`'s all-or-nothing pathspec behavior.",
+      "normalized_key": "git add atomic fail race in slice 2 i ran git add a scripts",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:b15efac4de90",
+      "kind": "repeat_trap",
+      "lesson": "Guarded-publish worktree drift: I appended a slice-6 log (a goal-artifact edit) WHILE the `publish-release.mjs` guarded push was running; `guard-worktree-unchanged.mjs` correctly detected the mid-flight change and fail-safed the push. Nothing was pushed (origin/main unchanged, no tag), but it cost one full publish retry. Root cause: mutating the worktree during a guarded external command.",
+      "normalized_key": "guarded publish worktree drift i appended a slice 6 log a goal artifact edit",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
+      "candidate_id": "repeat_trap:0d69f530b8c0",
+      "kind": "repeat_trap",
+      "lesson": "Non-Goal premise error (net-positive): the plan forbade `claims:refresh:all` on the counterweight's assumption it would launder the 47 broken evidence bindings, but the doc edits are tracked claim sources so a refresh is the repo's prescribed action. This forced a mid-run investigation — which was itself valuable, empirically confirming the refresh does NOT re-pin the evidence bundles (warningCount stayed 47, no status flip).",
+      "normalized_key": "non goal premise error net positive the plan forbade claims refresh all on the",
+      "source_count": 1,
+      "latest_source_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+      "latest_source_date": "2026-07-16",
+      "age_days": 0,
+      "recency_weight": 1.0,
+      "alpha": 0.07,
+      "selection_weight": 1.0,
+      "sources": [
+        {
+          "artifact_path": "charness-artifacts/retro/2026-07-16-sixth-autonomous-improvement-and-v0-20-0-breaking-rename-release.md",
+          "date": "2026-07-16",
+          "section": "Waste"
+        }
+      ]
+    },
+    {
       "candidate_id": "current_focus:896b2569c773",
       "kind": "current_focus",
       "lesson": "Release publish triggered a configured automatic session retro for `v0.19.2`.",
@@ -364,10 +524,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-2-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-v0-19-2-release-auto-retro.md",
@@ -384,10 +544,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-v0-19-3-release-auto-retro.md",
@@ -404,10 +564,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
@@ -424,10 +584,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
@@ -444,10 +604,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
@@ -464,10 +624,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
@@ -484,10 +644,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
@@ -504,10 +664,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-second-autonomous-repo-improvement-retro.md",
@@ -524,10 +684,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
@@ -544,10 +704,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
@@ -564,10 +724,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
@@ -584,10 +744,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
@@ -604,10 +764,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
@@ -624,10 +784,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-session-retro.md",
@@ -644,10 +804,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
@@ -664,10 +824,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
@@ -684,10 +844,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
@@ -704,10 +864,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-third-autonomous-two-hour-improvement-release-retro.md",
@@ -724,10 +884,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
@@ -744,10 +904,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fourth-autonomous-two-hour-improvement-retro.md",
@@ -764,10 +924,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
       "latest_source_date": "2026-07-11",
-      "age_days": 0,
-      "recency_weight": 1.0,
+      "age_days": 5,
+      "recency_weight": 0.7807,
       "alpha": 0.07,
-      "selection_weight": 1.0,
+      "selection_weight": 0.7807,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-11-fifth-autonomous-two-hour-improvement-release-retro.md",
@@ -784,10 +944,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
@@ -804,10 +964,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
@@ -824,10 +984,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
@@ -844,10 +1004,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
@@ -864,10 +1024,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
@@ -884,10 +1044,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
@@ -904,10 +1064,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
@@ -924,10 +1084,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
@@ -944,10 +1104,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
@@ -964,10 +1124,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
@@ -984,10 +1144,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
@@ -1004,10 +1164,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
@@ -1024,10 +1184,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
@@ -1044,10 +1204,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
@@ -1064,10 +1224,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
@@ -1084,10 +1244,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
@@ -1104,10 +1264,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-third-five-autonomous-improvement-cycles-retro.md",
@@ -1124,10 +1284,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
@@ -1144,10 +1304,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-cli-default-yaml-format-release-retro.md",
@@ -1164,10 +1324,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-five-autonomous-improvement-cycles-retro.md",
@@ -1184,10 +1344,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
@@ -1204,10 +1364,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-second-five-autonomous-improvement-cycles-retro.md",
@@ -1224,10 +1384,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-session-retro.md",
@@ -1244,10 +1404,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
       "latest_source_date": "2026-07-09",
-      "age_days": 2,
-      "recency_weight": 0.9057,
+      "age_days": 7,
+      "recency_weight": 0.7071,
       "alpha": 0.07,
-      "selection_weight": 0.9057,
+      "selection_weight": 0.7071,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-09-fourth-five-autonomous-improvement-cycles-retro.md",
@@ -1264,10 +1424,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-08-v0-18-1-release-auto-retro.md",
       "latest_source_date": "2026-07-08",
-      "age_days": 3,
-      "recency_weight": 0.862,
+      "age_days": 8,
+      "recency_weight": 0.673,
       "alpha": 0.07,
-      "selection_weight": 0.862,
+      "selection_weight": 0.673,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-08-v0-18-1-release-auto-retro.md",
@@ -1284,10 +1444,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
       "latest_source_date": "2026-07-08",
-      "age_days": 3,
-      "recency_weight": 0.862,
+      "age_days": 8,
+      "recency_weight": 0.673,
       "alpha": 0.07,
-      "selection_weight": 0.862,
+      "selection_weight": 0.673,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
@@ -1304,10 +1464,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
       "latest_source_date": "2026-07-08",
-      "age_days": 3,
-      "recency_weight": 0.862,
+      "age_days": 8,
+      "recency_weight": 0.673,
       "alpha": 0.07,
-      "selection_weight": 0.862,
+      "selection_weight": 0.673,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
@@ -1324,10 +1484,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
       "latest_source_date": "2026-07-08",
-      "age_days": 3,
-      "recency_weight": 0.862,
+      "age_days": 8,
+      "recency_weight": 0.673,
       "alpha": 0.07,
-      "selection_weight": 0.862,
+      "selection_weight": 0.673,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
@@ -1344,10 +1504,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
       "latest_source_date": "2026-07-08",
-      "age_days": 3,
-      "recency_weight": 0.862,
+      "age_days": 8,
+      "recency_weight": 0.673,
       "alpha": 0.07,
-      "selection_weight": 0.862,
+      "selection_weight": 0.673,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-07-08-session-retro.md",
@@ -1604,10 +1764,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md",
       "latest_source_date": "2026-06-22",
-      "age_days": 19,
-      "recency_weight": 0.3904,
+      "age_days": 24,
+      "recency_weight": 0.3048,
       "alpha": 0.07,
-      "selection_weight": 0.3904,
+      "selection_weight": 0.3048,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-06-22-v0-17-1-release-auto-retro.md",
@@ -1624,10 +1784,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1644,10 +1804,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1664,10 +1824,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1684,10 +1844,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1704,10 +1864,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1724,10 +1884,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1744,10 +1904,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1764,10 +1924,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1784,10 +1944,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1804,10 +1964,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
       "latest_source_date": "2026-05-13",
-      "age_days": 59,
-      "recency_weight": 0.0539,
+      "age_days": 64,
+      "recency_weight": 0.0421,
       "alpha": 0.07,
-      "selection_weight": 0.0539,
+      "selection_weight": 0.0421,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-05-13-subagent-release-audit-retro.md",
@@ -1824,10 +1984,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1844,10 +2004,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1864,10 +2024,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1884,10 +2044,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1904,10 +2064,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1924,10 +2084,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1944,10 +2104,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1964,10 +2124,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -1984,10 +2144,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -2004,10 +2164,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -2024,10 +2184,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/hitl-terminology-drift.md",
       "latest_source_date": "2026-05-08",
-      "age_days": 64,
-      "recency_weight": 0.0421,
+      "age_days": 69,
+      "recency_weight": 0.0328,
       "alpha": 0.07,
-      "selection_weight": 0.0421,
+      "selection_weight": 0.0328,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/hitl-terminology-drift.md",
@@ -2044,10 +2204,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2064,10 +2224,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2084,10 +2244,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2104,10 +2264,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2124,10 +2284,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2144,10 +2304,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2164,10 +2324,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2184,10 +2344,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2204,10 +2364,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2224,10 +2384,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2244,10 +2404,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2264,10 +2424,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2284,10 +2444,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2304,10 +2464,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2324,10 +2484,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2344,10 +2504,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
@@ -2364,10 +2524,10 @@
       "source_count": 1,
       "latest_source_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
       "latest_source_date": "2026-04-24",
-      "age_days": 78,
-      "recency_weight": 0.021,
+      "age_days": 83,
+      "recency_weight": 0.0164,
       "alpha": 0.07,
-      "selection_weight": 0.021,
+      "selection_weight": 0.0164,
       "sources": [
         {
           "artifact_path": "charness-artifacts/retro/2026-04-24-debug-first-and-measurement-gates.md",
