@@ -9,9 +9,10 @@ runs the activation command.
 
 ## Active Operating Frame
 
-- Current slice: slice 3 — fix the SemVer prerelease lexical compare in `version.go`.
-- Current slice intent: land evidence-backed non-breaking correctness/gate/doc fixes (slices 1–4), then the one user-licensed breaking schema rename (slice 5), then cut and verify the lightest honest minor release containing all accumulated commits.
-- Next action: reproduce `CompareVersions("1.0.0-rc.10","1.0.0-rc.2")` returning the wrong sign red-first, then implement identifier-wise numeric compare.
+- Current slice: slice 5 — breaking rename `workbench_instance_catalog.v1` → `live_target_catalog.v1`.
+- Current slice intent: Tier A (slices 1–4) landed and consistent; now land the one user-licensed breaking schema rename with an actionable rejecting error, then cut and verify the lightest honest minor release.
+- Next action: map the full blast radius (constants, emit/validate, golden test strings, docs), then rename in one slice and run a parent-delegated fresh-eye critique before `verify`.
+- Note: slice-2 floor removal was folded into its commit via autosquash rebase, so Tier A hashes below are post-rebase; a final hash reconciliation runs at closeout.
 - Verification cadence: cheap deterministic checks at commit boundaries; higher-cost or fresh-eye proof at slice boundaries; final broad/live proof at closeout.
 - Gate cadence: focused owner checks (`go test`, `node --test`, `npm run lint`) at commit boundaries; `npm run verify`, `npm run hooks:check`, release surface packet, and public proof at the final bundle boundary.
 - Slice review packet: before fresh-eye slice critique, provide intent, changed files and owning/generated surfaces, expected invariants, tests/proof, non-claims, out-of-scope lines, and reviewer questions.
@@ -74,9 +75,9 @@ What the user can do to verify completion directly.
 | Slice | Objective | Why Now | Expected Evidence | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Fix `check-coverage-floor.mjs` fail-open (floored-but-absent file silently unenforced) | MUST-FIX gate integrity: a floor gate that hides regressions defeats its own purpose | red→green fixture test, `npm run verify` clean | complete (f06f32d2) |
-| 2 | Delete dead `internal/runtime/git_hooks.go` and its 0% floor entry | Orphaned exported code with real side effects and no caller; node scripts own the hook surface | build + `verify` green, floor entry gone, grep confirms no caller | complete (8c25e161) |
-| 3 | Fix SemVer prerelease lexical compare in `version.go` (`rc.10 < rc.2`) | Genuine correctness bug on an exported fn driving update/self-install; tiny, red-first | `version_test.go` red→green with identifier-wise cases | pending |
-| 4 | Doc/spec self-consistency: README `skill-experiment` token + `evaluation.spec.md` current-tense | Front-door invocation drift + a user-facing promise violating the repo's own current-tense prose rule | `npm run lint` links/specs, `docs:preview:changed` snapshot | pending |
+| 2 | Delete dead `internal/runtime/git_hooks.go` and its 0% floor entry | Orphaned exported code with real side effects and no caller; node scripts own the hook surface | build + `verify` green, floor entry gone, grep confirms no caller | complete (dff6a1cd) |
+| 3 | Fix SemVer prerelease lexical compare in `version.go` (`rc.10 < rc.2`) | Genuine correctness bug on an exported fn driving update/self-install; tiny, red-first | `version_test.go` red→green with identifier-wise cases | complete (691b0f53) |
+| 4 | Doc/spec self-consistency: README `skill-experiment` token + `evaluation.spec.md` current-tense | Front-door invocation drift + a user-facing promise violating the repo's own current-tense prose rule | `npm run lint` links/specs, `docs:preview:changed` snapshot | complete (7719f358) |
 | 5 | Breaking rename `workbench_instance_catalog.v1` → `live_target_catalog.v1` with actionable rejecting error | User-licensed vocab-leak fix aligning schema with `discover live-targets`; frees `workbench` for the reserved GUI name | rename tests, golden-string updates, delegated critique, `verify` | pending |
 | 6 | Prepare and critique minor release `0.20.0` | Accumulated bundle includes a breaking consumer schema rename (pre-1.0 breaking = minor) | synced surfaces, surface packet, delegated critique, dry-run | pending |
 | 7 | Push, publish, and distinctly verify the release | User explicitly requested remote completion for the bundle | branch/tag, workflow, public assets, install/readback evidence | pending |
@@ -128,6 +129,34 @@ model judgment — never a hard-coded phase-to-skill list here.
 - Targeted verification: grep confirms callerless; go build ./... + go vet ./internal/{runtime,app}/... green; regenerated coverage.json no longer lists the file; floor gate OK 143 floored.
 - Test duplication pressure: None added — pure dead-code removal, no behavior to test.
 - Critique: n/a — verified callerless in-repo; delegated critique reserved for slice 5 + final bundle.
+- Off-goal findings:
+- Lessons carried forward:
+- Metrics:
+
+### Slice 3: SemVer prerelease compare fixed (slice 3)
+
+- Objective: Order prerelease versions per SemVer 11.4 instead of one lexical strings.Compare.
+- Why this approach: Split on '.', compare identifiers field-wise (numeric numerically via length-then-lexical to dodge overflow, numeric ranked below alphanumeric, larger set wins on equal prefix).
+- Commits: 691b0f53
+- What changed: internal/cli/version.go (comparePrerelease + comparePrereleaseIdentifier + isNumericIdentifier; line 194 now calls comparePrerelease); internal/cli/version_test.go (red-first 11.4 worked-example table).
+- Alternatives rejected: strconv.Atoi numeric compare (rejected: overflow risk on long identifiers); import a semver library (rejected: new dep for one comparator, against the existing-practice-first rule).
+- Targeted verification: Red-first table failed on rc.10/rc.2 and beta.2/beta.11; after fix full internal/cli package green, go vet clean.
+- Test duplication pressure: One table test added to the existing version_test.go; no new file.
+- Critique: n/a — small deterministic correctness fix; honest non-claim: dormant today since all shipped tags are plain.
+- Off-goal findings:
+- Lessons carried forward:
+- Metrics:
+
+### Slice 4: Doc/spec self-consistency (slice 4)
+
+- Objective: Point the README skill-experiment token at the real command path and restate a stale find-skills spec narrative in current tense.
+- Why this approach: README token must match the registry command surface; user-facing promise prose must obey the repo's own current-tense rule, leaving realign history to the linked decision contract.
+- Commits: 7719f358
+- What changed: README.md (skill-experiment compare -> cautilus evaluate skill-experiment); docs/specs/promises/evaluation.spec.md:22 (current-tense floor, history delegated to find-skills-retirement-realign).
+- Alternatives rejected: Also rewrite master-plan.md:65/87 (deferred: roadmap history is a defensible decision record, not workflow-behavior prose; expanding scope is churn).
+- Targeted verification: lint:specs 39 specs + specdown trace valid; lint:links 651 files ok; docs:preview:changed rendered README snapshot shows the corrected token (non-empty); invariant check fixtures unchanged.
+- Test duplication pressure: None — prose/token edits; existing spec check fixtures already assert the invariant.
+- Critique: n/a — deterministic doc hygiene; delegated critique reserved for slice 5 + final bundle.
 - Off-goal findings:
 - Lessons carried forward:
 - Metrics:
