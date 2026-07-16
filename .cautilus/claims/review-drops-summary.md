@@ -6,14 +6,14 @@ Use the JSON packet as the audit source; this document does not recover stale up
 ## Packet
 
 - Source claim packet: .cautilus/claims/evidenced-typed-runners.json
-- Source claim packet commit: 6f616c6a167190b1dba3e23c9a48b48bb74ccd08
+- Source claim packet commit: 8fbad961d44ff449a96484464ae10b68d2910fac
 - Source claim count: 576
 - Applied review results: 90
 - Skipped review results: 50
-- Kept updates: 222
+- Kept updates: 221
 - Rewritten updates: 151
-- Dropped updates: 306
-- Drop reasons: missing-fingerprint: 165, missing-live-fingerprint: 141
+- Dropped updates: 307
+- Drop reasons: missing-fingerprint: 165, missing-live-fingerprint: 142
 - Recorded samples: 20
 - Sample policy: bounded-reason-representation
 - Sample cap: 20
@@ -29,16 +29,16 @@ Use the JSON packet as the audit source; this document does not recover stale up
   - Sample coverage: 19/165; represented
   - Action: Do not infer-match this update; regenerate or re-review against the current claim packet so the update carries claimFingerprint.
   - Queue hint: Prepare fresh review-input for the currently live claims instead of carrying the stale update forward.
-- missing-live-fingerprint: 141 update(s)
+- missing-live-fingerprint: 142 update(s)
   - Class: stale-fingerprint
-  - Sample coverage: 1/141; represented
+  - Sample coverage: 1/142; represented
   - Action: Treat this as stale review debt; inspect whether the source claim was removed, rewritten, or should be reviewed again in the current packet.
   - Queue hint: Use the reviewResultPath and claimFingerprint to decide whether a focused review-input queue is warranted.
 
 ## Sample Coverage
 
 - missing-fingerprint: 19/165 recorded sample(s); represented
-- missing-live-fingerprint: 1/141 recorded sample(s); represented
+- missing-live-fingerprint: 1/142 recorded sample(s); represented
 
 ## Review Result Samples
 

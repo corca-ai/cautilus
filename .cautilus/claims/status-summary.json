@@ -3,12 +3,12 @@
     "crossCuttingSignals": [
       {
         "byEvidenceStatus": {
-          "unknown": 388
+          "unknown": 389
         },
         "byReviewStatus": {
-          "heuristic": 388
+          "heuristic": 389
         },
-        "count": 388,
+        "count": 389,
         "id": "heuristic-review-needed",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -24,12 +24,12 @@
     "primaryBuckets": [
       {
         "byEvidenceStatus": {
-          "satisfied": 140
+          "satisfied": 139
         },
         "byReviewStatus": {
-          "agent-reviewed": 140
+          "agent-reviewed": 139
         },
-        "count": 140,
+        "count": 139,
         "id": "already-satisfied",
         "recommendedActor": "none",
         "sampleClaimIds": [
@@ -43,14 +43,14 @@
       },
       {
         "byEvidenceStatus": {
-          "unknown": 121
+          "unknown": 122
         },
         "byReviewStatus": {
           "agent-reviewed": 2,
-          "heuristic": 118,
+          "heuristic": 119,
           "human-reviewed": 1
         },
-        "count": 121,
+        "count": 122,
         "id": "agent-add-deterministic-proof",
         "recommendedActor": "agent",
         "sampleClaimIds": [
@@ -192,8 +192,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 140,
-      "unknown": 436
+      "satisfied": 139,
+      "unknown": 437
     },
     "byLifecycle": {
       "new": 576
@@ -204,8 +204,8 @@
       "human-auditable": 148
     },
     "byReviewStatus": {
-      "agent-reviewed": 187,
-      "heuristic": 388,
+      "agent-reviewed": 186,
+      "heuristic": 389,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -424,7 +424,7 @@
     "traversal": "entry-markdown-links"
   },
   "evidenceSatisfaction": {
-    "satisfiedClaimCount": 140,
+    "satisfiedClaimCount": 139,
     "satisfiedClaims": [
       {
         "claimId": "claim-agents-md-141",
@@ -2544,25 +2544,6 @@
         "summary": "Every instance must expose a stable `instanceId` and a human-facing `displayLabel`."
       },
       {
-        "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
-        "evidenceRefCount": 1,
-        "evidenceRefs": [
-          {
-            "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
-            "kind": "cautilus-claim-evidence-bundle",
-            "matchKind": "verified",
-            "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
-            "supportsClaimIds": [
-              "claim-docs-contracts-workbench-instance-discovery-md-72"
-            ]
-          }
-        ],
-        "recommendedEvalSurface": null,
-        "recommendedProof": "deterministic",
-        "reviewStatus": "agent-reviewed",
-        "summary": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout."
-      },
-      {
         "claimId": "claim-docs-contracts-workbench-instance-discovery-md-101",
         "evidenceRefCount": 1,
         "evidenceRefs": [
@@ -3378,7 +3359,7 @@
       }
     ]
   },
-  "gitCommit": "6f616c6a167190b1dba3e23c9a48b48bb74ccd08",
+  "gitCommit": "8fbad961d44ff449a96484464ae10b68d2910fac",
   "gitState": {
     "changedFileCount": 0,
     "changedFiles": [],
@@ -3390,10 +3371,10 @@
     "changedSourceCount": 0,
     "changedSources": [],
     "comparisonStatus": "fresh",
-    "currentGitCommit": "6f616c6a167190b1dba3e23c9a48b48bb74ccd08",
+    "currentGitCommit": "8fbad961d44ff449a96484464ae10b68d2910fac",
     "headDrift": false,
     "isStale": false,
-    "packetGitCommit": "6f616c6a167190b1dba3e23c9a48b48bb74ccd08",
+    "packetGitCommit": "8fbad961d44ff449a96484464ae10b68d2910fac",
     "recommendedAction": "The claim packet commit matches the inspected checkout.",
     "workingTreePolicy": "excluded"
   },
@@ -3417,7 +3398,7 @@
     }
   ],
   "reviewReadinessSummary": {
-    "heuristicClaimsReadyForReview": 344,
+    "heuristicClaimsReadyForReview": 345,
     "needsAlignment": 55,
     "needsScenario": 2
   },

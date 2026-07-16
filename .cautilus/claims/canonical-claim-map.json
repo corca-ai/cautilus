@@ -4,7 +4,7 @@
   "inputs": {
     "claims": {
       "path": ".cautilus/claims/evidenced-typed-runners.json",
-      "contentHash": "sha256:b2a9ffcbfe624ed969d1594a0068a831a96dbb65fe030a1c2b939147c6e5b631"
+      "contentHash": "sha256:64be06703d900e0dd96f822d8b286dbc7028d2685f92879374c6d3f0e8d948af"
     },
     "userCatalog": {
       "path": "docs/specs/user/index.spec.md",
@@ -15,7 +15,7 @@
       "contentHash": "sha256:a6f61b85d4439fa76db8a8b35cfd5b0626d47614fc4611bcb4cea57827a31d91"
     }
   },
-  "claimsPacketGitCommit": "6f616c6a167190b1dba3e23c9a48b48bb74ccd08",
+  "claimsPacketGitCommit": "8fbad961d44ff449a96484464ae10b68d2910fac",
   "claimsPacketSchemaVersion": "cautilus.claim_proof_plan.v1",
   "claimsPacketCandidateCount": 576,
   "catalogs": {
@@ -2504,7 +2504,7 @@
         },
         {
           "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
-          "claimFingerprint": "sha256:45c8b516a2ba7c7bfc964136382d65a37d72da0ae53e01df28ca875ed8fe813f",
+          "claimFingerprint": "sha256:c4825e6d8b52c8082a7dc1060000806149b782c6ed77bb9be51cc3d3223c83eb",
           "mappingConfidence": "medium",
           "requiresSemanticReview": true
         },
@@ -2666,12 +2666,12 @@
         }
       ],
       "byEvidenceStatus": {
-        "satisfied": 16,
-        "unknown": 82
+        "satisfied": 15,
+        "unknown": 83
       },
       "byReviewStatus": {
-        "agent-reviewed": 27,
-        "heuristic": 71
+        "agent-reviewed": 26,
+        "heuristic": 72
       },
       "byRecommendedProof": {
         "cautilus-eval": 40,
@@ -17924,12 +17924,12 @@
     },
     {
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
-      "summary": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.",
+      "summary": "The command should print only `cautilus.live_target_catalog.v1` JSON to stdout.",
       "sourceRefs": [
         {
           "path": "docs/contracts/workbench-instance-discovery.md",
           "line": 72,
-          "excerpt": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout."
+          "excerpt": "The command should print only `cautilus.live_target_catalog.v1` JSON to stdout."
         }
       ],
       "disposition": "mapped-to-maintainer-canonical",
@@ -17937,13 +17937,13 @@
       "claimAudience": "developer",
       "recommendedProof": "deterministic",
       "verificationReadiness": "ready-for-proof",
-      "evidenceStatus": "satisfied",
-      "reviewStatus": "agent-reviewed",
-      "claimFingerprint": "sha256:45c8b516a2ba7c7bfc964136382d65a37d72da0ae53e01df28ca875ed8fe813f",
+      "evidenceStatus": "unknown",
+      "reviewStatus": "heuristic",
+      "claimFingerprint": "sha256:c4825e6d8b52c8082a7dc1060000806149b782c6ed77bb9be51cc3d3223c83eb",
       "canonicalClaimId": "M4",
-      "score": 7,
-      "runnerUpCanonicalClaimId": "M11",
-      "runnerUpScore": 7,
+      "score": 9,
+      "runnerUpCanonicalClaimId": "M8",
+      "runnerUpScore": 9,
       "scoreMargin": 0,
       "mappingConfidence": "medium",
       "requiresSemanticReview": true,
@@ -17952,10 +17952,12 @@
         "adapter",
         "command",
         "deterministic",
-        "discovery",
         "keep",
-        "live",
-        "test"
+        "packet",
+        "proof",
+        "readines",
+        "schema",
+        "thi"
       ]
     },
     {

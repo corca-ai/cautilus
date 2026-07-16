@@ -12649,22 +12649,11 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "claimFingerprint": "sha256:45c8b516a2ba7c7bfc964136382d65a37d72da0ae53e01df28ca875ed8fe813f",
+      "claimFingerprint": "sha256:c4825e6d8b52c8082a7dc1060000806149b782c6ed77bb9be51cc3d3223c83eb",
       "claimId": "claim-docs-contracts-workbench-instance-discovery-md-72",
       "claimSemanticGroup": "Adapter and portability",
-      "evidenceRefs": [
-        {
-          "contentHash": "sha256:a32d4398f2f93910372084e8565ca7e3d3eca0e7e9d0b7ff6c2c1140ae872b64",
-          "kind": "cautilus-claim-evidence-bundle",
-          "matchKind": "verified",
-          "path": ".cautilus/claims/evidence-current-deterministic-proof-batch-2026-05-03.json",
-          "supportsClaimIds": [
-            "claim-docs-contracts-workbench-instance-discovery-md-72"
-          ]
-        }
-      ],
-      "evidenceStatus": "satisfied",
-      "evidenceStatusReason": "Verified by live discovery command-mode tests that normalize stdout JSON and keep warnings on stderr.",
+      "evidenceRefs": [],
+      "evidenceStatus": "unknown",
       "groupHints": [
         "audience:developer",
         "contract",
@@ -12672,18 +12661,17 @@
         "linked-from:docs/contracts/adapter-contract.md"
       ],
       "lifecycle": "new",
-      "nextAction": "Keep command-mode live discovery tests strict about stdout JSON and stderr warnings.",
+      "nextAction": "Keep or add deterministic CLI, packet schema, golden-output, readiness, or no-runner-launch proof for this claim.",
       "recommendedProof": "deterministic",
-      "reviewStatus": "agent-reviewed",
+      "reviewStatus": "heuristic",
       "sourceRefs": [
         {
-          "excerpt": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.",
+          "excerpt": "The command should print only `cautilus.live_target_catalog.v1` JSON to stdout.",
           "line": 72,
           "path": "docs/contracts/workbench-instance-discovery.md"
         }
       ],
-      "summary": "The command should print only `cautilus.workbench_instance_catalog.v1` JSON to stdout.",
-      "unresolvedQuestions": [],
+      "summary": "The command should print only `cautilus.live_target_catalog.v1` JSON to stdout.",
       "verificationReadiness": "ready-for-proof",
       "whyThisLayer": "The claim names CLI, packet, payload, schema, readiness, or non-launching evaluation behavior that should be protected by deterministic command and packet tests."
     },
@@ -19321,8 +19309,8 @@
       "Release and packaging": 2
     },
     "byEvidenceStatus": {
-      "satisfied": 140,
-      "unknown": 436
+      "satisfied": 139,
+      "unknown": 437
     },
     "byLifecycle": {
       "new": 576
@@ -19333,8 +19321,8 @@
       "human-auditable": 148
     },
     "byReviewStatus": {
-      "agent-reviewed": 187,
-      "heuristic": 388,
+      "agent-reviewed": 186,
+      "heuristic": 389,
       "human-reviewed": 1
     },
     "byVerificationReadiness": {
@@ -19540,7 +19528,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "6f616c6a167190b1dba3e23c9a48b48bb74ccd08",
+  "gitCommit": "8fbad961d44ff449a96484464ae10b68d2910fac",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -19740,12 +19728,12 @@
     ],
     "appliedResultCount": 90,
     "skippedResultCount": 50,
-    "keptUpdateCount": 222,
+    "keptUpdateCount": 221,
     "rewrittenUpdateCount": 151,
-    "droppedUpdateCount": 306,
+    "droppedUpdateCount": 307,
     "droppedUpdateReasonCounts": {
       "missing-fingerprint": 165,
-      "missing-live-fingerprint": 141
+      "missing-live-fingerprint": 142
     },
     "droppedUpdateSamples": [
       {
@@ -19872,7 +19860,7 @@
     "droppedUpdateSamplePolicy": {
       "selection": "bounded-reason-representation",
       "maxRecordedSamples": 20,
-      "sourceDroppedUpdateCount": 306,
+      "sourceDroppedUpdateCount": 307,
       "selectedSampleCount": 20,
       "preservesDroppedReasonRepresentationWhenCapAllows": true,
       "proportionalSampling": false
@@ -21612,7 +21600,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:a6e2a0f48ad451934fb796f58d8a34cb4335288e4b8bfe95d4fb73adb7f1acf4",
+      "contentHash": "sha256:c2e438346324e95651b5706f55b3f98e7eae6515bb756269adaeac70fc82ece6",
       "depth": 0,
       "kind": "readme",
       "path": "README.md",
@@ -21621,7 +21609,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:c0a03ba410c95e5ab61f01829bc0acafce3fd15ad5f29fe61aa49775223faf07",
+      "contentHash": "sha256:f52612dfb1d9567f78647fbafc6ab12f67faf9523e5166110b9fee58b4ccb5ec",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "contract",
@@ -21641,7 +21629,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:30b14da352fae986ab26aadacd83351410d335e3c20828ce0cc3ba40bd7467d8",
+      "contentHash": "sha256:8e343aec733e291663d96160928cb6f5f367552f1727e45c1d721418a05baa37",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "docs",
@@ -21721,7 +21709,7 @@
     {
       "claimAudience": "user",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:602f570f877350a2f5c8b2704ea6d348d6df96bdbf4f6561f71277cc8d786b9f",
+      "contentHash": "sha256:9a365c8c30d74a37440b68a4054d30cede4db0a1947ea957667d28b8f2fb40bb",
       "depth": 1,
       "discoveredFrom": "README.md",
       "kind": "spec",
@@ -21841,7 +21829,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:261dddc7bc3e05e31daef68be56941c70d30a2e17079049a0a0932282ffb2bf5",
+      "contentHash": "sha256:dc9d313a09cd03bda62a19bdfd34cebf3219da4e9191665075beb2078e31a287",
       "depth": 2,
       "discoveredFrom": "docs/contracts/adapter-contract.md",
       "kind": "contract",
@@ -21901,7 +21889,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:0cf3233eafa4c77b436eb853147fc4461d3926dcac1da16f5f337a100fb9931b",
+      "contentHash": "sha256:7419003c0ff048696b31b85feba386461c13b420822c8b3d83fd31778fac83ce",
       "depth": 2,
       "discoveredFrom": "docs/contracts/adapter-contract.md",
       "kind": "contract",
