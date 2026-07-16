@@ -10,8 +10,9 @@ mention-only 픽업이면 `charness:handoff`로 이 baton과 최신 goal/release
 ## Current State
 
 - 현재 활성 구현 트랙은 없다.
-- 공개 릴리스는 `v0.19.3`이며 workflow, 7개 asset/checksum, Linux x64 attestation, latest/pinned install 및 update-current readback이 통과했다.
-- canonical 릴리스 증거와 초기 asset-readiness 404의 최종 disposition은 `charness-artifacts/release/latest.md`가 소유한다.
+- 공개 릴리스는 `v0.19.4`이며 workflow, 7개 asset/checksum, distinct-channel(HTTP 200) verify, install.sh 스모크가 통과했다.
+- `v0.19.4`는 두 테마를 담았다: find-skills retirement realign(문서 + 재캡처한 flagship live proof + 셸 evaluate 예제의 find-skills 제거)과 품질 툴링(packaged mirror parity gate, hermetic coverage-floor 테스트, monotonic floor writer, stale floor 13개 상향). 소비자 노출 바이너리/Agent 동작 변화는 없다.
+- canonical 릴리스 증거와 post-publish 검증 disposition은 `charness-artifacts/release/latest.md`가 소유한다.
 - 최근 자율 개선의 품질 상태, warning-only 부채, runtime 비주장은 `charness-artifacts/quality/latest.md`가 소유한다.
 - release page가 asset보다 먼저 보일 수 있다는 재발 방지 순서는 `docs/maintainers/releasing.md`에 반영됐다.
 - PATH의 `cautilus`는 이 세션에서 전역 갱신하지 않았다.

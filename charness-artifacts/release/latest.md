@@ -23,6 +23,22 @@ Patch release (0.19.3 → 0.19.4) bundling two internal themes with no consumer-
 - The v0.19.4 release critique (`charness-artifacts/critique/2026-07-16-v0-19-4-release-critique.md`) cleared the release: patch bump justified, the one Act-Before-Ship item (this record) resolved, and the examples.go find-skills emission fixed in this release rather than deferred.
 - `npm run release:claim-freshness` reported the claim packet `fresh` and HEAD-reachable before tagging.
 
+## Release State
+
+- local release mutation: complete
+- branch/tag push: complete (origin/main and tag `v0.19.4` at `410f5309`)
+- GitHub release record: verified URL `https://github.com/corca-ai/cautilus/releases/tag/v0.19.4`
+- public release surface verification: verified
+- audit narrative: this durable record, committed with the closeout slice
+
+## Public Release Verification
+
+- GitHub Actions `release-artifacts` run `29473009835` completed successfully; its in-workflow public-release verifier job passed.
+- `node scripts/release/verify-public-release.mjs --version v0.19.4` returned `status: ok`.
+- Distinct-channel verdict: HTTP `200` on the release URL via `https` (a channel distinct from `gh release view`).
+- Seven assets uploaded: four platform archives, the binary checksum manifest, the source checksum, and provenance release notes.
+- Install smoke: `npm run release:smoke-install:current -- --skip-update` passed; the install.sh-installed binary returned `0.19.4`.
+
 ## Non-Claims
 
 - The GitHub release-notes asset is provenance-oriented and is not claimed to carry this operator narrative.
