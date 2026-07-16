@@ -26,12 +26,14 @@ Ambient repo findings: standing `verify` is green; coverage floors are loose (41
 - Whole-tree packaged-mirror parity is now a hard gate: `checkPackagedSkillInSync` recomputes each expected packaged file (markdown links re-based, other files verbatim) and fails on any drifted/missing/extra file; proven to bite on a real drift probe (exit 1) and green on the in-sync tree (exit 0).
 - Nine unit tests pin the inverse: rewrite parity, verbatim non-markdown branch, missing/extra detection, input-guard, and both `main --check` exit codes.
 - Parity ownership is consolidated — the disclosure lint's duplicate SKILL.md byte-compare was removed so a future upward link in SKILL.md cannot make `verify` unsatisfiable.
-- Coverage-floor unit tests are now hermetic: `check-coverage-floor.mjs` honors `COVERAGE_FLOOR_PATH`/`COVERAGE_FLOOR_EXEMPTIONS_PATH` overrides so `coverage-dir.test.mjs` injects fixture floors instead of coupling to live values; the sanctioned `coverage:floor:write` no longer breaks the suite (proven by mutating the live floor and re-running green).
+- Coverage-floor unit tests are now hermetic: `check-coverage-floor.mjs` honors `COVERAGE_FLOOR_PATH`/`COVERAGE_FLOOR_EXEMPTIONS_PATH` overrides so `coverage-dir.test.mjs` injects fixture floors instead of coupling to live values; the sanctioned floor writer no longer breaks the suite (proven by mutating the live floor and re-running green).
+- The floor writer is now monotonic (never lowers a retained floor) with `--only-stale`/`--buffer`/`--stale-threshold` modes, default buffer aligned to the adapter's 1.0pp fragile margin, and a `coverage:floor:raise-stale` alias; `--only-stale` drops floored-and-exempted entries so it cannot author a gate contradiction (proven on the real gate).
+- 13 stale placeholder floors were raised 10pp below current coverage (`scenario_telemetry.go` 4.4→69, `workspace.go` 2.25→60, `review.go` 4.43→42.03), a monotonic 13-file change verified stable across independent coverage runs.
 - Standing `verify`, coverage-floor enforcement, and runtime budgeting remain green and high-signal.
 
 ## Weak
 
-- The pre-existing coverage-floor set is loose: ~42 floored files cleared the 1pp drift-lock and 25 sit in the warn-band, so the floors trail measured coverage and under-protect regressions in those files. The blocker to tightening them — floor-check tests coupled to the live floor file — was removed this turn; the bulk raise itself is still a deliberate follow-up.
+- Coverage floors are still loose by design after the raise: the 13 use a conservative 10pp buffer (safe against the pre-push+CI gate but tolerant of up to 10pp erosion), and ~42 files still clear the 1pp drift-lock WARN, which nags toward sub-1pp floors that would be CI-flaky. The remaining ~100 near-floor and 25 warn-band files were intentionally left untouched.
 
 ## Missing
 
@@ -50,7 +52,7 @@ Ambient repo findings: standing `verify` is green; coverage floors are loose (41
 
 ## Delegated Review
 
-- Delegated Review: executed — two parent-delegated `charness:bounded-reviewer` runs. The first (parity gate) surfaced the latent SKILL.md byte-compare contradiction and the untested non-markdown branch, both fixed. The second (floor-test decoupling) found no blockers; its two nits (boundary `MIN_STATEMENTS` fixture, live-value-coincident floors) were applied.
+- Delegated Review: executed — three parent-delegated `charness:bounded-reviewer` runs. (1) parity gate: fixed the SKILL.md byte-compare contradiction + untested non-markdown branch. (2) floor-test decoupling: two nits applied. (3) floor writer: no blockers; two should-fix items applied (only-stale exempt-persistence gate contradiction, over-broad "monotonic" comment) plus missing-branch tests.
 - Slow-gate lenses (fixture-economics, parallel-critical-path, duplicated-proof): not applicable — the change is a cheap deterministic lint, adding no slow standing gate.
 
 ## Commands Run
@@ -58,11 +60,12 @@ Ambient repo findings: standing `verify` is green; coverage floors are loose (41
 - quality planner, `render_runtime_summary.py`, `inventory_skill_ergonomics.py --summary`
 - `./scripts/run-quality.sh --read-only`, `npm run verify` (multiple), `node --test scripts/release/sync-packaged-skill.test.mjs`, `node --test scripts/coverage-dir.test.mjs`
 - `sync-packaged-skill.mjs --check` in-sync/drift probes, temp-tree regeneration diff, dual-copy `diff -rq`
-- coverage determinism probes (`test:coverage` ×3 + spec variant, stable at 2600/55.54%), `coverage:floor:write` diff analysis, hermetic-decoupling proof (tests green after live-floor mutation)
+- coverage determinism probes (`test:coverage` ×3 + spec variant, stable at 2600/55.54%), hermetic-decoupling proof (tests green after live-floor mutation)
+- `coverage:floor:raise-stale` (13-file monotonic raise), floor diff analysis (13 raised / 0 lowered / 0 added / 0 removed), SF1 exempt-drop proof on the real gate, `npm run verify` (multiple, green)
 
 ## Recommended Next Quality Moves
 
-- passive raise stale coverage floors — capability_needed=honest coverage ratchet; next_center=~42 floored files that cleared the 1pp drift-lock; transformation=run `coverage:floor:write` (now unblocked — tests decoupled this turn) and review the diff; proof_boundary=coverage-floor gate; enforcement_posture=existing-gate-reuse until a maintainer opts into the bulk raise because it is a broad ~100-entry edit needing cross-environment determinism confidence, not this turn's concern.
+- passive tighten the raised floors' buffer once CI variance is observed — capability_needed=stronger coverage ratchet; next_center=the 13 floors now at a 10pp buffer; transformation=lower the buffer toward the fragile margin once a few CI runs confirm per-file stability; proof_boundary=coverage-floor gate green across environments; enforcement_posture=existing-gate-reuse until CI stability data exists because a tighter buffer risks flaking the pre-push+CI gate.
 - passive harden mirror parity for non-text/symlink assets — capability_needed=parity for future binary/symlink skill assets; next_center=`checkPackagedSkillInSync`; transformation=compare buffers and classify symlinks explicitly; proof_boundary=`lint:skill-packaged-sync`; enforcement_posture=no-gate because no such asset exists in the skill tree yet (watch on asset introduction).
 
 ## History
