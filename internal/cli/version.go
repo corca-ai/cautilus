@@ -191,8 +191,70 @@ func CompareVersions(left string, right string) int {
 	case leftPre != "" && rightPre == "":
 		return -1
 	default:
-		return strings.Compare(leftPre, rightPre)
+		return comparePrerelease(leftPre, rightPre)
 	}
+}
+
+// comparePrerelease orders two non-empty prerelease strings per SemVer 11.4:
+// dot-separated identifiers compared field by field, numeric identifiers compared
+// numerically and ranked below alphanumeric ones, and a larger identifier set
+// winning when every preceding identifier is equal.
+func comparePrerelease(left string, right string) int {
+	leftIDs := strings.Split(left, ".")
+	rightIDs := strings.Split(right, ".")
+	shared := len(leftIDs)
+	if len(rightIDs) < shared {
+		shared = len(rightIDs)
+	}
+	for index := range shared {
+		if comparison := comparePrereleaseIdentifier(leftIDs[index], rightIDs[index]); comparison != 0 {
+			return comparison
+		}
+	}
+	switch {
+	case len(leftIDs) < len(rightIDs):
+		return -1
+	case len(leftIDs) > len(rightIDs):
+		return 1
+	default:
+		return 0
+	}
+}
+
+func comparePrereleaseIdentifier(left string, right string) int {
+	leftNumeric := isNumericIdentifier(left)
+	rightNumeric := isNumericIdentifier(right)
+	switch {
+	case leftNumeric && rightNumeric:
+		// Valid numeric identifiers carry no leading zeros, so a longer digit run
+		// is the larger number; compare lexically at equal length. This stays
+		// correct without risking integer overflow on absurdly long identifiers.
+		if len(left) != len(right) {
+			if len(left) < len(right) {
+				return -1
+			}
+			return 1
+		}
+		return strings.Compare(left, right)
+	case leftNumeric:
+		return -1
+	case rightNumeric:
+		return 1
+	default:
+		return strings.Compare(left, right)
+	}
+}
+
+func isNumericIdentifier(identifier string) bool {
+	if identifier == "" {
+		return false
+	}
+	for _, r := range identifier {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
 }
 
 func splitVersionParts(version string) ([]string, string) {

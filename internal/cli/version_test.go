@@ -107,3 +107,36 @@ func TestCompareVersionsOrdersStableSemver(t *testing.T) {
 		t.Fatal("expected equal versions to compare the same")
 	}
 }
+
+func TestCompareVersionsOrdersPrereleaseBySemverPrecedence(t *testing.T) {
+	cases := []struct {
+		left  string
+		right string
+		want  int
+	}{
+		// Numeric prerelease identifiers compare numerically, not lexically:
+		// rc.10 > rc.2 even though the string "rc.10" sorts before "rc.2".
+		{"1.0.0-rc.10", "1.0.0-rc.2", 1},
+		{"1.0.0-rc.2", "1.0.0-rc.10", -1},
+		// A stable release outranks any prerelease of the same main version.
+		{"1.0.0", "1.0.0-rc.1", 1},
+		{"1.0.0-rc.1", "1.0.0", -1},
+		// SemVer 11.4 worked example ordering, pairwise.
+		{"1.0.0-alpha", "1.0.0-alpha.1", -1},
+		{"1.0.0-alpha.1", "1.0.0-alpha.beta", -1},
+		{"1.0.0-alpha.beta", "1.0.0-beta", -1},
+		{"1.0.0-beta", "1.0.0-beta.2", -1},
+		{"1.0.0-beta.2", "1.0.0-beta.11", -1},
+		{"1.0.0-beta.11", "1.0.0-rc.1", -1},
+		// Numeric identifiers rank below alphanumeric ones at the same position.
+		{"1.0.0-1", "1.0.0-alpha", -1},
+		// Build metadata is ignored for precedence.
+		{"1.0.0-rc.1+build.5", "1.0.0-rc.1+build.9", 0},
+		{"1.0.0-rc.1", "1.0.0-rc.1", 0},
+	}
+	for _, tc := range cases {
+		if got := CompareVersions(tc.left, tc.right); got != tc.want {
+			t.Errorf("CompareVersions(%q, %q) = %d, want %d", tc.left, tc.right, got, tc.want)
+		}
+	}
+}
