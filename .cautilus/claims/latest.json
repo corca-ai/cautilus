@@ -3,7 +3,7 @@
   "carryForward": {
     "changedEvidenceRefCount": 0,
     "evidenceSupportIdRewriteCount": 0,
-    "matchedClaimCount": 575,
+    "matchedClaimCount": 576,
     "missingEvidenceRefCount": 0,
     "notice": "Reviewed labels and evidence refs were carried forward only for unchanged claim fingerprints; direct and verified evidence refs with contentHash were rechecked against repo-local evidence files.",
     "staleEvidenceClaimCount": 16,
@@ -18352,7 +18352,7 @@
     "traversal": "entry-markdown-links"
   },
   "extractionMode": "heuristic",
-  "gitCommit": "8fbad961d44ff449a96484464ae10b68d2910fac",
+  "gitCommit": "33e15025706d78ecfce7d3776100ba216a15e8e3",
   "nextRecommended": "Turn cautilus-eval candidates into host-owned eval fixtures; keep deterministic candidates in the repo's normal test or CI gates.",
   "nonVerdictNotice": "Discovery creates candidates. A discovered claim is not verified until matching evidence is attached.",
   "reviewApplication": {
@@ -20258,7 +20258,7 @@
     {
       "claimAudience": "developer",
       "claimAudienceSource": "adapter-hint",
-      "contentHash": "sha256:9cb8a90558524e7b091f8c8aab7f01e1dcb143a68e6ec645e37d5956251c8b6f",
+      "contentHash": "sha256:771b3a4ebb87e43c1bfcf3087ad71979c489d300933597fe0e4bdc1a2a2d5c12",
       "depth": 1,
       "discoveredFrom": "AGENTS.md",
       "kind": "docs",
